@@ -1,0 +1,16 @@
+[
+  {
+    "objectID": "index.html#reproducing-this-book",
+    "href": "index.html#reproducing-this-book",
+    "title": "Hands-On Programming with R",
+    "section": "Reproducing this book",
+    "text": "Reproducing this book\nThis book uses quarto.\n# to install quarto the following command were run:\nwget https://github.com/quarto-dev/quarto-cli/releases/download/v0.2.362/quarto-0.2.362-linux-amd64.deb\nsudo dpkg -i quarto*\nAfter you have installed quarto, run the following command to serve a local version of the book:\n\nquarto::quarto_serve()"
+  },
+  {
+    "objectID": "index.html#license",
+    "href": "index.html#license",
+    "title": "Hands-On Programming with R",
+    "section": "License",
+    "text": "License\nThis website is (and will always be) free to use, and is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 4.0 License."
+  }
+]
