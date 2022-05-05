@@ -1,0 +1,26 @@
+# Networks {#sec-networks}
+
+
+By the end of this chapter you should gain the following knowledge and practical skills.
+
+::: {.callout-note}
+
+## Knowledge
+
+- [x] The special structure and vocabulary used to represent network data.
+- [x] The strengths, weaknesses and trade-offs of network visualizations and of incorporating geographic context.
+
+:::
+
+
+::: {.callout-note}
+
+## Practical skills
+
+- [x] Write `ggplot2` specifications that use containment to analyse spatial network origin-destination data.
+
+:::
+
+## Concepts
+
+## Techniques

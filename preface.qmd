@@ -1,0 +1,29 @@
+# Preface {.unnumbered}
+
+
+
+In modern data analysis, graphics and computational statistics are often used together to explore complex patterns, develop and evaluate statistical models and communicate research findings. This book goes beyond traditional conceptions of charts, graphs, maps (and also statistics) to equip readers with the key critical design and technical skills needed to analyse and communicate with a wide range of datasets in the social sciences.
+
+The book emphasises application. Each chapter introduces the fundamentals of data science by analysing real-world datasets located within various social science domains: Political Science, Crime Science, Urban and Transport Planning. As is the case in real data analysis, some of the structure inferred from these datasets will be spurious. It will be necessary to think critically about claims that can be made and about techniques that might be used to help guard against over-interpretation and false discovery.
+
+As well as learning how (and why) to use graphics and statistics to explore patterns in data, the book demonstrates how to communicate and tell stories with data, implementing recent ideas from data journalism.
+
+Chapters of the book are split into *Concepts* and *Techniques*. The *Concepts* sections discuss key literature, ideas and techniques that might be leveraged to analyse the dataset introduced in the chapter. In the *Techniques* sections, code examples (in `R`) are provided for implementing the discussed techniques.
+
+Chapters are also accompanied, via the  Appendices, with *Tasks* for readers to complete in order to test learning. Some tasks are technical and require code to be written;  some are more conceptual. To support these tasks, each chapter has a corresponding `R Markdown` template file. These templates contain pre-prepared code chunks to be executed. As the book progresses, the amount of prep-repared code in these templates reduces and readers must contribute more code of their own.
+
+After reading the book, you will be able to:
+
+* Describe, process and combine social science datasets from a range of sources
+* Design statistical graphics that expose structure in social science data and that are underpinned by established principles in information visualization and cartography
+* Use modern data science and visualization frameworks to produce coherent, reproducible data analyses
+* Apply modern statistical techniques for analysing, representing and communicating data and model uncertainty
+
+
+
+
+## Acknowledgments
+
+Blah
+
+## References

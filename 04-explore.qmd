@@ -1,0 +1,30 @@
+# Exploratory Data Analysis {#sec-exploratory}
+
+```{r}
+#| echo: FALSE
+library(knitr)
+library(kableExtra)
+library(fontawesome)
+```
+
+
+By the end of this chapter you should gain the following knowledge and practical skills.
+
+::: {.callout-note icon=FALSE}
+
+## Knowledge outcomes
+- [x] An appreciation of the exploratory data analysis (EDA) worklow.
+- [x] The main chart types [or *idioms* @munzner_visualization_2014] for summarising variation within- and between- variables.
+- [x] The three strategies that can be used for supporting *comparison* in EDA: juxtaposition, superposition and direct encoding [@gleicher_visual_2011]
+:::
+
+
+::: {.callout-note icon=FALSE}
+
+## Skills outcomes
+- [x] Write `ggplot2` specifications that use colour and layout to support comparison.
+:::
+
+## Concepts
+
+## Techniques

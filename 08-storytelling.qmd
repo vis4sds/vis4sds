@@ -1,0 +1,25 @@
+# Data Storytelling {#sec-storytelling}
+
+
+By the end of this chapter you should gain the following knowledge and practical skills.
+
+::: {.callout-note}
+
+## Knowledge
+
+- [x] **Appreciate** the main characteristics of data-driven stories.
+- [x] **Identify** how visual and rhetorical devices are used to communicate with data.
+
+:::
+
+
+::: {.callout-note}
+
+## Practical skills
+
+- [x] **Create** `ggplot2` graphics with non-standard annotations.
+:::
+
+## Concepts
+
+## Techniques
