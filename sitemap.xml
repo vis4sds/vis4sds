@@ -1,7 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://rstudio-education.github.io/hopr/index.html</loc>
-    <lastmod>2022-04-07T16:29:24.842Z</lastmod>
+    <loc>https://roger-beecham/vis4gds/index.html</loc>
+    <lastmod>2022-05-11T05:25:17.879Z</lastmod>
+  </url>
+  <url>
+    <loc>https://roger-beecham/vis4gds/preface.html</loc>
+    <lastmod>2022-05-11T05:25:17.883Z</lastmod>
+  </url>
+  <url>
+    <loc>https://roger-beecham/vis4gds/01-intro.html</loc>
+    <lastmod>2022-05-11T05:25:17.883Z</lastmod>
+  </url>
+  <url>
+    <loc>https://roger-beecham/vis4gds/02-data.html</loc>
+    <lastmod>2022-05-11T05:25:17.887Z</lastmod>
+  </url>
+  <url>
+    <loc>https://roger-beecham/vis4gds/03-visual.html</loc>
+    <lastmod>2022-05-11T05:25:17.895Z</lastmod>
+  </url>
+  <url>
+    <loc>https://roger-beecham/vis4gds/04-explore.html</loc>
+    <lastmod>2022-05-11T05:25:17.895Z</lastmod>
+  </url>
+  <url>
+    <loc>https://roger-beecham/vis4gds/05-network.html</loc>
+    <lastmod>2022-05-11T05:25:17.895Z</lastmod>
+  </url>
+  <url>
+    <loc>https://roger-beecham/vis4gds/06-model.html</loc>
+    <lastmod>2022-05-11T05:25:17.895Z</lastmod>
+  </url>
+  <url>
+    <loc>https://roger-beecham/vis4gds/07-uncertainty.html</loc>
+    <lastmod>2022-05-11T05:25:17.899Z</lastmod>
+  </url>
+  <url>
+    <loc>https://roger-beecham/vis4gds/08-storytelling.html</loc>
+    <lastmod>2022-05-11T05:25:17.899Z</lastmod>
+  </url>
+  <url>
+    <loc>https://roger-beecham/vis4gds/references.html</loc>
+    <lastmod>2022-05-11T05:25:17.899Z</lastmod>
+  </url>
+  <url>
+    <loc>https://roger-beecham/vis4gds/a1-data.html</loc>
+    <lastmod>2022-05-11T05:25:17.899Z</lastmod>
   </url>
 </urlset>

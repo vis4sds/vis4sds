@@ -3,8 +3,7 @@
   <meta charset="utf-8">
   <meta name="generator" content="quarto-0.9.56">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <meta name="author" content="Roger Beecham and Robin Lovelace">
-  <title>Visualization for Social Data Science</title>
+  <title>Visualization for Social Data Science - 8&nbsp; Data Storytelling</title>
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
@@ -21,7 +20,8 @@
   <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
   <script src="site_libs/quarto-search/fuse.min.js"></script>
   <script src="site_libs/quarto-search/quarto-search.js"></script>
-  <link href="./preface.html" rel="next">
+  <link href="./references.html" rel="next">
+  <link href="./07-uncertainty.html" rel="prev">
   <script src="site_libs/quarto-html/quarto.js"></script>
   <script src="site_libs/quarto-html/popper.min.js"></script>
   <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -59,7 +59,7 @@
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">Visualization for Social Data Science</h1>
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Data Storytelling</span></h1>
       <button type="button" class="quarto-btn-toggle btn">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -88,7 +88,7 @@
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">Welcome</a>
+  <a href="./index.html" class="sidebar-item-text sidebar-link">Welcome</a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -133,7 +133,7 @@
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./08-storytelling.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Data Storytelling</span></a>
+  <a href="./08-storytelling.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Data Storytelling</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -164,24 +164,57 @@
         <nav id="TOC" role="doc-toc">
 <h2 id="toc-title">Table of contents</h2>
 <ul>
-<li><a href="#welcome" class="nav-link active" data-scroll-target="#welcome">Welcome</a></li>
-<li><a href="#license" class="nav-link" data-scroll-target="#license">License</a></li>
+<li><a href="#concepts" class="nav-link active" data-scroll-target="#concepts"> <span class="header-section-number">8.1</span> Concepts</a></li>
+<li><a href="#techniques" class="nav-link" data-scroll-target="#techniques"> <span class="header-section-number">8.2</span> Techniques</a></li>
 </ul>
-<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/rogerbeecham/vis4gds/edit/master/index.qmd" class="toc-action">Edit this page</a></p></div></div></nav>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/rogerbeecham/vis4gds/edit/master/08-storytelling.qmd" class="toc-action">Edit this page</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 <header id="title-block-header">
-<h1 class="title d-none d-lg-block display-7">Visualization for Social Data Science</h1>
-<p class="author">Roger Beecham and Robin Lovelace</p>
+<h1 class="title display-7"><span id="sec-storytelling" class="quarto-section-identifier d-none d-lg-block"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Data Storytelling</span></span></h1>
 </header>
 
-<section id="welcome" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="welcome">Welcome</h2>
+<p>By the end of this chapter you should gain the following knowledge and practical skills.</p>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Knowledge
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul class="task-list">
+<li><input type="checkbox" disabled="" checked="">
+<strong>Appreciate</strong> the main characteristics of data-driven stories.</li>
+<li><input type="checkbox" disabled="" checked="">
+<strong>Identify</strong> how visual and rhetorical devices are used to communicate with data.</li>
+</ul>
+</div>
+</div>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Practical skills
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul class="task-list">
+<li><input type="checkbox" disabled="" checked="">
+<strong>Create</strong> <code>ggplot2</code> graphics with non-standard annotations.</li>
+</ul>
+</div>
+</div>
+<section id="concepts" class="level2" data-number="8.1">
+<h2 data-number="8.1" class="anchored" data-anchor-id="concepts"><span class="header-section-number">8.1</span> Concepts</h2>
 </section>
-<section id="license" class="level2">
-<h2 class="anchored" data-anchor-id="license">License</h2>
-<p>This website is licensed under the <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivs 4.0</a> License.</p>
+<section id="techniques" class="level2" data-number="8.2">
+<h2 data-number="8.2" class="anchored" data-anchor-id="techniques"><span class="header-section-number">8.2</span> Techniques</h2>
 
 
 </section>
@@ -264,10 +297,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
+      <a href="./07-uncertainty.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Uncertainty</span></span>
+      </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./preface.html" class="pagination-link">
-        <span class="nav-page-text">Preface</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./references.html" class="pagination-link">
+        <span class="nav-page-text">References</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

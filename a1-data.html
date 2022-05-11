@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-0.9.56">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>Visualization for Social Data Science - Appendix A — Data Fundamentals</title>
+<style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+<script src="site_libs/quarto-nav/quarto-nav.js"></script><script src="site_libs/quarto-nav/headroom.min.js"></script><script src="site_libs/clipboard/clipboard.min.js"></script><meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script><script src="site_libs/quarto-search/fuse.min.js"></script><script src="site_libs/quarto-search/quarto-search.js"></script><link href="./references.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script><script src="site_libs/quarto-html/popper.min.js"></script><script src="site_libs/quarto-html/tippy.umd.min.js"></script><script src="site_libs/quarto-html/anchor.min.js"></script><link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script><link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+    "location": "sidebar",
+    "copy-button": false,
+    "collapse-after": 2,
+    "panel-placement": "start",
+    "type": "textbox",
+    "limit": 20,
+    "language": {
+      "search-no-results-text": "No results",
+      "search-matching-documents-text": "matching documents",
+      "search-copy-link-title": "Copy link to search",
+      "search-hide-matches-text": "Hide additional matches",
+      "search-more-match-text": "more match in this document",
+      "search-more-matches-text": "more matches in this document",
+      "search-clear-button-title": "Clear",
+      "search-detached-cancel-button-title": "Cancel",
+      "search-submit-button-title": "Submit"
+    }
+  }</script><!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body class="floating">
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }"><div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">Appendix A — Data Fundamentals</h1>
+      <button type="button" class="quarto-btn-toggle btn">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Visualization for Social Data Science</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/rogerbeecham/vis4gds/" title="Source Code" class="sidebar-tool px-1"><i class="bi bi-github"></i></a>
+    <a href="https://twitter.com/intent/tweet?url=%7Curl%7C" title="Twitter" class="sidebar-tool px-1"><i class="bi bi-twitter"></i></a>
+</div>
+    </div>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">Welcome</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./preface.html" class="sidebar-item-text sidebar-link">Preface</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-intro.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-data.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data Fundamentals</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-visual.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Visualization Fundamentals</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-explore.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Exploratory Data Analysis</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-network.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Networks</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-model.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Models</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-uncertainty.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Uncertainty</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-storytelling.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Data Storytelling</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">References</a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+    <div class="sidebar-item-container"> 
+        <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-appendices" aria-expanded="true">Appendices</a>
+      <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-appendices" aria-expanded="true">
+        <i class="bi bi-chevron-right ms-2"></i>
+      </a>
+    </div>
+    <ul id="quarto-sidebar-section-appendices" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./a1-data.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Data Fundamentals</span></a>
+  </div>
+</li>
+    </ul>
+</li>
+    </ul>
+</div>
+</nav><!-- margin-sidebar --><div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc"><h2 id="toc-title">Table of contents</h2>
+<ul>
+<li><a href="#introduction" class="nav-link active" data-scroll-target="#introduction"> <span class="header-section-number">A.1</span> Introduction</a></li>
+<li><a href="#component-1-describe-data" class="nav-link" data-scroll-target="#component-1-describe-data"> <span class="header-section-number">A.2</span> Component 1: Describe data</a></li>
+<li>
+<a href="#component-2-diagnose-data" class="nav-link" data-scroll-target="#component-2-diagnose-data"> <span class="header-section-number">A.3</span> Component 2: Diagnose data</a>
+<ul class="collapse">
+<li><a href="#uk-general-election-results-2019" class="nav-link" data-scroll-target="#uk-general-election-results-2019"> <span class="header-section-number">A.3.1</span> UK General Election Results 2019</a></li>
+<li><a href="#uk-general-election-results-2017-and-2019" class="nav-link" data-scroll-target="#uk-general-election-results-2017-and-2019"> <span class="header-section-number">A.3.2</span> UK General Election Results 2017 and 2019</a></li>
+</ul>
+</li>
+<li><a href="#component-3-fix-data" class="nav-link" data-scroll-target="#component-3-fix-data"> <span class="header-section-number">A.4</span> Component 3: Fix data</a></li>
+<li><a href="#component-4-compute-from-data" class="nav-link" data-scroll-target="#component-4-compute-from-data"> <span class="header-section-number">A.5</span> Component 4: Compute from data</a></li>
+</ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/rogerbeecham/vis4gds/edit/master/a1-data.qmd" class="toc-action">Edit this page</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header"><h1 class="title display-7"><span id="sec-tasks-data" class="quarto-section-identifier d-none d-lg-block">Appendix A — Data Fundamentals</span></h1>
+</header><p>By the end of this <em>Task</em> you should be able to:</p>
+<div class="callout-note callout callout-style-default no-icon callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Task outcomes
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul class="task-list">
+<li>
+<input type="checkbox" disabled="" checked="">
+Describe data according to its structure and contents.</li>
+<li>
+<input type="checkbox" disabled="" checked="">
+Calculate descriptive summaries over datasets.</li>
+<li>
+<input type="checkbox" disabled="" checked="">
+Apply high-level functions in <code>dplyr</code> and <code>tidyr</code> for working with data.</li>
+</ul>
+</div>
+</div>
+<section id="introduction" class="level2" data-number="A.1"><h2 data-number="A.1" class="anchored" data-anchor-id="introduction">
+<span class="header-section-number">A.1</span> Introduction</h2>
+<p>This task requires you to apply the concepts and skills developed in the chapter on data fundamentals. Do complete each of the task components and be sure to save your work.</p>
+</section><section id="component-1-describe-data" class="level2" data-number="A.2"><h2 data-number="A.2" class="anchored" data-anchor-id="component-1-describe-data">
+<span class="header-section-number">A.2</span> Component 1: Describe data</h2>
+<p>Complete the data description table below identifying the <strong>measurement level</strong> of each variable in the (fictional) New York bikeshare stations dataset below.</p>
+<table class="table">
+<thead><tr class="header">
+<th>Variable name</th>
+<th>Variable value</th>
+<th>Measurement level</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code>name</code></td>
+<td>“Central Park”</td>
+<td><enter here=""></enter></td>
+</tr>
+<tr class="even">
+<td><code>capacity</code></td>
+<td>80</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><code>rank_capacity</code></td>
+<td>45</td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>date_opened</code></td>
+<td>“2014-05-23”</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><code>longitude</code></td>
+<td>-74.00149746</td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>latitude</code></td>
+<td>40.74177603</td>
+<td></td>
+</tr>
+</tbody>
+</table></section><section id="component-2-diagnose-data" class="level2" data-number="A.3"><h2 data-number="A.3" class="anchored" data-anchor-id="component-2-diagnose-data">
+<span class="header-section-number">A.3</span> Component 2: Diagnose data</h2>
+<p>Below are two different tables with results from UK General Elections. We will be working with these data in the next session. Identify whether or not each is in <strong>tidy</strong> format <span class="citation" data-cites="wickham_tidy_2014">(<a href="references.html#ref-wickham_tidy_2014" role="doc-biblioref">Wickham 2014</a>)</span>. If they are not, provide a layout for a tidy version. No need to use code here, just edit the markdown table. If you’re struggling to work out how to organise markdown tables, you may wish to use this <a href="https://www.tablesgenerator.com/markdown_tables">tables generator</a>.</p>
+<section id="uk-general-election-results-2019" class="level3" data-number="A.3.1"><h3 data-number="A.3.1" class="anchored" data-anchor-id="uk-general-election-results-2019">
+<span class="header-section-number">A.3.1</span> UK General Election Results 2019</h3>
+<table class="table">
+<thead><tr class="header">
+<th>party</th>
+<th>percent_vote</th>
+<th>num_mps</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>Conservative</td>
+<td>43.6</td>
+<td>365</td>
+</tr>
+<tr class="even">
+<td>Labour</td>
+<td>32.2</td>
+<td>202</td>
+</tr>
+<tr class="odd">
+<td>Scottish National Party</td>
+<td>3.9</td>
+<td>48</td>
+</tr>
+<tr class="even">
+<td>Liberal Democrats</td>
+<td>11.6</td>
+<td>11</td>
+</tr>
+<tr class="odd">
+<td>Democratic Union Party</td>
+<td>0.8</td>
+<td>9</td>
+</tr>
+</tbody>
+</table></section><section id="uk-general-election-results-2017-and-2019" class="level3" data-number="A.3.2"><h3 data-number="A.3.2" class="anchored" data-anchor-id="uk-general-election-results-2017-and-2019">
+<span class="header-section-number">A.3.2</span> UK General Election Results 2017 and 2019</h3>
+<table class="table">
+<colgroup>
+<col style="width: 27%">
+<col style="width: 21%">
+<col style="width: 15%">
+<col style="width: 20%">
+<col style="width: 15%">
+</colgroup>
+<thead><tr class="header">
+<th>party</th>
+<th>percent_vote_2017</th>
+<th>num_mps_2017</th>
+<th>percent_vote_2019</th>
+<th>num_mps_2019</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>Conservative</td>
+<td>42.4</td>
+<td>317</td>
+<td>43.6</td>
+<td>365</td>
+</tr>
+<tr class="even">
+<td>Labour</td>
+<td>40.0</td>
+<td>262</td>
+<td>32.2</td>
+<td>202</td>
+</tr>
+<tr class="odd">
+<td>Scottish National Party</td>
+<td>3.0</td>
+<td>35</td>
+<td>3.9</td>
+<td>48</td>
+</tr>
+<tr class="even">
+<td>Liberal Democrats</td>
+<td>7.4</td>
+<td>12</td>
+<td>11.6</td>
+<td>11</td>
+</tr>
+<tr class="odd">
+<td>Democratic Union Party</td>
+<td>0.9</td>
+<td>10</td>
+<td>0.8</td>
+<td>8</td>
+</tr>
+</tbody>
+</table></section></section><section id="component-3-fix-data" class="level2" data-number="A.4"><h2 data-number="A.4" class="anchored" data-anchor-id="component-3-fix-data">
+<span class="header-section-number">A.4</span> Component 3: Fix data</h2>
+<p>In the <a href="">02-template.Rmd</a> file for this session are links to two derived tables (<code>ny_spread_columns</code> and <code>ny_spread_rows</code>) from the New York bikeshare trip data that are not in a tidy format.</p>
+<p>Using functions from <code>dplyr</code> and <code>tidyr</code> reorganise these data so that they conform to the rules of <strong>tidy</strong> data <span class="citation" data-cites="wickham_tidy_2014">(<a href="references.html#ref-wickham_tidy_2014" role="doc-biblioref">Wickham 2014</a>)</span>.</p>
+<p>A candidate tidy organisation of the data is below. Each row is an origin-destination pair for a weekday or weekend, and each variable describes:</p>
+<ul>
+<li>
+<code>o_station</code>: station id of the origin station</li>
+<li>
+<code>d_station</code>: station id of the destination station</li>
+<li>
+<code>wkday</code>: identifies whether the OD pair describes weekday or weekend ny_trips</li>
+<li>
+<code>count</code>: count of trips recorded for that observation (OD pair and weekday/weekend)</li>
+<li>
+<code>dist</code>: total distance (cumulative) in kms of all trips recorded for that observation (OD pair and weekday/weekend)</li>
+<li>
+<code>duration</code>: total duration in minutes (cumulative) of all trips recorded for that observation (OD pair and weekday/weekend)</li>
+</ul>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>You may wish to start with reorganising <code>ny_spread_rows</code> as I deliberately made <code>ny_spread_columns</code> quite challenging. The intention here was to replicate the sorts of arduous data formatting operations that need to be performed when working with real datasets. As always there are different approaches to this, but it can be achieved with use of <code>pivot_longer</code>, <code>pivot_wider</code>, plus a call to <code>separate()</code>. This may be one to post to the course Slack.</p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span class="co">## # A tibble: 386,762 x 6</span>
+<span class="co">##    o_station d_station wkday   count  dist duration</span>
+<span class="co">##        &lt;int&gt;     &lt;int&gt; &lt;chr&gt;   &lt;int&gt; &lt;dbl&gt;    &lt;dbl&gt;</span>
+<span class="co">##  1        72       116 weekend     1  1.15     18.2</span>
+<span class="co">##  2        72       127 weekend    10 18.0     339.</span>
+<span class="co">##  3        72       128 weekend     2  3.18     69.6</span>
+<span class="co">##  4        72       146 weekend    12 27.6     402.</span>
+<span class="co">##  5        72       151 weekend     2  2.87     54.9</span>
+<span class="co">##  6        72       161 weekend     2  2.52     64.8</span>
+<span class="co">##  7        72       164 weekend     5 13.3      73.3</span>
+<span class="co">##  8        72       167 weekend     1  2.07     17.2</span>
+<span class="co">##  9        72       168 weekend     2  1.70     42.7</span>
+<span class="co">## 10        72       173 weekend     9  9.59    194.</span>
+<span class="co">## # … with 386,752 more rows</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="component-4-compute-from-data" class="level2" data-number="A.5"><h2 data-number="A.5" class="anchored" data-anchor-id="component-4-compute-from-data">
+<span class="header-section-number">A.5</span> Component 4: Compute from data</h2>
+<p>Using <code>dplyr</code> functions, calculate the average distance, duration and speed of trips occurring for each observation. Print out to the Console the top 10 most heavily cycled OD pairs (and their associated summary statistics) separately for weekdays and weekends. You may wish to join on your <code>ny_stations</code> table in order to fetch the station names corresponding to the origin and destination stations.</p>
+
+
+</section></main><!-- /main --><script type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    setTimeout(function() {
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
+      <a href="./references.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">References</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+</body></html>

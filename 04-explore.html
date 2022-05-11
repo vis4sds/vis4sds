@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-  <meta charset="utf-8">
-  <meta name="generator" content="quarto-0.9.56">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <meta name="author" content="Roger Beecham and Robin Lovelace">
-  <title>Visualization for Social Data Science</title>
-  <style>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-0.9.56">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>Visualization for Social Data Science - 4&nbsp; Exploratory Data Analysis</title>
+<style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
     span.underline{text-decoration: underline;}
@@ -13,25 +13,14 @@
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
   </style>
-
-  <script src="site_libs/quarto-nav/quarto-nav.js"></script>
-  <script src="site_libs/quarto-nav/headroom.min.js"></script>
-  <script src="site_libs/clipboard/clipboard.min.js"></script>
-  <meta name="quarto:offset" content="./">
-  <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-  <script src="site_libs/quarto-search/fuse.min.js"></script>
-  <script src="site_libs/quarto-search/quarto-search.js"></script>
-  <link href="./preface.html" rel="next">
-  <script src="site_libs/quarto-html/quarto.js"></script>
-  <script src="site_libs/quarto-html/popper.min.js"></script>
-  <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-  <script src="site_libs/quarto-html/anchor.min.js"></script>
-  <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-  <link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
-  <script src="site_libs/bootstrap/bootstrap.min.js"></script>
-  <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-  <link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
-  <script id="quarto-search-options" type="application/json">{
+<script src="site_libs/quarto-nav/quarto-nav.js"></script><script src="site_libs/quarto-nav/headroom.min.js"></script><script src="site_libs/clipboard/clipboard.min.js"></script><meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script><script src="site_libs/quarto-search/fuse.min.js"></script><script src="site_libs/quarto-search/quarto-search.js"></script><link href="./05-network.html" rel="next">
+<link href="./03-visual.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script><script src="site_libs/quarto-html/popper.min.js"></script><script src="site_libs/quarto-html/tippy.umd.min.js"></script><script src="site_libs/quarto-html/anchor.min.js"></script><link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script><link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
     "location": "sidebar",
     "copy-button": false,
     "collapse-after": 2,
@@ -49,33 +38,26 @@
       "search-detached-cancel-button-title": "Cancel",
       "search-submit-button-title": "Submit"
     }
-  }</script>
-  <!--[if lt IE 9]>
+  }</script><!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
   <![endif]-->
 </head>
 <body class="floating">
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-    <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">Visualization for Social Data Science</h1>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }"><div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Exploratory Data Analysis</span></h1>
       <button type="button" class="quarto-btn-toggle btn">
         <i class="bi bi-chevron-right"></i>
       </button>
     </div>
-  </nav>
-</header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Visualization for Social Data Science</a> 
         <div class="sidebar-tools-main">
     <a href="https://github.com/rogerbeecham/vis4gds/" title="Source Code" class="sidebar-tool px-1"><i class="bi bi-github"></i></a>
-    <a href="https://twitter.com/intent/tweet?url=|url|" title="Twitter" class="sidebar-tool px-1"><i class="bi bi-twitter"></i></a>
+    <a href="https://twitter.com/intent/tweet?url=%7Curl%7C" title="Twitter" class="sidebar-tool px-1"><i class="bi bi-twitter"></i></a>
 </div>
     </div>
       </div>
@@ -86,9 +68,9 @@
       </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">Welcome</a>
+  <a href="./index.html" class="sidebar-item-text sidebar-link">Welcome</a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -113,7 +95,7 @@
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./04-explore.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Exploratory Data Analysis</span></a>
+  <a href="./04-explore.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Exploratory Data Analysis</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -148,45 +130,77 @@
         <i class="bi bi-chevron-right ms-2"></i>
       </a>
     </div>
-    <ul id="quarto-sidebar-section-appendices" class="collapse list-unstyled sidebar-section depth1 show">  
-        <li class="sidebar-item">
+    <ul id="quarto-sidebar-section-appendices" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./a1-data.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Data Fundamentals</span></a>
   </div>
 </li>
     </ul>
-  </li>
+</li>
     </ul>
-    </div>
-</nav>
-<!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc">
-<h2 id="toc-title">Table of contents</h2>
+</div>
+</nav><!-- margin-sidebar --><div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc"><h2 id="toc-title">Table of contents</h2>
 <ul>
-<li><a href="#welcome" class="nav-link active" data-scroll-target="#welcome">Welcome</a></li>
-<li><a href="#license" class="nav-link" data-scroll-target="#license">License</a></li>
-</ul>
-<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/rogerbeecham/vis4gds/edit/master/index.qmd" class="toc-action">Edit this page</a></p></div></div></nav>
+<li><a href="#concepts" class="nav-link active" data-scroll-target="#concepts"> <span class="header-section-number">4.1</span> Concepts</a></li>
+<li><a href="#techniques" class="nav-link" data-scroll-target="#techniques"> <span class="header-section-number">4.2</span> Techniques</a></li>
+</ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/rogerbeecham/vis4gds/edit/master/04-explore.qmd" class="toc-action">Edit this page</a></p></div></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-<header id="title-block-header">
-<h1 class="title d-none d-lg-block display-7">Visualization for Social Data Science</h1>
-<p class="author">Roger Beecham and Robin Lovelace</p>
-</header>
+<main class="content" id="quarto-document-content"><header id="title-block-header"><h1 class="title display-7"><span id="sec-exploratory" class="quarto-section-identifier d-none d-lg-block"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Exploratory Data Analysis</span></span></h1>
+</header><div class="cell">
 
-<section id="welcome" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="welcome">Welcome</h2>
-</section>
-<section id="license" class="level2">
-<h2 class="anchored" data-anchor-id="license">License</h2>
-<p>This website is licensed under the <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivs 4.0</a> License.</p>
+</div>
+<p>By the end of this chapter you should gain the following knowledge and practical skills.</p>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Knowledge outcomes
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul class="task-list">
+<li>
+<input type="checkbox" disabled="" checked="">
+An appreciation of the exploratory data analysis (EDA) worklow.</li>
+<li>
+<input type="checkbox" disabled="" checked="">
+The main chart types <span class="citation" data-cites="munzner_visualization_2014">(or <em>idioms</em> <a href="references.html#ref-munzner_visualization_2014" role="doc-biblioref">Munzner 2014</a>)</span> for summarising variation within- and between- variables.</li>
+<li>
+<input type="checkbox" disabled="" checked="">
+The three strategies that can be used for supporting <em>comparison</em> in EDA: juxtaposition, superposition and direct encoding <span class="citation" data-cites="gleicher_visual_2011">(<a href="references.html#ref-gleicher_visual_2011" role="doc-biblioref">Gleicher and Roberts 2011</a>)</span>
+</li>
+</ul>
+</div>
+</div>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Skills outcomes
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul class="task-list">
+<li>
+<input type="checkbox" disabled="" checked="">
+Write <code>ggplot2</code> specifications that use colour and layout to support comparison.</li>
+</ul>
+</div>
+</div>
+<section id="concepts" class="level2" data-number="4.1"><h2 data-number="4.1" class="anchored" data-anchor-id="concepts">
+<span class="header-section-number">4.1</span> Concepts</h2>
+</section><section id="techniques" class="level2" data-number="4.2"><h2 data-number="4.2" class="anchored" data-anchor-id="techniques">
+<span class="header-section-number">4.2</span> Techniques</h2>
 
 
-</section>
-</main> <!-- /main -->
-<script type="application/javascript">
+</section></main><!-- /main --><script type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const icon = "";
   const anchorJS = new window.AnchorJS();
@@ -261,13 +275,14 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     });
   }
 });
-</script>
-<nav class="page-navigation">
-  <div class="nav-page nav-page-previous">
+</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
+      <a href="./03-visual.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Visualization Fundamentals</span></span>
+      </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./preface.html" class="pagination-link">
-        <span class="nav-page-text">Preface</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./05-network.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Networks</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
