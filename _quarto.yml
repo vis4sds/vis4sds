@@ -14,7 +14,7 @@ book:
   sharing: [twitter]
   chapters:
     - index.qmd
-    - preface.qmd
+  # - preface.qmd
   #   - part: dice.qmd
   #     chapters:
     - 01-intro.qmd
@@ -41,11 +41,11 @@ book:
   #       - speed.qmd
   appendices:
     - a1-data.qmd
-  #   - a2-packages.qmd
+    - a2-visual.qmd
   #   - a3-updating.qmd
   #   - a4-data.qmd
   #   - a5-debug.qmd
-
+  engine: knitr
 
 bibliography: references.bib
 suppress-bibliography: true

@@ -1,74 +1,94 @@
 # Introduction {#sec-introduction}
 
+```{r}
+#| echo: false
+#| eval: true
+#| message: false
+#| warning: false
+library(knitr)
+library(kableExtra)
+```
+
 By the end of this chapter you should gain the following knowledge and practical skills.
 
-::: {.callout-note icon=false}
-
+::: {.callout-note icon="false"}
 ## Knowledge outcomes
 
-- [x] Appreciate the motivation for this book -- why visualization, why `R` and why `ggplot2`
+-   [x] Appreciate the motivation for this book -- why visualization, why R and why `ggplot2`
 :::
 
-
-::: {.callout-note icon=false}
-
+::: {.callout-note icon="false"}
 ## Skills outcomes
 
-- [x] Open `R` using the RStudio Integrated Developer Environment (IDE)
-- [x] Install and enable `R` packages and query package documentation
-- [x] Perform basic calculations via the `R Console`
-- [x] Render `R Markdown` files
-- [x] Create `R` Projects
-- [x] Read-in datasets from external resources as objects (specifically `tibbles`)
-
+-   [x] Open `R` using the RStudio Integrated Developer Environment (IDE)
+-   [x] Install and enable `R` packages and query package documentation
+-   [x] Perform basic calculations via the R Console
+-   [x] Render Quarto files
+-   [x] Create `R` Projects
+-   [x] Read-in datasets from external resources as objects (specifically `tibbles`)
 :::
 
 ## Introduction
 
-This chapter introduces the *what*, *why* and *how* of the book. An argument is presented for the use of visual approaches in modern data analysis before the key technologies and analysis frameworks for the book are introduced: computational notebooks executed in `RMarkdown`. The technical component consolidates on readers’ knowledge and understanding of `R` and `RMarkdown` as well as demonstrating how to organise and curate data science analyses as RStudio Projects.
-
+This chapter introduces the *what*, *why* and *how* of the book. An argument is presented for the use of visual approaches in modern data analysis before the key technologies and analysis frameworks for the book are introduced: computational notebooks executed in Quarto. The technical component consolidates on readers' knowledge and understanding of R and Quarto as well as demonstrating how to organise and curate data science analyses as RStudio Projects.
 
 ## Concepts
 
 ### Why vis4sds?
 
-It is now taken-for-granted that over the last decade or so new data, new technology and new ways of doing science have transformed how we approach the world’s problems. Evidence for this can be seen in the response to the Covid-19 pandemic. Enter [Covid19 github](https://www.google.com/search?q=covid-19+github&rlz=1C5CHFA_enGB632GB632&oq=covid-19+github&aqs=chrome..69i57j69i60l3.5575j0j1&sourceid=chrome&ie=UTF-8) into a search and you’ll be confronted with hundreds of repositories demonstrating how an ever-expanding array of data related to the pandemic can be collected, processed and analysed. *Data Science* is a term used widely to capture this shift.
+It is now taken-for-granted that over the last decade or so new data, new technology and new ways of doing science have transformed how we approach the world's problems. Evidence for this can be seen in the response to the Covid-19 pandemic. Enter [Covid19 github](https://www.google.com/search?q=covid-19+github&rlz=1C5CHFA_enGB632GB632&oq=covid-19+github&aqs=chrome..69i57j69i60l3.5575j0j1&sourceid=chrome&ie=UTF-8) into a search and you'll be confronted with hundreds of repositories demonstrating how an ever-expanding array of data related to the pandemic can be collected, processed and analysed. *Data Science* is a term used widely to capture this shift.
 
-Since gaining traction in the corporate world, the term Data Science has been somewhat stretched, but it has its origins in the work of John Tukey's *The Future of Data Analysis* [-@tukey_future_1962]. Drawing on this, and a survey of more recent work, @donoho_50_2017 neatly identifies six key facets that a Data Science discipline might encompass^[For an excellent precis and interpretation of this for geographers and social scientists, see @arribas_geography_2018.]:
+Since gaining traction in the corporate world, the term Data Science has been somewhat stretched, but it has its origins in the work of John Tukey's *The Future of Data Analysis* [-@tukey_future_1962]. Drawing on this, and a survey of more recent work, @donoho_50_2017 neatly identifies six key facets that a Data Science discipline might encompass[^01-intro-1]:
 
-1.  data gathering, preparation, and exploration;
+[^01-intro-1]: For an excellent precis and interpretation of this for geographers and social scientists, see @arribas_geography_2018.
+
+1.  data gathering, preparation and exploration;
 2.  data representation and transformation;
 3.  computing with data;
 4.  data visualization and presentation;
 5.  data modelling;
-6.  and a more introspective “science about data science”
+6.  and a more introspective "science about data science"
 
-Glancing at this list, *visualization* could be interpreted as a single facet of data science process -- something that happens after data gathering, preparation, exploration, but before modelling. Through this book you'll learn, rather, that visualization is intrinsic to, and should inform, each of these activities.
+Glancing at this list, *data visualization* could be interpreted as a single facet of data science process -- something that happens after data gathering, preparation, exploration, but before modelling. Through this book you'll learn, rather, that data visualization is intrinsic to, and should inform, each of these activities.
 
 Let's develop this idea by asking why data visualizations are used in the first place. In her book *Visualization Analysis and Design*, Tamara @munzner_visualization_2014 considers how humans and computers interface in the decision-making process. She makes the point that data visualization is ultimately about connecting people with data in order to make decisions -- or to install humans in a 'decision-making-loop'. There are very occasionally decision-making loops that are entirely computational and where an automated solution can be rolled out. Most situations, however, require some form of human intervention.
 
-In Statistics textbooks the most commonly-cited example demonstrating problems with relying solely on computation, and so for the use of visualization, is [Anscombe's quartet](https://en.wikipedia.org/wiki/Anscombe%27s_quartet). Here, @anscombe_graphs_1973 presents four datasets, each containing eleven observations and two variables for each observation. The data are synthetic, but let's say that they are the weight and height of independent samples taken from a population of postgraduate students studying Data Science. Presented with a new dataset it makes sense to compute some summaries and doing so, we observe that the data appear identical -- they contain the same means, variances and strong positive correlation coefficient (@fig-anscombe-data). This seems appropriate since the data are measuring individuals' weight and height. Although there may be some variation, we'd expect taller students to be heavier. Given these statistical summaries we can be assured that we are drawing samples from the same population of (Data Science) students.
+In Statistics textbooks the most commonly-cited example demonstrating problems with relying solely on computation, and so for the use of visualization, is [Anscombe's quartet](https://en.wikipedia.org/wiki/Anscombe%27s_quartet). This consists of four datasets, each containing eleven observations and two variables for each observation. The data are synthetic, but let's say that they are the weight and height of independent samples taken from a population of postgraduate students studying Social Data Science. Presented with a new dataset it makes sense to compute some summaries and doing so, we observe that the data appear identical -- they contain the same means, variances and strong positive correlation coefficient (@fig-anscombe-data). This seems appropriate since the data are measuring individuals' weight and height. Although there may be some variation, we'd expect taller students to be heavier. Given these statistical summaries we can be assured that we are drawing samples from the same population of (Data Science) students.
 
-```{r, echo=FALSE}
+```{r}
+#| eval: true
+#| echo: false
+#| include: false
 #| label: fig-anscombe-data
 #| fig-cap: "Data from Anscombe's quartet"
 knitr::include_graphics("/figs/anscombe_data.png", error = FALSE)
 ```
 
-Laying out the data in a meaningful way, horizontally according to *weight* ($x$) and vertically according to the *height* ($y$) to form a scatterplot, we quickly see that whilst these data contain the same statistical properties they are very different. Only `dataset #1` now looks plausible if it were truly a measure of weights and heights drawn from a population of students.
+ ![Data from Anscombe's quartet](figs/01/anscombe_data.svg){#fig-anscombe-data width=100% fig-align="center"}
 
-```{r, echo=FALSE}
+
+Laying out the data in a meaningful way, horizontally according to *weight* ($x$) and vertically according to the *height* ($y$) to form a scatterplot, we quickly see that whilst these data contain the same statistical properties they are very different. Only `dataset #1` now looks plausible if it were truly a sample of weights and heights drawn from a population of students.
+
+```{r}
+#| eval: true
+#| echo: false
+#| include: false
 #| label: fig-anscombe-plot
 #| fig-cap: "Plots of Anscombe's quartet"
-knitr::include_graphics("/figs/anscombe.png", error = FALSE)
+knitr::include_graphics("/figs/01/anscombe_plot.svg", error = FALSE)
 ```
 
-Anscombe's is a deliberately contrived example^[Checkout @matejka_same_2017's Same Stats, Different Graphs paper for a fun take one this.], but one can imagine many cases where important structure is missed or incorrect assumptions are made, without data being subject to thorough visual examination. The consequences are poorly specified models and potentially faulty claims. This is not to undermine the importance of numerical analysis. Numeric summaries that simplify patterns are extremely useful and Statistics has at its disposal an array of tools for helping to guard against making false claims from datasets -- a theme that we will return to in chapters [-@sec-models] and [-@sec-uncertainty] when we think critically about the use of visual approaches for data analysis. There remain, though, certain classes of relation and context that cannot be easily captured through statistics alone.
-
-Geographic context, for example, is undoubtedly challenging to capture  numerically; many of the early examples of data visualization have been of spatial phenomena and generated by Geographers [see @friendly_brief_2007]. We can also make a special case for the use of visual approaches in Social Data Science (SDS) applications due to their exploratory nature. Often datasets are being repurposed for social  sciences research for the first time; contain complex structure and relations that cannot be easily captured by statistical summaries alone; and so the types of questions that can be asked and the techniques deployed to answer them cannot be easily specified in advance. The book demonstrates this as we explore ([Chapter -@sec-exploratory] and [-@sec-networks]), model under uncertainty ([Chapter -@sec-models] and [-@sec-uncertainty]) and communicate ([Chapter -@sec-storytelling]) with various social science datasets.
+ ![Plots of Anscombe's quartet](figs/01/anscombe_plot.svg){#fig-anscombe-plot width=100% fig-align="center"}
 
 
-::: {.callout-tip icon=false}
+
+Anscombe's is a deliberately contrived example[^01-intro-2], but one can imagine many cases where important structure is missed or incorrect assumptions are made without data being subject to thorough visual examination. The consequences are poorly specified models and potentially faulty claims. This is not to undermine the importance of numerical analysis. Numeric summaries that simplify patterns are extremely useful and Statistics has at its disposal an array of tools for helping to guard against making false claims from datasets -- a theme that we will return to in chapters [-@sec-models] and [-@sec-uncertainty] when we think critically about the use of visual approaches for data analysis. There remain, though, certain classes of relation and context that cannot be easily captured through statistics alone.
+
+[^01-intro-2]: Checkout @matejka_same_2017's Same Stats, Different Graphs paper for a fun take on this.
+
+Geographic context, for example, is undoubtedly challenging to capture numerically. Many of the early examples of data visualization have been of spatial phenomena and generated by Geographers [see @friendly_brief_2007]. We can also make a special case for the use of visual approaches in Social Data Science (SDS) applications due to their exploratory nature. Often datasets are being repurposed for social sciences research for the first time; contain complex structure and relations that cannot be easily captured by statistical summaries alone; and so the types of questions that can be asked and the techniques deployed to answer them cannot be easily specified in advance. We will experience this through the book as we explore ([Chapter -@sec-exploratory] and [-@sec-networks]), model under uncertainty ([Chapter -@sec-models] and [-@sec-uncertainty]) and communicate ([Chapter -@sec-storytelling]) with various social science datasets.
+
+::: {.callout-tip icon="false"}
 ## Task
 
 Watch [Jo Wood's TEDx](https://www.youtube.com/embed/FaRBUnO5PZI) talk demonstrating how visual techniques can be used to analyse urban travel behaviours. In the video Jo argues that bikeshare schemes can help democratise cycling, but also for their potential contributions to research -- he briefly contrasts new, passively collected data sets with more "traditional" actively collected data for analysing how people move around cities. A compelling case is then made for the use of visualization to support analysis of these new forms behavioural datasets.
@@ -76,7 +96,7 @@ Watch [Jo Wood's TEDx](https://www.youtube.com/embed/FaRBUnO5PZI) talk demonstra
 
 ### What vis4sds?
 
-The chapters of this book blend both theory and practical coding activity.  We will cover fundamentals around visual data analysis from Information Visualization and Statistics. As the chapters progress, data processing and analysis code is applied to datasets from the Political Science, Urban and Transport Planning and Health domains. So the examples in the book demonstrate how visual approaches can be used to generate and evaluate real findings and knowledge.
+The chapters of this book blend both theory and practical coding activity. We will cover fundamentals around visual data analysis from Information Visualization and Statistics. As the chapters progress, data processing and analysis code is applied to datasets from the Political Science, Urban and Transport Planning and Health domains. So the examples in the book demonstrate how visual approaches can be used to generate and evaluate real findings and knowledge.
 
 To do this, we have to cover a reasonably broad set of data processing and analysis procedures. As well as developing expertise around designing data-rich, visually compelling graphics, we will need to cover more tedious aspects of data processing and wrangling. Additionally, if we are to learn how to make and communicate claims under uncertainty with our data graphics, then we need to cover some aspects of estimation and modelling from Statistics. In short, we cover most of @donoho_50_2017's six key facets of a data science discipline:
 
@@ -85,76 +105,77 @@ To do this, we have to cover a reasonably broad set of data processing and analy
 3.  computing with data (Chapter [-@sec-data], All chapters);
 4.  data visualization and presentation (All chapters);
 5.  data modelling (Chapters [-@sec-exploratory], [-@sec-models], [-@sec-uncertainty]);
-6.  and a more introspective “science about data science” (All chapters)
+6.  and the "science about data science" (All chapters)
 
-There is already a rich and impressive set of open resources practically introducing how to do modern Data Science [@wickham_r_2017], Visualization [@healy_data_2018] and Geographic Analysis [@lovelace_geocomputation_2019]. What makes this book different from these existing resources is that we will be *doing* applied data science throughout -- we will be identifying and diagnosing problems when gathering data, discovering patterns (some maybe even spurious) as we do exploratory analysis, and attempt to make claims under uncertainty as we generate models based on observed patterns.
-
+There is already a rich and impressive set of open resources practically introducing how to do modern Data Science [@wickham_r_2017], Visualization [@healy_data_2018] and Geographic Analysis [@lovelace_geocomputation_2019]. What makes this book different from these existing resources is that we will be *doing* applied data science throughout -- we will be identifying and diagnosing problems when gathering data, discovering patterns (some may even be spurious) as we do exploratory analysis, and attempt to make claims under uncertainty as we generate models based on observed patterns.
 
 ### How vid4sds?
 
 #### R for modern data analysis
 
-All data collection, analysis and reporting activity will be completed using [`R`](https://www.r-project.org/) and the [`RStudio`](https://rstudio.com/) [Integrated Development Environment](https://en.wikipedia.org/wiki/Integrated_development_environment) (IDE). Released as open source software as part of a research project in 1995, for some time `R` was the preserve of academics. From 2010s onwards, the `R` community expanded rapidly and along with [`Python`](https://www.python.org/) is regarded as the key technology for doing data analysis.
+All data collection, analysis and reporting activity will be completed using [R](https://www.r-project.org/) and the [RStudio](https://rstudio.com/) [Integrated Development Environment](https://en.wikipedia.org/wiki/Integrated_development_environment) (IDE). Released as open source software as part of a research project in 1995, for some time R was the preserve of academics. From 2010s onwards, the R community expanded rapidly and along with [Python](https://www.python.org/) is regarded as the key technology for doing data analysis.
 
-There are many benefits that come from being fully open-source, with a critical mass of users. Firstly, there is an array of online fora, tutorials and code examples from which to learn. Second, with such a large community, there are numerous expert `R` users who themselves contribute by developing *packages* that extend its use.
+There are many benefits that come from being fully open-source, with a critical mass of users. Firstly, there is an array of online fora, tutorials and code examples from which to learn. Second, with such a large community, there are numerous expert R users who themselves contribute by developing *packages* that extend its use.
 
-Of particular importance is the [`tidyverse`](http://www.tidyverse.org) package. This is a set of packages for doing data science authored by the software development team at [RStudio](https://rstudio.com/). `tidyverse` packages share a principled underlying philosophy, syntax and documentation. Contained within the `tidyverse` is its data visualization package, [`ggplot2`](https://ggplot2.tidyverse.org/). This package pre-dates the `tidyverse` and is one of the most widely-used toolkits for generating data graphics. As with other heavily used visualization toolkits ([`Tableau`](https://www.tableau.com/en-gb), [`vega-lite`](https://vega.github.io/vega-lite/)) it is inspired by Leland Wilkinson's [The Grammar of Graphics](https://www.springer.com/gp/book/9780387245447), the `gg` in `ggplot` stands for Grammar of Graphics. Understanding the design principles behind the _Grammar of Graphics_  (and `tidyverse`) is necessary for modern data analysis and so we will cover this in detail in [Chapter -@sec-visual].
+Of particular importance is the [`tidyverse`](http://www.tidyverse.org) package. This is a set of packages for doing data science authored by the software development team at [RStudio](https://rstudio.com/). `tidyverse` packages share a principled underlying philosophy, syntax and documentation. Contained within the `tidyverse` is its data visualization package, [`ggplot2`](https://ggplot2.tidyverse.org/). This package predates the `tidyverse` and is one of the most widely-used toolkits for generating data graphics. As with other heavily used visualization toolkits ([`Tableau`](https://www.tableau.com/en-gb), [`vega-lite`](https://vega.github.io/vega-lite/)) it is inspired by @wilkinson_grammar_1999's [The Grammar of Graphics](https://www.springer.com/gp/book/9780387245447), the `gg` in `ggplot2` stands for Grammar of Graphics. Understanding the design principles behind the *Grammar of Graphics* (and `tidyverse`) is necessary for modern data analysis and so we will cover this in detail in [Chapter -@sec-visual].
 
-#### Rmarkdown for reproducible research
+#### Quarto for reproducible research
 
 > Reproducible research is the idea that data analyses, and more generally, scientific claims, are published with their data and software code so that others may verify the findings and build upon them.
 >
 > Roger Peng, Jeff Leek and Brian Caffo
 
-In recent years there has been much introspection into how science works -- around how statistical claims are made from reasoning over evidence. This came on the back of, amongst other things, a high profile paper published in Science [@osc_estimating_2015], which found that of 100 recent peer-reviewed psychology experiments, the findings of only 39 could be replicated. The upshot is that researchers must now make every possible effort to make their work transparent, such that "*all* aspects of the answer generated by any given analysis [can] be tested" [@brunsdon_opening_2020].
+In recent years there has been much introspection into how science works -- into how statistical claims are made from reasoning over evidence. This came on the back of, amongst other things, a high profile paper published in Science [@osc_estimating_2015], which found that of 100 recent peer-reviewed empirical research papers in Psychology, the findings of only 39 could be replicated. The upshot is that researchers must now make every possible effort to make their work transparent, such that "*all* aspects of the answer generated by any given analysis \[can\] be tested" [@brunsdon_opening_2020].
 
 A reproducible research project should be accompanied with:
 
-* code and data that allows tables and figures presented in research outputs to be regenerated
-* code and data that does what it claims (the code works)
-* code and data that can be justified and explained through proper documentation
+-   code and data that allows tables and figures presented in research outputs to be regenerated
+-   code and data that does what it claims (the code works)
+-   code and data that can be justified and explained through proper documentation
 
-If these goals are met, then it may be possible for others to use the code on new and different data to study whether the findings reported in one project might be consistent with another; or to use the same data, but update the code to, for example, extend the original analysis (to perform a re-analysis). This model -- generate findings, test for replicability in new contexts and re-analysis -- is how knowledge development has always worked. However, to achieve this the data and procedures on which findings were generated must be made open and transparent.
+If these goals are met, then it may be possible for others to use the code on new and different data to study whether the findings reported in one project might be consistent with another. Or alternatively to use the same data, but update the code to, for example, extend the original analysis; to perform a re-analysis. This model -- generate findings, test for replicability in new contexts and re-analysis -- is how knowledge development has always worked. However, to achieve this the data and procedures on which findings are generated must be made open and transparent.
 
-In this setting, traditional proprietary data analysis software that support point-and-click interaction are problematic. First, whilst these software may rely on the sorts of packages and libraries with bundled code that `R` and `Python` uses for implementing statistical procedures, those libraries are closed. It is not possible, and therefore less common, for the researcher to fully interrogate into the underlying processes that are being implemented and the results need to be taken more or less on faith. Second, but probably most significantly (for us), it would be tedious to make notes describing all interactions performed when working with a dataset in SPSS or ArcGIS.
+In this setting, traditional proprietary data analysis software that support point-and-click interaction are problematic. First, whilst these software may rely on the sorts of packages and libraries with bundled code for implementing statistical procedures, those libraries are closed. It is not possible, and therefore less common, for the researcher to fully interrogate into the underlying processes that are being implemented and the results need to be taken more or less on faith. Second, but probably most significantly (for us), it would be tedious to make notes describing all interactions performed when working with a dataset in SPSS or ArcGIS.
 
-As a declarative programming language, it is very easy to provide such a provenance trail for your workflows in `R` since this necessarily exists in the analysis scripts. But more importantly, the [Integrated Development Environments](https://en.wikipedia.org/wiki/Integrated_development_environment) (IDEs) through which `R` (and `Python`) are most often accessed provide notebook environments that allow users to curate reproducible computational documents that blend *input code*, *explanatory prose* and *outputs*. Thruough the practical exercises in this book, we will prepare these sorts of notebooks using [R Markdown](https://rmarkdown.rstudio.com/).
+As a declarative programming language, it is very easy to provide such a provenance trail for your workflows in R since this exists in any case in your, preferably well-documented,  analysis scripts. But more importantly, the [Integrated Development Environments](https://en.wikipedia.org/wiki/Integrated_development_environment) (IDEs) through which R (and Python) are most often accessed provide notebook environments that allow users to curate reproducible computational documents that blend *input code*, *explanatory prose* and *outputs*. Thruough the practical exercises in this book, we will prepare these sorts of notebooks using [Quarto](https://quarto.org/).
 
 ## Techniques
 
-It is anticipated that readers of this book might already have some familiarity with `R`and the `RStudio` IDE. If not, then this section is designed to get you quickly up-and-running with `R`and the `RStudio` and to briefly introduce you to ,RMardown`. `R` scripts and `RStudio Projects`. The accompanying template file, [01-template.Rmd]()  can be downloaded from the book's companion website.
+It is anticipated that readers of this book might already have some familiarity with R and the [RStudio](https://www.rstudio.com/) IDE. If not, then this section is designed to get you quickly up-and-running with R and RStudio and to briefly introduce you to Quarto, R scripts and RStudio Projects. The accompanying template file, [01-template.Rmd]() can be downloaded from the book's companion website.
 
 ### R and RStudio
 
-* Install the latest version of [R](https://cloud.r-project.org/). Note that there are installations for [Windows](https://cloud.r-project.org/bin/windows/), [macOS](https://cloud.r-project.org/) and [Linux](https://cloud.r-project.org/). Run the installation from the file you downloaded (an `.exe` or `.pkg` extension).
-* Install the latest version of [RStudio Desktop](https://rstudio.com/products/rstudio/download/#download). Note again that there are separate installations depending on operating system -- for Windows an `.exe` extension, macOS a `.dmg` extension.
-* Once installed, open the RStudio IDE.
-* Open an R Script by clicking `File` > `New File` > `R Script` .
+-   Install the latest version of [R](https://cloud.r-project.org/). Note that there are installations for [Windows](https://cloud.r-project.org/bin/windows/), [macOS](https://cloud.r-project.org/) and [Linux](https://cloud.r-project.org/). Run the installation from the file you downloaded (an `.exe` or `.pkg` extension).
+-   Install the latest version of [RStudio Desktop](https://rstudio.com/products/rstudio/download/#download). Note again that there are separate installations depending on operating system -- for Windows an `.exe` extension, macOS a `.dmg` extension.
+-   Once installed, open the RStudio IDE.
+-   Open an R Script by clicking `File` \> `New File` \> `R Script` .
 
-
-```{r, echo=FALSE}
+```{r}
+#| include: false
 #| label: fig-rstudio
 #| fig-cap: "The RStudio IDE"
 knitr::include_graphics("/figs/rstudio_annotate.png", error = FALSE)
 ```
 
-You should see a set of windows roughly similar to those in @fig-rstudio. The top left pane is used either as a Code Editor (the tab named `Untitled1`) or Data Viewer. This is where you’ll write, organise and comment R code for execution or inspect datasets as a spreadsheet representation. Below this in the bottom left pane is the R Console, in which you write and execute commands directly. To the top right is a pane with the tabs Environment and History. This displays all objects -- data and plot items, calculated functions -- stored in-memory during an R session. In the bottom right is a pane for navigating through project directories, displaying plots, details of installed and loaded packages and documentation on their functions.
+![The RStudio IDE](figs/01/rstudio_annotate.png){#fig-rstudio width=100% fig-align="center"}
 
+You should see a set of windows roughly similar to those in @fig-rstudio. The top left pane is used either as a Code Editor (the tab named `Untitled1`) or Data Viewer. This is where you'll write, organise and comment R code for execution or inspect datasets as a spreadsheet representation. Below this in the bottom left pane is the R Console, in which you write and execute commands directly. To the top right is a pane with the tabs Environment and History. This displays all objects -- data and plot items, calculated functions -- stored in-memory during an R session. In the bottom right is a pane for navigating through project directories, displaying plots, details of installed and loaded packages and documentation on their functions.
 
 ### Compute in the console
 
-You will write and execute almost all code from the code editor pane. To start though let's use `R` as a calculator by typing some commands into the Console.  You’ll create an object (`x`) and assign it a value using the assignment operator (`<-`), then perform some simple statistical calculations using functions that are held within the `base` package.
+You will write and execute almost all code from the code editor pane. To start though let's use `R` as a calculator by typing some commands into the Console. You'll create an object (`x`) and assign it a value using the assignment operator (`<-`), then perform some simple statistical calculations using functions that are held within the `base` package.
 
-::: {.callout-note}
+::: callout-note
 ## R package documentation
-The `base` package is core and native to `R`. Unlike all other packages, it does not need to be installed and called explicitly. One means of checking the package to which a function you are using belongs is to call the help command (`?`) on that function: e.g. `?mean()`.
+
+The `base` package exists as standard in `R`. Unlike other packages, it does not need to be installed and called explicitly. One means of checking the package to which a function you are using belongs is to call the help command (`?`) on that function: e.g. `?mean()`.
 :::
 
-* Type the commands contained in the code block below into your R Console. Notice that since you are assigning values to each of these objects they are stored in memory and appear under the Global Environment pane.
+Type the commands contained in the code block below into your R Console. Notice that since you are assigning values to each of these objects they are stored in memory and appear under the Global Environment pane.
 
 ```{r}
-#| echo: TRUE
-#| eval: FALSE
+#| echo: true
+#| eval: false
 # Create variable and assign a value.
 x <- 4
 # Perform some calculations using R as a calculator.
@@ -163,168 +184,165 @@ x_2 <- x^2
 x_root <- sqrt(x_2)
 ```
 
-
 ### Install some packages
 
 There are two steps to getting packages down and available in your working environment:
 
-1. `install.packages("<package-name>")` downloads the named package from a repository.
-2. `library(<package-name>)` makes the package available in your current session.
+1.  `install.packages("<package-name>")` downloads the named package from a repository.
+2.  `library(<package-name>)` makes the package available in your current session.
 
-* Install `tidyverse`, the core collection of packages for doing Data Science in `R`, by running the code below:
+Install `tidyverse`, the core collection of packages for doing Data Science in R, by running the code below:
 
 ```{r}
-#| echo: TRUE
-#| eval: FALSE
+#| echo: true
+#| eval: false
 install.packages("tidyverse")
 ```
-If you have little or no experience in `R`, it is easy to get confused about downloading and then using packages in a session. For example, let's say we want to make use of the simple features package ([`sf`](https://r-spatial.github.io/sf/index.html)), which we will draw on heavily for performing spatial operations.
 
-* Run the code below:
+If you have little or no experience in R, it is easy to get confused about downloading and then using packages in a session. For example, let's say we want to make use of the simple features package ([`sf`](https://r-spatial.github.io/sf/index.html)), which we will draw on heavily for performing spatial operations.
 
 ```{r}
-#| echo: TRUE
-#| eval: FALSE
+#| echo: true
+#| eval: false
 library(sf)
 ```
+
 Unless you've previously installed `sf`, you'll probably get an error message that looks like this:
 
 ```{r}
-#| echo: TRUE
-#| eval: FALSE
+#| echo: true
+#| eval: false
 > Error in library(sf): there is no package called ‘sf’
 ```
 
 So let's install it.
 
-* Run the code below:
-
 ```{r}
-#| echo: TRUE
-#| eval: FALSE
+#| echo: true
+#| eval: false
 install.packages("sf")
 ```
+
 And now it's installed, why not bring up some documentation on one of its functions ([`st_contains()`](https://r-spatial.github.io/sf/reference/geos_binary_pred.html)).
 
-* Run the code below:
-
 ```{r}
-#| echo: TRUE
-#| eval: FALSE
+#| echo: true
+#| eval: false
 ?st_contains()
 ```
+
 Since you've downloaded the package but not made it available to your session, you should get the message:
 
 ```{r}
-#| echo: TRUE
-#| eval: FALSE
+#| echo: true
+#| eval: false
 > No documentation for ‘st_contains’ in specified packages and libraries
 ```
 
 So let's try again, by first calling `library(sf)`.
 
-* Run the code below:
-
 ```{r}
-#| echo: TRUE
-#| eval: FALSE
+#| echo: true
+#| eval: false
 library(sf)
 ## Linking to GEOS 3.7.2, GDAL 2.4.1, PROJ 6.1.0
 ?st_contains()
 ```
-Now let's install some of the remaining core packages on which the course depends.
 
-* Run the block below, which passes a [vector](https://r4ds.had.co.nz/vectors.html) of package names to the `install.packages()` function:
+Now let's install some of the remaining core packages on which the course depends. Run the block below, which passes a [vector](https://r4ds.had.co.nz/vectors.html) of package names to the `install.packages()` function.
 
 ```{r}
-#| echo: TRUE
-#| eval: FALSE
-install.packages(c("devtools","here", "rmarkdown", "knitr","fst","tidyverse",
-"lubridate", "tidymodels"))
+#| echo: true
+#| eval: false
+pkgs <- c(
+  "devtools","here", "quarto","fst","tidyverse",
+  "lubridate", "tidymodels", "gganimate", "ggforce", "distributional", "ggdist"
+)
+install.packages(pkgs)
 ```
 
-::: {.callout-note}
+::: callout-note
 ## R package visibility
-If you wanted to make use of a package only very occasionally in a single session, you could access it without explicitly loading it via `library(<package-name>)`, using this syntax: ```<package-name>::<function_name>```, e.g. ```?sf::st_contains()```.
+
+If you wanted to make use of a package only very occasionally in a single session, you could access it without explicitly loading it via `library(<package-name>)`, using this syntax: `<package-name>::<function_name>`, e.g. `?sf::st_contains()`.
 :::
 
-### Experiment with R Markdown
-R Markdown documents are suffixed with the extension `.Rmd` and based partly on [Markdown](https://en.wikipedia.org/wiki/Markdown), a lightweight markup language originally used as a means of minimising tedious mark-up tags (`<header></header>`) when preparing HTML documents. The idea is that you trade some flexibility in the formatting of your HTML for ease-of-writing. Working with R Markdown is very similar to Markdown. Sections are denoted hierarchically with  hashes (`#`, `##`, `###`) and emphasis using `*` symbols (`*emphasis* **added**` reads *emphasis* **added** ). Different from standard Markdown, however, R Markdown documents can also contain code chunks to be run when the document is rendered or typeset -- they are a mechanism for producing elegant reproducible notebooks.
+### Experiment with Quarto
 
-Each session of the course has an accompanying R Markdown file. In later sessions you will use these to author computational notebooks that blend code, analysis prose and outputs.
+Quarto documents are suffixed with the extension `.qmd`, are the successor to RMarkdown. They are computational notebooks that blend code with textual explanation and images, and so are a mechanism for supporting literate programming [@knuth_literate_1984]. They resemble  [Markdown](https://en.wikipedia.org/wiki/Markdown), a lightweight language designed to minimise tedious markup tags (`<header></header>`) when preparing HTML documents. The idea is that you trade some flexibility in the formatting of your HTML for ease-of-writing. Working with Quarto documents feels very similar to Markdown. Sections are denoted hierarchically with hashes (`#`, `##`, `###`) and emphasis using `*` symbols (`*emphasis* **added**` reads *emphasis* **added** ). Different from standard Markdown, however, Quarto documents can also contain code chunks to be run when the document is rendered. They are a mechanism for producing reproducible, dynamic and interactive, notebooks. *Dynamic* and reproducible because the outputs may change when there are changes to the underlying data; *Interactive* because they can execute natively not just R code blocks, but also [Jupyter Widgets](https://jupyter.org/widgets), [Shiny](https://shiny.rstudio.com/) and most notably [Observable JS](https://observablehq.com/@observablehq/observables-not-javascript). Each chapter has an accompanying Quarto file. In later sessions you will use these to author computational notebooks that blend code, analysis prose and outputs.
 
-* Download the [01-template.Rmd]() file for this chapter and open it in RStudio by clicking `File` > `Open File ...` > `<your-downloads>/01-template.Rmd`.
+Download the [01-template.qmd]() file for this chapter and open it in RStudio by clicking `File` \> `Open File ...` \> `<your-downloads>/01-template.qmd`. Note that there are two tabs that you can switch between when woring with `.qmd` files. *Source* retains markdown syntax (e.g. `#|##|###` for headings); *Visual* renders these tags and allows you to, for example, perform formatting and build tables through point-and-click utilities.
 
-A quick anatomy of an R Markdown files :
+A quick anatomy of `.qmd` files :
 
-* [YAML](https://en.wikipedia.org/wiki/YAML) - positioned at the head of the document and contains metadata determining amongst other things the author details and the output format when typesetting.
-* TEXT - incorporated throughout to document and comment on your analysis.
-* CODE chunks - containing discrete blocks that are to be run when the .Rmd file is typeset or *knit*.
+-   [YAML](https://en.wikipedia.org/wiki/YAML) - positioned at the head of the document and contains metadata determining amongst other things the author details and the output format when rendering.
+-   TEXT - incorporated throughout to document and comment on your analysis.
+-   CODE chunks - containing discrete blocks that are run when the .qmd file is rendered.
 
-```{r echo=FALSE}
+```{r}
+#| include: false
 #| label: fig-rmarkdown-annotate
-#| fig-cap: "The anatomy of R Markdown"
+#| fig-cap: "The anatomy of `.qmd` files"
 knitr::include_graphics("/figs/rmarkdown_annotate.png", error = FALSE)
 ```
 
-
-The [YAML](https://en.wikipedia.org/wiki/YAML) section of an `.Rmd` file controls how your file is typeset and consists of `key: value` pairs enclosed by `---`. Notice that you can change the output format -- so should you wish you can generate for example `.pdf`, `.docx` files for your reports.
-
-````
----
-author: "Roger Beecham"
-date: '2022-08-01'
-title: "Chapter 01"
-output:html_document
----
-````
-
-R Markdown files are rendered or typeset with the *knit* button, annotated in the Figure above. This starts the `knitr` package and executes all the code chunks and outputs a markdown (`.md`) file. The markdown file can then be converted to many different output formats via [pandoc](https://pandoc.org/).
-
-* **Knit** the [01-template.Rmd]() file for this chapter, either by clicking the *knit* button or by typing <kbd>ctrl</kbd> +  <kbd>⇧</kbd> + <kbd>K</kbd> on Windows, <kbd>⌘</kbd> + <kbd>⇧</kbd> + <kbd>K</kbd> on macOS.
-
-You will notice that R Markdown code chunks can be customised in different ways. This is achieved by populating fields in the curly brackets at the start of the code chunk:
+![The anatomy of `.qmd` files](figs/01/quarto.png){#fig-quarto-annotate width=100% fig-align="center"}
 
 
-````
-```{r <chunk-name>, echo=TRUE, eval=FALSE, cache=FALSE}`r ''`
-  # Some code that is either run or rendered.
+The [YAML](https://en.wikipedia.org/wiki/YAML) section of an `.qmd` file controls how your file is rendered and consists of `key: value` pairs enclosed by `---`. Notice that you can change the output format -- so should you wish you can generate for example `.pdf`, `.docx` files for your reports.
+
+    ---
+    author: "Roger Beecham"
+    title: "Chapter 01"
+    format: html
+    ---
+
+Quarto files are rendered with the *Render* button, annotated in the Figure above. This starts [`pandoc`](https://pandoc.org/) and executes all the code chunks and outputs in the case above an `.html` file. The markdown file can then be converted to many different output formats via [pandoc](https://pandoc.org/).
+
+-   **Render** the [01-template.qmd]() file for this chapter by clicking the *Render* button.
+
+You will notice that code chunks in Quarto can be customised in different ways. This is achieved by populating fields immediately after the curly brackets used to declare the code chunk:
+
+```{r}
+#| label: chunk-name
+#| echo: true
+#| eval: false
+
+# Some R code below that is not run (evaluated) but which does appear
+# in this position when the .qmd doc is rendered.
 ```
-````
 
 A quick overview of the parameters.
 
-* `<chunk-name>` - Chunks can be given distinct names. This is useful for navigating R markdown files.  It also supports chaching -- chunks with distinct names are only run once, important if certain chunks take some time to execute.
-*  `echo=<TRUE|FALSE>` - Determines whether the code is visible or hidden from the typeset file. If you output file is a data analysis report you may not wish to expose lengthy code chunks as these may disrupt the discursive text that appears outside of the code chunks.
-* `eval=<TRUE|FALSE>` - Determines whether the code is evaluated (executed). This is useful if you wish to present some code in your document for display purposes.
-* `cache=<TRUE|FALSE>` - Determines where the results from the code chunk are cached.
+-   `label: <chunk-name>`  Chunks can be given distinct names. This is useful for navigating Quarto files. It also supports chaching -- chunks with distinct names are only run once, important if certain chunks take some time to execute.
+-   `echo: <true|false>`  Determines whether the code is visible or hidden from the rendered file. If you output file is a data analysis report you may not wish to expose lengthy code chunks as these may disrupt the discursive text that appears outside of the code chunks.
+-   `eval: <true|false>`  Determines whether the code is evaluated (executed). This is useful if you wish to present some code in your document for display purposes.
+-   `cache: <true|false>`  Determines where the results from the code chunk are cached.
 
 
-For a fuller introduction, it is worth downloading RStudio's cheatsheets, which provide comprehensive details on how to configure R Markdown documents:
-
-* Open RStudio and select `Help` > `Cheatsheets` > `R Markdown Cheat Sheet` | `R Markdown Reference Guide`
 
 
 ### R Scripts
 
-Whilst there are obvious benefits to working in R Markdown documents when doing data analysis, there may be occasions where working in an script is preferable. R scripts are plain text files with the extension `.R`. Comments -- text that are not executed as code -- are denoted with the `#` symbol.
-
-R scripts are typically used for writing discrete but substantial code blocks that are to be executed. For example, a set of [functions](https://r4ds.had.co.nz/functions.html) that relate to a particular use case might be organised into an R script. These then might be referred to in a data analysis from  an `.Rmd`, which makes various use of these functions in a similar way as one might import a package. Below is an example script that we will encounter later in the course when creating flow visualizations in R.  This script is saved with the file name `bezier_path.R`. If it were stored in a sensible location, like a project's `code` folder, it could be called from an R Markdown file with `source(./code/bezier_path)`. R Scripts can be edited in the same way as R Markdown files in RStudio, via the Code Editor pane.
+Whilst there are obvious benefits to working in `.qmd` documents when doing data analysis, there may be occasions where working in a script is preferable. R scripts are plain text files with the extension `.R`. They are typically used for writing discrete but substantial code blocks that are to be executed. For example, a set of [functions](https://r4ds.had.co.nz/functions.html) that relate to a particular use case might be organised into an R script. These then might be referred to in a data analysis from a `.qmd`, which makes various use of these functions in a similar way as one might import a package. Below is an example script that we will encounter later when creating flow visualizations in R. This script is saved with the file name `bezier_path.R`. If it were stored in a sensible location, like a project's `code` folder, it could be called from an R Markdown file with `source(./code/bezier_path)`. R Scripts can be edited in the same way as Quarto files in RStudio, via the Code Editor pane.
 
 ```{r}
-#| echo: TRUE
-#| eval: FALSE
+#| echo: true
+#| eval: false
 # bezier_path.R
 #
 # Author: Roger Beecham
 ##############################################################################
 
-#' Functions for generating input data for asymmetric bezier curve for OD data,
+#' Functions for generating input data for asymmetric bezier curve,
 #' such that the origin is straight and destination curve. The retuned tibble
-#' is passed to geom_bezier().Parametrtisation follows that published in
-#' Wood et al. 2011. doi: 10.3138/carto.46.4.239.
-#' @param data A df with origin and destination pairs representing 2D locations
-#' (o_east, o_north, d_east, d_north) in cartesian (OSGB) space.
+#' is passed to geom_bezier().
+#'
+#' Parametrtisation follows that published in Wood et al. 2011.
+#' doi: 10.3138/carto.46.4.239.
+#'
+#' @param data A df with origin and destination pairs of 2D locations
+#' (o_east, o_north, d_east, d_north) in cartesian space.
 #' @param degrees For converting to radians.
 #' @return A tibble of coordinate pairs representing asymmetric curve
 
@@ -352,55 +370,56 @@ get_radians <- function(degrees) {
   (degrees * pi) / (180)
 }
 ```
-To an extent R Scripts are more straightforward than R Markdown files in that you don't have to worry about configuring code chunks. They are really useful for quickly developing bits of code. This can be achieved by highlighting over the code that you wish to execute and clicking the `Run` icon at the top of the Code Editor pane or by typing   <kbd>ctrl</kbd> +  <kbd>rtn</kbd> on Windows, <kbd>⌘</kbd> + <kbd>rtn</kbd> on macOS
 
+To an extent R Scripts are more straightforward than Quarto files in that you don't have to worry about configuring code chunks. They are really useful for quickly developing bits of code. This can be achieved by highlighting over the code that you wish to execute and clicking the `Run` icon at the top of the Code Editor pane or by typing <kbd>ctrl</kbd> + <kbd>rtn</kbd> on Windows, <kbd>⌘</kbd> + <kbd>rtn</kbd> on macOS.
 
 ### Create an RStudio Project
 
+Throughout the book we will use project-oriented workflows. This is where all files pertaining to a data analysis -- data, code and outputs -- are organised from a single root folder and where *file path discipline* is used such that all paths are relative to the project's root folder (see [Bryan & Hester 2020](https://rstats.wtf/project-oriented-workflow.html)). You can imagine that this sort of self-contained project set-up is necessary for achieving reproducibility of your research. It allows anyone to take a project and run it on their own machines without having to make any adjustments.
 
-Throughout the book we will use project-oriented workflows. This is where all files pertaining to a data analysis -- data, code and outputs -- are organised from a single root folder and where *file path discipline* is used such that all paths are relative to the project’s root folder (see [Bryan & Hester 2020](https://rstats.wtf/project-oriented-workflow.html)). You can imagine that this sort of self-contained project set-up is necessary for achieving reproducibility of your research. It allows anyone to take a project and run it on their own machines without having to make any adjustments.
+You might have noticed that when you open RStudio it automatically *points to* a working directory, likely the home folder for your local machine, denoted with `~/` in the Console. RStudio will by default save any outputs to this folder and will also expect any data you use to be saved there. Clearly if you want to incorporate neat, self-contained project workflows then you will want to organise your work from a dedicated project folder rather than the default home folder for your machine. This can be achieved with the `setwd(<path-to-your-project>)` function. The problem with doing this is that you insert a path which cannot be understood outside of your local machine at the time it was created. This is a real pain. It makes simple things like moving projects around on your machine an arduous task and most importantly it hinders reproducibility if others are to reuse your work.
 
-You might have noticed that when you open RStudio it automatically _points to_ a working directory, likely the home folder for your local machine, denoted with `~/` in the Console. RStudio will by default save any outputs to this folder and will also expect any data you use to be saved there. Clearly if you want to incorporate neat, self-contained project workflows then you will want to organise your work from a dedicated project folder rather than the default home folder for your machine. This can be achieved with the `setwd(<path-to-your-project>)` function. The problem with doing this is that you insert a path which cannot be understood outside of your local machine at the time it was created. This is a real pain. It makes simple things like moving projects around on your machine an arduous task and most importantly it hinders reproducibility if others are to reuse your work.
-
-RStudio Projects are a really excellent feature of the RStudio IDE that resolve these problems. Whenever you load up an RStudio Project, R starts up and the working directory is automatically set to the project's root folder. If you were to move the project elsewhere on your machine, or to another machine, a new root is automatically generated -- so RStudio projects ensure that relative paths work.
+RStudio Projects are a really excellent feature of the RStudio IDE that resolve these problems. Whenever you load up an RStudio Project, `R` starts up and the working directory is automatically set to the project's root folder. If you were to move the project elsewhere on your machine, or to another machine, a new root is automatically generated -- so RStudio projects ensure that relative paths work.
 
 ```{r}
-#| echo: FALSE
+#| include: false
+#| echo: false
 #| label: fig-studio-project
 #| fig-cap: "Creating an RStudio Project"
 knitr::include_graphics("/figs/rstudio_project.png", error = FALSE)
 ```
 
+![Creating an RStudio Project](figs/01/rstudio_project.png){#fig-rstudio-project width=100% fig-align="center"}
+
+
 Let's create a new Project for this book:
 
-* Select `File` > `New Project` > `New Directory`.
-* Browse to a sensible location and give the project a suitable name. Then click `Create Project`.
+-   Select `File` \> `New Project` \> `New Directory`.
+-   Browse to a sensible location and give the project a suitable name. Then click `Create Project`.
 
 You will notice that the top of the Console window now indicates the root for this new project, in my case `~projects/vis4sds`.
 
-* In the root of your project, create folders called `reports`, `code`, `data`, `figures`.
-* Save this session's [<i class="fab fa-r-project"></i> 01-template.Rmd]() file to the `reports` folder.
+-   In the root of your project, create folders called `reports`, `code`, `data`, `figures`.
+-   Save this session's [01-template.qmd]() file to the `reports` folder.
 
 Your project's folder structure should now look like this:
 
-```text
+``` text
 vis4sds\
   vis4sds.Rproj
   code\
   data\
   figures\
   reports\
-    01-template.Rmd
+    01-template.qmd
 ```
-
-
 
 ## Conclusions
 
 Visual data analysis approaches are necessary for exploring complex patterns in data and to make and communicate claims under uncertainty. This is especially true of SDS applications, where:
 
-*  datasets are being repurposed for social sciences research for the first time;
-*  contain complex structure and geo-spatial relations that cannot be easily captured by statistical summaries alone;
-*  and, consequently, where the types of questions that can be asked and the techniques deployed to answer them cannot be easily specified in advance.
+-   datasets are being repurposed for social sciences research for the first time;
+-   contain complex structure and geo-spatial relations that cannot be easily captured by statistical summaries alone;
+-   and, consequently, where the types of questions that can be asked and the techniques deployed to answer them cannot be easily specified in advance.
 
-In this book we will demonstrate this as we explore (Chapter [-@sec-exploratory] and [-@sec-networks]), model under uncertainty (Chapter [-@sec-models]) and communicate (Chapter [-@sec-uncertainty] and [-@sec-storytelling]) with various social science datasets. We will work with both new, large-scale behavioural datasets, as well as more traditional, administrative datasets located within various social science domains: Political Science, Crime Science, Urban and Transport Planning. We will do so using the statistical programming environment `R`, which along with [`Python`](https://www.python.org/), is *the* programming environment for modern data analysis. We will make use of various tools and software libraries that form part of the `R` ecosystem --  the [`tidyverse`](https://www.tidyverse.org/) for doing modern data science and [R Markdown](https://rmarkdown.rstudio.com/) for authoring reproducible research projects.
+In this book we will demonstrate this as we explore (Chapter [-@sec-exploratory] and [-@sec-networks]), model under uncertainty (Chapter [-@sec-models]) and communicate (Chapter [-@sec-uncertainty] and [-@sec-storytelling]) with various social science datasets. We will work with both new, large-scale behavioural datasets, as well as more traditional, administrative datasets located within various social science domains: Political Science, Crime Science, Urban and Transport Planning. We will do so using the statistical programming environment `R`, which along with `Python`, is *the* programming environment for modern data analysis. We will make use of various tools and software libraries that form part of the `R` ecosystem -- the `tidyverse` for doing modern data science and Quarto for authoring reproducible research projects.

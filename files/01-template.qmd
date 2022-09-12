@@ -1,0 +1,59 @@
+---
+title: "Chapter 01 Tasks"
+author: "Roger Beecham"
+format: html
+---
+
+## Introduction
+
+For each chapter of *vis4sds* there is an accompanying `.qmd` template, which provides scaffolding for completing the technical elements of each chapter and the accompanying additional *Tasks*.
+
+## Setup
+
+The code block below points to the packages you need to recreate the charts that appeared in the chapter. You may well have already installed the `tidyverse`, with `install.packages("tidyverse")` and so simply need to make it available in session with `library(<package-name>)`.
+
+```{r}
+#| echo: true
+#| eval: false
+# Bundle of packages for doing modern data analysis.
+library(tidyverse)
+
+```
+
+## Plotting Anscombe's Quartet
+
+There was reasonably little in the way of data analysis in this first chapter. However, early on we discussed and plotted [Anscombe's Quartet](https://en.wikipedia.org/wiki/Anscombe%27s_quartet). You actually automatically loaded this dataset when you pointed to the `tidyverse` package. Should you wish to inspect it, type `View(anscombe)` in the R Console.
+
+Below is some code for generating scatterplots of the Anscombe datasets. No need to worry about the code for the time being, but it consists of a bit of data reshaping using [`tidyr`](https://tidyr.tidyverse.org/), combined with a [`ggplot2`](https://ggplot2.tidyverse.org/) specification for generating the scatterplots.
+
+```{r}
+#| echo: true
+#| eval: false
+plot <- anscombe |> 
+  pivot_longer(
+    everything(),
+    names_to = c(".value", "dataset"), names_pattern = "(.)(.)"
+    ) %>%
+  ggplot(aes(x, y))+
+  geom_point(colour="#003c8f", fill="#003c8f", pch=21) +
+  stat_smooth(method=lm, se=FALSE, size=0.6, colour="#636363")+
+  facet_wrap(~dataset, nrow=2)+
+  theme_bw()
+
+print(plot)
+```
+
+If you're feeling particularly motivated, and want to extend the Anscombe example, you may wish to play around with [`datasauRus`](https://itsalocke.com/datasaurus/) package.
+
+When you work with Quarto documents it is cumbersome to constantly rendering the document. Most often you will want to run each code chunk separately so that the results can be explored in your Environment. To do this, simply click on the green arrow to the top right each code block, whenever you wish to run a bit of code chunk.
+
+## Writing plot to your project folder
+
+If you've followed the instructions in the chapter, you should have created an RStudio project and saved this `.qmd` file in you project's `reports` folder. Let's now save our Anscombe quartet plot to the project's `figures` folder either by **evaluating** the code block below when you next click *Render* (HINT: you will need to edit `eval: <true|false>`).
+
+```{r}
+#| echo: true
+#| eval: false
+# Save plot
+ggsave("./figures/anscombe.png", plot=plot,width=7, height=4, dpi=300)
+```

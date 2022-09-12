@@ -1,7 +1,7 @@
 # Exploratory Data Analysis {#sec-exploratory}
 
 ```{r}
-#| echo: FALSE
+#| echo: false
 library(knitr)
 library(kableExtra)
 library(fontawesome)
@@ -10,21 +10,149 @@ library(fontawesome)
 
 By the end of this chapter you should gain the following knowledge and practical skills.
 
-::: {.callout-note icon=FALSE}
+::: {.callout-note icon=false}
 
 ## Knowledge outcomes
-- [x] An appreciation of the exploratory data analysis (EDA) worklow.
+- [x] An appreciation of the exploratory data analysis (EDA) workflow.
 - [x] The main chart types [or *idioms* @munzner_visualization_2014] for summarising variation within- and between- variables.
 - [x] The three strategies that can be used for supporting *comparison* in EDA: juxtaposition, superposition and direct encoding [@gleicher_visual_2011]
 :::
 
 
-::: {.callout-note icon=FALSE}
+::: {.callout-note icon=false}
 
 ## Skills outcomes
 - [x] Write `ggplot2` specifications that use colour and layout to support comparison.
 :::
 
+
+## Introduction
+
+Exploratory Data Analysis (EDA) is an approach to analysis which aims to expose the properties and structure of a dataset, and from here suggest directions for analytic inquiry. In an EDA, relationships are quickly inferred, anomalies labelled, assumptions tested and new hypotheses and ideas are formulated. EDA relies heavily on visual approaches to analysis -- it is common to generate many dozens of (often throwaway) data graphics.
+
+This session will demonstrate how the concepts and principles introduced previously, of data types and their visual encoding, can be applied to support EDA. It will do so by analysing [STATS19](https://data.gov.uk/dataset/cb7ae6f0-4be6-4935-9277-47e5ce24a11f/road-safety-data), a dataset containing detailed information on every reported road traffic crash in Great Britain that resulted in personal injury. STATS19 is highly detailed, with many categorical variables. This session will start by revisiting commonly used chart idioms [@munzner_visualization_2014] for summarising  within-variable variation and between-variable co-variation in a dataset. It will then focus more directly on the STATS19 case, and how detailed *comparison* across many categorical variables can be effected using colour, layout and statistical computation.
+
+
 ## Concepts
+
+### Exploratory data analysis and statistical graphics
+
+> The simple graph has brought more information to the data analyst's mind than any other device.
+>
+> John Tukey
+
+In an Exploratory Data Analysis (EDA), graphical and statistical summaries are variously used to build knowledge and understanding of a dataset. The goal of EDA is to infer relationships, identify anomalies and test new ideas and hypotheses: it is a knowlegde-building activity. Rather than a formal set of techniques, EDA should be considered an *approach* to analysis. It aims to reveal the underlying properties of variables in a dataset (central tendency and dispersion) and their structure (how variables relate to one another) and from there formulate hypotheses to be investigated.
+
+@wickham_r_2017 identify two main questions that an EDA should address:
+
+1. What type of *variation* occurs *within* variables of a dataset?
+2. What type of *covariation* occurs *between* variables of a dataset?
+
+
+```{r}
+#| label: tbl-variable-types
+#| tbl-cap: "Breakdown of variable types."
+#| echo: false
+#| eval: true
+
+variable_types <- tibble::tibble(
+  Measurement = c("`Nominal`", "`Ordinal`", "`Continuous`", "`Nominal`", "`Ordinal`", "`Continuous`"),
+    Statistics = c(
+      "mode &#124 entropy",
+      "median &#124 percentile",
+      "mean &#124 variance",
+      "contingency tables",
+      "rank correlation",
+      "correlation"
+      ),
+     "Chart idiom" = c(
+       "bar charts, dot plots ...",
+       "bar charts, dot plots ...",
+       "histograms, box plots, density plots ...",
+       "mosaic/spine plots ...",
+       "slope/bump charts ...",
+       "scatterplots, parallel coordinate plots ..."
+       )
+)
+
+kbl(variable_types,  caption = "Statistics and data graphics that can be used to summarise variation and covariation by variable type.", protect_latex = TRUE, escape=FALSE) %>%
+ pack_rows("Within-variable variation", 1, 3, bold=FALSE, label_row_css = "border-bottom: 0px solid;") %>%
+ pack_rows("Between-variable variation", 4, 6, bold=FALSE, label_row_css = "border-bottom: 0px solid;") %>%
+ column_spec(1, width = "8em")
+```
+You will recall from early statistics classes, usually under the theme *descriptive statistics*, that when summarising within-variable variation, we are interested in a variable's spread or dispersion and its location within this distribution (central tendency). Different statistics can be applied, but a familiar distinction is between measures of central tendency that are or are not robust to outliers (e.g. mode and median versus mean). Correlation statistics are most obviously applied when studying between-variable covariation, but other statistics, such as odds ratios and chi-square tests are commonly used when studying covariation in [contingency tables](https://en.wikipedia.org/wiki/Contingency_table).
+
+Decisions around which statistic to use depend on a variable's measurement-level (e.g. @tab-variable-types). As demonstrated by [Anscombe's quartet](https://en.wikipedia.org/wiki/Anscombe%27s_quartet), statistical summaries can hide important structure, or assume structure that doesn't exist. None of the measures of central tendency in @tab-variable-types would expose whether a variable for instance is multi-modal and only when studying all measures of central tendency and  dispersion together might it be possible to guess at the presence of outliers that could undermine statistical assumptions. It is for this reason that *data visualization* is seen as intrinsic to EDA [@tukey_exploratory_1977].
+
+### Plots for continuous variables
+
+
+#### Within-variable variation: histograms, density plots, boxplots
+
+```{r}
+#| label: fig-univariate-continuous
+#| tbl-cap: "Univariate plots of dispersion."
+#| echo: false
+#| eval: true
+include_graphics("/figs/univariate-plots.png", error = FALSE)
+```
+Figure @fig-univariate-continuous presents statistical graphics that are commonly used to display the distribution of continuous variables measured on a `ratio` or `interval` scale -- in this instance the age of casualty for a random sample of Stast19 road crashes (`casualty_age`).
+
+In the bottom row is a *strip-plot*. Every observation is displayed as a dot and mapped to `x-position`, with transparency and a random vertical perturbation applied to resolve occlusion due to overlapping observations. Although strip-plots scale poorly, the advantage is that all observations are displayed without the need to impose an aggregation. It is possible to visually identify the *location* of the distribution -- denser dots towards 20-25 age range -- but also that there is quite a degree of spread across the age values.
+
+*Histograms* were used in the previous chapter when analysing the 2019 UK General Election dataset. Histograms partition continuous variables into equal-range bins and observations in each bin are counted. These counts are encoded on an aligned scale using bar height. Increasing the size of the bins increases the resolution of the graphical summary. If reasonable decisions are made around choice of bin, histograms give distributions a "shape" that is expressive. It is easy to identify the *location* of a distribution and, in using length on aligned scale to encode frequency, estimate relative densities between different parts of the distribution. Different from the strip-plot, the histogram allows us to intuit that despite the heavy spread, the distribution of `casualty_age` is right-skewed, and we'd expect this given the location of the mean (36 years) relative to the median (33 years).
+
+ A problem with histograms is the potential for discontinuities and artificial edge-effects around the bins. *Density plots* overcome this and can be thought of as smoothed histograms. They use [kernel density estimation](https://en.wikipedia.org/wiki/Kernel_density_estimation) (KDE) to show the [probability density function](https://en.wikipedia.org/wiki/Probability_density_function) of a variable -- the relative amount of probability attached to each value of `casualty_age`. As with histograms, there are decisions to be made around how data are partitioned into bins (or KDE bandwidths). From glancing at the density plots an overall "shape" to the distribution can be immediately derived. It is also possible to infer statistical properties: the mode of the distribution (the highest density), the mean (by visual averaging) and median (finding the midpoint of the area under the curve). Density plots are better suited to datasets that contain a reasonably large number of observations and due to the smoothing function it is possible to generate a density plot that suggests nonsensical values (e.g. negative ages in this case if I hadn't censored the plot range).
+
+Finally, *boxplots*, or *box and whisker* plots [@mcgill_variations_1978], encode the statistical properties that we infer from strip-plots, histograms and density plots directly. The box is the interquartile range ($IQR$) of the `casualty_age` variable, the vertical line splitting the box is the median, and the whiskers are placed at observations $\leq 1.5*IQR$. Whilst we lose information around the shape of a distribution, box-plots are space-efficient and useful for comparing many distributions at once.
+
+::: {.callout-note}
+This discussion was a little prosaic -- we haven't made too many observations to advance our knowledge of the dataset. I was surprised at the low average age of road casualties and so quickly explored the distribution of `casualty_age` conditioning on another variable and differentiating between variable values using colour. @fig-boxplots-class displays boxplots of the location and spread in `casualty_age` by vehicle type (left) and also by `casualty_class` for all crashes involving pedestrians. A noteworthy pattern is that riders of bicycles and motorcycles tend to be younger than the pedestrians they are contacting with, whereas for buses, taxis, HGVs and cars the reverse is true. Pedestrians involved in crashes with cars are especially skewed towards the younger ages.
+
+```{r}
+#| label: fig-boxplots-class
+#| fig-cap: "Boxplots of casualty age by vehicle type and class."
+#| echo: false
+#| eval: true
+
+include_graphics("/figs/boxplot-by-class.png", error = FALSE)
+```
+:::
+
+The previous session included several *scatterplots* for displaying association between two quantitative variables. Scatterplots are used to check whether the association between variables is linear, as in [Anscombe's quartet](https://en.wikipedia.org/wiki/Anscombe%27s_quartet), but also to make inferences about the direction and intensity of linear correlation between variables -- the extent to which *values* in one variable depend on the values of another -- and also around the nature of variation between variables -- the extent to which *variation* in one variable depends on another ([heteroscedasticity](https://en.wikipedia.org/wiki/Heteroscedasticity)). Although other *chart idioms* [@munzner_visualization_2014] for displaying bivariate data exist, empirical studies in Information Visualization have demonstrated that aggregate correlation statistics can be reliably estimated from scatterplots [@rensink_perception_2010; @harrison_ranking_2014; @kay_beyond_2016; @correll_regression_2017].
+
+There are few variables in the STATS19 dataset measured on a continuous scale, but based on the analysis above, we may wish to explore more directly whether an association exists between the age of pedestrians and drivers for pedestrian-vehicle crashes. The scatterplots in @fig-scatters-type show that no obvious linear association exists.
+
+
+```{r}
+#| label: fig-scatters-age-class
+#| fig-cap: "Scatterplots of pedestrian age by driver age and grouped by vehicle type."
+#| echo: false
+#| eval: true
+
+include_graphics("/figs/scatter-by-type.png", error = FALSE)
+```
+
+::: {.callout-note}
+It is common in an EDA to quickly compare associations between many quantitive variables in a dataset using [scatterplot matrices](https://en.wikipedia.org/wiki/Scatter_plot#Scatter_plot_matrices) or alternatively [parallel coordinate plots](https://en.wikipedia.org/wiki/Parallel_coordinates). We will use both in sessions 6 and 7 when building  models that attempt to formally structure and explain **between-variable** covariation.
+:::
+
+### Plots for categorical variables
+
+#### Within-variable variation: bars, dotplots, heatmaps
+
+With categorical variables we are interested in exploring how relative frequencies distribute across the variable's categories.  Bar charts are most commonly used. As established in the previous session, length is an efficient visual channel for encoding quantities, counts in this case. Often it is useful to flip bar charts on their side so that category labels are arranged horizontally for ease of reading and, unless there is a natural ordering to categories, arrange the bars in descending order based on their frequency, as in @fig-bars.
+
+```{r}
+#| label: fig-bars
+#| fig-cap: "Bars displaying crash frequencies by vehicle type."
+#| echo: false
+#| eval: true
+
+include_graphics("/figs/bars.png", error = FALSE)
+```
+
+Bar charts are effective at conveying frequencies  where the number of categories is reasonably small. For summarising frequencies across many categories, alternatives chart types that minimise non-data-ink, such as [Cleveland dot plots](https://en.wikipedia.org/wiki/Dot_plot_(statistics)) and heatmaps may be appropriate. The left plot in @fig-dots-heatmap displays crash counts for boroughs in London, ordered by crash frequency and grouped by whether boroughs are in inner- or outer- London. To the right is a heatmap with the same ordering and grouping of boroughs applied to the rows and with columns coloured according to crash frequencies by time period and further grouped by day of week. From scanning the graphic we can make several observations: that reported crashes tend to occur in the midday or evening peak (the middle two columns of a day are typically darker); that in relative terms there are more crashes recorded in outer London boroughs than inner London boroughs during the middle of the day on weekends (salient dark strips corresponding with midday Saturday and Sunday).
+
 
 ## Techniques

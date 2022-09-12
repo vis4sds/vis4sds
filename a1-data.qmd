@@ -76,8 +76,8 @@ You may wish to start with reorganising `ny_spread_rows` as I deliberately made 
 :::
 
 ```{r}
-#| echo: TRUE
-#| eval: FALSE
+#| echo: true
+#| eval: false
 ## # A tibble: 386,762 x 6
 ##    o_station d_station wkday   count  dist duration
 ##        <int>     <int> <chr>   <int> <dbl>    <dbl>

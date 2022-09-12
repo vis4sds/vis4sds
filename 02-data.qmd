@@ -1,6 +1,10 @@
 # Data Fundamentals {#sec-data}
 
-```{r, echo=FALSE, eval=TRUE, message=FALSE, warning=FALSE}
+```{r}
+#| echo: false
+#| eval: true
+#| message: false
+#| warning: false
 library(knitr)
 library(kableExtra)
 ```
@@ -30,13 +34,13 @@ By the end of this chapter you should gain the following knowledge and practical
 
 ## Introduction
 
-This chapter covers some of the basics of how to describe and organise data. Whilst this might sound prosaic, there are several reasons why being able to consistently describe a dataset is important.  First, it is the initial step in any analysis and helps delimit the research themes and technical procedures that can be deployed. This is especially relevant to modern Data Science-type workflows, where it is common to apply the same analysis templates for working over data. Describing your dataset with a consistent vocabulary enables you to identify which analysis templates to reuse. Second relates to the point in Chapter [-@sec-introduction] that Social Data Science  (SDS) projects usually involve repurposing datasets for the first time. It is often not obvious whether the data contain sufficient detail and structure to characterise the behaviours to be researched and the target populations they are assumed to represent. This leads to additional levels of uncertainty and places greater importance on the initial steps of data processing, description and exploration.
+This chapter covers some of the basics of how to describe and organise data. Whilst this might sound prosaic, there are several reasons why being able to consistently describe a dataset is important.  First, it is the initial step in any analysis and helps delimit the research themes and technical procedures that can be deployed. This is especially relevant to modern Data Science-type workflows, where it is common to apply the same analysis templates for working over many different datasets. Describing your dataset with a consistent vocabulary enables you to identify which analysis templates to reuse. Second relates to the point in [Chapter -@sec-introduction] that Social Data Science  (SDS) projects usually involve repurposing datasets for the first time. It is often not obvious whether the data contain sufficient detail and structure to characterise the behaviours to be researched and the target populations they are assumed to represent. This leads to additional levels of uncertainty and places greater importance on the initial steps of data processing, description and exploration.
 
-Through the chapter we will learn both language for describing and thinking about data, but also how to deploy some of the most important data processing and organisation techniques in `R` to wrangle real datasets. We will do so using data from New York's [Citibike](https://www.citibikenyc.com/) scheme, accessed through the `bikedata` package, an API to Citibike's [publicly available origin-destination trip data](https://www.citibikenyc.com/system-data).
+Through the chapter we will learn both language for describing and thinking about data, but also how to deploy some of the most important data processing and organisation techniques in R to wrangle real datasets. We will do so using data from New York's [Citibike](https://www.citibikenyc.com/) scheme, accessed through the `bikedata` package, an API to Citibike's [publicly available origin-destination trip data](https://www.citibikenyc.com/system-data).
 
 ::: {.callout-note}
 ## Data vocabulary
-The idea of applying a consistent vocabulary to describing your data applies especially to working with modern visualization toolkits ([ggplot2](https://ggplot2.tidyverse.org/), [Tableau](https://www.tableau.com/en-gb), [vega-lite](https://vega.github.io/vega-lite/)), and will be covered in some detail during the next session as we introduce Visualization Fundamentals and the [Grammar of Graphics](https://www.springer.com/gp/book/9780387245447) [@wilkinson_grammar_1999].
+The idea of applying a consistent vocabulary to describing your data applies especially to working with modern visualization toolkits ([ggplot2](https://ggplot2.tidyverse.org/), [Tableau](https://www.tableau.com/en-gb), [vega-lite](https://vega.github.io/vega-lite/)), and will be covered in some detail during the next chapter as we introduce Visualization Fundamentals and the [Grammar of Graphics](https://www.springer.com/gp/book/9780387245447) [@wilkinson_grammar_1999].
 :::
 
 
@@ -44,20 +48,22 @@ The idea of applying a consistent vocabulary to describing your data applies esp
 
 ### Data structure
 
-Throughout this book we will work with [data frames](http://adv-r.had.co.nz/Data-structures.html#data-frames). These are spreadsheet-like representations where rows are *observations* (cases/records) and columns are *variables*. In a data frame, each variable is a [vector](http://adv-r.had.co.nz/Data-structures.html#vectors) that must be of equal length. Where observations have missing values for certain variables -- that is, where they may violate this equal-length requirement -- the missing values must be substituted with something, usually with `NA` or similar. This constraint can cause difficulties. For example, when working with variables that contain values of different length for an observation. In these cases we create a special class of column, a [`list-column`](https://jennybc.github.io/purrr-tutorial/ls13_list-columns.html), a feature of data frames that we'll return to later. Organising data according this simple structure -- rows as observations, columns as variables -- makes working with data more straightforward. A dedicted set of tools, made available via the `tidyverse`, can be deployed for performing most data *tidy*ing operations [@wickham_tidy_2014].
+Throughout this book we will work with [data frames](http://adv-r.had.co.nz/Data-structures.html#data-frames). These are spreadsheet-like representations where rows are *observations* and columns are *variables*. In a data frame, variables are [vectors](http://adv-r.had.co.nz/Data-structures.html#vectors) that must be of equal length. Where observations have missing values for certain variables -- that is, where they may violate this equal-length requirement -- the missing values must be substituted with something, usually with `NA` or similar. This constraint can cause difficulties. For example, when working with variables that contain values of different length for an observation. In these cases we create a special class of column, a [`list-column`](https://jennybc.github.io/purrr-tutorial/ls13_list-columns.html), a feature of data frames that we'll return to later. Organising data according this simple structure -- rows as observations, columns as variables -- makes working with data somewhat straightforward. A dedicted set of tools, made available via the `tidyverse`, can be deployed for performing most data *tidy*ing operations [@wickham_tidy_2014].
 
 
 ### Types of variable
 
-A widely-used classification for describing variables is that developed by @stevens_on_1946, when cosidering the *level of measurement* of a variable. @stevens_on_1946 organised variables into two classes: variables that describe *categories* of things and variables that describe *measurements* of things. Categories include attributes like gender, titlesand ranked orders (1st, 2nd, 3rd largest etc.). Measurements include quantities like distance, age, travel time.
+A familiar classification for describing variables is that developed by @stevens_on_1946, when cosidering the *level of measurement* of a variable. @stevens_on_1946 organised variables into two classes: variables that describe *categories* of things and variables that describe *measurements* of things. Categories include attributes like gender, titles, ranked orders (1st, 2nd, 3rd largest etc.). Measurements include quantities like distance, age, travel time.
 
-Categories can be further subdivided into those that are unordered (*nominal*) from those that are ordered (*ordinal*). Measurements can also be subdivided. *Interval* measurements are quantities that can be ordered and where the difference between two values is meaningful. *Ratio* measurements have both these properties, but also have a meaningful `0` -- where `0` means the absence of something -- and where the ratio of two values can be computed. The most common cited example of an interval measurement is temperature (in degrees C). Temperatures can be ordered and compared additively, but `0` degrees C does not mean the absence of temperature and 20 degrees C is not twice as "hot" as 10 degrees C.
+Categories can be further subdivided into those that are unordered (*nominal*) from those that are ordered (*ordinal*). Measurements can also be subdivided. *Interval* measurements are quantities that can be ordered by magnitude and where the computed difference between two values is meaningful. *Ratio* measurements have both these properties, but also have a meaningful `0` -- where `0` means the absence of something -- and where the ratio of two values can be computed. The most common cited example of an interval measurement is temperature (in degrees C). Temperatures can be ordered and compared additively, but `0` degrees C does not mean the absence of temperature and 20 degrees C is not twice as "hot" as 10 degrees C.
+
+Why is this important? The measurement level of a variable determines the types of data analysis operations that can be performed and therefore allows us to efficiently make decisions when working with a dataset for the first time (@tbl-variable-types).
 
 ```{r}
 #| label: tbl-variable-types
 #| tbl-cap: "Breakdown of variable types"
-#| echo: FALSE
-#| eval: TRUE
+#| echo: false
+#| eval: true
 
 variable_types <- tibble::tibble(
   Measurement = c("`Nominal`", "`Ordinal`", "`Quantitative`", "`Temporal`", "`Geospatial`"),
@@ -119,20 +125,17 @@ kbl(variable_types, protect_latex = TRUE, escape=FALSE) %>%
  column_spec(1, width = "8em")
 ```
 
-
-Why is this important? The measurement level of a variable determines the types of data analysis operations that can be performed and therefore allows us to efficiently make decisions when working with a dataset for the first time (@tbl-variable-types).
-
 ### Types of observation
 
-Observations either together form an entire *population* or a  subset, or *sample* that we expect represents a *target population*.
+Observations either together form an entire *population* or a  subset, or *sample*, that we expect is representative of a *target population*.
 
-You no doubt will be familiar with these concepts, but we have to think a little more about this in Social Data Science applications as we may often be working with datasets that are so-called population-level. The [Citibike dataset]((https://www.citibikenyc.com/system-data)) is a complete, population-level dataset in that every journey made through the  scheme is recorded. Whether or not this is truly a population-level dataset, however, depends on the analysis purpose. When analysing the bikeshare dataset are we interested *only* in describing use within the Citibike scheme? Or are we taking the patterns observed through our analysis to make claims and inferences about cycling more generally?
+You no doubt will be familiar with these concepts, but in Social Data Science applications we may often be working with datasets that are so-called population-level. The [Citibike dataset]((https://www.citibikenyc.com/system-data)) is a complete, population-level dataset in that every journey made through the  scheme is recorded. Whether or not this is truly a population-level dataset, however, depends on the analysis purpose. When analysing the bikeshare dataset are we interested *only* in describing use within the Citibike scheme? Or are we taking the patterns observed through our analysis to make claims and inferences about cycling more generally?
 
-If the latter, then there are problems as the level of detail we have on our sample is pretty trivial compared to traditional datasets, where we deliberately design data collection activities with a specified target population in mind. It may therefore be difficult to gauge how representative Citibike users and Citibike cycling is of New York's general cycling population. The flipside is that passively collected data do not suffer from the same problems such as non-response bias and social-desirability  bias as traditionally collected datasets.
+If the latter, then there are problems as the level of detail we have on our sample is pretty trivial compared to traditional datasets, where data collection activities are designed with a specified target population in mind. It may therefore be difficult to gauge how representative Citibike users and Citibike cycling is of New York's general cycling population. The flipside is that passively collected data do not suffer from the same problems such as non-response bias and social-desirability  bias as traditionally collected datasets.
 
 ### Tidy data
 
-We will be working with data frames organised such that columns always and only refer to variables and rows always and only refer to observations. This arrangement, called *tidy* [@wickham_tidy_2014],  has two key advantages. First, if data are arranged in a consistent way, then it is easier to apply and re-use tools for wrangling them due to data having the same underlying structure. Second, placing variables into columns, with each column containing a vector of values,  means that we can take advantage of `R`'s vectorised functions for transforming data -- we will demonstrate this in the technical element of this session.
+We will be working with data frames organised such that columns always and only refer to variables and rows always and only refer to observations. This arrangement, called *tidy* [@wickham_tidy_2014],  has two key advantages. First, if data are arranged in a consistent way, then it is easier to apply and re-use tools for wrangling them due to data having the same underlying structure. Second, placing variables into columns, with each column containing a vector of values,  means that we can take advantage of R's vectorised functions for transforming data -- we will demonstrate this in the technical element of this session.
 
 The three rules for tidy data:
 
@@ -142,7 +145,7 @@ The three rules for tidy data:
 
 #### Drug treatment dataset
 
-To elaborate further, we can use the example given in @wickham_tidy_2014, a drug treatment dataset in which two different treatments were administered to participants.
+To elaborate further, we can use the example given in @wickham_tidy_2014, a drug treatment dataset in which two different treatments are administered to participants.
 
 
 ```{r}
@@ -153,7 +156,7 @@ To elaborate further, we can use the example given in @wickham_tidy_2014, a drug
 #|   - "Alternative untidy organisation"
 #|   - "Tidy organisation"
 #| layout-ncol: 2
-#| echo: FALSE
+#| echo: false
 
 
 drugs <- tibble::tibble(
@@ -180,7 +183,7 @@ kbl(drugs_tidy)
 
 ```
 
-Both untidy tables present the same information unambiguously -- @tbl-drugs (b) is simply @tbl-drugs (a) transposed. However, neither is *tidy* as the observations are spread across both the rows and columns. This means that we need to apply different procedures to extract, perform computations on, and visually represent, these data.
+Both untidy tables present the same information unambiguously -- @tbl-drugs (b) is simply @tbl-drugs (a) transposed. However, neither is *tidy* as the observations are spread across both the rows and columns. This means that we need to apply different procedures to extract, perform computations on and visually represent, these data.
 
 In the *tidy* form, each *observation* is a test result returned for each combination of `person` and `treatment`.  To get to this formulation, it is necessary to identify the discrete variables:
 
@@ -190,11 +193,9 @@ In the *tidy* form, each *observation* is a test result returned for each combin
 
 
 
-
-
 #### Gapminder population dataset
 
-In @wickham_r_2017, the benefits of tidy layouts are demonstrated with the [`gapminder`](https://www.gapminder.org/data/) dataset and with refernce to key data processing functions in `R`.  To consolidate our understanding of *tidy* data let's quickly look at the `gapminder` data, as it is an example that we're probably more likely to encounter in SDS research.
+In @wickham_r_2017, the benefits of tidy layouts are demonstrated with the [`gapminder`](https://www.gapminder.org/data/) dataset and with reference to key data processing functions in R.  To consolidate our understanding of *tidy* data let's quickly look at the `gapminder` data, as it is an example that we're probably more likely to encounter in SDS research.
 
 
 ```{r, echo=FALSE}
@@ -235,22 +236,21 @@ kbl(gapminder_untidy2)
 From the a*tidy* version of the data, we can identify the *variables* and note that each *observation* is a recorded count of cases and population for a country in a year.
 
 1. `country`: a categorical nominal variable.
-2. `year`: a date (cyclic ratio) variable.
+2. `year`: a date (interval) variable.
 3. `cases`: a ratio (count) variable.
 4. `population`: a ratio (count) variable.
 
 
 An alternative organisation of this dataset that appears in @wickham_r_2017 is in @tbl-gapminder (b). This is *untidy* as the observations are spread across two rows. This makes operations that we might want to perform on the `cases` and `population` variables -- for example computing exposure rates -- somewhat tedious.
 
-Imagine that the `gapminder` dataset reported values of `cases` separately by gender  -- @tbl-gapminder (c). A type of representation often seen in social science domains, probably as it is helpful for data entry, is where observations are spread across the columns. This too creates problems for performing aggregate functions, but also for specifying visualization designs (in [`ggplot2`](https://ggplot2.tidyverse.org/)) as we will discover in the next session.
-
+Imagine that the `gapminder` dataset reported values of `cases` separately by gender  -- @tbl-gapminder (c). A type of representation often seen in social science domains, probably as it is helpful for data entry, is where observations are spread across the columns. This too creates problems for performing aggregate functions, but also for specifying visualization designs (in [`ggplot2`](https://ggplot2.tidyverse.org/)).
 
 ## Techniques
 
 The technical element to this chapter involves importing, describing, transforming and tidying data from a large bikeshare scheme -- New York's [Citibike](https://www.citibikenyc.com/) scheme.
 
-* Download the [02-template.Rmd]() file and save it to the `reports` folder of your `vis4sds` project that you created in chapter 1.
-* Open your `vis4sds` project in RStudio and load the template file by clicking `File` > `Open File ...` > `reports/02-template.Rmd`.
+* Download the [02-template.qmd]() file and save it to the `reports` folder of your `vis4sds` project that you created in chapter 1.
+* Open your `vis4sds` project in RStudio and load the template file by clicking `File` > `Open File ...` > `reports/02-template.qmd`.
 
 
 ### Import
@@ -260,8 +260,8 @@ In the template file there is a discussion of how to setup your R session with k
 Available via the `bikedata` package are trip and occupancy data for a number of bikeshare schemes (as below). We will work with data from New York's [Citibike](https://www.citibikenyc.com/) scheme for June 2020. A list of all cities covered by the `bikedata` package is below:
 
 ```{r}
-#| echo: TRUE
-#| eval: FALSE
+#| echo: true
+#| eval: false
 bike_cities()
 ##    city     city_name      bike_system
 ## 1    bo        Boston           Hubway
@@ -277,42 +277,52 @@ bike_cities()
 ## 11   sf      Bay Area       FordGoBike
 ```
 
-In the template there are code chunks demonstrating how to  download and process these data using [bikedata](https://github.com/ropensci/bikedata)'s API. This is mainly for illustrative purposes and the code chunks take some time to execute. We ultimately use the [`fst`](https://www.fstpackage.org/) package for serializing and reading in the these data. So I suggest you ignore the import code and calls to the `bikedata` API and instead follow the instructions for downloading and reading in the `.fst` file with the trips data and also the  `.csv` file containing stations data, with:
+In the template there are code chunks demonstrating how to  download and process these data using [bikedata](https://github.com/ropensci/bikedata)'s API. This  takes some time to execute and we use the [`fst`](https://www.fstpackage.org/) package for serializing and reading in the these data.
 
 ```{r}
-#| echo: TRUE
-#| eval: FALSE
+#| echo: true
+#| eval: false
+
+library(bikedata) # API to TfL's trip data.
+
 # Create subdirectory in data folder for storing bike data.
-if(!dir.exists(here("data", "bikedata"))) dir.create(here("data", "bikedata"))
+if(!dir.exists(here("bikedata"))) dir.create(here("bikedata"))
 
-# Read in .csv file of stations data from url.
-tmp_file <- tempfile()
-url <- "https://www.roger-beecham.com/datasets/ny_stations.csv"
-curl::curl_download(url, tmp_file, mode="wb")
-ny_stations <- read_csv(tmp_file)
+# Download data for June 2020.
+dl_bikedata (city = "citibike",  data_dir = here("bikedata"), dates=202006)
 
-# Read in .fst file of trips data from url.
-tmp_file <- tempfile()
-cs_url <- "https://www.roger-beecham.com/datasets/ny_trips.fst"
-curl::curl_download(url, tmp_file, mode="wb")
-ny_trips <- read_fst(tmp_file)
+# Read in and store in SQLite3 database.
+bikedb <- file.path (tempdir (), "bikedb.sqlite") # Create sqlite db container.
+store_bikedata (data_dir = here("data", "bikedata"), bikedb = bikedb)
+# Index dbase to speed up working.
+index_bikedata_db(bikedb = bikedb)
 
-# Write out to subdirectory for future use.
-write_fst(trips, here("data", "ny_trips.fst"))
-write_csv(stations, here("data", "ny_stations.csv"))
+# Set up connection to SQLite db.
+con <- DBI::dbConnect(RSQLite::SQLite(), bikedb)
+# Check tables that form the dbase.
+DBI::dbListTables(con)
+# Collect trips and stations tables for writing out to fst.
+trips <- tbl(con, "trips") |>  collect()
+stations <- tbl(con, "stations") |>  collect()
 
-# Clean workspace.
-rm(url, tmp_file)
+# Write trips out to .fst.
+fst::write_fst(trips, here("data", ""bikedata", "ny_trips.fst"))
+# Write stations out to .csv
+fst::write_csv(stations, here("data", "bikedata", "ny_stations.csv"))
+
+# Clean workspace
+bike_rm_db(bikedb)
+rm(db,stations, trips, bikedb)
 ```
 ::: {.callout-note}
-`fst` implements in the background various operations such as multi-threading to reduce load on disk space. It therefore makes it possible to work with large datasets in-memory in `R` rather than connecting to a database and serving up summaries/subsets to be loaded into R. We will be working with just 2 million records, but with `fst` it is possible to work in-memory with much larger datasets -- in @lovelace_is_2020 we ended up working with 80 million + trip records.
+`fst` implements in the background various operations such as multi-threading to reduce load on disk space. It therefore makes it possible to work with large datasets in-memory in R rather than connecting to a database and serving up summaries/subsets to be loaded into R. We will be working with just 2 million records, but with `fst` it is possible to work in-memory with much larger datasets -- in @lovelace_is_2020 we ended up working with 80 million + trip records.
 :::
 
-Some of the above may be familiar to you. The key arguments to look at are `read_csv()` and `read_fst()`, into which we pass the path to the file. In this case we created a `tmpfile()` within the R session. We then write these data out and save locally to the project's `data` folder. This is useful as we only want to download the data once. In the `write_*<>` functions we reference this location using the [`here`](https://here.r-lib.org/) package's `here()` function.  [`here`](https://here.r-lib.org/) is really useful for reliably creating paths relative to your project's root. To read in these data for future sessions:
+Some of the above may be familiar to you. The key arguments to look at are `read_csv()` and `read_fst()`, into which we pass the path to the file. In this case we created a `tmpfile()` within the R session. We then write these data out and save locally to the project's `data` folder. This is useful as we only want to download the data once. In the `write_*<>` functions we reference this location using the [`here`](https://here.r-lib.org/) package's `here()` function, useful for reliably creating paths relative to your project's root. To read in these data for future sessions:
 
 ```{r}
-#| echo: TRUE
-#| eval: FALSE
+#| echo: true
+#| eval: false
 # Read in these local copies of the trips and stations data.
 ny_trips <- read_fst(here("data", "ny_trips.fst"))
 ny_stations <- read_csv(here("data", "ny_stations.csv"))
@@ -322,19 +332,22 @@ Notice that we use *assignment* here (`<-`) so that these data are loaded as obj
 `ny_stations` and `ny_trips` are data frames, spreadsheet type representations containing observations in rows and variables in columns. Inspecting the layout of the stations data with `View(ny_stations)` you will notice that the top line is the header and contains column (variable) names.
 
 ```{r, echo=FALSE}
+#| include: false
 #| label: fig-view-annotate
 #| fig-cap: "`ny_trips` and `ny_stations` as they appear when calling `View()`."
 
 include_graphics("/figs/view.png", error = FALSE)
 ```
 
+![`ny_trips` and `ny_stations` as they appear when calling `View()`](figs/01/view.png){#fig-view-annotate width=100% fig-align="center"}
+
 ### Describe
 
 There are several functions for generating a quick overview of a data frame's contents. `glimpse<dataset-name>` is particularly useful. It provides a summary of the data frame dimensions -- we have c. 1.9 million trip observations in `ny_trips` and 11 variables^[Note that the version of the trips data downloaded from my external repo contains a sample of just 500k records -- this is not ideal, but was due to data storage limits on my external repo.]. The function also prints out the object type for each of these variables, with the variables either of type `int` or `chr` in this case.
 
 ```{r}
-#| echo: TRUE
-#| eval: FALSE
+#| echo: true
+#| eval: false
 glimpse(ny_trips)
 ## Rows: 1,882,273
 ## Columns: 11
@@ -352,8 +365,8 @@ glimpse(ny_trips)
 ```
 
 ```{r}
-#| echo: TRUE
-#| eval: FALSE
+#| echo: true
+#| eval: false
 glimpse(ny_stations)
 ## Rows: 1,010
 ## Columns: 6
@@ -368,7 +381,7 @@ glimpse(ny_stations)
 ```{r, echo=FALSE}
 #| label: tbl-data-types
 #| tbl-cap: "A breakdown of data types in R."
-#| echo: FALSE
+#| echo: false
 
 data_types <- tibble::tibble(
   Type = c("`lgl`", "`int`", "`dbl`", "`chr`", "`dttm`", "`fctr`" ),
@@ -383,14 +396,14 @@ data_types <- tibble::tibble(
 )
 ```
 
-The object type of a variable in a data frame relates to that variable's *measurement level*. It is often useful to convert to types with greater specificity. For example, we may which to convert the `start_time` and `stop_time` variables to a date-time format so that various time-related functions could be used. For efficient storage, we may wish to convert the *station identifier* variables as `int` types by removing the redundant "ny" text which prefaces `end_station_id`, `end_station_id`, `stn_id`. The geographic coordinates are currently stored as type `chr`. These could be regarded as quantitative variables, floating points with decimals. So converting to type `dbl` or as a [`POINT`](https://r-spatial.github.io/sf/articles/sf1.html#simple-feature-geometry-types) geometry type (more on this later in the course) may be sensible.
+The object type of a variable in a data frame relates to that variable's *measurement level*. It is often useful to convert to types with greater specificity. For example, we may which to convert the `start_time` and `stop_time` variables to a date-time format so that various time-related functions can be used. For efficient storage, we may wish to convert the *station identifier* variables as `int` types by removing the redundant "ny" text which prefaces `end_station_id`, `end_station_id`, `stn_id`. The geographic coordinates are currently stored as type `chr`. These could be regarded as quantitative variables, floating points with decimals. So converting to type `dbl` or as a [`POINT`](https://r-spatial.github.io/sf/articles/sf1.html#simple-feature-geometry-types) geometry type (more on this later in the course) may be sensible.
 
-In the [02-template.Rmd]() file there are code chunks for doing these conversions. There are some slightly more involved data transform procedures in this code. Don't fixate too much on these, but the upshot can be seen when running `glimpse()` on the converted data frames:
+In the [02-template.qmd]() file there are code chunks for doing these conversions. There are some slightly more involved data transform procedures in this code. Don't fixate too much on these, but the upshot can be seen when running `glimpse()` on the converted data frames:
 
 
 ```{r}
-#| echo: TRUE
-#| eval: FALSE
+#| echo: true
+#| eval: false
 glimpse(ny_trips)
 ## Rows: 1,882,273
 ## Columns: 10
@@ -407,8 +420,8 @@ glimpse(ny_trips)
 ```
 
 ```{r}
-#| echo: TRUE
-#| eval: FALSE
+#| echo: true
+#| eval: false
 glimpse(ny_stations)
 ## Rows: 1,010
 ## Columns: 5
@@ -426,7 +439,7 @@ glimpse(ny_stations)
 ```{r}
 #| label: tbl-dplyr-verbs
 #| tbl-cap: "dplyr funcitions (verbs) for manipulating data frames."
-#| echo: FALSE
+#| echo: false
 
 dplyr_verbs <- tibble::tibble(
   `function()` = c("`filter()`", "`arrange()`", "`select()`", "`rename()`", "`mutate()`", "`group_by()`", "`summarise()`" , "`..and more`"),
@@ -455,11 +468,11 @@ All `dplyr` functions work in the same way:
 
 So every `dplyr` function expects a data frame and will always return a data frame.
 
-####  Use pipes `%>%` with `dplyr`
+####  Use pipes `|>` with `dplyr`
 
-`dplyr` is most effective when its functions are chained together -- you will see this shortly as we explore the New York bikeshare data. This chaining of functions can be achieved using the *pipe* operator (`%>%`).  Pipes are used for passing information in a program. They take the output of a set of code (a `dplyr` specification) and make it the input of the next set (another `dplyr` specification).
+`dplyr` is most effective when its functions are chained together -- you will see this shortly as we explore the New York bikeshare data. This chaining of functions can be achieved using the *pipe* operator (`|>`).  Pipes are used for passing information in a program. They take the output of a set of code (a `dplyr` specification) and make it the input of the next set (another `dplyr` specification).
 
-Pipes can be easily applied to `dplyr` functions, and the functions of all packages that form the `tidyverse`. We mentioned in Chapter [-@sec-introduction] that `ggplot2` provides a framework for specifying a *layered grammar of graphics* (more on this in Chapter [-@sec-visual]). Together with the pipe operator (`%>%`), `dplyr` supports a *layered grammar of data manipulation*.
+Pipes can be easily applied to `dplyr` functions, and the functions of all packages that form the `tidyverse`. We mentioned in Chapter [-@sec-introduction] that `ggplot2` provides a framework for specifying a *layered grammar of graphics* (more on this in Chapter [-@sec-visual]). Together with the pipe operator (`|>`), `dplyr` supports a *layered grammar of data manipulation*.
 
 #### `count()` rows
 
@@ -468,14 +481,13 @@ This might sound a little abstract so let's use and combine some `dplyr` functio
 First we'll count the number of trips made in Jun 2020 by gender. `dplyr` has a convenience  function for counting, so we could run the code below, also in the [02-template.Rmd]() for this session. I've commented the code block to convey what each line achieves.
 
 ```{r}
-#| echo: TRUE
-#| eval: FALSE
-ny_trips %>%  # Take the ny_trips data frame.
-  count(gender, sort=TRUE) # Run the count function over the data frame and set the sort parameter to TRUE.
-##    gender       n
-## 1    male 1044621
-## 2  female  586361
-## 3 unknown  251291
+#| echo: true
+#| eval: false
+ny_trips |>  # Take the ny_trips data frame.
+  count(user_type, sort=TRUE) # Run the count function over the data frame and set the sort parameter to TRUE.
+##   user_type       n
+## 1 subscriber 1326513
+## 2   customer  592681
 ```
 There are a few things happening in the `count()` function. It takes the `gender` variable from `ny_trips`, organises or *groups* the rows in the data frame according to its values (`female` | `male` | `unknown`), counts the rows and then orders the *summarised* output descending on the counts.
 
@@ -484,7 +496,7 @@ There are a few things happening in the `count()` function. It takes the `gender
 ```{r, echo=FALSE}
 #| label: tbl-aggregate-functions
 #| tbl-cap: "A breakdown of aggregate functions commonly used with `summarise()`."
-#| echo: FALSE
+#| echo: false
 
 aggregate_functions <- tibble::tibble(
   Function = c("`n()`", "`n_distinct(var)`", "`sum(var)`", "`max(var)`|`min(var)`", "`mean(var)`|`median(var)`|`sd(var)`| `...`", "`...`"),
@@ -500,110 +512,95 @@ aggregate_functions <- tibble::tibble(
 kbl(aggregate_functions)
 ```
 
-Often you will want to do more than simply counting and you may also want to be more explicit in the way the data frame is *grouped* for computation. We'll demonstrate this here with a more involved analysis of the usage data and using some key aggregate functions (Table @tbl-aggregate-functions.
+Often you will want to do more than simply counting and you may also want to be more explicit in the way the data frame is *grouped* for computation. We'll demonstrate this here with a more involved analysis of the usage data and using some key aggregate functions (@tbl-aggregate-functions).
 
 
 A common workflow is to combine `group_by()` and `summarise()`, and in this case `arrange()` to replicate the `count()` example.
 
 ```{r}
-#| echo: TRUE
-#| eval: FALSE
-ny_trips %>% # Take the ny_trips data frame.
-  group_by(gender) %>% # Group by gender.
+#| echo: true
+#| eval: false
+ny_trips |> # Take the ny_trips data frame.
+  group_by(user_type) %>% # Group by user_type.
   summarise(count=n()) %>% # Count the number of observations per group.
   arrange(desc(count)) # Arrange the grouped and summarised (collapsed) rows according to count.
-## # A tibble: 3 x 2
-##  gender    count
-##  <chr>     <int>
-## 1 male    1044621
-## 2 female   586361
-## 3 unknown  251291
+## # A tibble: 2 × 2
+##   user_type    count
+##   <chr>        <int>
+## 1 subscriber 1326513
+## 2 customer    592681
 ```
 
-In `ny_trips` there is a variable measuring trip duration in seconds (`trip_duration`) and distinguishing  casual users from those formally registered to use the scheme (`user_type` - `Customer` vs. `Subscriber`). It may be instructive to calculate some summary statistics to see how trip duration varies between these groups.
+In `ny_trips` there is a variable measuring trip duration in seconds (`trip_duration`) and distinguishing  casual users from those formally registered to use the scheme (`user_type` - `customer` vs. `subscriber`). It may be instructive to calculate some summary statistics to see how trip duration varies between these groups.
 
 The code below uses `group_by()`, `summarise()` and `arrange()` in exactly the same way, but with the addition of other aggregate functions profiles the `trip_duration` variable according to central tendency and by `user_type`.
 
 ```{r}
-#| echo: TRUE
-#| eval: FALSE
-ny_trips %>% # Take the ny_trips data frame.
-  group_by(user_type) %>% # Group by user type.
+#| echo: true
+#| eval: false
+ny_trips |> # Take the ny_trips data frame.
+  mutate(trip_duration=trip_duration/60) |>
+  group_by(user_type) |> # Group by user type.
   summarise( # Summarise over the grouped rows, generate a new variable for each type of summary.
     count=n(),
-    avg_duration=mean(trip_duration/60),
-    median_duration=median(trip_duration/60),
-    sd_duration=sd(trip_duration/60),
-    min_duration=min(trip_duration/60),
-    max_duration=max(trip_duration/60)
-    ) %>%
+    avg_duration=mean(trip_duration),
+    median_duration=median(trip_duration),
+    sd_duration=sd(trip_duration),
+    min_duration=min(trip_duration),
+    max_duration=max(trip_duration)
+    ) |>
   arrange(desc(count)) # Arrange on the count variable.
 
-## # A tibble: 2 x 6
-##  user_type    count avg_duration median_duration sd_duration min_duration max_duration
-##  <chr>        <int>        <dbl>           <dbl>       <dbl>        <dbl>        <dbl>
-## 1 Subscriber 1306688         20.2            14.4        110.         1.02         33090
-## 2 Customer    575585         43.6            23.2        393.         1.02         46982
+## # A tibble: 2 × 7
+##   user_type    count avg_duration median_duration sd_duration min_duration max_duration
+##   <chr>        <int>        <dbl>           <dbl>       <dbl>        <dbl>        <dbl>
+## 1 subscriber 1326513         20.1            14.4        110.         1.02       33090.
+## 2 customer    592681         44.1            23.3        393.         1.02       46982.
 ```
 
-Clearly there are some outlier trips that may need to be examined. Bikeshare schemes are built to incentivise short journeys of <30 minutes, but the maximum trip duration recorded above is clearly erroneous -- 32 days. Ignoring these sorts of outliers by calculating the trip durations at the 95th percentiles is instructive.  The max trip duration at the 95th percentile  for `Subscribers` was almost 27 minutes and for  `Customers` was 1 hours 26 mins. It makes sense that more casual users may have longer trip durations, as they are more likely to be tourists or occasional cyclists using the scheme for non-utility trips. However, they do skew the mean travel time.
 
-Returning to the breakdown of usage by gender, an interesting question is whether or not the male-female split in bikehare is similar to that of the cycling population of New York City as a whole. This might tell us something about whether the bikeshare scheme could be *representative* of wider cycling. This could be achieved with the code below.  A couple of new additions: we use `filter()`, to remove observations where the gender of the cyclist is `unknown`. We also use `mutate()` for the first time, which allows us to modify or create new variables.
-
-```{r}
-#| echo: TRUE
-#| eval: FALSE
-ny_trips %>% # Take the ny_trips data frame.
-  filter(gender != "unknown") %>% # Filter out rows with the value "unknown" on gender.
-  group_by(gender) %>% # Group by gender.
-  summarise(count=n()) %>% # Count the number of observations per group.
-  mutate(prop=count/sum(count)) %>% # Add a new column called `prop`, divide the value in the row for the variable count by the sum of the count variable across all rows.
-  arrange(desc(count)) # Arrange on the count variable.
-
-## # A tibble: 2 x 3
-##  gender   count  prop
-##  <chr>    <int> <dbl>
-## 1 male   1044621 0.640
-## 2 female  586361 0.360
-```
-As I've commented each line you hopefully get a sense of what is happening in the code above. I mentioned that `dplyr` functions read like *verbs*. This is a very deliberate design decision. With the code laid out as above -- each `dplyr` verb occupying a single line, separated by a pipe (`%>%`) -- you can generally understand the code with a cursory glance. There are obvious benefits to this. Once you become familiar with `dplyr` it becomes very easy to read, write and share code.
+As I've commented each line you hopefully get a sense of what is happening in the code above. I mentioned that `dplyr` functions read like *verbs*. This is a very deliberate design decision. With the code laid out as above -- each `dplyr` verb occupying a single line, separated by a pipe (`|>`) -- you can generally understand the code with a cursory glance. There are obvious benefits to this. Once you become familiar with `dplyr` it becomes very easy to read, write and share code.
 
 
 ::: {.callout-note}
-Remembering that *pipes* (`%>%`) take the output of a set of code and make it the input of the next set, what do you think would happen if you were to comment out the call to `arrange()` in the code block above? Try it for yourself. You will notice that I use separate lines for each call to the *pipe* operator. This is good practice for supporting readability of your code.
+Remembering that *pipes* (`|>`) take the output of a set of code and make it the input of the next set, you will notice t separate lines for each call to the *pipe* operator. This is good practice for supporting readability of your code.
 :::
 
 
 #### Manipulate dates with [`lubridate`](https://lubridate.tidyverse.org/)
 
-Let's continue this investigation of usage by gender, and whether bikeshare might be representative of regular cycling, by profiling how usage varies over time. To do this we will need to work with `date-time` variables. The [`lubridate`](https://lubridate.tidyverse.org/) package provides various convenience functions for this.
+Let's continue this investigation of trips by user-type by profiling how usage varies over time. To do this we will need to work with `date-time` variables. The [`lubridate`](https://lubridate.tidyverse.org/) package provides various convenience functions for this.
 
-In the code block below we extract the *day of week* and *hour of day* from the `start_time` variable using `lubridate`'s [day accessor](https://lubridate.tidyverse.org/reference/day.html) functions. Documentation on these can be accessed in the usual way (`?<function-name>`), but reading down the code it should be clear to you how this works. Next we count the number of trips made by hour of day, day of week and gender. The summarised data frame will be re-used several times in our analysis, so we store it as an object with a suitable name (`ny_temporal`) using the assignment operator.
+In the code block below we extract the *day of week* and *hour of day* from the `start_time` variable using `lubridate`'s [day accessor](https://lubridate.tidyverse.org/reference/day.html) functions. Documentation on these can be accessed in the usual way (`?<function-name>`), but reading down the code it should be clear to you how this works. Next we count the number of trips made by hour of day, day of week and user-type. The summarised data frame will be re-used several times in our analysis, so we store it as an object with a suitable name (`ny_temporal`) using the assignment operator.
 
 ```{r}
-#| echo: TRUE
-#| eval: FALSE
+#| echo: true
+#| eval: false
 # Create a hod dow summary by gender and assign it the name "ny_temporal".
-ny_temporal <- ny_trips %>%  # Take the ny_trips data frame.
+ny_temporal <- ny_trips |>  # Take the ny_trips data frame.
   mutate(
     day=wday(start_time, label=TRUE), # Create a new column identify dow.
-    hour=hour(start_time)) %>% # Create a new column identify hod.
-  group_by(gender, day, hour) %>% # Group by day, hour, gender.
-  summarise(count=n()) %>% # Count the grouped rows.
+    hour=hour(start_time)) |> # Create a new column identify hod.
+  group_by(user_type, day, hour) %>% # Group by day, hour, user_type.
+  summarise(count=n()) |> # Count the grouped rows.
   ungroup()
 ```
 ::: {.callout-note}
 Whether or not to store derived data tables, like the newly assigned `ny_temporal`, in a session is not an easy decision. You want to try to avoid cluttering your Environment pane with many data objects. Often when generating charts it is necessary to create these sorts of derived tables as input data (to `ggplot2`) -- and so when doing visual data analysis you may end up with an unhelpfully large number of these derived tables. A general: if the derived table is to be used >3 times in a data analysis or is computationally intensive, assign it (`<-`) to an object.
 :::
 
-In [@fig-plot-temporal] below these derived data are plotted. The template contains `ggplot2` code for creating the graphic. Don't obsess too much on it -- more on this next session. The plot demonstrates a familiar weekday-weekend pattern of usage. Trip frequencies peak in the morning and evening rush hours during weekdays and mid/late-morning and afternoon during weekends. This is consistent with typical travel behaviour. Notice though that the weekday afternoon peak is much larger than the morning peak. There are several speculative explanations for this and re-running the plot on `Subscriber` users only may be instructive. A secondary observation is that whilst men and women share this overall pattern of usage, the relative number of trips taken by each day of week varies. Men make many more trips at peak times during the start of the week than they do later in the week. The same pattern does not appear for women. This is certainly something to follow up on, for example by collecting data over a longer period of time.
-
+In [@fig-plot-temporal] below these derived data are plotted. The template contains `ggplot2` code for creating the graphic. Don't obsess too much on it -- this is covered extensively in the following chapter. The plot demonstrates a familiar weekday-weekend pattern of usage. Trip frequencies peak in the morning and evening rush hours during weekdays and mid/late-morning and afternoon during weekends. This is consistent with typical travel behaviour. Notice though that the weekday afternoon peak is much larger than the morning peak. There are several speculative explanations for this.  Note that there are also obvious  differences in the type of trips made by  `subscribers` versus `customers` -- the temporal signature for `subscribers` appears to mirror more strongly commuting behaviour.
 ```{r}
-#| echo: FALSE
+#| include: false
+#| echo: false
 #| label: fig-plot-temporal
 #| fig-cap: "Line charts generated with `ggplot2`. Plot data computed using `dplyr` and `lubridate`."
 include_graphics("/figs/hod_dow.png", error = FALSE)
 ```
+
+![Line charts generated with `ggplot2`. Plot data computed using `dplyr` and `lubridate`](figs/02/hod_dow.svg){#fig-plot-temporal width=100% fig-align="center"}
+
+
 ::: {.callout-note}
  Our analysis is based on data from June 2020, a time when New York residents were emerging from lockdown. It would be instructive to compare with data from a non-Covid year. If there is a very clear contrast in usage between this data and a control (non-Covid) year, this suggests bikeshare data may be used for monitoring *behavioural change*. The fact that bikeshare is collected continuously makes this possible. Check out [Jo Wood's current work](https://github.com/jwoLondon/mobv) analysing Covid-related change in movement behaviours across a range of cities.
 :::
@@ -612,7 +609,7 @@ include_graphics("/figs/hod_dow.png", error = FALSE)
 
 #### Relate tables with `join()`
 
-Trip distance is not recorded directly in the `ny_trips` table, but may be important for profiling usage behaviour. Calculating trip distance is eminently achievable as the `ny_trips` table contains the origin and destination station of every trip and the `ny_stations` table contains coordinates corresponding to those stations. To relate the two tables, we need to specify a **join** between them.
+Trip distance is not recorded directly in the `ny_trips` table, but may be important for profiling usage behaviour. Calculating trip distance is eminently achievable as the `ny_trips` table contains the origin and destination station of every trip and the `ny_stations` table contains coordinates corresponding to those stations. To relate the two tables, we need to specify a *join* between them.
 
 A sensible approach is to:
 
@@ -623,16 +620,16 @@ A sensible approach is to:
 The code below is one way of achieving this.
 
 ```{r}
-#| echo: TRUE
-#| eval: FALSE
-od_pairs <- ny_trips %>% # Take the ny_trips data frame.
-select(start_station_id, end_station_id) %>% unique() %>% # Select trip origin and destination (OD) station columns and extract unique OD pairs.
-  left_join(ny_stations %>% select(stn_id, longitude, latitude), by=c("start_station_id"="stn_id")) %>% # Select lat, lon columns from ny_stations and join on the origin column.
+#| echo: true
+#| eval: false
+od_pairs <- ny_trips |> # Take the ny_trips data frame.
+select(start_station_id, end_station_id) %>% unique() |> # Select trip origin and destination (OD) station columns and extract unique OD pairs.
+  left_join(ny_stations |> select(stn_id, longitude, latitude), by=c("start_station_id"="stn_id")) %>% # Select lat, lon columns from ny_stations and join on the origin column.
   rename(o_lon=longitude, o_lat=latitude) %>% # Rename new lat, lon columns -- associate with origin station.
-  left_join(ny_stations %>% select(stn_id, longitude, latitude), by=c("end_station_id"="stn_id")) %>% # Select lat, lon columns from ny_stations and join on the destination column.
-  rename(d_lon=longitude, d_lat=latitude) %>%  # Rename new lat, lon columns -- associate with destination station.
-  rowwise() %>% # For computing distance calculation one row-at-a-time.
-  mutate(dist=geosphere::distHaversine(c(o_lat, o_lon), c(d_lat, d_lon))/1000) %>% # Calculate distance and express in kms.
+  left_join(ny_stations |> select(stn_id, longitude, latitude), by=c("end_station_id"="stn_id")) %>% # Select lat, lon columns from ny_stations and join on the destination column.
+  rename(d_lon=longitude, d_lat=latitude) |>  # Rename new lat, lon columns -- associate with destination station.
+  rowwise() |> # For computing distance calculation one row-at-a-time.
+  mutate(dist=geosphere::distHaversine(c(o_lat, o_lon), c(d_lat, d_lon))/1000) |> # Calculate distance and express in kms.
   ungroup()
 ```
 
@@ -643,7 +640,9 @@ Other *join* functions provided by `dplyr` are in the table below. Rather than d
 ```{r}
 #| label: tbl-table-joins
 #| tbl-cap: "A breakdown of `dplyr` join functions."
-#| echo: FALSE
+#| echo: false
+
+
 
 
 join_functions <- tibble::tibble(
@@ -662,17 +661,22 @@ kbl(join_functions, col.names = NULL) %>% column_spec(1, width = "10em") %>% add
 
 
 ```{r}
+#| include: false
 #| label: fig-plot-dist
 #| fig-cap: "Histograms generated with `ggplot2`. Plot data computed using `dplyr` and `lubridate`"
-#| echo: FALSE
+#| echo: false
 include_graphics("/figs/dist.png", error = FALSE)
 ```
+
+![Histograms generated with `ggplot2`. Plot data computed using `dplyr` and `lubridate`](figs/02/dist.svg){#fig-plot-dist width=100% fig-align="center"}
+
+
 
 From the newly created distance variable, we can calculate the average (mean) trip distance for the 1.9m trips -- 1.6km. This might seem very short, but remember that the  distance calculation is problematic in that these are straight-line distances between pairs of docking stations. Really we should be calculating network distances derived from the cycle network in New York. A separate reason -- discovered when generating a histogram on the `dist` variable -- is that there are a large number of trips (124,403) that start and end at the same docking station. Initially these might seem to be unsuccessful hires -- people failing to undock a bike for example. We could investigate this further by paying attention to the docking stations at which same origin-destination trips occur, as in the code block below.
 
 ```{r}
-#| echo: TRUE
-#| eval: FALSE
+#| echo: true
+#| eval: false
 ny_trips %>%
   filter(start_station_id==end_station_id) %>%
   group_by(start_station_id) %>% summarise(count=n()) %>%
@@ -712,8 +716,8 @@ Effective functions are *short*, perform *single* discrete operations and are *i
 You will recall that in the `ny_trips` table there is a variable called `birth_year`. From this we can derive cyclists' approximate age. Below I have written a function `get_age()` for doing this. The function expects two *arguments*: `yob` -- a year of birth as type `chr`; `yref` -- a reference year. In the *body*, `lubridate`'s `as.period` function is used to calculate the time in years that elapsed, the value that the function *returns*. Once defined, and loaded into the session by being executed, it can be used (as below).
 
 ```{r}
-#| echo: TRUE
-#| eval: FALSE
+#| echo: true
+#| eval: false
 # Function for calculating time elapsed between two dates in years (age).
 get_age <- function(yob, yref) {
     period <- lubridate::as.period(lubridate::interval(yob, yref),unit = "year")
@@ -724,7 +728,7 @@ ny_trips <- ny_trips %>% # Take the ny_trips data frame.
   mutate(
     age=get_age(as.POSIXct(birth_year, format="%Y"), as.POSIXct("2020", format="%Y")) # Calculate age from birth_date.
     )
-````
+```
 
 We can use the two new derived variables -- distance travelled and age --  in our analysis. In Figure \@ref(fig:plot-speeds), we explore how **approximate** travel speeds vary by age, gender and trip distance. The code used to generate the summary data and plot is in the template file. Again the average "speed" calculation should be treated very cautiously as it is based on straight line distances and it is very difficult to select out "utility" from "leisure" trips. I have tried to do the latter by selecting trips that occur only on weekdays and that are made by `Subscriber` cyclists. Additionally, due to the heavy subsetting data become a little volatile for certain age groups and so I've aggregated the age variable into 5-year bands. Collecting more data is probably a good idea.
 
@@ -734,11 +738,15 @@ There are nevertheless some interesting patterns. Men tend to cycle at faster sp
 ```{r}
 #| label: fig-plot-speeds
 #| fig-cap: "Line charts generated with `ggplot2`. Plot data computed using `dplyr` and `lubridate`."
-#| echo: FALSE
-
+#| echo: false
+#| include: false
 
 include_graphics("/figs/speeds.png", error = FALSE)
 ```
+
+![
+#| fig-cap: "Line charts generated with `ggplot2`. Plot data computed using `dplyr` and `lubridate`.](figs/02/speeds.svg){#fig-plot-speeds width=100% fig-align="center"}
+
 
 ### Tidy
 
@@ -747,8 +755,8 @@ The `ny_trips` and `ny_stations` data already comply with the rules for **tidy**
 A quick breakdown of `pivot_longer`:
 
 ```{r}
-#| echo: TRUE
-#| eval: FALSE
+#| echo: true
+#| eval: false
 pivot_longer(
   data,
   cols, # Columns to pivot longer (across rows).
@@ -760,8 +768,8 @@ pivot_longer(
 A quick breakdown of `pivot_wider`:
 
 ```{r}
-#| echo: TRUE
-#| eval: FALSE
+#| echo: true
+#| eval: false
 pivot_wider(
   data,
   names_from, # Column in the long format which contains what will be column names in the wide format.
@@ -772,8 +780,8 @@ pivot_wider(
 In the homework you will be tidying some messy derived tables based on the bikeshare data using both of these functions, but we can demonstrate their purpose in *tidying* the messy `gapminder` data in Table @tbl-gapminder-untidy2. Remember that these data were messy as the observations by gender were spread across the columns:
 
 ```{r}
-#| echo: TRUE
-#| eval: FALSE
+#| echo: true
+#| eval: false
 untidy_wide
 ##   country     year  f_cases m_cases f_population m_population
 ##   <chr>       <chr> <chr>   <chr>   <chr>        <chr>
@@ -788,8 +796,8 @@ untidy_wide
 First we need to gather the problematic columns with `pivot_longer()`.
 
 ```{r}
-#| echo: TRUE
-#| eval: FALSE
+#| echo: true
+#| eval: false
 untidy_wide %>%
   pivot_longer(cols=c(f_cases: m_population), names_to=c("gender_count_type"), values_to=c("counts"))
 
@@ -810,8 +818,8 @@ untidy_wide %>%
 So this has usefully collapsed the dataset by gender, we now have a problem similar to that in Table @tbl-gapminder-untidy1 where observations are spread across the rows -- in this instance `cases` and `population` are better treated as separate variables. This can be fixed by `separating` the `gender_count_type` variables and then spreading the values of the new `count_type` (`cases`, `population`) across the columns. Hopefully you can see how this gets us to the *tidy* `gapminder` data structure in Table @tbl-gapminder-tidy.
 
 ```{r}
-#| echo: TRUE
-#| eval: FALSE
+#| echo: true
+#| eval: false
 untidy_wide %>%
   pivot_longer(cols=c(f_cases: m_population), names_to=c("gender_count_type"), values_to=c("counts")) %>%
   separate(col=gender_count_type, into=c("gender", "count_type"), sep="_")
@@ -853,4 +861,4 @@ untidy_wide %>%
 
 ## Conclusions
 
-Developing the vocabulary and technical skills to systematically describe and organise data is crucial to modern data analysis. This chapter has covered the fundamentals here: that data consist of *observations* and *variables* of different types [@stevens_on_1946] and that in order to work effectively with datasets, especially in a functional way in `R`, these data must be organised according to the rules of *tidy*  data [@wickham_tidy_2014]. Most of the content was dedicated to the techniques that enable these concepts to be operationalised. We covered how to download, transform and reshape a reasonably large set of data from New York's [Citibike]() scheme.  In doing so, we generated insights that might inform further data collection and analysis activity. In the next chapter we will apply and extend this conceptual and technical knowledge as we introduce the fundamentals of visual data analysis and `ggplot2`'s grammar of graphics.
+Developing the vocabulary and technical skills to systematically describe and organise data is crucial to modern data analysis. This chapter has covered the fundamentals here: that data consist of *observations* and *variables* of different types [@stevens_on_1946] and that in order to work effectively with datasets, especially in a functional way in R, these data must be organised according to the rules of *tidy*  data [@wickham_tidy_2014]. Most of the content was dedicated to the techniques that enable these concepts to be operationalised. We covered how to download, transform and reshape a reasonably large set of data from New York's [Citibike]() scheme.  In doing so, we generated insights that might inform further data collection and analysis activity. In the next chapter we will apply and extend this conceptual and technical knowledge as we introduce the fundamentals of visual data analysis and `ggplot2`'s grammar of graphics.
