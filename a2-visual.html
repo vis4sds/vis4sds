@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="generator" content="quarto-0.9.637">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<title>Visualization for Social Data Science - Appendix A — Data Fundamentals</title>
+<title>Visualization for Social Data Science - Appendix B — Visualization Fundamentals</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -84,8 +84,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./a2-visual.html" rel="next">
-<link href="./references.html" rel="prev">
+<link href="./a1-data.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -118,7 +117,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }"><div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">Appendix A — Data Fundamentals</h1>
+      <h1 class="quarto-secondary-nav-title">Appendix B — Visualization Fundamentals</h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -201,12 +200,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./a1-data.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Data Fundamentals</span></a>
+  <a href="./a1-data.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Data Fundamentals</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./a2-visual.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Visualization Fundamentals</span></a>
+  <a href="./a2-visual.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Visualization Fundamentals</span></a>
   </div>
 </li>
     </ul>
@@ -217,22 +216,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
         <nav id="TOC" role="doc-toc"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"> <span class="header-section-number">A.1</span> Introduction</a></li>
-  <li><a href="#component-1-describe-data" id="toc-component-1-describe-data" class="nav-link" data-scroll-target="#component-1-describe-data"> <span class="header-section-number">A.2</span> Component 1: Describe data</a></li>
+<li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"> <span class="header-section-number">B.1</span> Introduction</a></li>
+  <li><a href="#component-1-describe-and-evaluate" id="toc-component-1-describe-and-evaluate" class="nav-link" data-scroll-target="#component-1-describe-and-evaluate"> <span class="header-section-number">B.2</span> Component 1: Describe and evaluate</a></li>
   <li>
-<a href="#component-2-diagnose-data" id="toc-component-2-diagnose-data" class="nav-link" data-scroll-target="#component-2-diagnose-data"> <span class="header-section-number">A.3</span> Component 2: Diagnose data</a>
+<a href="#component-2-reproduce" id="toc-component-2-reproduce" class="nav-link" data-scroll-target="#component-2-reproduce"> <span class="header-section-number">B.3</span> Component 2: Reproduce</a>
   <ul class="collapse">
-<li><a href="#uk-general-election-results-2019" id="toc-uk-general-election-results-2019" class="nav-link" data-scroll-target="#uk-general-election-results-2019"> <span class="header-section-number">A.3.1</span> UK General Election Results 2019</a></li>
-  <li><a href="#uk-general-election-results-2017-and-2019" id="toc-uk-general-election-results-2017-and-2019" class="nav-link" data-scroll-target="#uk-general-election-results-2017-and-2019"> <span class="header-section-number">A.3.2</span> UK General Election Results 2017 and 2019</a></li>
+<li><a href="#scatterplots-with-multiple-encodings" id="toc-scatterplots-with-multiple-encodings" class="nav-link" data-scroll-target="#scatterplots-with-multiple-encodings"> <span class="header-section-number">B.3.1</span> Scatterplots with multiple encodings</a></li>
   </ul>
 </li>
-  <li><a href="#component-3-fix-data" id="toc-component-3-fix-data" class="nav-link" data-scroll-target="#component-3-fix-data"> <span class="header-section-number">A.4</span> Component 3: Fix data</a></li>
-  <li><a href="#component-4-compute-from-data" id="toc-component-4-compute-from-data" class="nav-link" data-scroll-target="#component-4-compute-from-data"> <span class="header-section-number">A.5</span> Component 4: Compute from data</a></li>
-  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/rogerbeecham/vis4gds/edit/master/a1-data.qmd" class="toc-action">Edit this page</a></p></div></div></nav>
+  <li><a href="#component-3-create-a-map" id="toc-component-3-create-a-map" class="nav-link" data-scroll-target="#component-3-create-a-map"> <span class="header-section-number">B.4</span> Component 3: Create a map</a></li>
+  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/rogerbeecham/vis4gds/edit/master/a2-visual.qmd" class="toc-action">Edit this page</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="sec-tasks-data" class="quarto-section-identifier d-none d-lg-block">Appendix A — Data Fundamentals</span></h1>
+<h1 class="title"><span id="sec-tasks-vis" class="quarto-section-identifier d-none d-lg-block">Appendix B — Visualization Fundamentals</span></h1>
 </div>
 
 
@@ -244,7 +241,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </div>
   
 
-</header><p>By the end of this <em>Task</em> you should be able to:</p>
+</header><div class="cell">
+
+</div>
+<p>By the end of this <em>Task</em> you should be able to:</p>
 <div class="callout-note callout callout-style-default no-icon callout-captioned">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -258,203 +258,135 @@ Task outcomes
 <ul class="task-list">
 <li>
 <input type="checkbox" disabled="" checked="">
-Describe data according to its structure and contents.</li>
+Formally describe data graphics according to their visual encoding.</li>
 <li>
 <input type="checkbox" disabled="" checked="">
-Calculate descriptive summaries over datasets.</li>
+Reproduce graphics by writing ggplot2 specifications.</li>
 <li>
 <input type="checkbox" disabled="" checked="">
-Apply high-level functions in <code>dplyr</code> and <code>tidyr</code> for working with data.</li>
+Combine <code>dplyr</code> and conditional statements to prep data for plotting.</li>
 </ul>
 </div>
 </div>
-<section id="introduction" class="level2" data-number="A.1"><h2 data-number="A.1" class="anchored" data-anchor-id="introduction">
-<span class="header-section-number">A.1</span> Introduction</h2>
-<p>This task requires you to apply the concepts and skills developed in the chapter on data fundamentals. Do complete each of the task components and be sure to save your work.</p>
-</section><section id="component-1-describe-data" class="level2" data-number="A.2"><h2 data-number="A.2" class="anchored" data-anchor-id="component-1-describe-data">
-<span class="header-section-number">A.2</span> Component 1: Describe data</h2>
-<p>Complete the data description table below identifying the <strong>measurement level</strong> of each variable in the (fictional) New York bikeshare stations dataset below.</p>
+<section id="introduction" class="level2" data-number="B.1"><h2 data-number="B.1" class="anchored" data-anchor-id="introduction">
+<span class="header-section-number">B.1</span> Introduction</h2>
+<p>This task requires you to apply the concepts and skills developed in the chapter on visualization fundamentals.</p>
+</section><section id="component-1-describe-and-evaluate" class="level2" data-number="B.2"><h2 data-number="B.2" class="anchored" data-anchor-id="component-1-describe-and-evaluate">
+<span class="header-section-number">B.2</span> Component 1: Describe and evaluate</h2>
+<div id="fig-spoke-map" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="figs/03/spoke-map.svg" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">Figure B.1: Map of Butler Con-Lab Swing in 2019 General Election.</figcaption><p></p>
+</figure>
+</div>
+<p>Complete the description table below identifying each <em>data item</em> that is encoded along with its <em>measurement level</em>, <em>visual mark</em> and <em>visual channel</em> and the effectiveness rank, according to <span class="citation" data-cites="munzner_visualization_2014">Munzner (<a href="references.html#ref-munzner_visualization_2014" role="doc-biblioref">2014</a>)</span>, of this encoding.</p>
 <table class="table">
+<colgroup>
+<col style="width: 19%">
+<col style="width: 22%">
+<col style="width: 21%">
+<col style="width: 20%">
+<col style="width: 16%">
+</colgroup>
 <thead><tr class="header">
-<th>Variable name</th>
-<th>Variable value</th>
+<th>Data item</th>
 <th>Measurement level</th>
+<th>Visual mark</th>
+<th>Visual channel</th>
+<th>Rank</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td><code>name</code></td>
-<td>“Central Park”</td>
+<td><code>location</code></td>
+<td><enter here=""></enter></td>
+<td><enter here=""></enter></td>
+<td><enter here=""></enter></td>
 <td><enter here=""></enter></td>
 </tr>
 <tr class="even">
-<td><code>capacity</code></td>
-<td>80</td>
-<td></td>
+<td><code>...</code></td>
+<td><code>...</code></td>
+<td><code>...</code></td>
+<td><code>...</code></td>
+<td><code>...</code></td>
 </tr>
 <tr class="odd">
-<td><code>rank_capacity</code></td>
-<td>45</td>
-<td></td>
+<td><code>...</code></td>
+<td><code>...</code></td>
+<td><code>...</code></td>
+<td><code>...</code></td>
+<td><code>...</code></td>
 </tr>
 <tr class="even">
-<td><code>date_opened</code></td>
-<td>“2014-05-23”</td>
-<td></td>
+<td><code>...</code></td>
+<td><code>...</code></td>
+<td><code>...</code></td>
+<td><code>...</code></td>
+<td><code>...</code></td>
 </tr>
 <tr class="odd">
-<td><code>longitude</code></td>
-<td>-74.00149746</td>
-<td></td>
+<td><code>...</code></td>
+<td><code>...</code></td>
+<td><code>...</code></td>
+<td><code>...</code></td>
+<td><code>...</code></td>
 </tr>
 <tr class="even">
-<td><code>latitude</code></td>
-<td>40.74177603</td>
-<td></td>
+<td><code>...</code></td>
+<td><code>...</code></td>
+<td><code>...</code></td>
+<td><code>...</code></td>
+<td><code>...</code></td>
 </tr>
 </tbody>
-</table></section><section id="component-2-diagnose-data" class="level2" data-number="A.3"><h2 data-number="A.3" class="anchored" data-anchor-id="component-2-diagnose-data">
-<span class="header-section-number">A.3</span> Component 2: Diagnose data</h2>
-<p>Below are two different tables with results from UK General Elections. We will be working with these data in the next session. Identify whether or not each is in <strong>tidy</strong> format <span class="citation" data-cites="wickham_tidy_2014">(<a href="references.html#ref-wickham_tidy_2014" role="doc-biblioref">Wickham 2014</a>)</span>. If they are not, provide a layout for a tidy version. No need to use code here, just edit the markdown table. If you’re struggling to work out how to organise markdown tables, you may wish to use this <a href="https://www.tablesgenerator.com/markdown_tables">tables generator</a>.</p>
-<section id="uk-general-election-results-2019" class="level3" data-number="A.3.1"><h3 data-number="A.3.1" class="anchored" data-anchor-id="uk-general-election-results-2019">
-<span class="header-section-number">A.3.1</span> UK General Election Results 2019</h3>
-<table class="table">
-<thead><tr class="header">
-<th>party</th>
-<th>percent_vote</th>
-<th>num_mps</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td>Conservative</td>
-<td>43.6</td>
-<td>365</td>
-</tr>
-<tr class="even">
-<td>Labour</td>
-<td>32.2</td>
-<td>202</td>
-</tr>
-<tr class="odd">
-<td>Scottish National Party</td>
-<td>3.9</td>
-<td>48</td>
-</tr>
-<tr class="even">
-<td>Liberal Democrats</td>
-<td>11.6</td>
-<td>11</td>
-</tr>
-<tr class="odd">
-<td>Democratic Union Party</td>
-<td>0.8</td>
-<td>9</td>
-</tr>
-</tbody>
-</table></section><section id="uk-general-election-results-2017-and-2019" class="level3" data-number="A.3.2"><h3 data-number="A.3.2" class="anchored" data-anchor-id="uk-general-election-results-2017-and-2019">
-<span class="header-section-number">A.3.2</span> UK General Election Results 2017 and 2019</h3>
-<table class="table">
-<colgroup>
-<col style="width: 27%">
-<col style="width: 21%">
-<col style="width: 15%">
-<col style="width: 20%">
-<col style="width: 15%">
-</colgroup>
-<thead><tr class="header">
-<th>party</th>
-<th>percent_vote_2017</th>
-<th>num_mps_2017</th>
-<th>percent_vote_2019</th>
-<th>num_mps_2019</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td>Conservative</td>
-<td>42.4</td>
-<td>317</td>
-<td>43.6</td>
-<td>365</td>
-</tr>
-<tr class="even">
-<td>Labour</td>
-<td>40.0</td>
-<td>262</td>
-<td>32.2</td>
-<td>202</td>
-</tr>
-<tr class="odd">
-<td>Scottish National Party</td>
-<td>3.0</td>
-<td>35</td>
-<td>3.9</td>
-<td>48</td>
-</tr>
-<tr class="even">
-<td>Liberal Democrats</td>
-<td>7.4</td>
-<td>12</td>
-<td>11.6</td>
-<td>11</td>
-</tr>
-<tr class="odd">
-<td>Democratic Union Party</td>
-<td>0.9</td>
-<td>10</td>
-<td>0.8</td>
-<td>8</td>
-</tr>
-</tbody>
-</table></section></section><section id="component-3-fix-data" class="level2" data-number="A.4"><h2 data-number="A.4" class="anchored" data-anchor-id="component-3-fix-data">
-<span class="header-section-number">A.4</span> Component 3: Fix data</h2>
-<p>In the <a href="">02-template.Rmd</a> file for this session are links to two derived tables (<code>ny_spread_columns</code> and <code>ny_spread_rows</code>) from the New York bikeshare trip data that are not in a tidy format.</p>
-<p>Using functions from <code>dplyr</code> and <code>tidyr</code> reorganise these data so that they conform to the rules of <strong>tidy</strong> data <span class="citation" data-cites="wickham_tidy_2014">(<a href="references.html#ref-wickham_tidy_2014" role="doc-biblioref">Wickham 2014</a>)</span>.</p>
-<p>A candidate tidy organisation of the data is below. Each row is an origin-destination pair for a weekday or weekend, and each variable describes:</p>
-<ul>
-<li>
-<code>o_station</code>: station id of the origin station</li>
-<li>
-<code>d_station</code>: station id of the destination station</li>
-<li>
-<code>wkday</code>: identifies whether the OD pair describes weekday or weekend ny_trips</li>
-<li>
-<code>count</code>: count of trips recorded for that observation (OD pair and weekday/weekend)</li>
-<li>
-<code>dist</code>: total distance (cumulative) in kms of all trips recorded for that observation (OD pair and weekday/weekend)</li>
-<li>
-<code>duration</code>: total duration in minutes (cumulative) of all trips recorded for that observation (OD pair and weekday/weekend)</li>
-</ul>
-<div class="callout-note callout callout-style-default callout-captioned">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-caption-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>You may wish to start with reorganising <code>ny_spread_rows</code> as I deliberately made <code>ny_spread_columns</code> quite challenging. The intention here was to replicate the sorts of arduous data formatting operations that need to be performed when working with real datasets. As always there are different approaches to this, but it can be achieved with use of <code>pivot_longer</code>, <code>pivot_wider</code>, plus a call to <code>separate()</code>. This may be one to post to the course Slack.</p>
-</div>
-</div>
+</table></section><section id="component-2-reproduce" class="level2" data-number="B.3"><h2 data-number="B.3" class="anchored" data-anchor-id="component-2-reproduce">
+<span class="header-section-number">B.3</span> Component 2: Reproduce</h2>
+<p>Write some code for reproducing something similar to the graphic below – a set of histograms of the Swing variable, faceted by region. Place your code into the <a href="">03-template.qmd</a> file for this session.</p>
 <div class="cell">
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## # A tibble: 386,762 x 6</span></span>
-<span><span class="co">##    o_station d_station wkday   count  dist duration</span></span>
-<span><span class="co">##        &lt;int&gt;     &lt;int&gt; &lt;chr&gt;   &lt;int&gt; &lt;dbl&gt;    &lt;dbl&gt;</span></span>
-<span><span class="co">##  1        72       116 weekend     1  1.15     18.2</span></span>
-<span><span class="co">##  2        72       127 weekend    10 18.0     339.</span></span>
-<span><span class="co">##  3        72       128 weekend     2  3.18     69.6</span></span>
-<span><span class="co">##  4        72       146 weekend    12 27.6     402.</span></span>
-<span><span class="co">##  5        72       151 weekend     2  2.87     54.9</span></span>
-<span><span class="co">##  6        72       161 weekend     2  2.52     64.8</span></span>
-<span><span class="co">##  7        72       164 weekend     5 13.3      73.3</span></span>
-<span><span class="co">##  8        72       167 weekend     1  2.07     17.2</span></span>
-<span><span class="co">##  9        72       168 weekend     2  1.70     42.7</span></span>
-<span><span class="co">## 10        72       173 weekend     9  9.59    194.</span></span>
-<span><span class="co">## # … with 386,752 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#######################</span></span>
+<span><span class="co"># Enter your code in the chunk provided.</span></span>
+<span><span class="co">######################</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</section><section id="component-4-compute-from-data" class="level2" data-number="A.5"><h2 data-number="A.5" class="anchored" data-anchor-id="component-4-compute-from-data">
-<span class="header-section-number">A.5</span> Component 4: Compute from data</h2>
-<p>Using <code>dplyr</code> functions, calculate the average distance, duration and speed of trips occurring for each observation. Print out to the Console the top 10 most heavily cycled OD pairs (and their associated summary statistics) separately for weekdays and weekends. You may wish to join on your <code>ny_stations</code> table in order to fetch the station names corresponding to the origin and destination stations.</p>
+<ul>
+<li>Save your plot as a <code>.png</code> file and insert the file as a Figure into your <code>.qmd</code> document (<a href="https://rmd4sci.njtierney.com/figures-tables-captions-.html">guidance here</a>).</li>
+</ul>
+<div id="fig-hist-region" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="figs/03/hist-region.svg" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">Figure B.2: Histograms of Swing variable, grouped by region.</figcaption><p></p>
+</figure>
+</div>
+<section id="scatterplots-with-multiple-encodings" class="level3" data-number="B.3.1"><h3 data-number="B.3.1" class="anchored" data-anchor-id="scatterplots-with-multiple-encodings">
+<span class="header-section-number">B.3.1</span> Scatterplots with multiple encodings</h3>
+<p>Write some code for reproducing something similar to the graphic below – a scatterplot comparing 2017 and 2019 vote shares for Labour. Be sure to include <em>every</em> encoding as it appears in the graphic (e.g.&nbsp;<code>shape</code> and <code>alpha</code> according to whether constituencies flipped allegiance). Hint: you may need to use a <em>conditional statement</em> to generate a variable for emphasising constituencies that flipped parties between 2017 and 2019. Place your code into the <a href="">03-template.qmd</a> file for this session.</p>
+<div class="cell">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#######################</span></span>
+<span><span class="co"># Enter your code in the chunk provided.</span></span>
+<span><span class="co">######################</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>Save your plot as a <code>.png</code> file and insert the file as a Figure into your <code>.qmd</code> document (<a href="https://rmd4sci.njtierney.com/figures-tables-captions-.html">guidance here</a>).</li>
+</ul>
+<div id="fig-scatters-lab" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="figs/03/scatters-lab.svg" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">Figure B.3: Plots of 2019 versus 2017 vote shares.</figcaption><p></p>
+</figure>
+</div>
+</section></section><section id="component-3-create-a-map" class="level2" data-number="B.4"><h2 data-number="B.4" class="anchored" data-anchor-id="component-3-create-a-map">
+<span class="header-section-number">B.4</span> Component 3: Create a map</h2>
+<p>Write some code for reproducing something similar to the graphic below – a map of the estimated Leave:Remain vote margin by Parliamentary Constituency. Note the <a href="https://colorbrewer2.org/#type=diverging&amp;scheme=BrBG&amp;n=3">diverging</a> colour scheme here to distinguish whether the Constituency was majority Leave and Remain – brown or green – and also the <em>size</em> of that majority – the darker the colour, the larger the majority.</p>
+<p>Place your code into the <a href="">03-template.qmd</a> file for this session.</p>
+<div class="cell">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#######################</span></span>
+<span><span class="co"># Enter your code in the chunk provided.</span></span>
+<span><span class="co">######################</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>Save your plot as a <code>.png</code> file and insert the file as a Figure into your <code>.qmd</code> document (<a href="https://rmd4sci.njtierney.com/figures-tables-captions-.html">guidance here</a>).</li>
+</ul>
+<div id="fig-referendum-map" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="figs/03/referendum-map.svg" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">Figure B.4: Map of 2016 EU Referendum vote, estimated by Parliamentary Constituency in GB.</figcaption><p></p>
+</figure>
+</div>
 
 
 </section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
@@ -536,14 +468,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
-      <a href="./references.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">References</span>
+      <a href="./a1-data.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Data Fundamentals</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./a2-visual.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Visualization Fundamentals</span></span> <i class="bi bi-arrow-right-short"></i>
-      </a>
   </div>
 </nav>
 </div> <!-- /content -->
