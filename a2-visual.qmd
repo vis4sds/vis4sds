@@ -30,9 +30,12 @@ This task requires you to apply the concepts and skills developed in the chapter
 #| label: fig-spoke-map
 #| fig-cap: "Map of Butler Con-Lab Swing in 2019 General Election."
 #| echo: false
+#| include: false
 
 include_graphics("/figs/spoke-map.png", error = FALSE)
 ```
+![Map of Butler Con-Lab Swing in 2019 General Election.](figs/03/spoke-map.svg){#fig-spoke-map width=100% fig-align="center"}
+
 
 Complete the description table below identifying each *data item* that is encoded along with its *measurement level*, *visual mark* and *visual channel*  and the effectiveness rank, according to @munzner_visualization_2014, of this encoding.
 
@@ -49,7 +52,7 @@ Complete the description table below identifying each *data item* that is encode
 
 ## Component 2: Reproduce
 
-Write some code for reproducing something similar to the graphic below -- a set of histograms of the Swing variable, faceted by region. Place your code into the [03-template.Rmd]() file for this session.
+Write some code for reproducing something similar to the graphic below -- a set of histograms of the Swing variable, faceted by region. Place your code into the [03-template.qmd]() file for this session.
 
 ```{r}
 #| eval: false
@@ -59,21 +62,23 @@ Write some code for reproducing something similar to the graphic below -- a set 
 ######################
 ```
 
-* Save your plot as a `.png` file and insert the file as a Figure into your `.Rmd` document ([guidance here](https://rmd4sci.njtierney.com/figures-tables-captions-.html)).
+* Save your plot as a `.png` file and insert the file as a Figure into your `.qmd` document ([guidance here](https://rmd4sci.njtierney.com/figures-tables-captions-.html)).
 
 ```{r}
 #| label: fig-hist-region
 #| fig-cap: "Histograms of Swing variable, grouped by region."
 #| echo: false
 #| eval: true
-
+#| include: false
 
 include_graphics("/figs/hist-region.png", error = FALSE)
 ```
 
+![Histograms of Swing variable, grouped by region.](figs/03/hist-region.svg){#fig-hist-region width=100% fig-align="center"}
+
 ### Scatterplots with multiple encodings
 
-Write some code for reproducing something similar to the graphic below -- a scatterplot comparing 2017 and 2019 vote shares for Labour. Be sure to include *every* encoding as it appears in the graphic (e.g. `shape` and `alpha` according to whether constituencies flipped allegiance). Hint: you may need to use a *conditional statement* to generate a variable for emphasising constituencies that flipped parties between 2017 and 2019. Place your code into the [03-template.Rmd]() file for this session.
+Write some code for reproducing something similar to the graphic below -- a scatterplot comparing 2017 and 2019 vote shares for Labour. Be sure to include *every* encoding as it appears in the graphic (e.g. `shape` and `alpha` according to whether constituencies flipped allegiance). Hint: you may need to use a *conditional statement* to generate a variable for emphasising constituencies that flipped parties between 2017 and 2019. Place your code into the [03-template.qmd]() file for this session.
 
 ```{r}
 #| eval: false
@@ -84,7 +89,7 @@ Write some code for reproducing something similar to the graphic below -- a scat
 ######################
 ```
 
-* Save your plot as a `.png` file and insert the file as a Figure into your `.Rmd` document ([guidance here](https://rmd4sci.njtierney.com/figures-tables-captions-.html)).
+* Save your plot as a `.png` file and insert the file as a Figure into your `.qmd` document ([guidance here](https://rmd4sci.njtierney.com/figures-tables-captions-.html)).
 
 
 ```{r}
@@ -92,14 +97,18 @@ Write some code for reproducing something similar to the graphic below -- a scat
 #| fig-cap: "Plots of 2019 versus 2017 vote shares."
 #| echo: false
 #| eval: true
+#| include: false
 
 include_graphics("/figs/scatters-lab.png", error = FALSE)
 ```
+
+![Plots of 2019 versus 2017 vote shares.](figs/03/scatters-lab.svg){#fig-scatters-lab width=100% fig-align="center"}
+
 ## Component 3: Create a map
 
 Write some code for reproducing something similar to the graphic below -- a map of the estimated Leave:Remain vote margin by Parliamentary Constituency. Note the [diverging](https://colorbrewer2.org/#type=diverging&scheme=BrBG&n=3) colour scheme here to distinguish whether the Constituency was majority Leave and Remain  -- brown or green -- and also the *size* of that majority -- the darker the colour, the larger the majority.
 
- Place your code into the [ 03-template.Rmd]() file for this session.
+ Place your code into the [ 03-template.qmd]() file for this session.
 
 ```{r}
 #| eval: false
@@ -109,7 +118,7 @@ Write some code for reproducing something similar to the graphic below -- a map 
 ######################
 ```
 
-* Save your plot as a `.png` file and insert the file as a Figure into your `.Rmd` document ([guidance here](https://rmd4sci.njtierney.com/figures-tables-captions-.html)).
+* Save your plot as a `.png` file and insert the file as a Figure into your `.qmd` document ([guidance here](https://rmd4sci.njtierney.com/figures-tables-captions-.html)).
 
 
 ```{r}
@@ -117,7 +126,8 @@ Write some code for reproducing something similar to the graphic below -- a map 
 #| fig-cap: "Map of 2016 EU Referendum vote, estimated by Parliamentary Constituency in GB."
 #| echo: false
 #| eval: true
-
+#| include: false
 
 include_graphics("/figs/referendum-map.png", error = FALSE)
 ```
+![Map of 2016 EU Referendum vote, estimated by Parliamentary Constituency in GB.](figs/03/referendum-map.svg){#fig-referendum-map width=100% fig-align="center"}

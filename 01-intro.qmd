@@ -14,18 +14,21 @@ By the end of this chapter you should gain the following knowledge and practical
 ::: {.callout-note icon="false"}
 ## Knowledge outcomes
 
--   [x] Appreciate the motivation for this book -- why visualization, why R and why `ggplot2`
+-   [x] Appreciate the motivation for this book: why visualization, why R and why `ggplot2`.
+-   [x] Recognise the characteristics of reproducibile research and the role of *projects* and *computational notebooks* for curating reproducible data analysis products.  
 :::
+
+
 
 ::: {.callout-note icon="false"}
 ## Skills outcomes
 
--   [x] Open `R` using the RStudio Integrated Developer Environment (IDE)
--   [x] Install and enable `R` packages and query package documentation
--   [x] Perform basic calculations via the R Console
--   [x] Render Quarto files
--   [x] Create `R` Projects
--   [x] Read-in datasets from external resources as objects (specifically `tibbles`)
+-   [x] Open `R` using the RStudio Integrated Developer Environment (IDE).
+-   [x] Install and enable `R` packages and query package documentation.
+-   [x] Perform basic calculations via the R Console.
+-   [x] Render Quarto files.
+-   [x] Create `R` Projects.
+-   [x] Read-in datasets from external resources as objects (specifically `tibbles`).
 :::
 
 ## Introduction
@@ -38,7 +41,7 @@ This chapter introduces the *what*, *why* and *how* of the book. An argument is 
 
 It is now taken-for-granted that over the last decade or so new data, new technology and new ways of doing science have transformed how we approach the world's problems. Evidence for this can be seen in the response to the Covid-19 pandemic. Enter [Covid19 github](https://www.google.com/search?q=covid-19+github&rlz=1C5CHFA_enGB632GB632&oq=covid-19+github&aqs=chrome..69i57j69i60l3.5575j0j1&sourceid=chrome&ie=UTF-8) into a search and you'll be confronted with hundreds of repositories demonstrating how an ever-expanding array of data related to the pandemic can be collected, processed and analysed. *Data Science* is a term used widely to capture this shift.
 
-Since gaining traction in the corporate world, the term Data Science has been somewhat stretched, but it has its origins in the work of John Tukey's *The Future of Data Analysis* [-@tukey_future_1962]. Drawing on this, and a survey of more recent work, @donoho_50_2017 neatly identifies six key facets that a Data Science discipline might encompass[^01-intro-1]:
+Since gaining traction in the corporate world, the term Data Science has been somewhat stretched, but it has its origins in the work of John Tukey's *The Future of Data Analysis* [-@tukey_future_1962]. Drawing on this, and a survey of more recent work, @donoho_50_2017 identifies six key facets that a Data Science discipline might encompass[^01-intro-1]:
 
 [^01-intro-1]: For an excellent precis and interpretation of this for geographers and social scientists, see @arribas_geography_2018.
 
@@ -51,9 +54,11 @@ Since gaining traction in the corporate world, the term Data Science has been so
 
 Glancing at this list, *data visualization* could be interpreted as a single facet of data science process -- something that happens after data gathering, preparation, exploration, but before modelling. Through this book you'll learn, rather, that data visualization is intrinsic to, and should inform, each of these activities.
 
-Let's develop this idea by asking why data visualizations are used in the first place. In her book *Visualization Analysis and Design*, Tamara @munzner_visualization_2014 considers how humans and computers interface in the decision-making process. She makes the point that data visualization is ultimately about connecting people with data in order to make decisions -- or to install humans in a 'decision-making-loop'. There are very occasionally decision-making loops that are entirely computational and where an automated solution can be rolled out. Most situations, however, require some form of human intervention.
+Let's develop this idea by exploring why data visualizations are used in the first place. The most commonly-cited case for the use of visualization in data anaysis is [Anscombe's quartet](https://en.wikipedia.org/wiki/Anscombe%27s_quartet). This consists of four datasets, each containing eleven observations and two variables for each observation. The data are synthetic, but let's say that they are the weight and height of independent samples taken from a population of postgraduate students studying Social Data Science. Presented with a new dataset it makes sense to compute some summaries, and doing so we observe that the data appear identical -- they contain the same means, variances and strong positive correlation coefficient (@fig-anscombe-data). This seems appropriate since the data are measuring individuals' weight and height. Although there may be some variation, we'd expect taller students to be heavier. Given these statistical summaries we can be assured that we are drawing samples from the same population of (Data Science) students.
 
-In Statistics textbooks the most commonly-cited example demonstrating problems with relying solely on computation, and so for the use of visualization, is [Anscombe's quartet](https://en.wikipedia.org/wiki/Anscombe%27s_quartet). This consists of four datasets, each containing eleven observations and two variables for each observation. The data are synthetic, but let's say that they are the weight and height of independent samples taken from a population of postgraduate students studying Social Data Science. Presented with a new dataset it makes sense to compute some summaries and doing so, we observe that the data appear identical -- they contain the same means, variances and strong positive correlation coefficient (@fig-anscombe-data). This seems appropriate since the data are measuring individuals' weight and height. Although there may be some variation, we'd expect taller students to be heavier. Given these statistical summaries we can be assured that we are drawing samples from the same population of (Data Science) students.
+<!-- In her book *Visualization Analysis and Design*, Tamara @munzner_visualization_2014 considers how humans and computers interface in the decision-making process. She makes the point that data visualization is ultimately about connecting people with data in order to make decisions -- or to install humans in a 'decision-making-loop'. There are very occasionally decision-making loops that are entirely computational and where an automated solution can be rolled out. Most situations, however, require some form of human intervention.
+
+The most commonly-cited example demonstrating problems with relying solely on computation, and so for the use of visualization, is --> 
 
 ```{r}
 #| eval: true
@@ -64,10 +69,10 @@ In Statistics textbooks the most commonly-cited example demonstrating problems w
 knitr::include_graphics("/figs/anscombe_data.png", error = FALSE)
 ```
 
- ![Data from Anscombe's quartet](figs/01/anscombe_data.svg){#fig-anscombe-data width=100% fig-align="center"}
+ ![Data from Anscombe's quartet](figs/01/anscombe_data.svg){#fig-anscombe-data width=95% fig-align="center"}
 
 
-Laying out the data in a meaningful way, horizontally according to *weight* ($x$) and vertically according to the *height* ($y$) to form a scatterplot, we quickly see that whilst these data contain the same statistical properties they are very different. Only `dataset #1` now looks plausible if it were truly a sample of weights and heights drawn from a population of students.
+Laying out the data in a meaningful way, horizontally according to *weight* ($x$) and vertically according to the *height* ($y$) to form a scatterplot, we quickly see that whilst these data contain the same high-level statistical properties they are very different. Only `dataset #1` now looks plausible if it were truly a sample of weights and heights drawn from a population of students.
 
 ```{r}
 #| eval: true
@@ -91,7 +96,7 @@ Geographic context, for example, is undoubtedly challenging to capture numerical
 ::: {.callout-tip icon="false"}
 ## Task
 
-Watch [Jo Wood's TEDx](https://www.youtube.com/embed/FaRBUnO5PZI) talk demonstrating how visual techniques can be used to analyse urban travel behaviours. In the video Jo argues that bikeshare schemes can help democratise cycling, but also for their potential contributions to research -- he briefly contrasts new, passively collected data sets with more "traditional" actively collected data for analysing how people move around cities. A compelling case is then made for the use of visualization to support analysis of these new forms behavioural datasets.
+Watch [Jo Wood's TEDx](https://www.youtube.com/embed/FaRBUnO5PZI) talk demonstrating how visual techniques can be used to analyse urban travel behaviours. In the video Jo argues that bikeshare schemes can help democratise cycling, but also for their potential contributions to research -- he briefly contrasts new, passively collected data sets with more "traditional" actively collected data for analysing how people move around cities. A compelling case is then made for the use of visualization to support analysis of these new forms of behavioural data.
 :::
 
 ### What vis4sds?
@@ -113,11 +118,11 @@ There is already a rich and impressive set of open resources practically introdu
 
 #### R for modern data analysis
 
-All data collection, analysis and reporting activity will be completed using [R](https://www.r-project.org/) and the [RStudio](https://rstudio.com/) [Integrated Development Environment](https://en.wikipedia.org/wiki/Integrated_development_environment) (IDE). Released as open source software as part of a research project in 1995, for some time R was the preserve of academics. From 2010s onwards, the R community expanded rapidly and along with [Python](https://www.python.org/) is regarded as the key technology for doing data analysis.
+All data collection, analysis and reporting activity will be completed using [R](https://www.r-project.org/). Released as open source software as part of a research project in 1995, for some time R was the preserve of academics. From 2010s onwards, the R community expanded rapidly and along with [Python](https://www.python.org/) is regarded as the key technology for doing data analysis.
 
 There are many benefits that come from being fully open-source, with a critical mass of users. Firstly, there is an array of online fora, tutorials and code examples from which to learn. Second, with such a large community, there are numerous expert R users who themselves contribute by developing *packages* that extend its use.
 
-Of particular importance is the [`tidyverse`](http://www.tidyverse.org) package. This is a set of packages for doing data science authored by the software development team at [RStudio](https://rstudio.com/). `tidyverse` packages share a principled underlying philosophy, syntax and documentation. Contained within the `tidyverse` is its data visualization package, [`ggplot2`](https://ggplot2.tidyverse.org/). This package predates the `tidyverse` and is one of the most widely-used toolkits for generating data graphics. As with other heavily used visualization toolkits ([`Tableau`](https://www.tableau.com/en-gb), [`vega-lite`](https://vega.github.io/vega-lite/)) it is inspired by @wilkinson_grammar_1999's [The Grammar of Graphics](https://www.springer.com/gp/book/9780387245447), the `gg` in `ggplot2` stands for Grammar of Graphics. Understanding the design principles behind the *Grammar of Graphics* (and `tidyverse`) is necessary for modern data analysis and so we will cover this in detail in [Chapter -@sec-visual].
+Of particular importance is the [`tidyverse`](http://www.tidyverse.org) package. This is a set of packages for doing data science authored by the software development team at [Posit](https://posit.co/). `tidyverse` packages share a principled underlying philosophy, syntax and documentation. Contained within the `tidyverse` is its data visualization package, [`ggplot2`](https://ggplot2.tidyverse.org/). This package predates the `tidyverse` and is one of the most widely-used toolkits for generating data graphics. As with other heavily used visualization toolkits ([`Tableau`](https://www.tableau.com/en-gb), [`vega-lite`](https://vega.github.io/vega-lite/)) it is inspired by @wilkinson_grammar_1999's [The Grammar of Graphics](https://www.springer.com/gp/book/9780387245447), the `gg` in `ggplot2` stands for Grammar of Graphics. Understanding the design principles behind the *Grammar of Graphics* (and `tidyverse`) is necessary for modern data analysis and so we will cover this in detail in [Chapter -@sec-visual].
 
 #### Quarto for reproducible research
 
@@ -133,15 +138,15 @@ A reproducible research project should be accompanied with:
 -   code and data that does what it claims (the code works)
 -   code and data that can be justified and explained through proper documentation
 
-If these goals are met, then it may be possible for others to use the code on new and different data to study whether the findings reported in one project might be consistent with another. Or alternatively to use the same data, but update the code to, for example, extend the original analysis; to perform a re-analysis. This model -- generate findings, test for replicability in new contexts and re-analysis -- is how knowledge development has always worked. However, to achieve this the data and procedures on which findings are generated must be made open and transparent.
+If these goals are met, then it may be possible for others to use the code on new and different data to study whether the findings reported in one project might be consistent with another. Or alternatively to use the same data, but update the code to extend the original analysis. This model -- generate findings, test for replicability in new contexts and re-analysis -- is how knowledge development has always worked. However, to achieve this the data and procedures on which findings are generated must be made open and transparent.
 
-In this setting, traditional proprietary data analysis software that support point-and-click interaction are problematic. First, whilst these software may rely on the sorts of packages and libraries with bundled code for implementing statistical procedures, those libraries are closed. It is not possible, and therefore less common, for the researcher to fully interrogate into the underlying processes that are being implemented and the results need to be taken more or less on faith. Second, but probably most significantly (for us), it would be tedious to make notes describing all interactions performed when working with a dataset in SPSS or ArcGIS.
+In this setting, traditional proprietary data analysis software that support point-and-click interaction are problematic. First, while these software may rely on the sorts of packages and libraries with bundled code for implementing statistical procedures, those libraries are closed. It is not possible, and therefore less common, for the researcher to fully interrogate into the underlying processes that are being implemented and the results need to be taken more or less on faith. Second and more prosaicly: it would be tedious to make notes describing all interactions performed when working with a dataset via a point-and-click- interface.
 
-As a declarative programming language, it is very easy to provide such a provenance trail for your workflows in R since this exists in any case in your, preferably well-documented,  analysis scripts. But more importantly, the [Integrated Development Environments](https://en.wikipedia.org/wiki/Integrated_development_environment) (IDEs) through which R (and Python) are most often accessed provide notebook environments that allow users to curate reproducible computational documents that blend *input code*, *explanatory prose* and *outputs*. Thruough the practical exercises in this book, we will prepare these sorts of notebooks using [Quarto](https://quarto.org/).
+As a declarative programming environment, it is very easy to provide such a provenance trail for your workflows in R (with the `tidyverse`) since this exists in any case in your analysis scripts. But also, the [Integrated Development Environments](https://en.wikipedia.org/wiki/Integrated_development_environment) (IDEs) through which R (and Python) are most often accessed provide notebook environments that allow users to curate reproducible computational documents that blend *input code*, *explanatory prose* and *outputs*. Thruough the practical exercises in this book, we will prepare these sorts of notebooks using [Quarto](https://quarto.org/).
 
 ## Techniques
 
-It is anticipated that readers of this book might already have some familiarity with R and the [RStudio](https://www.rstudio.com/) IDE. If not, then this section is designed to get you quickly up-and-running with R and RStudio and to briefly introduce you to Quarto, R scripts and RStudio Projects. The accompanying template file, [01-template.Rmd]() can be downloaded from the book's companion website.
+Readers of this book might already have some familiarity with R and the [RStudio](https://www.rstudio.com/) IDE. If not, then this section is designed to get you quickly up-and-running with R and RStudio and to briefly introduce you to Quarto, R scripts and RStudio Projects. The accompanying template file, [01-template.Rmd]() can be downloaded from the book's companion website.
 
 ### R and RStudio
 
@@ -249,14 +254,14 @@ library(sf)
 ?st_contains()
 ```
 
-Now let's install some of the remaining core packages on which the course depends. Run the block below, which passes a [vector](https://r4ds.had.co.nz/vectors.html) of package names to the `install.packages()` function.
+Now let's install some of the remaining core packages on which this book depends. Run the block below, which passes a [vector](https://r4ds.had.co.nz/vectors.html) of package names to the `install.packages()` function.
 
 ```{r}
 #| echo: true
 #| eval: false
 pkgs <- c(
-  "devtools","here", "quarto","fst","tidyverse",
-  "lubridate", "tidymodels", "gganimate", "ggforce", "distributional", "ggdist"
+  "devtools","here", "quarto","fst","tidyverse", "lubridate", 
+  "tidymodels", "gganimate", "ggforce", "distributional", "ggdist"
 )
 install.packages(pkgs)
 ```
@@ -269,7 +274,9 @@ If you wanted to make use of a package only very occasionally in a single sessio
 
 ### Experiment with Quarto
 
-Quarto documents are suffixed with the extension `.qmd`, are the successor to RMarkdown. They are computational notebooks that blend code with textual explanation and images, and so are a mechanism for supporting literate programming [@knuth_literate_1984]. They resemble  [Markdown](https://en.wikipedia.org/wiki/Markdown), a lightweight language designed to minimise tedious markup tags (`<header></header>`) when preparing HTML documents. The idea is that you trade some flexibility in the formatting of your HTML for ease-of-writing. Working with Quarto documents feels very similar to Markdown. Sections are denoted hierarchically with hashes (`#`, `##`, `###`) and emphasis using `*` symbols (`*emphasis* **added**` reads *emphasis* **added** ). Different from standard Markdown, however, Quarto documents can also contain code chunks to be run when the document is rendered. They are a mechanism for producing reproducible, dynamic and interactive, notebooks. *Dynamic* and reproducible because the outputs may change when there are changes to the underlying data; *Interactive* because they can execute natively not just R code blocks, but also [Jupyter Widgets](https://jupyter.org/widgets), [Shiny](https://shiny.rstudio.com/) and most notably [Observable JS](https://observablehq.com/@observablehq/observables-not-javascript). Each chapter has an accompanying Quarto file. In later sessions you will use these to author computational notebooks that blend code, analysis prose and outputs.
+Quarto documents are suffixed with the extension `.qmd`. They are computational notebooks that blend code with textual explanation and images, and so are a mechanism for supporting literate programming [@knuth_literate_1984]. They resemble  [Markdown](https://en.wikipedia.org/wiki/Markdown), a lightweight language designed to minimise tedious markup tags (`<header></header>`) when preparing HTML documents. The idea is that you trade some flexibility in the formatting of your HTML for ease-of-writing. Working with Quarto documents feels very similar to Markdown. Sections are denoted hierarchically with hashes (`#`, `##`, `###`) and emphasis using `*` symbols (`*emphasis* **added**` reads *emphasis* **added** ). 
+
+Different from standard Markdown, Quarto documents can also contain code chunks to be run when the document is rendered: they are a mechanism for producing reproducible, dynamic and interactive, notebooks. *Dynamic* and reproducible because the outputs may change when there are changes to the underlying data; *Interactive* because they can execute natively not just R code blocks, but also [Jupyter Widgets](https://jupyter.org/widgets), [Shiny](https://shiny.rstudio.com/) and most notably [Observable JS](https://observablehq.com/@observablehq/observables-not-javascript). Each chapter has an accompanying Quarto file. In later chapters you will use these to author computational notebooks that blend code, analysis prose and outputs.
 
 Download the [01-template.qmd]() file for this chapter and open it in RStudio by clicking `File` \> `Open File ...` \> `<your-downloads>/01-template.qmd`. Note that there are two tabs that you can switch between when woring with `.qmd` files. *Source* retains markdown syntax (e.g. `#|##|###` for headings); *Visual* renders these tags and allows you to, for example, perform formatting and build tables through point-and-click utilities.
 
@@ -289,7 +296,7 @@ knitr::include_graphics("/figs/rmarkdown_annotate.png", error = FALSE)
 ![The anatomy of `.qmd` files](figs/01/quarto.png){#fig-quarto-annotate width=100% fig-align="center"}
 
 
-The [YAML](https://en.wikipedia.org/wiki/YAML) section of an `.qmd` file controls how your file is rendered and consists of `key: value` pairs enclosed by `---`. Notice that you can change the output format -- so should you wish you can generate for example `.pdf`, `.docx` files for your reports.
+The [YAML](https://en.wikipedia.org/wiki/YAML) section of an `.qmd` file controls how your file is rendered and consists of `key: value` pairs enclosed by `---`. Notice that you can change the output format to generate for example `.pdf`, `.docx` files for your reports.
 
     ---
     author: "Roger Beecham"
@@ -299,32 +306,34 @@ The [YAML](https://en.wikipedia.org/wiki/YAML) section of an `.qmd` file control
 
 Quarto files are rendered with the *Render* button, annotated in the Figure above. This starts [`pandoc`](https://pandoc.org/) and executes all the code chunks and outputs in the case above an `.html` file. The markdown file can then be converted to many different output formats via [pandoc](https://pandoc.org/).
 
--   **Render** the [01-template.qmd]() file for this chapter by clicking the *Render* button.
+-   Render the [01-template.qmd]() file for this chapter by clicking the *Render* button.
 
 You will notice that code chunks in Quarto can be customised in different ways. This is achieved by populating fields immediately after the curly brackets used to declare the code chunk:
 
-```{r}
+````
+```{r}`r ''`
 #| label: chunk-name
 #| echo: true
 #| eval: false
 
-# Some R code below that is not run (evaluated) but which does appear
+# R that appears below that is not run (evaluated) but which is printed (echoed)
 # in this position when the .qmd doc is rendered.
 ```
+````
 
 A quick overview of the parameters.
 
 -   `label: <chunk-name>`  Chunks can be given distinct names. This is useful for navigating Quarto files. It also supports chaching -- chunks with distinct names are only run once, important if certain chunks take some time to execute.
--   `echo: <true|false>`  Determines whether the code is visible or hidden from the rendered file. If you output file is a data analysis report you may not wish to expose lengthy code chunks as these may disrupt the discursive text that appears outside of the code chunks.
+-   `echo: <true|false>`  Determines whether the code is visible or hidden from the rendered file. If the output file is a data analysis report you may not wish to expose lengthy code chunks as these may disrupt the discursive text that appears outside of the code chunks.
 -   `eval: <true|false>`  Determines whether the code is evaluated (executed). This is useful if you wish to present some code in your document for display purposes.
--   `cache: <true|false>`  Determines where the results from the code chunk are cached.
+-   `cache: <true|false>`  Determines whether the results from the code chunk are cached.
 
 
 
 
 ### R Scripts
 
-Whilst there are obvious benefits to working in `.qmd` documents when doing data analysis, there may be occasions where working in a script is preferable. R scripts are plain text files with the extension `.R`. They are typically used for writing discrete but substantial code blocks that are to be executed. For example, a set of [functions](https://r4ds.had.co.nz/functions.html) that relate to a particular use case might be organised into an R script. These then might be referred to in a data analysis from a `.qmd`, which makes various use of these functions in a similar way as one might import a package. Below is an example script that we will encounter later when creating flow visualizations in R. This script is saved with the file name `bezier_path.R`. If it were stored in a sensible location, like a project's `code` folder, it could be called from an R Markdown file with `source(./code/bezier_path)`. R Scripts can be edited in the same way as Quarto files in RStudio, via the Code Editor pane.
+Whilst there are obvious benefits to working in `.qmd` documents when doing data analysis, there may be occasions where working in a script is preferable. R scripts are plain text files with the extension `.R`. They are typically used for writing discrete but substantial code blocks that are to be executed. For example, a set of [functions](https://r4ds.had.co.nz/functions.html) that relate to a particular use case might be organised into an R script. Those function might then be referred to in a data analysis from a `.qmd` in a similar way as one might import a package. Below is an example script file with helper functions to support flow visualizations in R. The script is saved with the file name `bezier_path.R`. If it were stored in a sensible location, like a project's `code` folder, it could be called from a `.qmd` file with `source(./code/bezier_path)`. R Scripts can be edited in the same way as Quarto files in RStudio, via the Code Editor pane.
 
 ```{r}
 #| echo: true
@@ -371,7 +380,7 @@ get_radians <- function(degrees) {
 }
 ```
 
-To an extent R Scripts are more straightforward than Quarto files in that you don't have to worry about configuring code chunks. They are really useful for quickly developing bits of code. This can be achieved by highlighting over the code that you wish to execute and clicking the `Run` icon at the top of the Code Editor pane or by typing <kbd>ctrl</kbd> + <kbd>rtn</kbd> on Windows, <kbd>⌘</kbd> + <kbd>rtn</kbd> on macOS.
+R Scripts are more straightforward than Quarto files in that you don't have to worry about configuring code chunks. They are really useful for quickly developing bits of code. This can be achieved by highlighting over the code that you wish to execute and clicking the `Run` icon at the top of the Code Editor pane or by typing <kbd>ctrl</kbd> + <kbd>rtn</kbd> on Windows, <kbd>⌘</kbd> + <kbd>rtn</kbd> on macOS.
 
 ### Create an RStudio Project
 
@@ -379,7 +388,7 @@ Throughout the book we will use project-oriented workflows. This is where all fi
 
 You might have noticed that when you open RStudio it automatically *points to* a working directory, likely the home folder for your local machine, denoted with `~/` in the Console. RStudio will by default save any outputs to this folder and will also expect any data you use to be saved there. Clearly if you want to incorporate neat, self-contained project workflows then you will want to organise your work from a dedicated project folder rather than the default home folder for your machine. This can be achieved with the `setwd(<path-to-your-project>)` function. The problem with doing this is that you insert a path which cannot be understood outside of your local machine at the time it was created. This is a real pain. It makes simple things like moving projects around on your machine an arduous task and most importantly it hinders reproducibility if others are to reuse your work.
 
-RStudio Projects are a really excellent feature of the RStudio IDE that resolve these problems. Whenever you load up an RStudio Project, `R` starts up and the working directory is automatically set to the project's root folder. If you were to move the project elsewhere on your machine, or to another machine, a new root is automatically generated -- so RStudio projects ensure that relative paths work.
+RStudio Projects resolve these problems. Whenever you load an RStudio Project, `R` starts up and the working directory is automatically set to the project's root folder. If you were to move the project elsewhere on your machine, or to another machine, a new root is automatically generated -- so RStudio projects ensure that relative paths work.
 
 ```{r}
 #| include: false
@@ -397,7 +406,7 @@ Let's create a new Project for this book:
 -   Select `File` \> `New Project` \> `New Directory`.
 -   Browse to a sensible location and give the project a suitable name. Then click `Create Project`.
 
-You will notice that the top of the Console window now indicates the root for this new project, in my case `~projects/vis4sds`.
+You will notice that the top of the Console window now indicates the root for this new project (`~projects/vis4sds`).
 
 -   In the root of your project, create folders called `reports`, `code`, `data`, `figures`.
 -   Save this session's [01-template.qmd]() file to the `reports` folder.
@@ -416,10 +425,10 @@ vis4sds\
 
 ## Conclusions
 
-Visual data analysis approaches are necessary for exploring complex patterns in data and to make and communicate claims under uncertainty. This is especially true of SDS applications, where:
+Visual data analysis approaches are necessary for exploring complex patterns in data and to make and communicate claims under uncertainty. This is especially true of social data science applications, where:
 
--   datasets are being repurposed for social sciences research for the first time;
+-   datasets are repurposed for social sciences research often for the first time;
 -   contain complex structure and geo-spatial relations that cannot be easily captured by statistical summaries alone;
 -   and, consequently, where the types of questions that can be asked and the techniques deployed to answer them cannot be easily specified in advance.
 
-In this book we will demonstrate this as we explore (Chapter [-@sec-exploratory] and [-@sec-networks]), model under uncertainty (Chapter [-@sec-models]) and communicate (Chapter [-@sec-uncertainty] and [-@sec-storytelling]) with various social science datasets. We will work with both new, large-scale behavioural datasets, as well as more traditional, administrative datasets located within various social science domains: Political Science, Crime Science, Urban and Transport Planning. We will do so using the statistical programming environment `R`, which along with `Python`, is *the* programming environment for modern data analysis. We will make use of various tools and software libraries that form part of the `R` ecosystem -- the `tidyverse` for doing modern data science and Quarto for authoring reproducible research projects.
+In this book we will demonstrate this as we explore (Chapter [-@sec-exploratory] and [-@sec-networks]), model under uncertainty (Chapter [-@sec-models]) and communicate (Chapter [-@sec-uncertainty] and [-@sec-storytelling]) with various social science datasets. We will work with both new, large-scale behavioural datasets, as well as more traditional, administrative datasets located within various social science domains: Political Science, Crime Science, Urban and Transport Planning. We will do so using the statistical programming environment `R`, making use of various tools and software libraries that form part of the `R` ecosystem -- the `tidyverse` for doing modern data science and Quarto for authoring reproducible research projects.

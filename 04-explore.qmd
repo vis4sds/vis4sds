@@ -14,7 +14,7 @@ By the end of this chapter you should gain the following knowledge and practical
 
 ## Knowledge outcomes
 - [x] An appreciation of the exploratory data analysis (EDA) workflow.
-- [x] The main chart types [or *idioms* @munzner_visualization_2014] for summarising variation within- and between- variables.
+- [x] The main chart types [or *idioms* [@munzner_visualization_2014] for summarising variation within- and between- variables.
 - [x] The three strategies that can be used for supporting *comparison* in EDA: juxtaposition, superposition and direct encoding [@gleicher_visual_2011]
 :::
 
@@ -56,7 +56,7 @@ In an Exploratory Data Analysis (EDA), graphical and statistical summaries are v
 #| eval: true
 
 variable_types <- tibble::tibble(
-  Measurement = c("`Nominal`", "`Ordinal`", "`Continuous`", "`Nominal`", "`Ordinal`", "`Continuous`"),
+  Measurement = c("Nominal", "Ordinal", "Continuous", "Nominal", "Ordinal", "Continuous"),
     Statistics = c(
       "mode &#124 entropy",
       "median &#124 percentile",
@@ -78,11 +78,11 @@ variable_types <- tibble::tibble(
 kbl(variable_types,  caption = "Statistics and data graphics that can be used to summarise variation and covariation by variable type.", protect_latex = TRUE, escape=FALSE) %>%
  pack_rows("Within-variable variation", 1, 3, bold=FALSE, label_row_css = "border-bottom: 0px solid;") %>%
  pack_rows("Between-variable variation", 4, 6, bold=FALSE, label_row_css = "border-bottom: 0px solid;") %>%
- column_spec(1, width = "8em")
+ column_spec(1, width = "8em") %>% kable_minimal() %>% column_spec(1, extra_css = "font-family:  Monospace") 
 ```
 You will recall from early statistics classes, usually under the theme *descriptive statistics*, that when summarising within-variable variation, we are interested in a variable's spread or dispersion and its location within this distribution (central tendency). Different statistics can be applied, but a familiar distinction is between measures of central tendency that are or are not robust to outliers (e.g. mode and median versus mean). Correlation statistics are most obviously applied when studying between-variable covariation, but other statistics, such as odds ratios and chi-square tests are commonly used when studying covariation in [contingency tables](https://en.wikipedia.org/wiki/Contingency_table).
 
-Decisions around which statistic to use depend on a variable's measurement-level (e.g. @tab-variable-types). As demonstrated by [Anscombe's quartet](https://en.wikipedia.org/wiki/Anscombe%27s_quartet), statistical summaries can hide important structure, or assume structure that doesn't exist. None of the measures of central tendency in @tab-variable-types would expose whether a variable for instance is multi-modal and only when studying all measures of central tendency and  dispersion together might it be possible to guess at the presence of outliers that could undermine statistical assumptions. It is for this reason that *data visualization* is seen as intrinsic to EDA [@tukey_exploratory_1977].
+Decisions around which statistic to use depend on a variable's measurement-level (e.g. @tbl-variable-types). As demonstrated by [Anscombe's quartet](https://en.wikipedia.org/wiki/Anscombe%27s_quartet), statistical summaries can hide important structure, or assume structure that doesn't exist. None of the measures of central tendency in @tbl-variable-types would expose whether a variable for instance is multi-modal and only when studying all measures of central tendency and  dispersion together might it be possible to guess at the presence of outliers that could undermine statistical assumptions. It is for this reason that *data visualization* is seen as intrinsic to EDA [@tukey_exploratory_1977].
 
 ### Plots for continuous variables
 
