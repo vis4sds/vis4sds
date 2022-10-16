@@ -921,7 +921,7 @@ Note
 </section><section id="count-rows" class="level4" data-number="2.3.3.3"><h4 data-number="2.3.3.3" class="anchored" data-anchor-id="count-rows">
 <span class="header-section-number">2.3.3.3</span> <code>count()</code> rows</h4>
 <p>This might sound a little abstract so let’s use and combine some <code>dplyr</code> functions to generate statistical summaries on the New York bikeshare data.</p>
-<p>First we’ll count the number of trips made in Jun 2020 by gender. <code>dplyr</code> has a convenience function for counting, so we could run the code below, also in the <a href="">02-template.Rmd</a> for this session. The code block is commented to convey what each line achieves.</p>
+<p>First we’ll count the number of trips made in Jun 2020 by gender. <code>dplyr</code> has a convenience function for counting, so we could run the code below, also in the <a href="">02-template.qmd</a> for this chapter. The code block is commented to convey what each line achieves.</p>
 <div class="cell">
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span> <span class="co"># Take the ny_trips data frame.</span></span>
 <span><span class="va">ny_trips</span> <span class="op">|&gt;</span> </span>
@@ -981,9 +981,9 @@ Note
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Take the ny_trips data frame.</span></span>
 <span><span class="va">ny_trips</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="co"># Group by user_type.</span></span>
-<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">user_type</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">user_type</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>    <span class="co"># Count the number of observations per group.</span></span>
-<span>    <span class="fu">summarise</span><span class="op">(</span>count<span class="op">=</span><span class="fu">n</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>    <span class="fu">summarise</span><span class="op">(</span>count<span class="op">=</span><span class="fu">n</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>    <span class="co"># Arrange the grouped and summarised (collapsed) rows </span></span>
 <span>    <span class="co"># according to count. </span></span>
 <span>    <span class="fu">arrange</span><span class="op">(</span><span class="fu">desc</span><span class="op">(</span><span class="va">count</span><span class="op">)</span><span class="op">)</span> </span>
@@ -1049,7 +1049,7 @@ Note
 <span>    <span class="co"># Create a new column identify hod.</span></span>
 <span>    hour<span class="op">=</span><span class="fu">hour</span><span class="op">(</span><span class="va">start_time</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="co"># Group by day, hour, user_type.</span></span>
-<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">user_type</span>, <span class="va">day</span>, <span class="va">hour</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">user_type</span>, <span class="va">day</span>, <span class="va">hour</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="co"># Count the grouped rows.</span></span>
 <span>  <span class="fu">summarise</span><span class="op">(</span>count<span class="op">=</span><span class="fu">n</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">ungroup</span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1217,7 +1217,7 @@ Note
 <span>    <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="va">period</span><span class="op">$</span><span class="va">year</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span></span>
-<span><span class="va">ny_trips</span> <span class="op">&lt;-</span> <span class="va">ny_trips</span> <span class="op">%&gt;%</span> </span>
+<span><span class="va">ny_trips</span> <span class="op">&lt;-</span> <span class="va">ny_trips</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="co"># Calculate age from birth_date.</span></span>
 <span>  <span class="fu">mutate</span><span class="op">(</span></span>
 <span>    age<span class="op">=</span><span class="fu">get_age</span><span class="op">(</span></span>
