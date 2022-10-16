@@ -94,10 +94,10 @@ variable_types <- tibble::tibble(
   )
 )
 
-kbl(variable_types, protect_latex = TRUE, escape=FALSE) %>%
- pack_rows("Categories", 1, 2, bold=FALSE, label_row_css = "border-bottom: 0px solid;") %>%
- pack_rows("Measures", 3, 4, bold=FALSE, label_row_css = "border-bottom: 0px solid;") %>%
- column_spec(c(1,3), width = "8em",  extra_css = "font-family:  Monospace") %>% kable_minimal()
+kbl(variable_types, protect_latex = TRUE, escape=FALSE) |>
+ pack_rows("Categories", 1, 2, bold=FALSE, label_row_css = "border-bottom: 0px solid;") |>
+ pack_rows("Measures", 3, 4, bold=FALSE, label_row_css = "border-bottom: 0px solid;") |>
+ column_spec(c(1,3), width = "8em",  extra_css = "font-family:  Monospace") |> kable_minimal()
 ```
 
 ### Types of observation
@@ -139,7 +139,7 @@ drugs <- tibble::tibble(
   treatment_a = c("--", "16", "3"),
   treatment_b = c("2", "11", "1")
     ) 
-kbl(drugs) %>% kable_minimal()
+kbl(drugs) |> kable_minimal()
 
 drugs2 <- tibble::tibble(
   treatment = c("treatment_a", "treatment_b"),
@@ -147,14 +147,14 @@ drugs2 <- tibble::tibble(
   "Jane Doe" = c("16", "11"),
   "Mary Johnson" = c("3", "1")
     )
-kbl(drugs2) %>% kable_minimal()
+kbl(drugs2) |> kable_minimal()
 
 drugs_tidy <- tibble::tibble(
   person = c("John Smith", "John Smith", "Jane Doe", "Jane Doe", "Mary Johnson", "Mary Johnson"),
   treatment = c("a", "b", "a", "b", "a", "b"),
   result = c("--", "2", "16", "11", "3", "1")
     )
-kbl(drugs_tidy) %>% kable_minimal()
+kbl(drugs_tidy) |> kable_minimal()
 ```
 
 Both untidy tables present the same information unambiguously -- @tbl-drugs (b) is simply @tbl-drugs (a) transposed. However, neither is *tidy* as the observations are spread across both the rows and columns. This means that we need to apply different procedures to extract, perform computations on and visually represent, these data.
@@ -187,7 +187,7 @@ gapminder_tidy <- tibble::tibble(
   cases = c("745", "2666", "37737", "80488", "212258", "213766"),
   pop = c("19987071", "20595360", "172006362", "174504898", "1272915272", "1280428583")
     )
-kbl(gapminder_tidy) %>% kable_minimal()
+kbl(gapminder_tidy) |> kable_minimal()
 
 gapminder_untidy1 <- tibble::tibble(
   country = c("Afghanistan", "Afghanistan", "Afghanistan", "Afghanistan",  "Brazil", "Brazil", "..."),
@@ -195,7 +195,7 @@ gapminder_untidy1 <- tibble::tibble(
   type = c("cases", "pop", "cases", "pop", "cases", "pop", "..."),
   count = c("745", "19987071", "2666", "20595360", "37737", "174504898", "...")
 )
-kbl(gapminder_untidy1) %>% kable_minimal()
+kbl(gapminder_untidy1) |> kable_minimal()
 
 gapminder_untidy2 <- tibble::tibble(
   country = c("Afghanistan", "Afghanistan", "Brazil", "Brazil", "China", "China"),
@@ -205,7 +205,7 @@ gapminder_untidy2 <- tibble::tibble(
   f_pop = c("9993400", "10296280", "86001181", "87251329", "636451250", "640212600"),
   m_pop = c("9993671", "10299080", "86005181", "87253569", "636464022", "640215983")
     )
-kbl(gapminder_untidy2) %>% kable_minimal()
+kbl(gapminder_untidy2) |> kable_minimal()
 ```
 From the *tidy* version of the data, we can identify the *variables* and note that each *observation* is a recorded count of cases and population for a country in a year.
 
@@ -432,7 +432,7 @@ dplyr_verbs <- tibble::tibble(
   )
 )
 
-kbl(dplyr_verbs) %>% column_spec(1, extra_css = "font-family:  Monospace") %>% kable_minimal()
+kbl(dplyr_verbs) |> column_spec(1, extra_css = "font-family:  Monospace") |> kable_minimal()
 ```
 
 [`dplyr`](https://dplyr.tidyverse.org/) is a most important package. It provides a *grammar of data manipulation*, with access to functions that can be variously combined to support most data processing and transformation activity. Once you become familiar with `dplyr` functions (or *verbs*) you will find yourself generating analysis templates to re-use whenever you work on a new dataset.
@@ -455,7 +455,7 @@ Pipes can be easily applied to `dplyr` functions, and the functions of all packa
 
 This might sound a little abstract so let's use and combine some `dplyr` functions to generate statistical summaries on the New York bikeshare data.
 
-First we'll count the number of trips made in Jun 2020 by gender. `dplyr` has a convenience  function for counting, so we could run the code below, also in the [02-template.Rmd]() for this session. The code block is commented to convey what each line achieves.
+First we'll count the number of trips made in Jun 2020 by gender. `dplyr` has a convenience  function for counting, so we could run the code below, also in the [02-template.qmd]() for this chapter. The code block is commented to convey what each line achieves.
 
 ```{r}
 #| echo: true
@@ -489,7 +489,7 @@ aggregate_functions <- tibble::tibble(
     "Many more"
   )
 )
-kbl(aggregate_functions) %>% column_spec(1, extra_css = "font-family:  Monospace") %>% kable_minimal()
+kbl(aggregate_functions) |> column_spec(1, extra_css = "font-family:  Monospace") |> kable_minimal()
 ```
 
 Often you will want to do more than simply counting and you may also want to be more explicit in the way the data frame is *grouped* for computation. We'll demonstrate this here with a more involved analysis of the usage data and with some key aggregate functions (@tbl-aggregate-functions).
@@ -503,9 +503,9 @@ A common workflow is to combine `group_by()` and `summarise()`, and in this case
 # Take the ny_trips data frame.
 ny_trips |> 
   # Group by user_type.
-  group_by(user_type) %>% 
+  group_by(user_type) |> 
     # Count the number of observations per group.
-    summarise(count=n()) %>%
+    summarise(count=n()) |>
     # Arrange the grouped and summarised (collapsed) rows 
     # according to count. 
     arrange(desc(count)) 
@@ -575,7 +575,7 @@ ny_temporal <- ny_trips |>
     # Create a new column identify hod.
     hour=hour(start_time)) |> 
   # Group by day, hour, user_type.
-  group_by(user_type, day, hour) %>% 
+  group_by(user_type, day, hour) |> 
   # Count the grouped rows.
   summarise(count=n()) |> 
   ungroup()
@@ -664,9 +664,9 @@ join_functions <- tibble::tibble(
     "return all rows from x where there are not matching values in y, never duplicate rows of x"
   )
 )
-kbl(join_functions, col.names = NULL) %>% column_spec(1, width = "10em") %>% add_header_above(c("*_join(x, y) ..."=1, " ")) %>%
-column_spec(1, extra_css = "font-family:  Monospace") %>%
-row_spec(0, extra_css = "font-family:  Monospace") %>% kable_minimal()
+kbl(join_functions, col.names = NULL) |> column_spec(1, width = "10em") |> add_header_above(c("*_join(x, y) ..."=1, " ")) |>
+column_spec(1, extra_css = "font-family:  Monospace") |>
+row_spec(0, extra_css = "font-family:  Monospace") |> kable_minimal()
 
 ```
 
@@ -741,7 +741,7 @@ get_age <- function(yob, yref) {
     return(period$year)
 }
 
-ny_trips <- ny_trips %>% 
+ny_trips <- ny_trips |> 
   # Calculate age from birth_date.
   mutate(
     age=get_age(

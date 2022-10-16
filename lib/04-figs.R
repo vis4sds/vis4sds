@@ -92,7 +92,7 @@ density <- plot_data |>
   theme_v_gds() +
   theme(axis.title.x = element_blank(),axis.title.y = element_blank(),  axis.text= element_blank(),   panel.grid.major.y=element_blank(), panel.grid.minor = element_blank()) 
 
-box_plot <- plot_data %>%  
+box_plot <- plot_data |>  
   ggplot(aes(age_of_casualty)) +
   geom_boxplot(colour=site_colours$primary, fill=site_colours$primary, alpha=.2) +
   scale_x_continuous(limits=c(0,100)) +
@@ -115,15 +115,15 @@ plot_data <- ped_veh |>
   filter(!is.na(age_of_casualty)) |>  sample_n(100000)
 
 
-order_type <- plot_data %>% 
-  group_by(vehicle_type) %>%
-  summarise(median=median(age_of_casualty)) %>% arrange(median) %>% pull(vehicle_type)
+order_type <- plot_data |> 
+  group_by(vehicle_type) |>
+  summarise(median=median(age_of_casualty)) |> arrange(median) |> pull(vehicle_type)
 
 
-plot1 <- plot_data %>% mutate(day=lubridate::wday(date, label=TRUE)) %>%
+plot1 <- plot_data |> mutate(day=lubridate::wday(date, label=TRUE)) |>
   mutate(
     vehicle_type=factor(vehicle_type, levels=order_type)
-  ) %>% 
+  ) |> 
   select(age_of_casualty, age_of_driver, vehicle_type) |> 
   pivot_longer(cols=-vehicle_type, names_to="individual_type", values_to="age") |> 
   filter(age>0) |> 
@@ -135,10 +135,10 @@ plot1 <- plot_data %>% mutate(day=lubridate::wday(date, label=TRUE)) %>%
   theme( panel.grid.major.y=element_blank(), panel.grid.minor = element_blank())
 
 
-plot2 <- plot_data %>% mutate(day=lubridate::wday(date, label=TRUE)) %>%
+plot2 <- plot_data |> mutate(day=lubridate::wday(date, label=TRUE)) |>
   mutate(
     vehicle_type=factor(vehicle_type, levels=order_type)
-  ) %>% 
+  ) |> 
   select(age_of_casualty, age_of_driver, vehicle_type) |> 
   pivot_longer(cols=-vehicle_type, names_to="individual_type", values_to="age") |> 
   filter(age>0) |> 
@@ -166,20 +166,20 @@ ggsave(filename=here("figs", "04", "boxplot-by-class.svg"), plot=plot,width=8.5,
 
 
 plot_data_3 <- ped_veh |> 
-  select(accident_index, casualty_type, age_of_casualty, age_of_driver, vehicle_type, datetime, urban_or_rural_area, casualty_imd_decile) %>% 
+  select(accident_index, casualty_type, age_of_casualty, age_of_driver, vehicle_type, datetime, urban_or_rural_area, casualty_imd_decile) |> 
   filter_at(vars(age_of_casualty, age_of_driver), ~ !is.na(.)) |> 
   group_by(accident_index) |> 
-  mutate(age_of_driver=max(age_of_driver)) %>% ungroup |> 
+  mutate(age_of_driver=max(age_of_driver)) |> ungroup |> 
   filter(age_of_driver !=-1, age_of_casualty !=-1)  
 
-plot_data_3 %>% 
+plot_data_3 |> 
   mutate(hod=hour(datetime), 
          is_daytime=case_when(hod < 6 ~ "night",
                               hod < 19 ~ "day",
-                              TRUE ~ "night")) %>% filter(urban_or_rural_area!="Unallocated") %>% 
-  filter(vehicle_type=="Car", urban_or_rural_area=="Urban") %>% 
-  group_by(is_daytime) %>% 
-  sample_n(500) %>% 
+                              TRUE ~ "night")) |> filter(urban_or_rural_area!="Unallocated") |> 
+  filter(vehicle_type=="Car", urban_or_rural_area=="Urban") |> 
+  group_by(is_daytime) |> 
+  sample_n(500) |> 
   ggplot(aes(x=age_of_driver, age_of_casualty)) +
   geom_point(colour=site_colours$primary, alpha=.2)+
   labs(x="age of driver", y="age of pedestrian") +
@@ -187,29 +187,29 @@ plot_data_3 %>%
   theme_v_gds()
 
 
-plot_data_3 %>% 
+plot_data_3 |> 
   mutate(hod=hour(datetime), 
          is_daytime=case_when(hod < 6 ~ "night",
                               hod < 19 ~ "day",
-                              TRUE ~ "night")) %>% filter(urban_or_rural_area!="Unallocated") %>% 
-  # filter(vehicle_type=="Car", urban_or_rural_area=="Urban") %>% 
-  filter(vehicle_type %in% c("Bicycle", "Motorcycle", "Taxi", "Bus"), is_daytime=="day") %>% 
-  group_by(vehicle_type) %>% 
-  sample_n(500) %>% 
+                              TRUE ~ "night")) |> filter(urban_or_rural_area!="Unallocated") |> 
+  # filter(vehicle_type=="Car", urban_or_rural_area=="Urban") |> 
+  filter(vehicle_type %in% c("Bicycle", "Motorcycle", "Taxi", "Bus"), is_daytime=="day") |> 
+  group_by(vehicle_type) |> 
+  sample_n(500) |> 
   summarise(cor(age_of_casualty, age_of_driver))
 
 
-plot <- plot_data_3 %>% 
+plot <- plot_data_3 |> 
   mutate(hod=hour(datetime), 
          is_daytime=case_when(hod < 6 ~ "night",
                               hod < 19 ~ "day",
-                              TRUE ~ "night")) %>% filter(urban_or_rural_area!="Unallocated") %>% 
-  # filter(vehicle_type=="Car", urban_or_rural_area=="Urban") %>% 
-  filter(vehicle_type %in% c("Bicycle", "Motorcycle", "Taxi", "Bus")) %>% 
-  group_by(vehicle_type) %>% 
-  sample_n(500) %>% 
-  ungroup() %>% 
-  mutate(vehicle_type=factor(vehicle_type, levels=c("Bicycle", "Motorcycle", "Bus", "Taxi"))) %>% 
+                              TRUE ~ "night")) |> filter(urban_or_rural_area!="Unallocated") |> 
+  # filter(vehicle_type=="Car", urban_or_rural_area=="Urban") |> 
+  filter(vehicle_type %in% c("Bicycle", "Motorcycle", "Taxi", "Bus")) |> 
+  group_by(vehicle_type) |> 
+  sample_n(500) |> 
+  ungroup() |> 
+  mutate(vehicle_type=factor(vehicle_type, levels=c("Bicycle", "Motorcycle", "Bus", "Taxi"))) |> 
   ggplot(aes(x=age_of_driver, age_of_casualty)) +
   geom_point(colour=site_colours$primary, alpha=.2)+
   geom_smooth(method='lm', colour=site_colours$primary, fill=site_colours$primary, alpha=.1, se=FALSE)+
@@ -223,18 +223,18 @@ plot <- plot_data_3 %>%
   theme_v_gds()
 
 
-plot_data_3 %>% 
+plot_data_3 |> 
   mutate(hod=hour(datetime), 
          is_daytime=case_when(hod < 6 ~ "night",
                               hod < 19 ~ "day",
-                              TRUE ~ "night")) %>% filter(urban_or_rural_area!="Unallocated") %>% 
-  # filter(vehicle_type=="Car", urban_or_rural_area=="Urban") %>% 
-  #filter(vehicle_type %in% c("Bicycle", "Motorcycle", "Taxi", "Bus")) %>% 
-  # filter(casualty_imd_decile==" Most deprived 10%") %>% 
-  group_by(casualty_imd_decile) %>% 
-  sample_n(500) %>% 
-  # ungroup() %>% 
-  mutate(vehicle_type=factor(vehicle_type, levels=c("Bicycle", "Motorcycle", "Bus", "Taxi"))) %>% 
+                              TRUE ~ "night")) |> filter(urban_or_rural_area!="Unallocated") |> 
+  # filter(vehicle_type=="Car", urban_or_rural_area=="Urban") |> 
+  #filter(vehicle_type %in% c("Bicycle", "Motorcycle", "Taxi", "Bus")) |> 
+  # filter(casualty_imd_decile==" Most deprived 10%") |> 
+  group_by(casualty_imd_decile) |> 
+  sample_n(500) |> 
+  # ungroup() |> 
+  mutate(vehicle_type=factor(vehicle_type, levels=c("Bicycle", "Motorcycle", "Bus", "Taxi"))) |> 
   ggplot(aes(x=age_of_driver, age_of_casualty)) +
   geom_point(colour=site_colours$primary, alpha=.2)+
   geom_smooth(method='lm', colour=site_colours$primary, fill=site_colours$primary, alpha=.1, se=FALSE)+
@@ -251,10 +251,10 @@ plot_data_3 %>%
 ggsave(filename=here("figs", "04", "scatter-by-type.png"), plot=plot,width=11, height=4, dpi=300)
 ggsave(filename=here("figs", "04", "scatter-by-type.svg"), plot=plot,width=11, height=4)
 
-bar1 <- plot_data %>% 
-  sample_n(50000) %>% 
-  group_by(vehicle_type) %>% 
-  summarise(count=n()) %>% 
+bar1 <- plot_data |> 
+  sample_n(50000) |> 
+  group_by(vehicle_type) |> 
+  summarise(count=n()) |> 
   ggplot() +
   geom_col(aes(x=vehicle_type, y=count), fill=site_colours$primary)+
   theme_v_gds()+
@@ -262,10 +262,10 @@ bar1 <- plot_data %>%
   theme(panel.grid.major.x=element_blank(), panel.grid.minor = element_blank())
 
 
-bar2 <- plot_data %>%
-  sample_n(50000) %>% 
-  group_by(vehicle_type) %>% 
-  summarise(count=n()) %>% 
+bar2 <- plot_data |>
+  sample_n(50000) |> 
+  group_by(vehicle_type) |> 
+  summarise(count=n()) |> 
   ggplot() +
   geom_col(aes(x=vehicle_type, y=count), fill=site_colours$primary)+
   theme_v_gds()+
@@ -273,10 +273,10 @@ bar2 <- plot_data %>%
   theme(panel.grid.major.y=element_blank(), panel.grid.minor = element_blank()) +
   coord_flip()
 
-bar3 <- plot_data %>% 
-  sample_n(50000) %>% 
-  group_by(vehicle_type) %>% 
-  summarise(count=n()) %>% 
+bar3 <- plot_data |> 
+  sample_n(50000) |> 
+  group_by(vehicle_type) |> 
+  summarise(count=n()) |> 
   ggplot() +
   geom_col(aes(x=reorder(vehicle_type, count), y=count), fill=site_colours$primary)+
   theme_v_gds()+
@@ -295,12 +295,12 @@ ggsave(filename=here("figs", "04", "bars.png"), plot=plot,width=11, height=4.5, 
 ggsave(filename=here("figs", "04", "bars.svg"), plot=plot,width=11, height=4.5)
 
 
-ped_veh %>% sample_n(50000) %>% 
-  select(speed_limit, road_type, light_conditions, weather_conditions, road_surface_conditions) %>% 
-  pivot_longer(cols=c(speed_limit:road_surface_conditions), names_to="context", values_to="context_value") %>% 
-  group_by(context, context_value) %>% 
-  summarise(count=n()) %>% 
-  filter(!is.na(context_value)) %>% 
+ped_veh |> sample_n(50000) |> 
+  select(speed_limit, road_type, light_conditions, weather_conditions, road_surface_conditions) |> 
+  pivot_longer(cols=c(speed_limit:road_surface_conditions), names_to="context", values_to="context_value") |> 
+  group_by(context, context_value) |> 
+  summarise(count=n()) |> 
+  filter(!is.na(context_value)) |> 
   ggplot(aes(x=count,y=context_value))+
   geom_segment(aes(x=0, y=context_value, xend=count, yend=context_value), colour=site_colours$primary)+
   geom_point(colour=site_colours$primary, fill=site_colours$primary, shape=21)+
@@ -309,7 +309,7 @@ ped_veh %>% sample_n(50000) %>%
   facet_grid(context~., scales="free_y", space="free_y")+
   theme(  strip.text.y = element_text(angle=0))
 
-borough_counts <- ped_veh %>% filter(police_force == "Metropolitan Police" | police_force == "City of London", local_authority_district!="London Airport (Heathrow)") %>% 
+borough_counts <- ped_veh |> filter(police_force == "Metropolitan Police" | police_force == "City of London", local_authority_district!="London Airport (Heathrow)") |> 
   mutate(is_inner=if_else(local_authority_district %in% c("Camden",
                                                           "Greenwich",
                                                           "Hackney",
@@ -321,9 +321,9 @@ borough_counts <- ped_veh %>% filter(police_force == "Metropolitan Police" | pol
                                                           "Southwark",
                                                           "Tower Hamlets",
                                                           "Wandsworth",
-                                                          "Westminster", "City of London"), "inner", "outer")) %>% 
-  group_by(local_authority_district) %>% 
-  summarise(count=n(), is_inner=first(is_inner)) %>% 
+                                                          "Westminster", "City of London"), "inner", "outer")) |> 
+  group_by(local_authority_district) |> 
+  summarise(count=n(), is_inner=first(is_inner)) |> 
   ggplot(aes(x=count,y=reorder(local_authority_district, count)))+
   geom_segment(aes(x=0, y=reorder(local_authority_district, count), xend=count, yend=reorder(local_authority_district, count)), colour=site_colours$primary, size=.2)+
   geom_point(colour=site_colours$primary, fill=site_colours$primary, shape=21)+
@@ -333,7 +333,7 @@ borough_counts <- ped_veh %>% filter(police_force == "Metropolitan Police" | pol
   labs(x="crash count", y="")
 
 
-borough_counts_day <- ped_veh %>% filter(police_force == "Metropolitan Police" | police_force == "City of London", local_authority_district!="London Airport (Heathrow)") %>% 
+borough_counts_day <- ped_veh |> filter(police_force == "Metropolitan Police" | police_force == "City of London", local_authority_district!="London Airport (Heathrow)") |> 
   mutate(
     day=lubridate::wday(datetime,label=TRUE),
     hod=lubridate::hour(datetime), 
@@ -355,12 +355,12 @@ borough_counts_day <- ped_veh %>% filter(police_force == "Metropolitan Police" |
                                                      "Tower Hamlets",
                                                      "Wandsworth",
                                                      "Westminster", "City of London"), "inner", "outer")
-  ) %>% 
-  filter(!is.na(day), !is.na(hod)) %>% 
-  group_by(local_authority_district) %>% 
-  mutate(borough_count=n()) %>% ungroup %>% 
-  group_by(local_authority_district, day, period) %>% 
-  summarise(count=n(), borough_count=first(borough_count), prop=count/borough_count, is_inner=first(is_inner)) %>% ungroup %>% 
+  ) |> 
+  filter(!is.na(day), !is.na(hod)) |> 
+  group_by(local_authority_district) |> 
+  mutate(borough_count=n()) |> ungroup |> 
+  group_by(local_authority_district, day, period) |> 
+  summarise(count=n(), borough_count=first(borough_count), prop=count/borough_count, is_inner=first(is_inner)) |> ungroup |> 
   ggplot(aes(x=period,y=reorder(local_authority_district, borough_count), fill=count)) +
   geom_tile(colour="#707070", size=.2) +
   facet_grid(is_inner~day, scales="free_y", space="free_y") +
@@ -392,34 +392,34 @@ facet_grid(context~., scales="free_y", space="free_y")+
   theme(strip.text.y = element_text(angle=0))
 
 # Vehicle-pedestrain crashes, casualties are pedestrians. 
-# vehicle_pedestrians <- crashes_all %>% 
-#   left_join(casualties_all %>% select(accident_index, age_of_casualty, casualty_type, casualty_imd_decile, casualty_severity)) %>% 
-#   left_join(vehicles_all %>% select(accident_index, age_of_driver, vehicle_type)) %>% 
-#   select(accident_index, casualty_type, age_of_casualty, age_of_driver, vehicle_type, datetime, urban_or_rural_area, casualty_imd_decile, casualty_severity) %>% 
-#   group_by(accident_index) %>% 
-#   mutate(age_of_driver=max(age_of_driver), na.rm=TRUE) %>% ungroup %>%
+# vehicle_pedestrians <- crashes_all |> 
+#   left_join(casualties_all |> select(accident_index, age_of_casualty, casualty_type, casualty_imd_decile, casualty_severity)) |> 
+#   left_join(vehicles_all |> select(accident_index, age_of_driver, vehicle_type)) |> 
+#   select(accident_index, casualty_type, age_of_casualty, age_of_driver, vehicle_type, datetime, urban_or_rural_area, casualty_imd_decile, casualty_severity) |> 
+#   group_by(accident_index) |> 
+#   mutate(age_of_driver=max(age_of_driver), na.rm=TRUE) |> ungroup |>
 #   filter(casualty_type=="Pedestrian")  
 
-vehicle_order <- ped_veh %>%
-  group_by(vehicle_type) %>% 
-  summarise(count=n()) %>% arrange(desc(count)) %>% pull(vehicle_type)
+vehicle_order <- ped_veh |>
+  group_by(vehicle_type) |> 
+  summarise(count=n()) |> arrange(desc(count)) |> pull(vehicle_type)
 
-vehicle_severity_cross <- #vehicle_pedestrians %>%
-  ped_veh %>% 
-  group_by(vehicle_type, casualty_severity) %>% 
-  summarise(count=n()) %>% ungroup %>% 
-  mutate(`Vehicle type`=factor(vehicle_type, levels=vehicle_order)) %>%  arrange(`Vehicle type`) %>% 
-  pivot_wider(names_from =  casualty_severity, values_from = count) %>% select(-vehicle_type) %>% rowwise() %>% 
-  mutate(KSI=sum(Fatal, Serious), Slight=Slight) %>% select(`Vehicle type`, KSI, Slight) %>% 
-  mutate(`Row Total` = sum(KSI, Slight)) %>% 
+vehicle_severity_cross <- #vehicle_pedestrians |>
+  ped_veh |> 
+  group_by(vehicle_type, casualty_severity) |> 
+  summarise(count=n()) |> ungroup |> 
+  mutate(`Vehicle type`=factor(vehicle_type, levels=vehicle_order)) |>  arrange(`Vehicle type`) |> 
+  pivot_wider(names_from =  casualty_severity, values_from = count) |> select(-vehicle_type) |> rowwise() |> 
+  mutate(KSI=sum(Fatal, Serious), Slight=Slight) |> select(`Vehicle type`, KSI, Slight) |> 
+  mutate(`Row Total` = sum(KSI, Slight)) |> 
   ungroup()
 
-col_totals <- vehicle_severity_cross %>% summarise_at(vars(KSI:Slight), sum)
+col_totals <- vehicle_severity_cross |> summarise_at(vars(KSI:Slight), sum)
 
-vehicle_severity_cross <- vehicle_severity_cross %>% 
+vehicle_severity_cross <- vehicle_severity_cross |> 
   add_row(`Vehicle type`= "Column Total", 
-          KSI=col_totals %>% pull(KSI), 
-          Slight=col_totals %>% pull(Slight))
+          KSI=col_totals |> pull(KSI), 
+          Slight=col_totals |> pull(Slight))
 
 
 
@@ -427,24 +427,24 @@ write_csv(vehicle_severity_cross, here::here("static","csv","vehicle_severity_cr
 
 vehicle_severity_cross <- read_csv( here::here("static","csv","vehicle_severity_cross.csv"))
 
-kableExtra::kbl(vehicle_severity_cross) %>% row_spec(9, bold=T) %>% column_spec(4,bold = T) 
+kableExtra::kbl(vehicle_severity_cross) |> row_spec(9, bold=T) |> column_spec(4,bold = T) 
 
-vehicle_severity_cross %>% select(-`Row Total`) %>% 
-  pivot_longer(cols=c(KSI:Slight), names_to="severity", values_to="count") %>% 
-  filter(`Vehicle type`!="Column Total") %>% 
-  mutate(vehicle_type=factor(`Vehicle type`, levels=vehicle_order)) %>% 
+vehicle_severity_cross |> select(-`Row Total`) |> 
+  pivot_longer(cols=c(KSI:Slight), names_to="severity", values_to="count") |> 
+  filter(`Vehicle type`!="Column Total") |> 
+  mutate(vehicle_type=factor(`Vehicle type`, levels=vehicle_order)) |> 
   ggplot(aes(x=count, y=fct_rev(vehicle_type))) +
   geom_col(fill=site_colours$primary)+
   theme_v_gds()+
   labs(y="vehicle type", x="crash count")+
   theme(panel.grid.major.y=element_blank(), panel.grid.minor = element_blank())
 
-bar_freq <- vehicle_severity_cross %>% select(-`Row Total`) %>% 
-  pivot_longer(cols=c(KSI:Slight), names_to="severity", values_to="count") %>% 
-  filter(`Vehicle type`!="Column Total") %>% 
+bar_freq <- vehicle_severity_cross |> select(-`Row Total`) |> 
+  pivot_longer(cols=c(KSI:Slight), names_to="severity", values_to="count") |> 
+  filter(`Vehicle type`!="Column Total") |> 
   mutate(
     vehicle_type=factor(`Vehicle type`, levels=vehicle_order),
-    severity=factor(severity, levels=c("Slight", "KSI"))) %>%
+    severity=factor(severity, levels=c("Slight", "KSI"))) |>
   ggplot(aes(x=count, y=fct_rev(vehicle_type))) +
   geom_col(aes(fill=severity))+
   theme_v_gds()+
@@ -455,23 +455,23 @@ bar_freq <- vehicle_severity_cross %>% select(-`Row Total`) %>%
   labs(subtitle="stacked bar")
 
 
-vehicle_severity_cross %>% select(-`Row Total`) %>% 
-  pivot_longer(cols=c(KSI:Slight), names_to="severity", values_to="count") %>% 
-  filter(`Vehicle type`!="Column Total") %>% 
+vehicle_severity_cross |> select(-`Row Total`) |> 
+  pivot_longer(cols=c(KSI:Slight), names_to="severity", values_to="count") |> 
+  filter(`Vehicle type`!="Column Total") |> 
   mutate(
     vehicle_type=factor(`Vehicle type`, levels=vehicle_order),
-    severity=factor(severity, levels=c("Slight", "KSI"))) %>% 
-  pivot_wider(names_from=severity, values_from = count) %>% 
+    severity=factor(severity, levels=c("Slight", "KSI"))) |> 
+  pivot_wider(names_from=severity, values_from = count) |> 
   mutate(rate=KSI/(KSI+Slight))
 
 
 
-bar_prop <- vehicle_severity_cross %>% select(-`Row Total`) %>% 
-  pivot_longer(cols=c(KSI:Slight), names_to="severity", values_to="count") %>% 
-  filter(`Vehicle type`!="Column Total") %>% 
+bar_prop <- vehicle_severity_cross |> select(-`Row Total`) |> 
+  pivot_longer(cols=c(KSI:Slight), names_to="severity", values_to="count") |> 
+  filter(`Vehicle type`!="Column Total") |> 
   mutate(
     vehicle_type=factor(`Vehicle type`, levels=vehicle_order),
-    severity=factor(severity, levels=c("Slight", "KSI"))) %>%
+    severity=factor(severity, levels=c("Slight", "KSI"))) |>
   ggplot(aes(x=count, y=fct_rev(vehicle_type))) +
   geom_col(aes(fill=severity), position="fill")+
   annotate("segment", x=.24, xend=.24, y=0.4, yend=8.6, colour="#a50f15")+
@@ -488,14 +488,14 @@ bar_prop <- vehicle_severity_cross %>% select(-`Row Total`) %>%
 devtools::install_github("haleyjeppson/ggmosaic")
 
 
-mosaic <- #vehicle_pedestrians %>% group_by(casualty_severity) %>% 
-  ped_veh %>% group_by(casualty_severity) %>% 
+mosaic <- #vehicle_pedestrians |> group_by(casualty_severity) |> 
+  ped_veh |> group_by(casualty_severity) |> 
   mutate(
     vehicle_type=factor(vehicle_type, levels=vehicle_order),
     severity=if_else(casualty_severity=="Slight", "Slight", "KSI")
-  ) %>% ungroup %>% 
-  select(vehicle_type, severity) %>%
-  mutate(vehicle_type=fct_rev(vehicle_type)) %>% 
+  ) |> ungroup |> 
+  select(vehicle_type, severity) |>
+  mutate(vehicle_type=fct_rev(vehicle_type)) |> 
   ggplot() +
   geom_mosaic(aes(x=product(vehicle_type), fill=severity, colour=severity, divider = "vspine"), offset = 0.008, alpha=1)+
   scale_fill_manual(values=c("#de2d26","#fee0d2"))+
@@ -504,8 +504,8 @@ mosaic <- #vehicle_pedestrians %>% group_by(casualty_severity) %>%
   coord_flip()
 
 # annotate labels
-plot_data <- ggplot_build(mosaic)$data %>% as.data.frame() %>%
-  group_by(x__vehicle_type) %>%
+plot_data <- ggplot_build(mosaic)$data |> as.data.frame() |>
+  group_by(x__vehicle_type) |>
   summarise(xmin=min(xmin),xmax=max(xmax), ymin=min(ymin),ymax=max(ymax),
             count=sum(.wt))
 
@@ -533,23 +533,23 @@ ggsave(filename=here("figs", "04", "bars-assoc.svg"), plot=plot,width=11, height
 
 
 vehicle_severity_cross <- readr::read_csv(here::here("static","csv","vehicle_severity_cross.csv"))
-kbl(vehicle_severity_cross, caption = "Pedestrian casualties by vehicle involved and injury severity.") %>% row_spec(9, bold=T) %>% column_spec(4,bold = T)
+kbl(vehicle_severity_cross, caption = "Pedestrian casualties by vehicle involved and injury severity.") |> row_spec(9, bold=T) |> column_spec(4,bold = T)
 
 
 # L O N D O N 
 
-vehicle_order <- ped_veh %>% filter(local_authority_district=="Westminster") %>% 
-  group_by(vehicle_type) %>% 
-  summarise(count=n()) %>% arrange(desc(count)) %>% pull(vehicle_type)
+vehicle_order <- ped_veh |> filter(local_authority_district=="Westminster") |> 
+  group_by(vehicle_type) |> 
+  summarise(count=n()) |> arrange(desc(count)) |> pull(vehicle_type)
 
 
-mosaic <- ped_veh %>% filter(local_authority_district=="Westminster") %>% 
+mosaic <- ped_veh |> filter(local_authority_district=="Westminster") |> 
   mutate(
     is_weekend=if_else(day_of_week %in% c("Saturday", "Sunday"), "weekend", "weekday"),
     vehicle_type=factor(vehicle_type, levels=vehicle_order)
-    ) %>% 
-  select(vehicle_type, is_weekend) %>%
-  mutate(vehicle_type=fct_rev(vehicle_type)) %>% 
+    ) |> 
+  select(vehicle_type, is_weekend) |>
+  mutate(vehicle_type=fct_rev(vehicle_type)) |> 
   ggplot() +
   geom_mosaic(aes(x=product(vehicle_type), fill=is_weekend, colour=is_weekend, divider = "vspine"), offset = 0.008, alpha=1)+
   scale_fill_manual(values=c("#377eb8","#ff7f00"))+
@@ -558,8 +558,8 @@ mosaic <- ped_veh %>% filter(local_authority_district=="Westminster") %>%
   coord_flip()
 
 # annotate labels
-plot_data <- ggplot_build(mosaic)$data %>% as.data.frame() %>%
-  group_by(x__vehicle_type) %>%
+plot_data <- ggplot_build(mosaic)$data |> as.data.frame() |>
+  group_by(x__vehicle_type) |>
   summarise(xmin=min(xmin),xmax=max(xmax), ymin=min(ymin),ymax=max(ymax),
             count=sum(.wt))
 
@@ -575,18 +575,18 @@ westminster  <- mosaic +
   labs(title="Westminster", x="", y="")
 
 
-vehicle_order <- ped_veh %>% filter(local_authority_district=="Harrow") %>% 
-  group_by(vehicle_type) %>% 
-  summarise(count=n()) %>% arrange(desc(count)) %>% pull(vehicle_type)
+vehicle_order <- ped_veh |> filter(local_authority_district=="Harrow") |> 
+  group_by(vehicle_type) |> 
+  summarise(count=n()) |> arrange(desc(count)) |> pull(vehicle_type)
 
 
-mosaic <- ped_veh %>% filter(local_authority_district=="Harrow") %>% 
+mosaic <- ped_veh |> filter(local_authority_district=="Harrow") |> 
   mutate(
-    is_weekend=if_else(day_of_week %in% c("Saturday", "Sunday"), "weekend", "weekday")) %>% 
+    is_weekend=if_else(day_of_week %in% c("Saturday", "Sunday"), "weekend", "weekday")) |> 
     #,
-    #vehicle_type=fct_rev(vehicle_type)) %>% 
-  select(vehicle_type, is_weekend) %>%
-  mutate(vehicle_type=fct_rev(vehicle_type)) %>% 
+    #vehicle_type=fct_rev(vehicle_type)) |> 
+  select(vehicle_type, is_weekend) |>
+  mutate(vehicle_type=fct_rev(vehicle_type)) |> 
   ggplot() +
   geom_mosaic(aes(x=product(vehicle_type), fill=is_weekend, colour=is_weekend, divider = "vspine"), offset = 0.008, alpha=1)+
   scale_fill_manual(values=c("#377eb8","#ff7f00"))+
@@ -596,8 +596,8 @@ mosaic <- ped_veh %>% filter(local_authority_district=="Harrow") %>%
 
 
 # annotate labels
-plot_data <- ggplot_build(mosaic)$data %>% as.data.frame() %>%
-  group_by(x__vehicle_type) %>%
+plot_data <- ggplot_build(mosaic)$data |> as.data.frame() |>
+  group_by(x__vehicle_type) |>
   summarise(xmin=min(xmin),xmax=max(xmax), ymin=min(ymin),ymax=max(ymax),
             count=sum(.wt))
 
@@ -623,57 +623,57 @@ ggsave(filename="./static/class/04-class_files/mosaic_harrow_westminster.png", p
 
 
 
-vehicle_order <- ped_veh %>% filter(police_force=="Metropolitan Police" | police_force=="City of London") %>% 
-  group_by(vehicle_type) %>% 
-  summarise(count=n()) %>% arrange(desc(count)) %>% pull(vehicle_type)
+vehicle_order <- ped_veh |> filter(police_force=="Metropolitan Police" | police_force=="City of London") |> 
+  group_by(vehicle_type) |> 
+  summarise(count=n()) |> arrange(desc(count)) |> pull(vehicle_type)
 
-ped_veh <- ped_veh %>% mutate(vehicle_type=factor(vehicle_type, levels = vehicle_order))
+ped_veh <- ped_veh |> mutate(vehicle_type=factor(vehicle_type, levels = vehicle_order))
 
 # Upload london_squared layout: https://aftertheflood.com/projects/future-cities-catapult/
-london_squared <- read_csv(here("static", "csv","london_squared.csv")) %>% select(-panel)
+london_squared <- read_csv(here("static", "csv","london_squared.csv")) |> select(-panel)
 
-london_squared <- ped_veh %>% select(local_authority_district) %>% 
-  inner_join(london_squared, by=c("local_authority_district"="authority")) %>%
-  filter(!is.na(fX)) %>%
-  group_by(BOR, fX, fY, local_authority_district) %>%
-  summarise(bor_total=n()) %>%
+london_squared <- ped_veh |> select(local_authority_district) |> 
+  inner_join(london_squared, by=c("local_authority_district"="authority")) |>
+  filter(!is.na(fX)) |>
+  group_by(BOR, fX, fY, local_authority_district) |>
+  summarise(bor_total=n()) |>
   ungroup()
 
 
-t <- ped_veh %>%
-  inner_join(london_squared, by=c("local_authority_district"="authority")) %>%
-  filter(!is.na(fX)) %>%
-  group_by(BOR) %>%
-  mutate(bor_total=n()) %>%
-  ungroup() %>%
+t <- ped_veh |>
+  inner_join(london_squared, by=c("local_authority_district"="authority")) |>
+  filter(!is.na(fX)) |>
+  group_by(BOR) |>
+  mutate(bor_total=n()) |>
+  ungroup() |>
   mutate(
     bor_total_rescale=scales::rescale(bor_total, to=c(0.2, 0.9),from=c( min(bor_total), max(bor_total))),
     severity=if_else(casualty_severity=="Slight", "Slight", "KSI")
-  ) %>%
-  group_by(BOR, severity, vehicle_type) %>%
+  ) |>
+  group_by(BOR, severity, vehicle_type) |>
   summarise(
     panel=first(panel),
     bor_total_rescale=first(bor_total_rescale),
-    bor_total=first(bor_total)) %>% ungroup %>%
+    bor_total=first(bor_total)) |> ungroup |>
   arrange(panel)
 
 
 # Create record of all combinations of vehicle_type and casualty_type.
-vt <- t %>% pull(vehicle_type) %>%  unique
-cs <- t %>% pull(severity) %>%  unique
-bor <- t %>% pull(BOR) %>% unique
+vt <- t |> pull(vehicle_type) |>  unique
+cs <- t |> pull(severity) |>  unique
+bor <- t |> pull(BOR) |> unique
 temp_t <- tibble(
   vehicle_type=rep(rep(vt,each=length(cs), times=1),times=33),
   severity=rep(rep(cs,each=length(vt), times=1),times=33),
   BOR=rep(bor, 16)
 )
 
-mosaic <- ped_veh %>%
- left_join(london_squared) %>%
- filter(!is.na(BOR)) %>% 
+mosaic <- ped_veh |>
+ left_join(london_squared) |>
+ filter(!is.na(BOR)) |> 
   mutate(
     is_weekend=if_else(day_of_week %in% c("Saturday", "Sunday"), "weekend", "weekday"),
-    vehicle_type=fct_rev(vehicle_type)) %>% 
+    vehicle_type=fct_rev(vehicle_type)) |> 
   ggplot() +
   geom_mosaic(aes(x=product(is_weekend, vehicle_type), fill=is_weekend, colour=is_weekend), offset = 0.008, alpha=1)+
   scale_fill_manual(values=c("#377eb8","#ff7f00"))+
@@ -686,12 +686,12 @@ mosaic <- ped_veh %>%
     ) +
   coord_flip()
 
-plot_data <- ggplot_build(mosaic)$data %>% as.data.frame() %>% 
-  group_by(PANEL) %>%
-  mutate(bor_total=sum(.wt)) %>% ungroup() %>%
-  group_by(PANEL, x__vehicle_type) %>%
+plot_data <- ggplot_build(mosaic)$data |> as.data.frame() |> 
+  group_by(PANEL) |>
+  mutate(bor_total=sum(.wt)) |> ungroup() |>
+  group_by(PANEL, x__vehicle_type) |>
   summarise(xmin=min(xmin),xmax=max(xmax), ymin=min(ymin),ymax=max(ymax),
-            vehicle_prop_bor=sum(.wt)/sum(bor_total), bor_total=min(bor_total)) %>% ungroup() %>% 
+            vehicle_prop_bor=sum(.wt)/sum(bor_total), bor_total=min(bor_total)) |> ungroup() |> 
   left_join(london_squared)
 
 borough_alpha <- mosaic + 
@@ -715,12 +715,12 @@ borough_alpha <- mosaic +
   ) 
 
 
-mosaic <- ped_veh %>%
-  inner_join(london_squared) %>%
-  filter(!is.na(BOR)) %>% 
+mosaic <- ped_veh |>
+  inner_join(london_squared) |>
+  filter(!is.na(BOR)) |> 
   mutate(
     is_weekend=if_else(day_of_week %in% c("Saturday", "Sunday"), "weekend", "weekday"),
-    vehicle_type=fct_rev(vehicle_type)) %>% 
+    vehicle_type=fct_rev(vehicle_type)) |> 
   ggplot() +
   geom_mosaic(aes(x=product(is_weekend, vehicle_type), fill=vehicle_type, colour=vehicle_type, alpha=is_weekend), offset = 0.008)+
   scale_fill_brewer(palette="Set1", direction=-1)+
@@ -770,7 +770,7 @@ ggsave(filename="./static/class/04-class_files/mosaic_boroughs.png", plot=plot,w
 
 library(ggtext)
 # Animate between two states.
-displacement <- grid_real_sf %>% 
+displacement <- grid_real_sf |> 
   ggplot()+
   geom_sf(fill="#cfcfcf", colour="#9e9e9e", size=0.1)+
   coord_sf(crs=27700, datum=NA)+
@@ -800,12 +800,12 @@ max(east) min(east) max(north) min(north)
 
 38642.8
 
-mosaic <- ped_veh %>%
-  inner_join(london_squared, by=c("local_authority_district"="local_authority_district")) %>%
-  filter(!is.na(BOR)) %>% 
+mosaic <- ped_veh |>
+  inner_join(london_squared, by=c("local_authority_district"="local_authority_district")) |>
+  filter(!is.na(BOR)) |> 
   mutate(
     is_weekend=if_else(day_of_week %in% c("Saturday", "Sunday"), "weekend", "weekday"),
-    vehicle_type=fct_rev(vehicle_type)) %>% 
+    vehicle_type=fct_rev(vehicle_type)) |> 
   ggplot() +
   geom_mosaic(aes(x=product(is_weekend, vehicle_type), fill=vehicle_type, colour=vehicle_type, alpha=is_weekend), offset = 0.008)+
   scale_fill_brewer(palette="Set1", direction=-1)+
@@ -822,12 +822,12 @@ mosaic <- ped_veh %>%
   ) +
   coord_flip()
 
-plot_data <- ggplot_build(mosaic)$data %>% as.data.frame() %>%
-  group_by(PANEL) %>%
-  mutate(bor_total=sum(.wt)) %>% ungroup() %>%
-  group_by(PANEL, x__fill__vehicle_type) %>%
+plot_data <- ggplot_build(mosaic)$data |> as.data.frame() |>
+  group_by(PANEL) |>
+  mutate(bor_total=sum(.wt)) |> ungroup() |>
+  group_by(PANEL, x__fill__vehicle_type) |>
   summarise(xmin=min(xmin),xmax=max(xmax), ymin=min(ymin),ymax=max(ymax),
-            vehicle_prop_bor=sum(.wt)/sum(bor_total), bor_total=min(bor_total)) %>% ungroup() %>% 
+            vehicle_prop_bor=sum(.wt)/sum(bor_total), bor_total=min(bor_total)) |> ungroup() |> 
   left_join(london_squared, by=c("bor_total"='bor_total'))
 
 
@@ -875,14 +875,14 @@ ggsave(filename="./static/class/04-class_files/mosaic_boroughs_spatial.png", plo
 
 
 
-grand_total <- vehicle_severity_cross %>% 
-  select(-c(`Row Total`)) %>% 
-  filter(`Vehicle type`!="Column Total") %>% 
-  pivot_longer(cols=c(KSI, Slight)) %>% 
-  summarise(grand_total=sum(value)) %>% pull
+grand_total <- vehicle_severity_cross |> 
+  select(-c(`Row Total`)) |> 
+  filter(`Vehicle type`!="Column Total") |> 
+  pivot_longer(cols=c(KSI, Slight)) |> 
+  summarise(grand_total=sum(value)) |> pull
 
 vehicle_severity_cross_resids <- 
-  vehicle_severity_cross %>% mutate(row_total=`Row Total`) %>% rowwise() %>% 
+  vehicle_severity_cross |> mutate(row_total=`Row Total`) |> rowwise() |> 
   mutate(
     `KSI Exp`=(row_total*57918)/grand_total, 
     `Slight Exp`=(row_total*183742)/grand_total,
@@ -890,18 +890,18 @@ vehicle_severity_cross_resids <-
     `Slight Resid`=round((Slight-`Slight Exp`) / sqrt(`Slight Exp`),2),
     `KSI Exp`=round(`KSI Exp`,0), 
     `Slight Exp`=round(`Slight Exp`)
-  ) %>% select(-row_total) %>% ungroup
+  ) |> select(-row_total) |> ungroup
 
 write_csv(vehicle_severity_cross_resids, here::here("static","csv","vehicle_severity_cross_resids.csv"))
 
-readr::read_csv(here::here("static","csv","vehicle_severity_cross_resids.csv")) %>% 
-  kbl(caption = "Pedestrian casualties by vehicle involved and injury severity: contingency table with signed chi-scores.") %>%
-  row_spec(9, bold=T) %>% column_spec(4,bold = T) %>%
+readr::read_csv(here::here("static","csv","vehicle_severity_cross_resids.csv")) |> 
+  kbl(caption = "Pedestrian casualties by vehicle involved and injury severity: contingency table with signed chi-scores.") |>
+  row_spec(9, bold=T) |> column_spec(4,bold = T) |>
   add_header_above(c(" ", "Observed" = 3, "Expected" = 2, "Signed chi-scores"=2))
 
 
 
-counts_day <- crashes_all %>% filter(police_force == "Metropolitan Police" | police_force == "City of London", local_authority_district!="London Airport (Heathrow)") %>% 
+counts_day <- crashes_all |> filter(police_force == "Metropolitan Police" | police_force == "City of London", local_authority_district!="London Airport (Heathrow)") |> 
   mutate(
     day=lubridate::wday(datetime,label=TRUE),
     hod=lubridate::hour(datetime), 
@@ -924,14 +924,14 @@ counts_day <- crashes_all %>% filter(police_force == "Metropolitan Police" | pol
                                                      "Wandsworth",
                                                      "Westminster",
                                                      "City of London"), "inner", "outer")
-  ) %>% 
-  filter(!is.na(day), !is.na(hod)) %>% 
-  group_by(local_authority_district) %>% 
-  mutate(row_total=n()) %>% ungroup %>% 
-  group_by(day) %>% 
-  mutate(col_total=n()) %>% ungroup %>% 
-  mutate(grand_total=n()) %>% 
-  group_by(local_authority_district, day) %>% 
+  ) |> 
+  filter(!is.na(day), !is.na(hod)) |> 
+  group_by(local_authority_district) |> 
+  mutate(row_total=n()) |> ungroup |> 
+  group_by(day) |> 
+  mutate(col_total=n()) |> ungroup |> 
+  mutate(grand_total=n()) |> 
+  group_by(local_authority_district, day) |> 
   summarise(
     observed=n(), 
     row_total=first(row_total), 
@@ -940,7 +940,7 @@ counts_day <- crashes_all %>% filter(police_force == "Metropolitan Police" | pol
     expected=(row_total*col_total)/grand_total,
     prop=observed/row_total,
     resid=(observed-expected)/sqrt(expected),
-    is_inner=first(is_inner)) %>% ungroup %>% 
+    is_inner=first(is_inner)) |> ungroup |> 
   ggplot(aes(x=day,y=reorder(local_authority_district, row_total), fill=observed)) +
   geom_tile(colour="#707070", size=.2) +
   facet_grid(is_inner~., scales="free_y", space="free_y") +
@@ -959,7 +959,7 @@ counts_day <- crashes_all %>% filter(police_force == "Metropolitan Police" | pol
     legend.text=element_text(size=4)
   )
 
-resids_day <- crashes_all %>% filter(police_force == "Metropolitan Police" | police_force == "City of London", local_authority_district!="London Airport (Heathrow)") %>% 
+resids_day <- crashes_all |> filter(police_force == "Metropolitan Police" | police_force == "City of London", local_authority_district!="London Airport (Heathrow)") |> 
   mutate(
     day=lubridate::wday(datetime,label=TRUE),
     hod=lubridate::hour(datetime), 
@@ -982,14 +982,14 @@ resids_day <- crashes_all %>% filter(police_force == "Metropolitan Police" | pol
                                                      "Wandsworth",
                                                      "Westminster",
                                                      "City of London"), "inner", "outer")
-  ) %>% 
-  filter(!is.na(day), !is.na(hod)) %>% 
-  group_by(local_authority_district) %>% 
-  mutate(row_total=n()) %>% ungroup %>% 
-  group_by(day) %>% 
-  mutate(col_total=n()) %>% ungroup %>% 
-  mutate(grand_total=n()) %>% 
-  group_by(local_authority_district, day) %>% 
+  ) |> 
+  filter(!is.na(day), !is.na(hod)) |> 
+  group_by(local_authority_district) |> 
+  mutate(row_total=n()) |> ungroup |> 
+  group_by(day) |> 
+  mutate(col_total=n()) |> ungroup |> 
+  mutate(grand_total=n()) |> 
+  group_by(local_authority_district, day) |> 
   summarise(
     observed=n(), 
     row_total=first(row_total), 
@@ -998,7 +998,7 @@ resids_day <- crashes_all %>% filter(police_force == "Metropolitan Police" | pol
     expected=(row_total*col_total)/grand_total,
     prop=observed/row_total,
     resid=(observed-expected)/sqrt(expected),
-    is_inner=first(is_inner)) %>% ungroup %>% 
+    is_inner=first(is_inner)) |> ungroup |> 
   ggplot(aes(x=day,y=reorder(local_authority_district, row_total), fill=resid)) +
   geom_tile(colour="#707070", size=.2) +
   facet_grid(is_inner~., scales="free_y", space="free_y") +
@@ -1018,7 +1018,7 @@ resids_day <- crashes_all %>% filter(police_force == "Metropolitan Police" | pol
 
 
 
-counts_period <- crashes_all %>% filter(police_force == "Metropolitan Police" | police_force == "City of London", local_authority_district!="London Airport (Heathrow)") %>% 
+counts_period <- crashes_all |> filter(police_force == "Metropolitan Police" | police_force == "City of London", local_authority_district!="London Airport (Heathrow)") |> 
   mutate(
     day=lubridate::wday(datetime,label=TRUE),
     hod=lubridate::hour(datetime), 
@@ -1041,14 +1041,14 @@ counts_period <- crashes_all %>% filter(police_force == "Metropolitan Police" | 
                                                      "Wandsworth",
                                                      "Westminster",
                                                      "City of London"), "inner", "outer")
-  ) %>% 
-  filter(!is.na(day), !is.na(hod)) %>% 
-  group_by(local_authority_district) %>% 
-  mutate(row_total=n()) %>% ungroup %>% 
-  group_by(period) %>% 
-  mutate(col_total=n()) %>% ungroup %>% 
-  mutate(grand_total=n()) %>% 
-  group_by(local_authority_district, period) %>% 
+  ) |> 
+  filter(!is.na(day), !is.na(hod)) |> 
+  group_by(local_authority_district) |> 
+  mutate(row_total=n()) |> ungroup |> 
+  group_by(period) |> 
+  mutate(col_total=n()) |> ungroup |> 
+  mutate(grand_total=n()) |> 
+  group_by(local_authority_district, period) |> 
   summarise(
     observed=n(), 
     row_total=first(row_total), 
@@ -1057,7 +1057,7 @@ counts_period <- crashes_all %>% filter(police_force == "Metropolitan Police" | 
     expected=(row_total*col_total)/grand_total,
     prop=observed/row_total,
     resid=(observed-expected)/sqrt(expected),
-    is_inner=first(is_inner)) %>% ungroup %>% 
+    is_inner=first(is_inner)) |> ungroup |> 
   ggplot(aes(x=period,y=reorder(local_authority_district, row_total), fill=observed)) +
   geom_tile(colour="#707070", size=.2) +
   facet_grid(is_inner~., scales="free_y", space="free_y") +
@@ -1076,7 +1076,7 @@ counts_period <- crashes_all %>% filter(police_force == "Metropolitan Police" | 
     legend.text=element_text(size=4)
   )
 
-resids_period <- crashes_all %>% filter(police_force == "Metropolitan Police" | police_force == "City of London", local_authority_district!="London Airport (Heathrow)") %>% 
+resids_period <- crashes_all |> filter(police_force == "Metropolitan Police" | police_force == "City of London", local_authority_district!="London Airport (Heathrow)") |> 
   mutate(
     day=lubridate::wday(datetime,label=TRUE),
     hod=lubridate::hour(datetime), 
@@ -1099,14 +1099,14 @@ resids_period <- crashes_all %>% filter(police_force == "Metropolitan Police" | 
                                                      "Wandsworth",
                                                      "Westminster",
                                                      "City of London"), "inner", "outer")
-  ) %>% 
-  filter(!is.na(day), !is.na(hod)) %>% 
-  group_by(local_authority_district) %>% 
-  mutate(row_total=n()) %>% ungroup %>% 
-  group_by(period) %>% 
-  mutate(col_total=n()) %>% ungroup %>% 
-  mutate(grand_total=n()) %>% 
-  group_by(local_authority_district, period) %>% 
+  ) |> 
+  filter(!is.na(day), !is.na(hod)) |> 
+  group_by(local_authority_district) |> 
+  mutate(row_total=n()) |> ungroup |> 
+  group_by(period) |> 
+  mutate(col_total=n()) |> ungroup |> 
+  mutate(grand_total=n()) |> 
+  group_by(local_authority_district, period) |> 
   summarise(
     observed=n(), 
     row_total=first(row_total), 
@@ -1115,7 +1115,7 @@ resids_period <- crashes_all %>% filter(police_force == "Metropolitan Police" | 
     expected=(row_total*col_total)/grand_total,
     prop=observed/row_total,
     resid=(observed-expected)/sqrt(expected),
-    is_inner=first(is_inner)) %>% ungroup %>% 
+    is_inner=first(is_inner)) |> ungroup |> 
   ggplot(aes(x=period,y=reorder(local_authority_district, row_total), fill=resid)) +
   geom_tile(colour="#707070", size=.2) +
   facet_grid(is_inner~., scales="free_y", space="free_y") +
@@ -1151,21 +1151,21 @@ ggsave(filename="./static/class/04-class_files/borough-freqs-resids.png", plot=p
 # Technical element -- analysis
 
 # Adjusted KSI data
-plot <- u %>%
+plot <- u |>
   # Crashes in Wales are excluded as English IMD
-  inner_join(imd %>% select(LSOA11CD, crash_quintile), by=c("lsoa_of_accident_location"="LSOA11CD")) %>%
+  inner_join(imd |> select(LSOA11CD, crash_quintile), by=c("lsoa_of_accident_location"="LSOA11CD")) |>
   mutate(
     year=lubridate::year(date)
-  ) %>%
-  group_by(year,  crash_quintile) %>%
+  ) |>
+  group_by(year,  crash_quintile) |>
   summarise(ksi=sum(ksi, na.rm=TRUE), slight=sum(slight, na.rm=TRUE), 
-            total=ksi+slight) %>% ungroup() %>% 
+            total=ksi+slight) |> ungroup() |> 
   mutate(
     crash_quintile=factor(
       crash_quintile, levels=c("5 least deprived","4 less deprived","3 mid deprived", "2 more deprived", "1 most deprived")
     )
-  )%>% 
-  #pivot_longer(cols=c(ksi,slight), names_to="severity", values_to="counts") %>% 
+  )|> 
+  #pivot_longer(cols=c(ksi,slight), names_to="severity", values_to="counts") |> 
   ggplot(aes(x=year, y=total)) +
   geom_col(aes(fill=crash_quintile),colour="#8d8d8d", size=.1 ) +
   scale_fill_brewer(palette = "Blues", type="seq") +
@@ -1180,17 +1180,17 @@ plot <- u %>%
 
 
 
-plot <- ped_veh %>% 
+plot <- ped_veh |> 
   mutate(
     year_month=floor_date(date, "month")
-  ) %>%
-  group_by(year_month,  crash_quintile) %>%
-  summarise(total=n()) %>% 
+  ) |>
+  group_by(year_month,  crash_quintile) |>
+  summarise(total=n()) |> 
   mutate(
     crash_quintile=factor(
       crash_quintile, levels=c("5 least deprived","4 less deprived","3 mid deprived", "2 more deprived", "1 most deprived")
     )
-  ) %>% 
+  ) |> 
   ggplot(aes(x=year_month, y=total)) +
   geom_col(aes(fill=crash_quintile),colour="#8d8d8d", size=.1 ) +
   scale_fill_brewer(palette = "Blues", type="seq") +
@@ -1206,28 +1206,28 @@ plot <- ped_veh %>%
 ggsave(filename="./static/class/04-class_files/plot-year-imd.png", plot=plot,width=10, height=5.5, dpi=300)
 
 
-dates <- ped_veh %>% 
+dates <- ped_veh |> 
   mutate(
     year_month=floor_date(date, "month"),
     year_month_format=format(as.Date(year_month), "%Y-%m")
-  ) %>%
-  select(year_month, year_month_format) %>% unique() %>% arrange(year_month) %>% pull(year_month_format)
+  ) |>
+  select(year_month, year_month_format) |> unique() |> arrange(year_month) |> pull(year_month_format)
 
 selected_dates <- dates[seq(1, length(dates), by=24)]
 
-plot1 <- ped_veh %>% 
+plot1 <- ped_veh |> 
   mutate(
     year_month=floor_date(date, "month"),
     year_month=format(as.Date(year_month), "%Y-%m")
-  ) %>%
-  group_by(year_month,  crash_quintile) %>%
-  summarise(total=n()) %>% 
+  ) |>
+  group_by(year_month,  crash_quintile) |>
+  summarise(total=n()) |> 
   mutate(
     crash_quintile=factor(
       crash_quintile, levels=c("5 least deprived","4 less deprived","3 mid deprived", "2 more deprived", "1 most deprived")
     ),
     crash_quintile=fct_rev(crash_quintile)
-  ) %>% 
+  ) |> 
   ggplot(aes(x=year_month, y=total)) +
   geom_col(fill=site_colours$primary, width=1) +
   scale_x_discrete(breaks=selected_dates) +
@@ -1236,21 +1236,21 @@ plot1 <- ped_veh %>%
   theme_v_gds() 
   
   
-plot2 <-  ped_veh %>% 
+plot2 <-  ped_veh |> 
   mutate(
     year_month=floor_date(date, "month"),
     year_month=format(as.Date(year_month), "%Y-%m")
-  ) %>%
+  ) |>
   # mutate(
   #   year_month=floor_date(date, "month")
-  # ) %>%
-  group_by(year_month,  crash_quintile) %>%
-  summarise(total=n()) %>% 
+  # ) |>
+  group_by(year_month,  crash_quintile) |>
+  summarise(total=n()) |> 
   mutate(
     crash_quintile=factor(
       crash_quintile, levels=c("5 least deprived","4 less deprived","3 mid deprived", "2 more deprived", "1 most deprived")
     )
-  ) %>% 
+  ) |> 
   ggplot(aes(x=year_month, y=total)) +
   geom_col(fill=site_colours$primary, width=1) +
   #geom_col(aes(fill=crash_quintile),colour="#8d8d8d", size=.1 ) +
@@ -1270,28 +1270,28 @@ plot2 <-  ped_veh %>%
     strip.text = element_text(size=5))
     
 
-months <- ped_veh %>% 
+months <- ped_veh |> 
   mutate(
     month=month(date, label=TRUE)
-  ) %>%
-  select(month) %>% unique() %>% pull(month)
+  ) |>
+  select(month) |> unique() |> pull(month)
 
 selected_months <- months[seq(1, length(dates), by=3)]
 
-plot <- ped_veh %>% 
+plot <- ped_veh |> 
   mutate(
     year=year(date),
     month=month(date, label=TRUE),
-  ) %>%
-  group_by(year, month,  crash_quintile) %>%
-  summarise(total=n()) %>% ungroup() %>% 
-  group_by(year, crash_quintile) %>% 
-  mutate(month_avg=mean(total)) %>% ungroup %>% 
+  ) |>
+  group_by(year, month,  crash_quintile) |>
+  summarise(total=n()) |> ungroup() |> 
+  group_by(year, crash_quintile) |> 
+  mutate(month_avg=mean(total)) |> ungroup |> 
   mutate(
     crash_quintile=factor(
       crash_quintile, levels=c("5 least deprived","4 less deprived","3 mid deprived", "2 more deprived", "1 most deprived")
     )
-  ) %>% 
+  ) |> 
   ggplot(aes(x=month, y=total)) +
   geom_col(fill=site_colours$primary, width=1, alpha=.6)+
   geom_line(aes(y=month_avg, group=interaction(year, crash_quintile)), colour=site_colours$primary) +
@@ -1306,20 +1306,20 @@ plot <- ped_veh %>%
 
 ggsave(filename="./static/class/04-class_files/plot-monthyear-imd.png", plot=plot,width=11, height=6.5, dpi=300)
 
-plot <- ped_veh %>% 
+plot <- ped_veh |> 
   mutate(
     year=year(date),
     month=month(date, label=TRUE),
-  ) %>%
-  group_by(year, month,  crash_quintile) %>%
-  summarise(total=n()) %>% ungroup() %>% 
-  group_by(year, crash_quintile) %>% 
-  mutate(month_avg=mean(total)) %>% ungroup %>% 
+  ) |>
+  group_by(year, month,  crash_quintile) |>
+  summarise(total=n()) |> ungroup() |> 
+  group_by(year, crash_quintile) |> 
+  mutate(month_avg=mean(total)) |> ungroup |> 
   mutate(
     crash_quintile=factor(
       crash_quintile, levels=c("5 least deprived","4 less deprived","3 mid deprived", "2 more deprived", "1 most deprived")
     )
-  ) %>% 
+  ) |> 
   ggplot(aes(x=month, y=total)) +
   geom_col(fill=site_colours$primary, width=1, alpha=.6)+
   geom_line(aes(y=month_avg, group=interaction(year, crash_quintile)), colour=site_colours$primary) +
@@ -1343,7 +1343,7 @@ plot <- plot1 + plot2 + plot_layout(widths=c(4,1))+
 ggsave(filename="./static/class/04-class_files/plot-year-imd-facet.png", plot=plot,width=10, height=6, dpi=300)
 
 
-order_purpose <- ped_veh %>% 
+order_purpose <- ped_veh |> 
   mutate(
     year=year(date),
     driver_purpose=
@@ -1355,13 +1355,13 @@ order_purpose <- ped_veh %>%
              journey_purpose_of_driver == "Other" ~ "other",
              TRUE ~ "not_provided"
            )
-         ) %>%
-  filter(year>2010, driver_purpose != "not_provided") %>% 
-  group_by(driver_purpose) %>% 
-  summarise(total=n()) %>% arrange(total) %>% pull(driver_purpose)
+         ) |>
+  filter(year>2010, driver_purpose != "not_provided") |> 
+  group_by(driver_purpose) |> 
+  summarise(total=n()) |> arrange(total) |> pull(driver_purpose)
   
            
-plot <- ped_veh %>% 
+plot <- ped_veh |> 
   mutate(
     year=year(date),
     month=month(date, label=TRUE),
@@ -1374,15 +1374,15 @@ plot <- ped_veh %>%
         journey_purpose_of_driver == "Other" ~ "other",
         TRUE ~ "not_provided"
       )
-  ) %>%
-  filter(year>2010, driver_purpose != "not_provided") %>% 
-  group_by(year, month,  crash_quintile, driver_purpose) %>%
-  summarise(total=n()) %>% ungroup() %>% 
+  ) |>
+  filter(year>2010, driver_purpose != "not_provided") |> 
+  group_by(year, month,  crash_quintile, driver_purpose) |>
+  summarise(total=n()) |> ungroup() |> 
   mutate(
     crash_quintile=factor(
       crash_quintile, levels=c("5 least deprived","4 less deprived","3 mid deprived", "2 more deprived", "1 most deprived")),
       driver_purpose=factor(driver_purpose, levels=c("other", "school_run", "commute"))
-  ) %>% 
+  ) |> 
   ggplot(aes(x=month, y=total, fill=driver_purpose)) +
   geom_col(width=1, alpha=.6)+
   scale_fill_brewer(palette="Set1")+
@@ -1399,7 +1399,7 @@ plot <- ped_veh %>%
 
 ggsave(filename="./static/class/04-class_files/plot-year-imd-facet-purpose.png", plot=plot,width=10, height=7, dpi=300)
 
-ped_veh %>% 
+ped_veh |> 
   mutate(
     year=year(date),
     month=month(date, label=TRUE),
@@ -1412,16 +1412,16 @@ ped_veh %>%
         journey_purpose_of_driver == "Other" ~ "other",
         TRUE ~ "not_provided"
       )
-    ) %>%
-  filter(year==2019, crash_quintile %in% c("1 most deprived", "5 least deprived")) %>% 
-  group_by(driver_purpose, crash_quintile) %>% 
-  summarise(count=n()) %>% ungroup() %>% 
-  pivot_wider(names_from=crash_quintile, values_from=count) %>% 
+    ) |>
+  filter(year==2019, crash_quintile %in% c("1 most deprived", "5 least deprived")) |> 
+  group_by(driver_purpose, crash_quintile) |> 
+  summarise(count=n()) |> ungroup() |> 
+  pivot_wider(names_from=crash_quintile, values_from=count) |> 
   summarise_at(vars(c(`1 most deprived`, `5 least deprived`)), sum)
 
       
 
-ped_veh %>% 
+ped_veh |> 
   mutate(
     year=year(date),
     month=month(date, label=TRUE),
@@ -1437,31 +1437,31 @@ ped_veh %>%
 
 
 
-plot <- u %>%
+plot <- u |>
   # Crashes in Wales are excluded as English IMD
-  inner_join(imd %>% select(LSOA11CD, crash_quintile), by=c("lsoa_of_accident_location"="LSOA11CD")) %>%
+  inner_join(imd |> select(LSOA11CD, crash_quintile), by=c("lsoa_of_accident_location"="LSOA11CD")) |>
   mutate(
     year=lubridate::year(date)
-  ) %>%
-  filter(year>2010, journey_purpose_of_driver!="Not known") %>% 
-  mutate(journey_purpose_of_driver=factor(journey_purpose_of_driver, levels=order_purpose)) %>%
+  ) |>
+  filter(year>2010, journey_purpose_of_driver!="Not known") |> 
+  mutate(journey_purpose_of_driver=factor(journey_purpose_of_driver, levels=order_purpose)) |>
 
 
-plot1 <- u %>%
+plot1 <- u |>
   # Crashes in Wales are excluded as English IMD
-  inner_join(imd %>% select(LSOA11CD, crash_quintile), by=c("lsoa_of_accident_location"="LSOA11CD")) %>%
+  inner_join(imd |> select(LSOA11CD, crash_quintile), by=c("lsoa_of_accident_location"="LSOA11CD")) |>
   mutate(
     year=lubridate::year(date)
-  ) %>%
-  group_by(year,  crash_quintile) %>%
+  ) |>
+  group_by(year,  crash_quintile) |>
   summarise(ksi=sum(ksi, na.rm=TRUE), slight=sum(slight, na.rm=TRUE), 
-            total=ksi+slight) %>% ungroup() %>% 
+            total=ksi+slight) |> ungroup() |> 
   mutate(
     crash_quintile=factor(
       crash_quintile, levels=c("5 least deprived","4 less deprived","3 mid deprived", "2 more deprived", "1 most deprived")),
     crash_quintile=fct_rev(crash_quintile)
-  ) %>% 
-  #pivot_longer(cols=c(ksi,slight), names_to="severity", values_to="counts") %>% 
+  ) |> 
+  #pivot_longer(cols=c(ksi,slight), names_to="severity", values_to="counts") |> 
   ggplot(aes(x=year, y=total)) +
   geom_col(aes(fill=crash_quintile),colour="#8d8d8d", size=.1 ) +
   scale_fill_brewer(palette = "Blues", type="seq", direction=-1) +
@@ -1471,20 +1471,20 @@ plot1 <- u %>%
   theme_v_gds()
 
 
-plot2 <- u %>%
+plot2 <- u |>
   # Crashes in Wales are excluded as English IMD
-  inner_join(imd %>% select(LSOA11CD, crash_quintile), by=c("lsoa_of_accident_location"="LSOA11CD")) %>%
+  inner_join(imd |> select(LSOA11CD, crash_quintile), by=c("lsoa_of_accident_location"="LSOA11CD")) |>
   mutate(
     year=lubridate::year(date)
-  ) %>%
-  group_by(year,  crash_quintile) %>%
+  ) |>
+  group_by(year,  crash_quintile) |>
   summarise(ksi=sum(ksi, na.rm=TRUE), slight=sum(slight, na.rm=TRUE), 
-            total=ksi+slight) %>% ungroup() %>% 
+            total=ksi+slight) |> ungroup() |> 
   mutate(
     crash_quintile=factor(
       crash_quintile, levels=c("5 least deprived","4 less deprived","3 mid deprived", "2 more deprived", "1 most deprived"))
-  ) %>% 
-  #pivot_longer(cols=c(ksi,slight), names_to="severity", values_to="counts") %>% 
+  ) |> 
+  #pivot_longer(cols=c(ksi,slight), names_to="severity", values_to="counts") |> 
   ggplot(aes(x=year, y=total)) +
   geom_col(aes(fill=crash_quintile),colour="#8d8d8d", size=.1 ) +
   scale_fill_brewer(palette = "Blues", type="seq", direction=1) +
@@ -1501,17 +1501,17 @@ plot2 <- u %>%
 
 
 
-plot <- u %>%
+plot <- u |>
   # Crashes in Wales are excluded as English IMD
-  inner_join(imd %>% select(LSOA11CD, crash_quintile), by=c("lsoa_of_accident_location"="LSOA11CD")) %>%
+  inner_join(imd |> select(LSOA11CD, crash_quintile), by=c("lsoa_of_accident_location"="LSOA11CD")) |>
   mutate(
     year=lubridate::year(date)
-  ) %>%
-  #filter(urban_or_rural_area=="Urban") %>% 
-  group_by(year,  crash_quintile) %>%
-  summarise(ksi=sum(ksi, na.rm=TRUE), slight=sum(slight, na.rm=TRUE)) %>%
-  pivot_longer(cols=c(ksi,slight), names_to="severity", values_to="counts") %>% 
-  mutate(severity=factor(severity, levels=c("slight", "ksi"))) %>% 
+  ) |>
+  #filter(urban_or_rural_area=="Urban") |> 
+  group_by(year,  crash_quintile) |>
+  summarise(ksi=sum(ksi, na.rm=TRUE), slight=sum(slight, na.rm=TRUE)) |>
+  pivot_longer(cols=c(ksi,slight), names_to="severity", values_to="counts") |> 
+  mutate(severity=factor(severity, levels=c("slight", "ksi"))) |> 
   ggplot(aes(x=year, y=counts)) +
   geom_col(aes(fill=severity), size=1.5, position="fill") +
   scale_fill_manual(values=c("#fee0d2","#de2d26"))+
@@ -1528,27 +1528,27 @@ ggsave(filename="./static/class/04-class_files/plot-year-imd-facet-severity.png"
 
 
 
-order_type <- u %>% mutate(vehicle_type=as.character(vehicle_type)) %>% 
-  group_by(vehicle_type) %>%
-  summarise(total=n()) %>% arrange(total) %>% pull(vehicle_type)
+order_type <- u |> mutate(vehicle_type=as.character(vehicle_type)) |> 
+  group_by(vehicle_type) |>
+  summarise(total=n()) |> arrange(total) |> pull(vehicle_type)
 
 
-order_purpose <- u %>% 
-  group_by(journey_purpose_of_driver) %>% 
-  summarise(total=n()) %>% arrange(total) %>% pull(journey_purpose_of_driver)
+order_purpose <- u |> 
+  group_by(journey_purpose_of_driver) |> 
+  summarise(total=n()) |> arrange(total) |> pull(journey_purpose_of_driver)
 
-plot <- u %>%
+plot <- u |>
   # Crashes in Wales are excluded as English IMD
-  inner_join(imd %>% select(LSOA11CD, crash_quintile), by=c("lsoa_of_accident_location"="LSOA11CD")) %>%
+  inner_join(imd |> select(LSOA11CD, crash_quintile), by=c("lsoa_of_accident_location"="LSOA11CD")) |>
   mutate(
     year=lubridate::year(date)
-  ) %>%
-  filter(year>2010, journey_purpose_of_driver!="Not known") %>% 
-  mutate(journey_purpose_of_driver=factor(journey_purpose_of_driver, levels=order_purpose)) %>% 
-  #filter(urban_or_rural_area=="Urban") %>% 
-  group_by(year,  crash_quintile, journey_purpose_of_driver) %>%
-  summarise(ksi=sum(ksi, na.rm=TRUE), slight=sum(slight, na.rm=TRUE), total=ksi+slight) %>% ungroup %>% 
-  #mutate(vehicle_type=factor(vehicle_type, levels=order_type)) %>% 
+  ) |>
+  filter(year>2010, journey_purpose_of_driver!="Not known") |> 
+  mutate(journey_purpose_of_driver=factor(journey_purpose_of_driver, levels=order_purpose)) |> 
+  #filter(urban_or_rural_area=="Urban") |> 
+  group_by(year,  crash_quintile, journey_purpose_of_driver) |>
+  summarise(ksi=sum(ksi, na.rm=TRUE), slight=sum(slight, na.rm=TRUE), total=ksi+slight) |> ungroup |> 
+  #mutate(vehicle_type=factor(vehicle_type, levels=order_type)) |> 
   ggplot(aes(x=year, y=total)) +
   geom_col(aes(fill=journey_purpose_of_driver), size=1.5, position="fill") +
   scale_fill_brewer(palette="Set1", direction=-1)+
@@ -1566,16 +1566,16 @@ plot <- u %>%
 ggsave(filename="./static/class/04-class_files/plot-year-imd-purpose.png", plot=plot,width=10, height=5.5, dpi=300)
 
 
-u %>%
+u |>
   # Crashes in Wales are excluded as English IMD
-  inner_join(imd %>% select(LSOA11CD, crash_quintile), by=c("lsoa_of_accident_location"="LSOA11CD")) %>%
+  inner_join(imd |> select(LSOA11CD, crash_quintile), by=c("lsoa_of_accident_location"="LSOA11CD")) |>
   mutate(
     year=lubridate::year(date)
-  ) %>%
-  #filter(urban_or_rural_area=="Urban") %>% 
-  group_by(year,  crash_quintile, vehicle_type) %>%
-  summarise(ksi=sum(ksi, na.rm=TRUE), slight=sum(slight, na.rm=TRUE), total=ksi+slight) %>% ungroup %>% 
-  mutate(vehicle_type=factor(vehicle_type, levels=order_type)) %>% 
+  ) |>
+  #filter(urban_or_rural_area=="Urban") |> 
+  group_by(year,  crash_quintile, vehicle_type) |>
+  summarise(ksi=sum(ksi, na.rm=TRUE), slight=sum(slight, na.rm=TRUE), total=ksi+slight) |> ungroup |> 
+  mutate(vehicle_type=factor(vehicle_type, levels=order_type)) |> 
   ggplot(aes(x=year, y=total)) +
   geom_col(aes(fill=vehicle_type), size=1.5) +
   scale_fill_brewer(palette="Set1")+
@@ -1587,17 +1587,17 @@ u %>%
 
 
 
-plot_imd_driver <- ped_veh %>% 
+plot_imd_driver <- ped_veh |> 
   filter(
     !is.na(casualty_imd_decile), !is.na(driver_imd_decile),
     casualty_imd_decile!="Data missing or out of range", 
-    driver_imd_decile!="Data missing or out of range") %>%   
-  mutate(grand_total=n()) %>% 
+    driver_imd_decile!="Data missing or out of range") |>   
+  mutate(grand_total=n()) |> 
   # Crashes in Wales are excluded as English IMD
-  group_by(casualty_imd_quintile, driver_imd_quintile) %>% 
+  group_by(casualty_imd_quintile, driver_imd_quintile) |> 
   summarise(
     count=n(), 
-  ) %>% 
+  ) |> 
 
 
 
@@ -1605,17 +1605,17 @@ plot_imd_driver <- ped_veh %>%
   coord_equal()
 
 
-plot_data <- ped_veh %>% 
+plot_data <- ped_veh |> 
   filter(
     !is.na(casualty_imd_decile), !is.na(driver_imd_decile),
     casualty_imd_decile!="Data missing or out of range", 
-    driver_imd_decile!="Data missing or out of range", !is.na(crash_quintile)) %>%   
-  mutate(grand_total=n()) %>% 
-  group_by(driver_imd_quintile) %>% 
-  mutate(row_total=n()) %>% ungroup %>% 
-  group_by(casualty_imd_quintile) %>% 
-  mutate(col_total=n()) %>% ungroup %>% 
-  group_by(casualty_imd_quintile, driver_imd_quintile) %>% 
+    driver_imd_decile!="Data missing or out of range", !is.na(crash_quintile)) |>   
+  mutate(grand_total=n()) |> 
+  group_by(driver_imd_quintile) |> 
+  mutate(row_total=n()) |> ungroup |> 
+  group_by(casualty_imd_quintile) |> 
+  mutate(col_total=n()) |> ungroup |> 
+  group_by(casualty_imd_quintile, driver_imd_quintile) |> 
   summarise(
     observed=n(), 
     row_total=first(row_total), 
@@ -1628,10 +1628,10 @@ plot_data <- ped_veh %>%
     expected_share_col=expected/col_total,
     resid=(observed-expected)/sqrt(expected),
     max_resid=max(abs(resid))
-  ) %>% ungroup
+  ) |> ungroup
 
 
-plot_imd_driver <- plot_data %>% 
+plot_imd_driver <- plot_data |> 
   ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
   geom_point()+
   geom_tile(aes(fill=expected), colour="#707070", size=.2) +
@@ -1657,13 +1657,13 @@ plot_imd_driver <- plot_data %>%
     legend.position="right")
 
 
-plot_data %>% 
+plot_data |> 
   ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
   geom_point()+
   geom_tile(aes(fill=observed), colour="#707070", size=.2) +
   scale_fill_distiller(palette="Blues", direction=1)
 
-plot_data %>% 
+plot_data |> 
   ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
   geom_point()+
   geom_tile(aes(fill=resid), colour="#707070", size=.2) +
@@ -1671,7 +1671,7 @@ plot_data %>%
     palette="PRGn", direction=1, limits=c(-max(plot_data$max_resid), max(plot_data$max_resid)))
 
 
-plot_imd_expected <- plot_data %>% 
+plot_imd_expected <- plot_data |> 
   ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
   geom_point()+
   geom_tile(aes(fill=expected), colour="#707070", size=.2) +
@@ -1696,7 +1696,7 @@ plot_imd_expected <- plot_data %>%
     axis.line.y = element_blank(),
     legend.position="right")
 
-plot_imd_marginal_row <- plot_data %>% 
+plot_imd_marginal_row <- plot_data |> 
   ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
   geom_point()+
   geom_tile(aes(fill=row_marginal), colour="#707070", size=.2) +
@@ -1722,7 +1722,7 @@ plot_imd_marginal_row <- plot_data %>%
     legend.position="right")
 
 
-plot_imd_expected<- plot_data %>% 
+plot_imd_expected<- plot_data |> 
   ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
   geom_point()+
   geom_tile(aes(fill=expected), colour="#707070", size=.2) +
@@ -1748,7 +1748,7 @@ plot_imd_expected<- plot_data %>%
     legend.position="right")
 
 
-plot_imd_marginal_col <- plot_data %>% 
+plot_imd_marginal_col <- plot_data |> 
   ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
   geom_point()+
   geom_tile(aes(fill=col_marginal), colour="#707070", size=.2) +
@@ -1774,7 +1774,7 @@ plot_imd_marginal_col <- plot_data %>%
     legend.position="right")
 
 
-col_marginals <- plot_data %>% select(casualty_imd_quintile, col_total) %>% unique() %>% 
+col_marginals <- plot_data |> select(casualty_imd_quintile, col_total) |> unique() |> 
   ggplot(aes(x=casualty_imd_quintile, y=-col_total))+
   geom_col(fill="#aeaeae") +
   annotate("text", x=5.5,y=0, label="", hjust=1, size=2) +
@@ -1790,7 +1790,7 @@ col_marginals <- plot_data %>% select(casualty_imd_quintile, col_total) %>% uniq
     panel.grid.major.y=element_blank(), panel.grid.minor.y = element_blank(), 
     panel.grid.major.x = element_blank())
 
-row_marginals <- plot_data %>% select(driver_imd_quintile, row_total) %>% unique() %>% 
+row_marginals <- plot_data |> select(driver_imd_quintile, row_total) |> unique() |> 
   ggplot(aes(x=driver_imd_quintile, y=row_total))+
   geom_col(fill="#aeaeae") +
   theme_v_gds() +
@@ -1809,9 +1809,9 @@ row_marginals <- plot_data %>% select(driver_imd_quintile, row_total) %>% unique
     
 
 
-plot_imd_driver_exp <- plot_data %>% 
+plot_imd_driver_exp <- plot_data |> 
   # Censor max values to 40.
-  #mutate(resid=if_else(resid>0, pmin(resid, 40), pmax(resid, -40))) %>% 
+  #mutate(resid=if_else(resid>0, pmin(resid, 40), pmax(resid, -40))) |> 
   ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
   geom_tile(aes(fill=expected), colour="#707070", size=.2) +
   scale_fill_distiller(palette="Blues", direction=1) +
@@ -1830,9 +1830,9 @@ plot_imd_driver_exp <- plot_data %>%
   coord_equal()
 
 
-plot_imd_driver_exp <- plot_data %>% 
+plot_imd_driver_exp <- plot_data |> 
   # Censor max values to 40.
-  #mutate(resid=if_else(resid>0, pmin(resid, 40), pmax(resid, -40))) %>% 
+  #mutate(resid=if_else(resid>0, pmin(resid, 40), pmax(resid, -40))) |> 
   ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
   geom_tile(aes(fill=expected_share), colour="#707070", size=.2) +
   scale_fill_distiller(palette="Blues", direction=1) +
@@ -1850,9 +1850,9 @@ plot_imd_driver_exp <- plot_data %>%
         axis.title.x = element_text(size=9, hjust=1, family="Roboto Condensed Light"), axis.title.y = element_blank())+
   coord_equal()
 
-plot_imd_driver_exp <- plot_data %>% 
+plot_imd_driver_exp <- plot_data |> 
   # Censor max values to 40.
-  #mutate(resid=if_else(resid>0, pmin(resid, 40), pmax(resid, -40))) %>% 
+  #mutate(resid=if_else(resid>0, pmin(resid, 40), pmax(resid, -40))) |> 
   ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
   geom_tile(aes(fill=expected_share), colour="#707070", size=.2) +
   scale_fill_distiller(palette="Blues", direction=1) +
@@ -1871,9 +1871,9 @@ plot_imd_driver_exp <- plot_data %>%
   coord_equal()
 
 
-plot_imd_driver_resid <- plot_data %>% 
+plot_imd_driver_resid <- plot_data |> 
   # Censor max values to 40.
-  #mutate(resid=if_else(resid>0, pmin(resid, 40), pmax(resid, -40))) %>% 
+  #mutate(resid=if_else(resid>0, pmin(resid, 40), pmax(resid, -40))) |> 
   ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
   geom_tile(aes(fill=resid), colour="#707070", size=.2) +
   scale_fill_distiller(
@@ -1932,19 +1932,19 @@ ggsave(filename="./static/class/04-class_files/imd-driver-cas-overall.png", plot
 
 
 
-plot_data <- ped_veh %>% 
+plot_data <- ped_veh |> 
   filter(
     !is.na(casualty_imd_decile), !is.na(driver_imd_decile),
     casualty_imd_decile!="Data missing or out of range", 
-    driver_imd_decile!="Data missing or out of range", !is.na(crash_quintile)) %>%   
+    driver_imd_decile!="Data missing or out of range", !is.na(crash_quintile)) |>   
   mutate(
     grand_total=n()
-  ) %>% 
-  group_by(casualty_imd_quintile, driver_imd_quintile) %>% 
-  mutate(row_total=n()) %>% ungroup %>% 
-  group_by(crash_quintile) %>% 
-  mutate(col_total=n()) %>% ungroup %>% 
-  group_by(casualty_imd_quintile, driver_imd_quintile, crash_quintile) %>% 
+  ) |> 
+  group_by(casualty_imd_quintile, driver_imd_quintile) |> 
+  mutate(row_total=n()) |> ungroup |> 
+  group_by(crash_quintile) |> 
+  mutate(col_total=n()) |> ungroup |> 
+  group_by(casualty_imd_quintile, driver_imd_quintile, crash_quintile) |> 
   summarise(
     observed=n(), 
     row_total=first(row_total), 
@@ -1954,26 +1954,26 @@ plot_data <- ped_veh %>%
     resid=(observed-expected)/sqrt(expected),
     # Censor extreme effect sizes.
     resid_censored=if_else(resid<0, pmax(resid, -40), pmin(resid, 40)
-    ))  %>% ungroup %>% 
+    ))  |> ungroup |> 
   mutate(max_resid_censored=max(resid_censored), max_resid=max(resid))
 
 
 
-plot_imd_driver_area_obs <- ped_veh %>% 
+plot_imd_driver_area_obs <- ped_veh |> 
   filter(
     !is.na(casualty_imd_decile), !is.na(driver_imd_decile),
     casualty_imd_decile!="Data missing or out of range", 
-    driver_imd_decile!="Data missing or out of range") %>%  
-  group_by(crash_quintile, casualty_imd_quintile, driver_imd_quintile) %>% 
+    driver_imd_decile!="Data missing or out of range") |>  
+  group_by(crash_quintile, casualty_imd_quintile, driver_imd_quintile) |> 
   mutate(
     observed=n()
-  ) %>% 
-  group_by(crash_quintile) %>% 
+  ) |> 
+  group_by(crash_quintile) |> 
   mutate(
     total_crash_quintile=n(),
     observed_max=max(observed),
     observed_rescaled=observed/observed_max
-  ) %>% ungroup() %>% 
+  ) |> ungroup() |> 
   ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
   geom_tile(aes(fill=observed), colour="#707070", size=.2) +
   scale_fill_distiller(palette="Blues", direction=1) +
@@ -1987,21 +1987,21 @@ plot_imd_driver_area_obs <- ped_veh %>%
 
 
 
-plot_imd_driver_area_obs_local <- ped_veh %>% 
+plot_imd_driver_area_obs_local <- ped_veh |> 
   filter(
     !is.na(casualty_imd_decile), !is.na(driver_imd_decile),
     casualty_imd_decile!="Data missing or out of range", 
-    driver_imd_decile!="Data missing or out of range") %>%  
-  group_by(crash_quintile, casualty_imd_quintile, driver_imd_quintile) %>% 
+    driver_imd_decile!="Data missing or out of range") |>  
+  group_by(crash_quintile, casualty_imd_quintile, driver_imd_quintile) |> 
   mutate(
     observed=n()
-  ) %>% 
-  group_by(crash_quintile) %>% 
+  ) |> 
+  group_by(crash_quintile) |> 
   mutate(
     total_crash_quintile=n(),
     observed_max=max(observed),
     observed_rescaled=observed/observed_max
-  ) %>% ungroup() %>% 
+  ) |> ungroup() |> 
   ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
   geom_tile(aes(fill=observed_rescaled), colour="#707070", size=.2) +
   scale_fill_distiller(palette="Blues", direction=1) +
@@ -2020,7 +2020,7 @@ ggsave(filename="./static/class/04-class_files/imd-driver-cas-crash-local.png", 
 
 
 
-plot_driver_area_resid <-  plot_data %>% 
+plot_driver_area_resid <-  plot_data |> 
   ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
   geom_tile(aes(fill=resid), colour="#707070", size=.2) +
   scale_fill_distiller(
@@ -2038,9 +2038,9 @@ plot_driver_area_resid <-  plot_data %>%
   
 
 
-plot_driver_area_exp <-  plot_data %>% 
-  group_by(crash_quintile) %>% 
-  mutate(expected_rescaled=expected/max(expected)) %>% 
+plot_driver_area_exp <-  plot_data |> 
+  group_by(crash_quintile) |> 
+  mutate(expected_rescaled=expected/max(expected)) |> 
   ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
   geom_tile(aes(fill=expected), colour="#707070", size=.2) +
   scale_fill_distiller(palette="Blues", direction=1) +
@@ -2056,9 +2056,9 @@ plot_driver_area_exp <-  plot_data %>%
 
 
 
-plot_driver_area_row_total <-  plot_data %>% 
-  group_by(crash_quintile) %>% 
-  mutate(expected_rescaled=expected/max(expected)) %>% 
+plot_driver_area_row_total <-  plot_data |> 
+  group_by(crash_quintile) |> 
+  mutate(expected_rescaled=expected/max(expected)) |> 
   ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
   geom_tile(aes(fill=row_total), colour="#707070", size=.2) +
   scale_fill_distiller(palette="Blues", direction=1) +
@@ -2073,9 +2073,9 @@ plot_driver_area_row_total <-  plot_data %>%
   coord_equal()
 
 
-plot_driver_area_col_total <-  plot_data %>% 
-  group_by(crash_quintile) %>% 
-  mutate(expected_rescaled=expected/max(expected)) %>% 
+plot_driver_area_col_total <-  plot_data |> 
+  group_by(crash_quintile) |> 
+  mutate(expected_rescaled=expected/max(expected)) |> 
   ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
   geom_tile(aes(fill=col_total), colour="#707070", size=.2) +
   scale_fill_distiller(palette="Blues", direction=1) +
@@ -2102,11 +2102,11 @@ plot <- plot_imd_driver_area_obs + plot_driver_area_resid + plot_spacer()+theme_
 
 ggsave(filename="./static/class/04-class_files/imd-driver-cas-crash.png", plot=plot,width=9, height=14, dpi=300)
 # 
-# demog_distances <- ped_veh %>% 
+# demog_distances <- ped_veh |> 
 #   filter(
 #     !is.na(casualty_imd_decile), !is.na(driver_imd_decile),
 #     casualty_imd_decile!="Data missing or out of range", 
-#     driver_imd_decile!="Data missing or out of range", !is.na(crash_quintile)) %>%   
+#     driver_imd_decile!="Data missing or out of range", !is.na(crash_quintile)) |>   
 #   mutate(
 #     across(
 #       c(casualty_imd_quintile, driver_imd_quintile, crash_quintile), 
@@ -2118,18 +2118,18 @@ ggsave(filename="./static/class/04-class_files/imd-driver-cas-crash.png", plot=p
 #         (driver_imd_quintile_num-crash_quintile_num)^2
 #     ),
 #     ranked_dist=dense_rank(demog_dist)
-#   ) %>%
-#   group_by(ranked_dist) %>% summarise(count=n()) %>% ungroup %>% 
+#   ) |>
+#   group_by(ranked_dist) |> summarise(count=n()) |> ungroup |> 
 #   mutate(prop=count/sum(count))
 # 
 # 
 # 
 # 
-# demog_distances <- ped_veh %>% 
+# demog_distances <- ped_veh |> 
 #   filter(
 #     !is.na(casualty_imd_decile), !is.na(driver_imd_decile),
 #     casualty_imd_decile!="Data missing or out of range", 
-#     driver_imd_decile!="Data missing or out of range", !is.na(crash_quintile)) %>%   
+#     driver_imd_decile!="Data missing or out of range", !is.na(crash_quintile)) |>   
 #   mutate(
 #     across(
 #       c(casualty_imd_quintile, driver_imd_quintile, crash_quintile), 
@@ -2141,31 +2141,31 @@ ggsave(filename="./static/class/04-class_files/imd-driver-cas-crash.png", plot=p
 #         (driver_imd_quintile_num-crash_quintile_num)^2
 #     ),
 #     ranked_dist=dense_rank(demog_dist)
-#   ) %>%
-#   group_by(casualty_imd_quintile, driver_imd_quintile, crash_quintile, ranked_dist, demog_dist) %>% 
-#   summarise(crash_count=n()) %>% ungroup %>% 
-#   group_by(ranked_dist, crash_quintile) %>% mutate(ranked_occurrences=n()) %>% ungroup %>% 
-#   group_by(ranked_dist) %>% 
+#   ) |>
+#   group_by(casualty_imd_quintile, driver_imd_quintile, crash_quintile, ranked_dist, demog_dist) |> 
+#   summarise(crash_count=n()) |> ungroup |> 
+#   group_by(ranked_dist, crash_quintile) |> mutate(ranked_occurrences=n()) |> ungroup |> 
+#   group_by(ranked_dist) |> 
 #     mutate(
 #         crash_count_dist=sum(crash_count)
-#     ) %>% 
-#   ungroup() %>% 
+#     ) |> 
+#   ungroup() |> 
 #   mutate(crash_prop_dist=crash_count_dist/sum(crash_count))
 # 
-# plot_data <-  ped_veh %>% 
+# plot_data <-  ped_veh |> 
 #   filter(
 #     !is.na(casualty_imd_decile), !is.na(driver_imd_decile),
 #     casualty_imd_decile!="Data missing or out of range", 
-#     driver_imd_decile!="Data missing or out of range", !is.na(crash_quintile)) %>%   
-#   left_join(demog_distances) %>% 
+#     driver_imd_decile!="Data missing or out of range", !is.na(crash_quintile)) |>   
+#   left_join(demog_distances) |> 
 #   mutate(
 #     grand_total=n()
-#   ) %>% 
-# group_by(ranked_dist) %>% 
-#   mutate(row_total=n()) %>% ungroup %>% 
-# group_by(crash_quintile) %>% 
-#   mutate(col_total=n()) %>% ungroup %>% 
-# group_by(casualty_imd_quintile, driver_imd_quintile, crash_quintile) %>% 
+#   ) |> 
+# group_by(ranked_dist) |> 
+#   mutate(row_total=n()) |> ungroup |> 
+# group_by(crash_quintile) |> 
+#   mutate(col_total=n()) |> ungroup |> 
+# group_by(casualty_imd_quintile, driver_imd_quintile, crash_quintile) |> 
 #   summarise(
 #     observed=n(), 
 #     row_total=first(row_total),
@@ -2179,11 +2179,11 @@ ggsave(filename="./static/class/04-class_files/imd-driver-cas-crash.png", plot=p
 #     distance=first(ranked_dist),
 #     prop=first(crash_prop_dist),
 #     prop_adjusted=prop/ranked_occurrences
-#     )  %>% ungroup %>% 
+#     )  |> ungroup |> 
 #   mutate(max_resid_censored=max(resid_censored), max_resid=max(resid))
 # 
 # 
-# plot_social_dist <- demog_distances %>% 
+# plot_social_dist <- demog_distances |> 
 #   ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
 #   geom_tile(aes(fill=demog_dist), colour="#707070", size=.2) +
 #   scale_fill_distiller(palette="Blues", direction=1) +
@@ -2195,7 +2195,7 @@ ggsave(filename="./static/class/04-class_files/imd-driver-cas-crash.png", plot=p
 #         axis.title.x = element_blank(), axis.title.y = element_blank()) +
 #   coord_equal()
 # 
-# plot_exp_dist <- plot_data %>% 
+# plot_exp_dist <- plot_data |> 
 #   ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
 #   geom_tile(aes(fill=expected), colour="#707070", size=.2) +
 #   scale_fill_distiller(palette="Blues", direction=1) +
@@ -2208,7 +2208,7 @@ ggsave(filename="./static/class/04-class_files/imd-driver-cas-crash.png", plot=p
 #   coord_equal()
 # 
 # 
-# plot_row_total_dist <- plot_data %>% 
+# plot_row_total_dist <- plot_data |> 
 #   ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
 #   geom_tile(aes(fill=row_total/ranked_occurrences), colour="#707070", size=.2) +
 #   scale_fill_distiller(palette="Blues", direction=1) +
@@ -2221,7 +2221,7 @@ ggsave(filename="./static/class/04-class_files/imd-driver-cas-crash.png", plot=p
 #   coord_equal()
 # 
 # 
-# plot_col_total_dist <- plot_data %>% 
+# plot_col_total_dist <- plot_data |> 
 #   ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
 #   geom_tile(aes(fill=col_total), colour="#707070", size=.2) +
 #   scale_fill_distiller(palette="Blues", direction=1) +
@@ -2233,7 +2233,7 @@ ggsave(filename="./static/class/04-class_files/imd-driver-cas-crash.png", plot=p
 #         axis.title.x = element_blank(), axis.title.y = element_blank()) +
 #   coord_equal()
 # 
-# plot_resid_dist <-  plot_data %>% 
+# plot_resid_dist <-  plot_data |> 
 #   ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
 #   geom_tile(aes(fill=resid), colour="#707070", size=.2) +
 #   scale_fill_distiller(
@@ -2250,7 +2250,7 @@ ggsave(filename="./static/class/04-class_files/imd-driver-cas-crash.png", plot=p
 #   coord_equal()
 # 
 # 
-# demog_distances %>% 
+# demog_distances |> 
 #   ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
 #   geom_tile(aes(fill=demog_dist), colour="#707070", size=.2) +
 #   scale_fill_distiller(palette="Blues", direction=1) +
@@ -2276,11 +2276,11 @@ ggsave(filename="./static/class/04-class_files/imd-driver-cas-crash.png", plot=p
 # ggsave(filename="./static/class/04-class_files/imd-driver-cas-crash-dist-full.png", plot=plot,width=9, height=14, dpi=300)
 
 
-demog_distances <- ped_veh %>%
+demog_distances <- ped_veh |>
   filter(
     !is.na(casualty_imd_decile), !is.na(driver_imd_decile),
     casualty_imd_decile!="Data missing or out of range",
-    driver_imd_decile!="Data missing or out of range", !is.na(crash_quintile)) %>%
+    driver_imd_decile!="Data missing or out of range", !is.na(crash_quintile)) |>
   mutate(
     across(
       c(casualty_imd_quintile, driver_imd_quintile, crash_quintile),
@@ -2291,26 +2291,26 @@ demog_distances <- ped_veh %>%
         (casualty_imd_quintile_num-crash_quintile_num)^2 +
         (driver_imd_quintile_num-crash_quintile_num)^2
     )
-  ) %>%
-  group_by(demog_dist, casualty_imd_quintile, driver_imd_quintile, crash_quintile) %>%
-  summarise(crash_count=n()) %>%  ungroup() %>%
+  ) |>
+  group_by(demog_dist, casualty_imd_quintile, driver_imd_quintile, crash_quintile) |>
+  summarise(crash_count=n()) |>  ungroup() |>
   # We want to know how often each demographic distance *occurs*.
-  group_by(demog_dist, casualty_imd_quintile, driver_imd_quintile, crash_quintile) %>%
-  mutate(occurrences=n()) %>% ungroup %>%
-  mutate(total_crashes=sum(crash_count)) %>%
+  group_by(demog_dist, casualty_imd_quintile, driver_imd_quintile, crash_quintile) |>
+  mutate(occurrences=n()) |> ungroup |>
+  mutate(total_crashes=sum(crash_count)) |>
   # Then for each demographic distance, compute counts and bin probabilities
   # that are to be spread out to cells of matrix (so we devide by number of times that those distances exist).
-  group_by(demog_dist) %>%
-  mutate(crash_count_dist=sum(crash_count), occurrences=sum(occurrences), bin_prob=(crash_count_dist/total_crashes)/occurrences) %>% ungroup() %>%
+  group_by(demog_dist) |>
+  mutate(crash_count_dist=sum(crash_count), occurrences=sum(occurrences), bin_prob=(crash_count_dist/total_crashes)/occurrences) |> ungroup() |>
   # For expected counts we need to weight according to size of quintile (crashes). But as there is an association between geodemographic distance
   # and counts, we need to additionally weight according to the sum of the bin probabilities.
-  group_by(crash_quintile) %>%
-  mutate(prop=sum(crash_count)/total_crashes, weight=prop/sum(bin_prob)) %>% ungroup()
+  group_by(crash_quintile) |>
+  mutate(prop=sum(crash_count)/total_crashes, weight=prop/sum(bin_prob)) |> ungroup()
 
 
 # So we can estimate the probability of crashes occurring in each bin, weighting
 # on the number of times those bins appear overall. These are our *global probabilities*.
-demog_distances %>% select(demog_dist, crash_count, occurrences, bin_prob, weight) %>% unique
+demog_distances |> select(demog_dist, crash_count, occurrences, bin_prob, weight) |> unique
 
 # Our expected counts assume that counts are a function of demographic distance,
 # but *not* the IMD class in which they occur. That is, expected counts distribute
@@ -2318,19 +2318,19 @@ demog_distances %>% select(demog_dist, crash_count, occurrences, bin_prob, weigh
 # crash occurred.
 # For each cell in the matrix we arrive at a bin probability or likelihood.
 # However, we need to *weight* according to the relative size of each quintile in terms of crashes and sum of geographic distance.
-plot_data <-  ped_veh %>%
+plot_data <-  ped_veh |>
   filter(
     !is.na(casualty_imd_decile), !is.na(driver_imd_decile),
     casualty_imd_decile!="Data missing or out of range",
-    driver_imd_decile!="Data missing or out of range", !is.na(crash_quintile)) %>%
-  left_join(demog_distances) %>%
+    driver_imd_decile!="Data missing or out of range", !is.na(crash_quintile)) |>
+  left_join(demog_distances) |>
   mutate(
     grand_total=n(),
     row_total=bin_prob,
-  ) %>% ungroup %>%
-  group_by(crash_quintile) %>%
-  mutate(col_total=n()) %>% ungroup %>%
-  group_by(casualty_imd_quintile, driver_imd_quintile, crash_quintile) %>%
+  ) |> ungroup |>
+  group_by(crash_quintile) |>
+  mutate(col_total=n()) |> ungroup |>
+  group_by(casualty_imd_quintile, driver_imd_quintile, crash_quintile) |>
   summarise(
     col_total=first(weight),
     observed=n(),
@@ -2349,17 +2349,17 @@ plot_data <-  ped_veh %>%
     bin_prob=first(bin_prob),
     #prop=first(crash_prop),
     #crash_prop_adj=first(crash_prop_adj)
-  )  %>% ungroup %>%
+  )  |> ungroup |>
   mutate(max_resid_censored=max(resid_censored), max_resid=max(resid))
 
-plot_data %>% summarise(expected=sum(expected), observed=sum(observed), bin_prob=sum(bin_prob))
+plot_data |> summarise(expected=sum(expected), observed=sum(observed), bin_prob=sum(bin_prob))
 
-plot_data %>%
-  group_by(crash_quintile) %>%
+plot_data |>
+  group_by(crash_quintile) |>
   summarise(expected=sum(expected), observed=sum(observed), diff=observed-expected, bin_prob=sum(bin_prob))
 
 
-plot_social_dist <- demog_distances %>%
+plot_social_dist <- demog_distances |>
   ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
   geom_tile(aes(fill=demog_dist), colour="#707070", size=.2) +
   scale_fill_distiller(palette="Blues", direction=1) +
@@ -2371,7 +2371,7 @@ plot_social_dist <- demog_distances %>%
   coord_equal()
 
 
-plot_exp_dist <- plot_data %>%
+plot_exp_dist <- plot_data |>
   ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
   geom_tile(aes(fill=expected), colour="#707070", size=.2) +
   scale_fill_distiller(palette="Blues", direction=1) +
@@ -2382,7 +2382,7 @@ plot_exp_dist <- plot_data %>%
         axis.title.x = element_blank(), axis.title.y = element_blank()) +
   coord_equal()
 
-plot_row_total_dist <- plot_data %>%
+plot_row_total_dist <- plot_data |>
   ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
   geom_tile(aes(fill=row_total), colour="#707070", size=.2) +
   scale_fill_distiller(palette="Blues", direction=1) +
@@ -2393,7 +2393,7 @@ plot_row_total_dist <- plot_data %>%
         axis.title.x = element_blank(), axis.title.y = element_blank()) +
   coord_equal()
 
-plot_col_total_dist <- plot_data %>%
+plot_col_total_dist <- plot_data |>
   ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
   geom_tile(aes(fill=col_total), colour="#707070", size=.2) +
   scale_fill_distiller(palette="Blues", direction=1) +
@@ -2404,7 +2404,7 @@ plot_col_total_dist <- plot_data %>%
         axis.title.x = element_blank(), axis.title.y = element_blank()) +
   coord_equal()
 
-plot_resid_dist <-  plot_data %>%
+plot_resid_dist <-  plot_data |>
   ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
   geom_tile(aes(fill=resid), colour="#707070", size=.2) +
   scale_fill_distiller(
@@ -2430,20 +2430,20 @@ plot <- plot_resid_dist + plot_spacer() +
 
 ggsave(filename="./static/class/04-class_files/imd-driver-cas-crash-dist-full.png", plot=plot,width=9, height=10, dpi=300)
 
-plot_data <-  ped_veh %>% 
+plot_data <-  ped_veh |> 
   filter(
     !is.na(casualty_imd_decile), !is.na(driver_imd_decile),
     casualty_imd_decile!="Data missing or out of range", 
-    driver_imd_decile!="Data missing or out of range", !is.na(crash_quintile)) %>%   
-  left_join(demog_distances) %>% 
+    driver_imd_decile!="Data missing or out of range", !is.na(crash_quintile)) |>   
+  left_join(demog_distances) |> 
   mutate(
     grand_total=n()
-  ) %>% 
-  group_by(ranked_dist) %>% 
-  mutate(row_total=n()) %>% ungroup %>% 
-  group_by(crash_quintile) %>% 
-  mutate(col_total=n()) %>% ungroup %>% 
-  group_by(casualty_imd_quintile, driver_imd_quintile, crash_quintile) %>% 
+  ) |> 
+  group_by(ranked_dist) |> 
+  mutate(row_total=n()) |> ungroup |> 
+  group_by(crash_quintile) |> 
+  mutate(col_total=n()) |> ungroup |> 
+  group_by(casualty_imd_quintile, driver_imd_quintile, crash_quintile) |> 
   summarise(
     distance=first(ranked_dist),
     prop=first(crash_prop_dist),
@@ -2456,12 +2456,12 @@ plot_data <-  ped_veh %>%
     # Censor extreme effect sizes.
     resid_censored=if_else(resid<0, pmax(resid, -40), pmin(resid, 40)),
     ranked_occurrences=first(ranked_occurrences),
-  )  %>% ungroup %>% 
+  )  |> ungroup |> 
   mutate(max_resid_censored=max(resid_censored), max_resid=max(resid))
 
 
 
-plot_exp_dist <- plot_data %>% 
+plot_exp_dist <- plot_data |> 
   ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
   geom_tile(aes(fill=expected), colour="#707070", size=.2) +
   scale_fill_distiller(palette="Blues", direction=1) +
@@ -2474,7 +2474,7 @@ plot_exp_dist <- plot_data %>%
   coord_equal()
 
 
-plot_row_total_dist <- plot_data %>% 
+plot_row_total_dist <- plot_data |> 
   ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
   geom_tile(aes(fill=row_total/ranked_occurrences), colour="#707070", size=.2) +
   scale_fill_distiller(palette="Blues", direction=1) +
@@ -2487,7 +2487,7 @@ plot_row_total_dist <- plot_data %>%
   coord_equal()
 
 
-plot_col_total_dist <- plot_data %>% 
+plot_col_total_dist <- plot_data |> 
   ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
   geom_tile(aes(fill=col_total), colour="#707070", size=.2) +
   scale_fill_distiller(palette="Blues", direction=1) +
@@ -2499,7 +2499,7 @@ plot_col_total_dist <- plot_data %>%
         axis.title.x = element_blank(), axis.title.y = element_blank()) +
   coord_equal()
 
-plot_resid_dist <-  plot_data %>% 
+plot_resid_dist <-  plot_data |> 
   ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
   geom_tile(aes(fill=resid), colour="#707070", size=.2) +
   scale_fill_distiller(
@@ -2516,7 +2516,7 @@ plot_resid_dist <-  plot_data %>%
   coord_equal()
 
 
-plot_dist <- demog_distances %>% 
+plot_dist <- demog_distances |> 
   ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
   geom_tile(aes(fill=demog_dist), colour="#707070", size=.2) +
   scale_fill_distiller(palette="Blues", direction=1) +
@@ -2554,17 +2554,17 @@ ggsave(filename="./static/class/04-class_files/imd-driver-cas-crash-dist-prop.pn
 
 
 
-# plot_imd_driver_area <- ped_veh %>% 
+# plot_imd_driver_area <- ped_veh |> 
 #   filter(
 #     !is.na(casualty_imd_decile), !is.na(driver_imd_decile),
 #     casualty_imd_decile!="Data missing or out of range", 
-#     driver_imd_decile!="Data missing or out of range", !is.na(crash_quintile)) %>%   
-#   mutate(grand_total=n()) %>% 
-#   group_by(casualty_imd_quintile, driver_imd_quintile) %>% 
-#   mutate(row_total=n()) %>% ungroup %>% 
-#   group_by(crash_quintile) %>% 
-#   mutate(col_total=n()) %>% ungroup %>% 
-#   group_by(casualty_imd_quintile, driver_imd_quintile, crash_quintile) %>% 
+#     driver_imd_decile!="Data missing or out of range", !is.na(crash_quintile)) |>   
+#   mutate(grand_total=n()) |> 
+#   group_by(casualty_imd_quintile, driver_imd_quintile) |> 
+#   mutate(row_total=n()) |> ungroup |> 
+#   group_by(crash_quintile) |> 
+#   mutate(col_total=n()) |> ungroup |> 
+#   group_by(casualty_imd_quintile, driver_imd_quintile, crash_quintile) |> 
 #   summarise(
 #     observed=n(), 
 #     row_total=first(row_total), 
@@ -2572,9 +2572,9 @@ ggsave(filename="./static/class/04-class_files/imd-driver-cas-crash-dist-prop.pn
 #     grand_total=first(grand_total),
 #     expected=(row_total*col_total)/grand_total,
 #     resid=(observed-expected)/sqrt(expected)
-#   ) %>% 
+#   ) |> 
 #   # Censor max values to 40.
-#   mutate(resid=if_else(resid>0, pmin(resid, 40), pmax(resid, -40))) %>% 
+#   mutate(resid=if_else(resid>0, pmin(resid, 40), pmax(resid, -40))) |> 
 #   ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
 #   geom_tile(aes(fill=resid), colour="#707070", size=.2) +
 #   scale_fill_distiller(palette="PRGn", direction=1, limits=c(-40,40)) +
@@ -2599,11 +2599,11 @@ ggsave(filename="./static/class/04-class_files/imd-driver-cas.png", plot=plot,wi
 ######### March 3rd Revised cell probabilities
 
 
-demog_distances <- ped_veh %>%
+demog_distances <- ped_veh |>
   filter(
     !is.na(casualty_imd_decile), !is.na(driver_imd_decile),
     casualty_imd_decile!="Data missing or out of range",
-    driver_imd_decile!="Data missing or out of range", !is.na(crash_quintile)) %>%
+    driver_imd_decile!="Data missing or out of range", !is.na(crash_quintile)) |>
   mutate(
     across(
       c(casualty_imd_quintile, driver_imd_quintile, crash_quintile),
@@ -2614,26 +2614,26 @@ demog_distances <- ped_veh %>%
         (casualty_imd_quintile_num-crash_quintile_num)^2 +
         (driver_imd_quintile_num-crash_quintile_num)^2
     )
-  ) %>%
-  group_by(demog_dist, casualty_imd_quintile, driver_imd_quintile, crash_quintile) %>%
-  summarise(crash_count=n()) %>%  ungroup() %>%
+  ) |>
+  group_by(demog_dist, casualty_imd_quintile, driver_imd_quintile, crash_quintile) |>
+  summarise(crash_count=n()) |>  ungroup() |>
   # We want to know how often each demographic distance *occurs*.
-  group_by(demog_dist, casualty_imd_quintile, driver_imd_quintile, crash_quintile) %>%
-  mutate(occurrences=n()) %>% ungroup %>%
-  mutate(total_crashes=sum(crash_count)) %>%
+  group_by(demog_dist, casualty_imd_quintile, driver_imd_quintile, crash_quintile) |>
+  mutate(occurrences=n()) |> ungroup |>
+  mutate(total_crashes=sum(crash_count)) |>
   # Then for each demographic distance, compute counts and bin probabilities
   # that are to be spread out to cells of matrix (so we devide by number of times that those distances exist).
-  group_by(demog_dist) %>%
-  mutate(crash_count_dist=sum(crash_count), occurrences=sum(occurrences), bin_prob=(crash_count_dist/total_crashes)/occurrences) %>% ungroup() %>%
+  group_by(demog_dist) |>
+  mutate(crash_count_dist=sum(crash_count), occurrences=sum(occurrences), bin_prob=(crash_count_dist/total_crashes)/occurrences) |> ungroup() |>
   # For expected counts we need to weight according to size of quintile (crashes). But as there is an association between geodemographic distance
   # and counts, we need to additionally weight according to the sum of the bin probabilities.
-  group_by(crash_quintile) %>%
-  mutate(prop=sum(crash_count)/total_crashes, weight=prop/sum(bin_prob)) %>% ungroup()
+  group_by(crash_quintile) |>
+  mutate(prop=sum(crash_count)/total_crashes, weight=prop/sum(bin_prob)) |> ungroup()
 
 
 # So we can estimate the probability of crashes occurring in each bin, weighting
 # on the number of times those bins appear overall. These are our *global probabilities*.
-demog_distances %>% select(demog_dist, crash_count, occurrences, bin_prob, weight) %>% unique
+demog_distances |> select(demog_dist, crash_count, occurrences, bin_prob, weight) |> unique
 
 # Our expected counts assume that counts are a function of demographic distance,
 # but *not* the IMD class in which they occur. That is, expected counts distribute
@@ -2641,19 +2641,19 @@ demog_distances %>% select(demog_dist, crash_count, occurrences, bin_prob, weigh
 # crash occurred.
 # For each cell in the matrix we arrive at a bin probability or likelihood.
 # However, we need to *weight* according to the relative size of each quintile in terms of crashes and sum of geographic distance.
-plot_data <-  ped_veh %>%
+plot_data <-  ped_veh |>
   filter(
     !is.na(casualty_imd_decile), !is.na(driver_imd_decile),
     casualty_imd_decile!="Data missing or out of range",
-    driver_imd_decile!="Data missing or out of range", !is.na(crash_quintile)) %>%
-  left_join(demog_distances) %>%
+    driver_imd_decile!="Data missing or out of range", !is.na(crash_quintile)) |>
+  left_join(demog_distances) |>
   mutate(
     grand_total=n(),
     row_total=bin_prob,
-  ) %>% ungroup %>%
-  group_by(crash_quintile) %>%
-  mutate(col_total=n()) %>% ungroup %>%
-  group_by(casualty_imd_quintile, driver_imd_quintile, crash_quintile) %>%
+  ) |> ungroup |>
+  group_by(crash_quintile) |>
+  mutate(col_total=n()) |> ungroup |>
+  group_by(casualty_imd_quintile, driver_imd_quintile, crash_quintile) |>
   summarise(
     col_total=first(weight),
     observed=n(),
@@ -2672,17 +2672,17 @@ plot_data <-  ped_veh %>%
     bin_prob=first(bin_prob),
     #prop=first(crash_prop),
     #crash_prop_adj=first(crash_prop_adj)
-  )  %>% ungroup %>%
+  )  |> ungroup |>
   mutate(max_resid_censored=max(resid_censored), max_resid=max(resid))
 
-plot_data %>% summarise(expected=sum(expected), observed=sum(observed), bin_prob=sum(bin_prob))
+plot_data |> summarise(expected=sum(expected), observed=sum(observed), bin_prob=sum(bin_prob))
 
-plot_data %>%
-  group_by(crash_quintile) %>%
+plot_data |>
+  group_by(crash_quintile) |>
   summarise(expected=sum(expected), observed=sum(observed), diff=observed-expected, bin_prob=sum(bin_prob))
 
 
-plot_social_dist <- demog_distances %>%
+plot_social_dist <- demog_distances |>
   ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
   geom_tile(aes(fill=demog_dist), colour="#707070", size=.2) +
   scale_fill_distiller(palette="Blues", direction=1) +
@@ -2705,7 +2705,7 @@ ggsave(filename="./static/class/04-class_files/imd-geodemog-dist.png", plot=plot
 
 
 
-plot_obs_dist <- plot_data %>%
+plot_obs_dist <- plot_data |>
   ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
   geom_tile(aes(fill=observed), colour="#707070", size=.2) +
   scale_fill_distiller(palette="Blues", direction=1) +
@@ -2718,7 +2718,7 @@ plot_obs_dist <- plot_data %>%
 
 
 
-plot_exp_dist <- plot_data %>%
+plot_exp_dist <- plot_data |>
   ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
   geom_tile(aes(fill=expected), colour="#707070", size=.2) +
   scale_fill_distiller(palette="Blues", direction=1) +
@@ -2729,7 +2729,7 @@ plot_exp_dist <- plot_data %>%
         axis.title.x = element_blank(), axis.title.y = element_blank()) +
   coord_equal()
 
-plot_row_total_dist <- plot_data %>%
+plot_row_total_dist <- plot_data |>
   ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
   geom_tile(aes(fill=row_total), colour="#707070", size=.2) +
   scale_fill_distiller(palette="Blues", direction=1) +
@@ -2740,7 +2740,7 @@ plot_row_total_dist <- plot_data %>%
         axis.title.x = element_blank(), axis.title.y = element_blank()) +
   coord_equal()
 
-plot_col_total_dist <- plot_data %>%
+plot_col_total_dist <- plot_data |>
   ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
   geom_tile(aes(fill=col_total), colour="#707070", size=.2) +
   scale_fill_distiller(palette="Blues", direction=1) +
@@ -2751,7 +2751,7 @@ plot_col_total_dist <- plot_data %>%
         axis.title.x = element_blank(), axis.title.y = element_blank()) +
   coord_equal()
 
-plot_resid_dist <-  plot_data %>%
+plot_resid_dist <-  plot_data |>
   ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
   geom_tile(aes(fill=resid), colour="#707070", size=.2) +
   scale_fill_distiller(
@@ -2781,32 +2781,32 @@ ggsave(filename="./static/class/04-class_files/imd-driver-cas-crash-dist-full.pn
 
 # Bring in adjustments
 t <- get_stats19_adjustments()
-u <- ped_veh %>% 
+u <- ped_veh |> 
   left_join(
-    t %>% select(accident_index, Casualty_Reference, Adjusted_Serious, Adjusted_Slight),
+    t |> select(accident_index, Casualty_Reference, Adjusted_Serious, Adjusted_Slight),
     by=c("accident_index"="accident_index", "casualty_reference"="Casualty_Reference")
-    ) %>% 
+    ) |> 
   mutate(
     fatal=if_else(casualty_severity=="Fatal", 1,0),
     ksi=fatal+Adjusted_Serious,
-    slight=Adjusted_Slight) %>% 
+    slight=Adjusted_Slight) |> 
   select(-c(Adjusted_Slight, Adjusted_Serious))
 
 ggsave(filename="./static/class/04-class_files/ped-cas-year.png", plot=plot,width=9, height=4.5, dpi=300)
 
 
-freq_by_year <- u %>%
+freq_by_year <- u |>
   mutate(
     year=lubridate::year(date)
-  ) %>%
-  group_by(year) %>%
+  ) |>
+  group_by(year) |>
   summarise(ksi=sum(ksi, na.rm=TRUE), slight=sum(slight, na.rm=TRUE))
 
 min_slight <- min(freq_by_year$slight)
 max_slight <- max(freq_by_year$slight)
 range_slight <- max_slight-min_slight
 
-plot_slight_year <- freq_by_year %>%
+plot_slight_year <- freq_by_year |>
   ggplot(aes(x=year, y=slight)) +
   geom_line(colour="#fee0d2", size=1.5) +
   geom_label(aes(label=scales::comma(slight, accuracy=1)), label.size = 0, family="Roboto Condensed", fill="#eeeeee") +
@@ -2820,7 +2820,7 @@ plot_slight_year <- freq_by_year %>%
 min_ksi <- min(freq_by_year$ksi)
 max_ksi <- max(freq_by_year$ksi)
 range_ksi <- max_ksi-min_ksi
-plot_ksi_year <- freq_by_year %>%
+plot_ksi_year <- freq_by_year |>
   ggplot(aes(x=year, y=ksi)) +
   geom_line(colour="#de2d26", size=1.5) +
   geom_label(aes(label=scales::comma(ksi, accuracy=1)), label.size = 0, family="Roboto Condensed",fill="#eeeeee" ) +
@@ -2844,13 +2844,13 @@ plot <-
 
 
 
-mosaic <- vehicle_pedestrians %>% group_by(casualty_severity) %>% 
+mosaic <- vehicle_pedestrians |> group_by(casualty_severity) |> 
   mutate(
     vehicle_type=factor(vehicle_type, levels=vehicle_order),
     severity=if_else(casualty_severity=="Slight", "Slight", "KSI")
-  ) %>% ungroup %>% 
-  select(vehicle_type, severity) %>%
-  mutate(vehicle_type=fct_rev(vehicle_type)) %>% 
+  ) |> ungroup |> 
+  select(vehicle_type, severity) |>
+  mutate(vehicle_type=fct_rev(vehicle_type)) |> 
   ggplot() +
   geom_mosaic(aes(x=product(vehicle_type), fill=severity, colour=severity, divider = "vspine"), offset = 0.008, alpha=1)+
   scale_fill_manual(values=c("#de2d26","#fee0d2"))+
@@ -2859,8 +2859,8 @@ mosaic <- vehicle_pedestrians %>% group_by(casualty_severity) %>%
   coord_flip()
 
 # annotate labels
-plot_data <- ggplot_build(mosaic)$data %>% as.data.frame() %>%
-  group_by(x__vehicle_type) %>%
+plot_data <- ggplot_build(mosaic)$data |> as.data.frame() |>
+  group_by(x__vehicle_type) |>
   summarise(xmin=min(xmin),xmax=max(xmax), ymin=min(ymin),ymax=max(ymax),
             count=sum(.wt))
 

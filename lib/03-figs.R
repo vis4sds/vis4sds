@@ -60,10 +60,10 @@ theme_set(theme_v_gds())
 ###############################################################################
 
 
-trump_data <- country_list %>% 
-  mutate(geom_rot = st_geometry(.)*rot(pi/2)) %>%
-  st_drop_geometry() %>%
-  rename(geometry = geom_rot) %>%
+trump_data <- country_list |> 
+  mutate(geom_rot = st_geometry(.)*rot(pi/2)) |>
+  st_drop_geometry() |>
+  rename(geometry = geom_rot) |>
   st_set_geometry("geometry")
 
 
@@ -79,8 +79,8 @@ constituency_boundaries <- st_read(here("data", "constituency_boundaries.geojson
 # Swing
 bes_2019
 
-data <- bes_2019 %>%
-  filter(region != "Northern Ireland") %>%
+data <- bes_2019 |>
+  filter(region != "Northern Ireland") |>
   mutate(
     swing_con_lab=0.5*((con_19-con_17)-(lab_19-lab_17)),
     # Recode to 0 Chorley incoming speaker,Buckingham outgoing speaker --  uncontested seat.
@@ -117,7 +117,7 @@ elected_parties <- c(
   "Other")
 
 # Store as vector and recode elected variable as factor for use in scale_colour_manual.
-t <- bes_2019 %>%
+t <- bes_2019 |>
   mutate(
     elected=if_else(!winner_19 %in% elected_parties, "Other", winner_19),
     elected=factor(elected,
@@ -127,8 +127,8 @@ colours <- c(con, lab, other)
 names(colours) <- levels(t$elected)
 
 
-plot <- bes_2019 %>%
-  filter(region != "Northern Ireland", constituency_name != "Chorley") %>%
+plot <- bes_2019 |>
+  filter(region != "Northern Ireland", constituency_name != "Chorley") |>
   ggplot(mapping=aes(x=leave_hanretty, y=con_1719)) +
   geom_point(alpha=.8) +
   labs(
@@ -139,8 +139,8 @@ plot <- bes_2019 %>%
   )+
   theme_v_gds()
 
-plot2 <- t %>%
-  filter(constituency_name != "Chorley", region != "Northern Ireland") %>%
+plot2 <- t |>
+  filter(constituency_name != "Chorley", region != "Northern Ireland") |>
   ggplot(mapping=aes(x=leave_hanretty, y=con_1719)) +
   geom_point(mapping=aes(colour=elected), alpha=.8)+
   scale_colour_manual(values=colours)+
@@ -153,10 +153,10 @@ plot2 <- t %>%
   guides(colour=guide_legend(title="Winning party"))
 
 # shape -- on flipped
-t %>%
-  filter(constituency_name != "Chorley", region != "Northern Ireland") %>%
+t |>
+  filter(constituency_name != "Chorley", region != "Northern Ireland") |>
   mutate(is_flipped=seat_change_1719=="Conservative gain from Labour",
-         is_flipped=if_else(is.na(is_flipped), FALSE, is_flipped)) %>%
+         is_flipped=if_else(is.na(is_flipped), FALSE, is_flipped)) |>
   ggplot(mapping=aes(x=leave_hanretty, y=con_1719)) +
   geom_point(mapping=aes(colour=elected, pch=is_flipped))+
   scale_colour_manual(values=colours)+
@@ -168,10 +168,10 @@ t %>%
   )+
   theme_v_gds()
 
-t %>%
-  filter(constituency_name != "Chorley", region != "Northern Ireland") %>%
+t |>
+  filter(constituency_name != "Chorley", region != "Northern Ireland") |>
   mutate(is_flipped=seat_change_1719=="Conservative gain from Labour",
-         is_flipped=if_else(is.na(is_flipped), FALSE, is_flipped)) %>%
+         is_flipped=if_else(is.na(is_flipped), FALSE, is_flipped)) |>
   ggplot(mapping=aes(x=leave_hanretty, y=con_1719)) +
   geom_point(mapping=aes(colour=elected, pch=is_flipped))+
   scale_colour_manual(values=colours)+
@@ -182,10 +182,10 @@ t %>%
     x="% Leave", y="% gain in Conservative vote share"
   )
 
-plot3 <- t %>%
-  filter(constituency_name != "Chorley", region != "Northern Ireland") %>%
+plot3 <- t |>
+  filter(constituency_name != "Chorley", region != "Northern Ireland") |>
   mutate(is_flipped=seat_change_1719=="Conservative gain from Labour",
-         is_flipped=if_else(is.na(is_flipped), FALSE, is_flipped)) %>%
+         is_flipped=if_else(is.na(is_flipped), FALSE, is_flipped)) |>
   ggplot(mapping=aes(x=leave_hanretty, y=con_1719)) +
   geom_point(mapping=aes(colour=elected, alpha=is_flipped))+
   geom_vline(xintercept=50, size=.2)+
@@ -200,8 +200,8 @@ plot3 <- t %>%
     x="% Leave", y="% gain in Conservative vote share"
   )
 
-t %>%
-  filter(constituency_name != "Chorley", region != "Northern Ireland") %>%
+t |>
+  filter(constituency_name != "Chorley", region != "Northern Ireland") |>
   ggplot(data=.) +
   geom_point(
     mapping=
@@ -223,7 +223,7 @@ temp <- tibble(
   numbers = sample(0:9,200, replace=TRUE, prob=c(0.11,0.11,0.11,0.025, 0.11, 0.11,0.11,0.11,0.11,0.11))
 )
 
-none <- temp %>%
+none <- temp |>
   ggplot(aes(x, y))+
   geom_text(aes(label=numbers), colour="#636363", angle=0, size=8,hjust = 0.5, vjust=-0.5, family="Avenir Next")+
   scale_y_continuous(limits = c(1, 20))+
@@ -240,7 +240,7 @@ temp <- tibble(
   numbers = sample(0:9,200, replace=TRUE, prob=c(0.11,0.11,0.11,0.025, 0.11, 0.11,0.11,0.11,0.11,0.11))
 )
 
-area <- temp %>%
+area <- temp |>
   ggplot(aes(x, y))+
   geom_text(data=subset(temp, numbers!=3),
             aes(label=numbers), colour="#636363", angle=0, size=8,hjust = 0.5, vjust=-0.5, family="Avenir Next")+
@@ -261,7 +261,7 @@ temp <- tibble(
   numbers = sample(0:9,200, replace=TRUE, prob=c(0.11,0.11,0.11,0.025, 0.11, 0.11,0.11,0.11,0.11,0.11))
 )
 
-angle <- temp %>%
+angle <- temp |>
   ggplot(aes(x, y))+
   geom_text(data=subset(temp, numbers!=3),
             aes(label=numbers), colour="#636363", angle=0, size=8,hjust = 0.5, vjust=-0.5, family="Avenir Next")+
@@ -284,7 +284,7 @@ temp <- tibble(
 )
 
 
-hue <- temp %>%
+hue <- temp |>
   ggplot(aes(x, y))+
   geom_text(data=subset(temp, numbers!=3),
             aes(label=numbers), colour="#636363", angle=0, size=8,hjust = 0.5, vjust=-0.5, family="Avenir Next")+
@@ -303,16 +303,16 @@ temp <- tibble(
   numbers = sample(0:9,200, replace=TRUE, prob=c(0.11,0.11,0.11,0.025, 0.11, 0.11,0.11,0.11,0.11,0.11))
 )
 
-temp_region <- temp %>% filter(!(y==3 & x>34))
+temp_region <- temp |> filter(!(y==3 & x>34))
 
-temp_region <- temp_region %>%
-  add_row(x=0,y=21,numbers=3) %>%
-  add_row(x=1,y=21,numbers=3) %>%
-  add_row(x=2,y=21,numbers=3) %>%
-  add_row(x=3,y=21,numbers=3) %>%
+temp_region <- temp_region |>
+  add_row(x=0,y=21,numbers=3) |>
+  add_row(x=1,y=21,numbers=3) |>
+  add_row(x=2,y=21,numbers=3) |>
+  add_row(x=3,y=21,numbers=3) |>
   add_row(x=4,y=21,numbers=3)
 
-spatial <- temp_region %>%
+spatial <- temp_region |>
   ggplot(aes(x, y))+
   geom_text(data=subset(temp_region, numbers!=3),
             aes(label=numbers), colour="#636363", angle=0, size=8,hjust = 0.5, vjust=-0.5, family="Avenir Next")+
@@ -326,7 +326,7 @@ spatial <- temp_region %>%
 ggsave(filename=here("figs","03","spatial-encoding.png"), plot=spatial, width=8, height=3.5, dpi=300)
 ggsave(filename=here("figs","03","spatial-encoding.svg"), plot=spatial, width=8, height=3.5)
 
-hue <- temp %>%
+hue <- temp |>
   ggplot(aes(x, y))+
   geom_text(data=subset(temp, numbers!=3),
             aes(label=numbers), colour="#636363", angle=0, size=8,hjust = 0.5, vjust=-0.5, family="Avenir Next")+
@@ -346,8 +346,8 @@ temp <- tibble(
   stevens = x^.7
 )
 
-power_laws <- temp %>%
-  pivot_longer(cols=c(length,stevens, flannery), names_to="stimulus", values_to="perception") %>%
+power_laws <- temp |>
+  pivot_longer(cols=c(length,stevens, flannery), names_to="stimulus", values_to="perception") |>
   ggplot() +
   geom_path(aes(x=x,y=perception, group=stimulus), colour=site_colours$primary, size=0.8, alpha=.8) +
   scale_x_continuous(limits=c(-.3,9.5))+
@@ -379,7 +379,7 @@ temp <- tibble(
 )
 
 library(ggforce)
-circles <- temp %>%
+circles <- temp |>
   ggplot()+
   geom_circle(aes(x0=x,y0=y, r=r), fill=site_colours$primary, colour=site_colours$primary, alpha=.7)+
   coord_equal()+
@@ -432,22 +432,22 @@ gb +
   )
 
 # Number of constituencies won by party.
-bes_2019 %>%
-  group_by(winner_19) %>%
-  summarise(count=n()) %>%
+bes_2019 |>
+  group_by(winner_19) |>
+  summarise(count=n()) |>
   arrange(desc(count))
 
 # Share of vote by party.
-bes_2019 %>%
-  select(constituency_name, total_vote_19, con_vote_19:alliance_vote_19) %>%
-  pivot_longer(cols=con_vote_19:alliance_vote_19, names_to="party", values_to="votes") %>%
-  mutate(party=str_extract(party, "[^_]+")) %>%
-  group_by(party) %>%
-  summarise(vote_share=sum(votes, na.rm=TRUE)/sum(total_vote_19)) %>%
+bes_2019 |>
+  select(constituency_name, total_vote_19, con_vote_19:alliance_vote_19) |>
+  pivot_longer(cols=con_vote_19:alliance_vote_19, names_to="party", values_to="votes") |>
+  mutate(party=str_extract(party, "[^_]+")) |>
+  group_by(party) |>
+  summarise(vote_share=sum(votes, na.rm=TRUE)/sum(total_vote_19)) |>
   arrange(desc(vote_share))
 
-data_gb <- bes_2019 %>%
-  filter(region!="Northern Ireland") %>%
+data_gb <- bes_2019 |>
+  filter(region!="Northern Ireland") |>
   mutate(
     swing_con_lab=0.5*((con_19-con_17)-(lab_19-lab_17)),
     # Recode to 0 Chorley incoming speaker,Buckingham outgoing speaker --  uncontested seat.
@@ -465,12 +465,12 @@ data_gb  |>
   )
 
 
-hist_1 <- data_gb %>%
+hist_1 <- data_gb |>
   ggplot() +
   geom_histogram(mapping=aes(swing_con_lab)) +
   labs() 
 
-hist_2 <- data_gb %>%
+hist_2 <- data_gb |>
   ggplot(mapping=aes(swing_con_lab)) +
   geom_histogram(fill="#003c8f") +
   labs(
@@ -480,7 +480,7 @@ hist_2 <- data_gb %>%
     x="Swing", y="count"
   )
 
-hist_3 <- data_gb %>%
+hist_3 <- data_gb |>
   ggplot(mapping=aes(swing_con_lab)) +
   geom_histogram(fill="#003c8f") +
   geom_vline(xintercept=4.44, size=.3)+
@@ -500,13 +500,13 @@ ggsave(filename=here("figs", "03", "hist-region.svg"), plot=hist_3,width=8, heig
 
 
 # Share of vote by party.
-party_shares <- data_gb %>%
-  select(constituency_name, region, total_vote_19, con_vote_19:alliance_vote_19) %>%
-  pivot_longer(cols=con_vote_19:alliance_vote_19, names_to="party", values_to="votes") %>%
-  mutate(party=str_extract(party, "[^_]+")) %>%
-  group_by(party) %>%
-  summarise(vote_share=sum(votes, na.rm=TRUE)/sum(total_vote_19)) %>%
-  filter(vote_share>0) %>%
+party_shares <- data_gb |>
+  select(constituency_name, region, total_vote_19, con_vote_19:alliance_vote_19) |>
+  pivot_longer(cols=con_vote_19:alliance_vote_19, names_to="party", values_to="votes") |>
+  mutate(party=str_extract(party, "[^_]+")) |>
+  group_by(party) |>
+  summarise(vote_share=sum(votes, na.rm=TRUE)/sum(total_vote_19)) |>
+  filter(vote_share>0) |>
   ggplot(aes(x=reorder(party, -vote_share), y=vote_share)) +
   geom_col(fill="#003c8f") +
   labs(
@@ -517,13 +517,13 @@ party_shares <- data_gb %>%
   )
 
 
-party_shares_rotate <- data_gb %>%
-  select(constituency_name, region, total_vote_19, con_vote_19:alliance_vote_19) %>%
-  pivot_longer(cols=con_vote_19:alliance_vote_19, names_to="party", values_to="votes") %>%
-  mutate(party=str_extract(party, "[^_]+")) %>%
-  group_by(party) %>%
-  summarise(vote_share=sum(votes, na.rm=TRUE)/sum(total_vote_19)) %>%
-  filter(vote_share>0) %>%
+party_shares_rotate <- data_gb |>
+  select(constituency_name, region, total_vote_19, con_vote_19:alliance_vote_19) |>
+  pivot_longer(cols=con_vote_19:alliance_vote_19, names_to="party", values_to="votes") |>
+  mutate(party=str_extract(party, "[^_]+")) |>
+  group_by(party) |>
+  summarise(vote_share=sum(votes, na.rm=TRUE)/sum(total_vote_19)) |>
+  filter(vote_share>0) |>
   ggplot(aes(x=reorder(party, vote_share), y=vote_share)) +
   geom_col(fill="#003c8f") +
   coord_flip() +
@@ -534,7 +534,7 @@ party_shares_rotate <- data_gb %>%
     x="party", y="vote share"
   )
 
-party_shares_colour <- temp_party_shares %>%
+party_shares_colour <- temp_party_shares |>
   ggplot(aes(x=reorder(party, vote_share), y=vote_share)) +
   geom_col(aes(fill=party)) +
   coord_flip() +
@@ -546,26 +546,26 @@ party_shares_colour <- temp_party_shares %>%
   )+
   scale_fill_manual(values=party_colours)
 
-temp_party_shares <- data_gb %>%
-  select(constituency_name, region, total_vote_19, con_vote_19:alliance_vote_19) %>%
-  pivot_longer(cols=con_vote_19:alliance_vote_19, names_to="party", values_to="votes") %>%
-  mutate(party=str_extract(party, "[^_]+")) %>%
-  group_by(party) %>%
-  summarise(vote_share=sum(votes, na.rm=TRUE)/sum(total_vote_19)) %>%
-  filter(vote_share>0) %>%
+temp_party_shares <- data_gb |>
+  select(constituency_name, region, total_vote_19, con_vote_19:alliance_vote_19) |>
+  pivot_longer(cols=con_vote_19:alliance_vote_19, names_to="party", values_to="votes") |>
+  mutate(party=str_extract(party, "[^_]+")) |>
+  group_by(party) |>
+  summarise(vote_share=sum(votes, na.rm=TRUE)/sum(total_vote_19)) |>
+  filter(vote_share>0) |>
   mutate(party=factor(party, levels=c("con", "lab", "ld", "snp", "green", "brexit", "pc")))
 
 plot <- party_shares + party_shares_rotate
 ggsave(filename=here("figs", "03", "bars.png"), plot=plot,width=9, height=4, dpi=300)
 ggsave(filename=here("figs", "03", "bars.svg"), plot=plot,width=9, height=4)
 
-temp_party_shares_region <- data_gb %>%
-  select(constituency_name, region, total_vote_19, con_vote_19:alliance_vote_19) %>%
-  pivot_longer(cols=con_vote_19:alliance_vote_19, names_to="party", values_to="votes") %>%
-  mutate(party=str_extract(party, "[^_]+")) %>%
-  group_by(party, region) %>%
-  summarise(vote_share=sum(votes, na.rm=TRUE)/sum(total_vote_19)) %>%
-  filter(party %in% c("con", "lab", "ld", "snp", "green", "brexit", "pc")) %>%
+temp_party_shares_region <- data_gb |>
+  select(constituency_name, region, total_vote_19, con_vote_19:alliance_vote_19) |>
+  pivot_longer(cols=con_vote_19:alliance_vote_19, names_to="party", values_to="votes") |>
+  mutate(party=str_extract(party, "[^_]+")) |>
+  group_by(party, region) |>
+  summarise(vote_share=sum(votes, na.rm=TRUE)/sum(total_vote_19)) |>
+  filter(party %in% c("con", "lab", "ld", "snp", "green", "brexit", "pc")) |>
   mutate(party=factor(party, levels=c("con", "lab", "ld", "snp", "green", "brexit", "pc")))
 
 # Con :
@@ -588,7 +588,7 @@ other <- "#bdbdbd"
 party_colours <- c(con, lab, ld, snp, green, brexit, pc)
 names(party_colours) <- levels(temp_party_shares$party)
 
-party_shares_region <- temp_party_shares_region %>%
+party_shares_region <- temp_party_shares_region |>
   ggplot(aes(x=reorder(party, vote_share), y=vote_share)) +
   geom_col(aes(fill=party)) +
   scale_fill_manual(values=party_colours) +
@@ -605,26 +605,26 @@ party_shares_region <- temp_party_shares_region %>%
 ggsave(filename=here("figs", "03", "bars-region.png"), plot=party_shares_region,width=10, height=6, dpi=300)
 ggsave(filename=here("figs", "03", "bars-region.svg"), plot=party_shares_region,width=10, height=6)
 
-plot_scatters <- data_gb %>%
+plot_scatters <- data_gb |>
   mutate(winner_19=case_when(
     winner_19 == "Conservative" ~ "Conservative",
     winner_19 == "Labour" ~ "Labour",
     TRUE ~ "Other"
-  )) %>%
+  )) |>
   ggplot(aes(x=con_17, y=con_19)) +
   geom_point(aes(colour=winner_19), alpha=.8) +
   geom_abline(intercept = 0, slope = 1) +
   scale_colour_manual(values=c(con,lab,other)) 
 
 
-plot_scatters_con <- data_gb %>%
+plot_scatters_con <- data_gb |>
   mutate(is_flipped=seat_change_1719=="Conservative gain from Labour",
          is_flipped=if_else(is.na(is_flipped), FALSE, is_flipped),
          winner_19=case_when(
            winner_19 == "Conservative" ~ "Conservative",
            winner_19 == "Labour" ~ "Labour",
            TRUE ~ "Other"
-         )) %>%
+         )) |>
   ggplot(aes(x=con_17, y=con_19)) +
   geom_point(aes(colour=winner_19, alpha=is_flipped, shape=is_flipped)) +
   geom_abline(intercept = 0, slope = 1, size=.3) +
@@ -637,14 +637,14 @@ plot_scatters_con <- data_gb %>%
   labs(x="vote share 2017 ", y="vote share 2019") +
   guides(fill=FALSE, alpha=FALSE, shape=FALSE, colour=FALSE) 
 
-plot_scatters_lab <- data_gb %>%
+plot_scatters_lab <- data_gb |>
   mutate(is_flipped=seat_change_1719=="Conservative gain from Labour",
          is_flipped=if_else(is.na(is_flipped), FALSE, is_flipped),
          winner_19=case_when(
            winner_19 == "Conservative" ~ "Conservative",
            winner_19 == "Labour" ~ "Labour",
            TRUE ~ "Other"
-         )) %>%
+         )) |>
   ggplot(aes(x=lab_17, y=lab_19)) +
   geom_point(aes(colour=winner_19, alpha=is_flipped, shape=is_flipped)) +
   geom_abline(intercept=0, slope=1, size=.3) +
@@ -678,14 +678,14 @@ ggsave(filename=here("figs", "03", "scatters-con.svg"), plot=plot,width=9, heigh
 
 
 
-plot <- data_gb %>%
+plot <- data_gb |>
   mutate(is_flipped=seat_change_1719=="Conservative gain from Labour",
          is_flipped=if_else(is.na(is_flipped), FALSE, is_flipped),
          winner_19=case_when(
            winner_19 == "Conservative" ~ "Conservative",
            winner_19 == "Labour" ~ "Labour",
            TRUE ~ "Other"
-         )) %>%
+         )) |>
   ggplot(aes(x=lab_17, y=lab_19)) +
   geom_point(aes(colour=winner_19, alpha=is_flipped, shape=is_flipped)) +
   geom_abline(intercept=0, slope=1, size=.3) +
@@ -703,14 +703,14 @@ plot <- data_gb %>%
 ggsave(filename=here("figs", "03", "scatters-lab.png"), plot=plot,width=9, height=5, dpi=300)
 ggsave(filename=here("figs", "03", "scatters-lab.svg"), plot=plot,width=9, height=5)
 
-plot_scatters_region <- data_gb %>%
+plot_scatters_region <- data_gb |>
   mutate(is_flipped=seat_change_1719=="Conservative gain from Labour",
          is_flipped=if_else(is.na(is_flipped), FALSE, is_flipped),
          winner_19=case_when(
            winner_19 == "Conservative" ~ "Conservative",
            winner_19 == "Labour" ~ "Labour",
            TRUE ~ "Other"
-         )) %>%
+         )) |>
   ggplot(aes(x=con_17, y=con_19)) +
   geom_point(aes(colour=winner_19, fill=winner_19, alpha=is_flipped, shape=is_flipped)) +
   geom_abline(intercept=0, slope=1, size=.2) +
@@ -730,14 +730,14 @@ plot <- plot_scatters_emph
 ggsave(filename=here("figs", "03", "scatters-region.png"), plot=plot_scatters_region,width=11, height=7, dpi=300)
 ggsave(filename=here("figs", "03", "scatters-region.svg"), plot=plot_scatters_region,width=11, height=7)
 
-data_gb %>%
+data_gb |>
   mutate(is_flipped=seat_change_1719=="Conservative gain from Labour",
          is_flipped=if_else(is.na(is_flipped), FALSE, is_flipped),
          winner_19=case_when(
            winner_19 == "Conservative" ~ "Conservative",
            winner_19 == "Labour" ~ "Labour",
            TRUE ~ "Other"
-         )) %>%
+         )) |>
   ggplot(aes(x=con_17, y=con_19)) +
   geom_point(aes(alpha=is_flipped, colour=winner_19)) +
   geom_abline(intercept = 0, slope = 1) +
@@ -756,12 +756,12 @@ data_gb %>%
 ggsave(filename="./static/class/03-class_files/bars-region.png", plot=party_shares_region,width=12, height=8, dpi=300)
 
 
-data_gb <- constituency_boundaries %>%
+data_gb <- constituency_boundaries |>
   inner_join(data_gb, by=c("pcon17cd"="ons_const_id"))
 
 class(data_gb)
 
-data_gb <- data_gb %>%
+data_gb <- data_gb |>
   mutate(
     winner_19=if_else(winner_19=="Speaker", "Other", winner_19),
     winner_19=as_factor(winner_19))
@@ -795,7 +795,7 @@ map_2 <- data_gb |>
   ) |> 
   ggplot() +
   geom_sf(aes(fill=winner_19), colour="#eeeeee", size=0.01)+
-  geom_sf(data=. %>% group_by(region) %>% summarise(), colour="#eeeeee", fill="transparent", size=0.08)+
+  geom_sf(data=. |> group_by(region) |> summarise(), colour="#eeeeee", fill="transparent", size=0.08)+
   coord_sf(crs=27700, datum=NA) +
   theme_v_gds() +
   theme(legend.position = "right") +
@@ -815,7 +815,7 @@ ggsave(here("figs", "03", "map-winners.png"), plot=plot,width=8.6, height=7, dpi
 max_shift <- max(abs(data_gb$swing_con_lab))
 min_shift <- -max_shift
 # Calculate bounding boxes for use in annotation_custom().
-london_bbox <- st_bbox(data_gb %>% filter(region=="London"))
+london_bbox <- st_bbox(data_gb |> filter(region=="London"))
 london_width <- unname(london_bbox$xmax)-unname(london_bbox$xmin)
 london_height <- unname(london_bbox$ymax)-unname(london_bbox$ymin)
 london_aspect <- london_width/london_height
@@ -824,10 +824,10 @@ uk_width <- unname(uk_bbox$xmax)-unname(uk_bbox$xmin)
 uk_height <- unname(uk_bbox$ymax)-unname(uk_bbox$ymin)
 
 # Annotate constituencies that *really* defied expectation (discussed in the EPA paper).
-bassetlaw <- data_gb %>% filter(constituency_name == "Bassetlaw")
-redcar <-  data_gb %>% filter(constituency_name == "Redcar")
-sedgefield <- data_gb %>% filter(constituency_name == "Sedgefield")
-stoke <- data_gb %>% filter(constituency_name == "Stoke-On-Trent Central")
+bassetlaw <- data_gb |> filter(constituency_name == "Bassetlaw")
+redcar <-  data_gb |> filter(constituency_name == "Redcar")
+sedgefield <- data_gb |> filter(constituency_name == "Sedgefield")
+stoke <- data_gb |> filter(constituency_name == "Stoke-On-Trent Central")
 
 # Convert degrees to radians.
 get_radians <- function(degrees) {
@@ -853,15 +853,15 @@ PositionCenterSpoke <- ggplot2::ggproto('PositionCenterSpoke', ggplot2::Position
 party_colours <- c(con, lab, other)
 names(party_colours) <- c("Conservative", "Labour", "Other")
 
-gb <- data_gb %>%
-  filter(region!="London") %>%
+gb <- data_gb |>
+  filter(region!="London") |>
   mutate(is_flipped=seat_change_1719 %in% c("Conservative gain from Labour","Labour gain from Conservative"),
          is_flipped=if_else(is.na(is_flipped), FALSE, is_flipped),
          elected=if_else(!winner_19 %in% c("Conservative", "Labour"), "Other", as.character(winner_19))
-  ) %>%
+  ) |>
   ggplot()+
   geom_sf(aes(fill=elected), colour="#636363", alpha=0.2, size=0.01)+
-  geom_sf(data=. %>% group_by(region) %>% summarise(), colour="#eeeeee", fill="transparent", size=0.08)+
+  geom_sf(data=. |> group_by(region) |> summarise(), colour="#eeeeee", fill="transparent", size=0.08)+
   coord_sf(crs=27700, datum=NA,
            xlim = c(unname(uk_bbox$xmin)-1.2*uk_width, unname(uk_bbox$xmax)+6*london_width),
            ylim = c(unname(uk_bbox$ymin), unname(uk_bbox$ymax)-0.22*uk_height)
@@ -885,11 +885,11 @@ gb <- data_gb %>%
   theme_v_gds() +
   theme(axis.title.x= element_blank(), axis.title.y= element_blank())
 
-data_gb %>%
+data_gb |>
   mutate(
     is_flipped=seat_change_1719 %in% c("Conservative gain from Labour","Labour gain from Conservative"),
     elected=if_else(!winner_19 %in% c("Conservative", "Labour"), "Other", as.character(winner_19))
-  ) %>%
+  ) |>
   ggplot()+
   geom_sf(aes(fill=elected), colour="#636363", alpha=0.2, size=0.01)+
   geom_spoke(
@@ -902,12 +902,12 @@ data_gb %>%
   scale_fill_manual(values=party_colours)+
   theme_v_gds()
 
-london <- data_gb %>%
-  filter(region=="London") %>%
+london <- data_gb |>
+  filter(region=="London") |>
   mutate(is_flipped=seat_change_1719 %in% c("Conservative gain from Labour","Labour gain from Conservative"),
          is_flipped=if_else(is.na(is_flipped), FALSE, is_flipped),
          elected=if_else(!winner_19 %in% c("Conservative", "Labour"), "Other", as.character(winner_19))
-  ) %>%
+  ) |>
   ggplot()+
   geom_sf(aes(fill=elected), colour="#636363", alpha=0.2, size=0.01)+
   coord_sf(datum=NA)+
@@ -959,7 +959,7 @@ theme_v_gds() +
   theme(axis.title.x= element_blank(), axis.title.y= element_blank(), axis.text = element_blank())
 
 # Party colours for legend
-party <- temp_dat %>%
+party <- temp_dat |>
   ggplot()+
   geom_spoke(aes(x=x, y=y,angle=get_radians(90), colour=elected),radius=0.7, size=1, lineend="round")+
   scale_colour_manual(values=party_colours)+
@@ -971,7 +971,7 @@ party <- temp_dat %>%
 theme_v_gds() +
   theme(axis.title.x= element_blank(), axis.title.y= element_blank(), axis.text = element_blank())
 
-party <- temp_dat %>%
+party <- temp_dat |>
   mutate(y=map_scale(y, 1,3,3,1)) |> 
   ggplot()+
   geom_spoke(aes(x=y, y=x,angle=get_radians(90), colour=elected),radius=0.7, size=1, lineend="round")+
@@ -1028,12 +1028,12 @@ ggsave(filename="./static/class/03-class_files/spoke-map.png", plot=map,width=11
 
 # Map Swing
 
-plot <- data_gb %>%
-  mutate(margin_leave=leave_hanretty-50) %>%
+plot <- data_gb |>
+  mutate(margin_leave=leave_hanretty-50) |>
   ggplot() +
   geom_sf(aes(fill=margin_leave), colour="#eeeeee", size=0.01)+
-  geom_sf(data=. %>% group_by(region) %>% summarise(), colour="#636363", fill="transparent", size=0.04)+
-  geom_sf(data=. %>% summarise(), colour="#636363", fill="transparent", size=0.08)+
+  geom_sf(data=. |> group_by(region) |> summarise(), colour="#636363", fill="transparent", size=0.04)+
+  geom_sf(data=. |> summarise(), colour="#636363", fill="transparent", size=0.08)+
   coord_sf(crs=27700, datum=NA) +
   guides(fill=guide_legend(title="Majority Leave:Remain")) +
   theme_v_gds() +

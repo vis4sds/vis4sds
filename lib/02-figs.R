@@ -80,8 +80,8 @@ con <- DBI::dbConnect(RSQLite::SQLite(), bikedb)
 # Check tables that form the dbase.
 DBI::dbListTables(con)
 # Collect trips and stations tables for writing out to fst.
-trips <- tbl(con, "trips") %>%  collect()
-stations <- tbl(con, "stations") %>%  collect()
+trips <- tbl(con, "trips") |>  collect()
+stations <- tbl(con, "stations") |>  collect()
 # Write trips out to .fst.
 write_fst(trips, here("bikedata", "ny_trips.fst"))
 # Write stations out to .csv
@@ -139,20 +139,20 @@ plot <-
 ggsave(filename=here("figs", "02", "hod_dow.svg"), plot=plot, width=9, height=5)
 
 
-od_pairs <- ny_trips |>  select(start_station_id, end_station_id) %>% unique() |> 
+od_pairs <- ny_trips |>  select(start_station_id, end_station_id) |> unique() |> 
   left_join(ny_stations |>  select(stn_id, longitude, latitude), by=c("start_station_id"="stn_id")) |> 
   rename(o_lon=longitude, o_lat=latitude) |> 
   left_join(ny_stations |>  select(stn_id, longitude, latitude), by=c("end_station_id"="stn_id")) |> 
   rename(d_lon=longitude, d_lat=latitude) |> 
-  rowwise() %>%
+  rowwise() |>
   mutate(dist=geosphere::distHaversine(c(o_lat, o_lon), c(d_lat, d_lon))/1000) |> 
   ungroup()
 
 
-ny_trips <- ny_trips %>%
-  mutate(od_pair=paste0(start_station_id,"-",end_station_id)) %>%
-  left_join(od_pairs %>%
-              mutate(od_pair=paste0(start_station_id,"-",end_station_id)) %>%
+ny_trips <- ny_trips |>
+  mutate(od_pair=paste0(start_station_id,"-",end_station_id)) |>
+  left_join(od_pairs |>
+              mutate(od_pair=paste0(start_station_id,"-",end_station_id)) |>
               select(od_pair, dist)
   )
 
@@ -206,7 +206,7 @@ ny_trips <- ny_trips |>
 
 
 t <- ny_trips |> 
-  mutate(day=wday(start_time, label=TRUE), is_weekday=as.numeric(!day %in% c("Sat", "Sun"))) %>%
+  mutate(day=wday(start_time, label=TRUE), is_weekday=as.numeric(!day %in% c("Sat", "Sun"))) |>
   filter(
     is_weekday==1,
     start_station_id!=end_station_id,
@@ -225,7 +225,7 @@ t <- ny_trips |>
   summarise(speed=mean(speed), n=n())
 
 t <- ny_trips |> 
-  mutate(day=wday(start_time, label=TRUE), is_weekday=as.numeric(!day %in% c("Sat", "Sun"))) %>%
+  mutate(day=wday(start_time, label=TRUE), is_weekday=as.numeric(!day %in% c("Sat", "Sun"))) |>
   filter(
     is_weekday==1,
     start_station_id!=end_station_id,
@@ -260,7 +260,7 @@ get_summary <- function(df) {
 
 
 t <- ny_trips |> 
-  mutate(day=wday(start_time, label=TRUE), is_weekday=as.numeric(!day %in% c("Sat", "Sun"))) %>%
+  mutate(day=wday(start_time, label=TRUE), is_weekday=as.numeric(!day %in% c("Sat", "Sun"))) |>
   filter(
     is_weekday==1,
     start_station_id!=end_station_id,

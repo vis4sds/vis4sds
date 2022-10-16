@@ -7,7 +7,7 @@ trump_data_raw <- trump_data
 # rotate function (see here: https://r-spatial.github.io/sf/articles/sf3.html#affine-transformations
 rot <- function(a) matrix(c(cos(a), sin(a), -sin(a), cos(a)), 2, 2)
 
-trump_data <- trump_data %>%
+trump_data <- trump_data |>
   mutate(geom_rot = st_geometry(.)*rot(pi*1.5)) |> 
   st_drop_geometry() |> 
   rename(geometry = geom_rot) |> 
@@ -32,7 +32,7 @@ temp_dat <-tibble(
   y=c(1,1),
   x=2:1
 )
-party <- temp_dat %>%
+party <- temp_dat |>
   ggplot()+
   geom_segment(aes(x=x-.2, xend=x, y=y, yend=y+.4, colour=elected), size=0.15, lineend="round")+
   geom_segment(aes(x=x+.2, xend=x, y=y, yend=y+.4, colour=elected), size=0.15, lineend="round")+
@@ -445,7 +445,7 @@ choropleth <- trump_data_raw |>
     fill="transparent", aes(colour=is_trump), size=.025
     ) +
   geom_text(
-    data=state_data_raw %>% st_drop_geometry(),
+    data=state_data_raw |> st_drop_geometry(),
     aes(label=state_abbr, colour=is_trump, x=x,y=y), size=1.2, family="Avenir Next Demi Bold"
   )+
   annotate("text", x=us_bbox_raw$xmin+.09*us_width_raw, y=us_bbox_raw$ymax+.08*us_height_raw, label="Choropleth of county party majority", family="Avenir Next Medium", hjust="left", size=2) +
@@ -575,3 +575,134 @@ wp <-
   )
 
 ggsave(filename=here("figs", "03", "wp_long.png"), plot=wp,width=8.5, height=8.5, dpi=500)
+
+
+####################################### SPOKE 
+
+
+max(abs(trump_data$shift_trump))
+
+
+
+# Convert degrees to radians.
+get_radians <- function(degrees) {
+  (degrees * pi) / (180)
+}
+# Rescaling function.
+map_scale <- function(value, min1, max1, min2, max2) {
+  return  (min2+(max2-min2)*((value-min1)/(max1-min1)))
+}
+# Position subclass for centred geom_spoke as per --
+# https://stackoverflow.com/questions/55474143/how-to-center-geom-spoke-around-their-origin
+position_center_spoke <- function() PositionCenterSpoke
+PositionCenterSpoke <- ggplot2::ggproto('PositionCenterSpoke', ggplot2::Position,
+                                        compute_panel = function(self, data, params, scales) {
+                                          data$x <- 2*data$x - data$xend
+                                          data$y <- 2*data$y - data$yend
+                                          data$radius <- 2*data$radius
+                                          data
+                                        }
+)
+
+
+swing <-  ggplot()+
+  geom_spoke(aes(x=0, y=-.35,angle=get_radians(90)),radius=0.55, size=0.15, colour="#636363", lineend="round")+
+  geom_spoke(aes(x=0, y=-.35,angle=get_radians(135)),radius=0.55, size=0.15,colour="#636363", linetype = "dashed", lineend="round")+
+  geom_spoke(aes(x=0, y=-.35,angle=get_radians(45)),radius=0.55,size=0.15,colour="#636363",linetype = "dashed", lineend="round")+
+  geom_text(aes(label="+24% R",x=.5, y=0), angle=45,hjust="right", family="Avenir Next", size=2, colour="#636363")+
+  geom_text(aes(label="+24% D",x=-.5, y=0), angle=315,hjust="left", family="Avenir Next", size=2, colour="#636363")+
+  geom_text(aes(label="+",x=.3, y=.2),hjust="left", family="Avenir Heavy", size=2.5, colour=winner_cols[1])+
+  geom_text(aes(label="+",x=-.3, y=.2),hjust="left", family="Avenir Heavy", size=2.5, colour=winner_cols[2])+
+  geom_curve(aes(x=-.04, y=.2, xend=-.3, yend=.08), size=0.2, curvature = 0.2, arrow=arrow(type="closed", length = unit(.03, "inches")), colour="#636363")+
+  geom_curve(aes(x=.04, y=.2, xend=.3, yend=.08), size=0.2, curvature = -0.2, arrow=arrow(type="closed", length = unit(.03, "inches")), colour="#636363")+
+  xlim(-0.5,0.5)+
+  ylim(-0.35,0.35)+
+  coord_equal() +
+  theme_void() +
+  theme(axis.title.x= element_blank(), axis.title.y= element_blank(), axis.text = element_blank())
+
+winner_cols <- c("#CD5B4F", "#46779F")
+names(winner_cols) <- c("TRUMP", "CLINTON")
+
+# Use colour to encode party.
+temp_dat <-tibble(
+  elected=names(winner_cols),
+  y=c(1,1),
+  x=2:1
+)
+
+party <- temp_dat |>
+  ggplot()+
+  geom_spoke(data=. %>%  filter(elected=="TRUMP"), aes(x=x, y=y-.04, radius=.3, angle=get_radians(60), colour=elected), size=0.35, lineend="round")+
+  geom_spoke(data=. %>%  filter(elected=="CLINTON"), aes(x=x, y=y-.04, radius=.3, angle=get_radians(115), colour=elected), size=0.35, lineend="round")+
+  scale_colour_manual(values=winner_cols)+
+  geom_text(
+    aes(label=elected,x=x, y=y-.1, colour=elected),hjust="centre",vjust="top", size=1.5, family="Avenir Next Medium")+
+  guides(colour=FALSE)+
+  xlim(.5,2.5)+
+  ylim(0.8,1.3) +
+  theme_void()
+
+# Use thickness to show flips.
+line <-  ggplot()+
+  geom_spoke(aes(x=-0.2, y=-.25,angle=get_radians(90)),radius=0.45, size=0.2, lineend="round")+
+  geom_spoke(aes(x=0.35, y=-.25,angle=get_radians(90)),radius=0.45, size=0.8, lineend="round")+
+  xlim(-0.5,0.5)+
+  ylim(-0.35,0.35)+
+  theme_void()
+
+
+
+# Use annotation_custom to organise grobs in legend.
+legend <- ggplot()+
+  geom_text(aes(label="Each county is a line",x=0, y=6.2), hjust="left", vjust="top", family="Avenir Next Medium", size=2.5)+
+  geom_text(aes(label="Colour hue is winning party",x=0.1, y=5.2), hjust="left", vjust="top", family="Avenir Next", size=2)+
+  geom_text(aes(label="Thick stroke county flipped from 2012",x=.1, y=3), hjust="left", vjust="top", family="Avenir Next", size=1.5)+
+  geom_text(aes(label="Line angle -- \n % change in vote share \n from 2012 Rep-Dem",x=.1, y=2.7), hjust="left", vjust="top", family="Avenir Next", size=1)+
+  annotation_custom(grob=ggplotGrob(swing),xmin=2.8,xmax=5.2,ymin=.5,ymax=3.6)+
+  annotation_custom(ggplotGrob(line),xmin=.1,xmax=3,ymin=3.4,ymax=4.6)+
+  annotation_custom(ggplotGrob(party),xmin=.1,xmax=3,ymin=.5,ymax=3)+
+  xlim(0,8)+
+  ylim(0,6.25) +
+  theme_void() 
+
+
+
+wp <- 
+  ggplot() +
+  
+  coord_sf(
+    datum=NA,
+    xlim = c(unname(us_bbox$xmin)-0*us_width, unname(us_bbox$xmin)+1.4*us_width), 
+    ylim = c(unname(us_bbox$ymin), unname(us_bbox$ymax)+0.1*us_height)
+  )+
+  
+  annotate("text", 
+           x=unname(us_bbox$xmin)+0.75*us_width,y=unname(us_bbox$ymax)+0.1*us_height,
+           label="How the country swung to the right", 
+           family="Cinzel", hjust="middle", vjust="top", size=4.5
+  ) +
+  annotate("text", 
+           x=unname(us_bbox$xmin)+0.75*us_width,y=unname(us_bbox$ymax)+0.07*us_height,
+           label="Vast swaths of the nation voted more Republican than in 2012, with Trump flipping a large number of counties.", 
+           family="Cinzel", hjust="middle", vjust="top", size=3
+  )+
+  
+  annotation_custom(
+    grob=ggplotGrob(wp_map),
+    xmin=unname(us_bbox$xmin),
+    xmax=unname(us_bbox$xmax),
+    ymin=unname(us_bbox$ymin),
+    ymax=unname(us_bbox$ymax)
+  )+
+  
+  annotation_custom(
+    grob=ggplotGrob(legend),
+    xmin=unname(us_bbox$xmax),
+    xmax=unname(us_bbox$xmax) + 0.6*us_width,
+    ymin=unname(us_bbox$ymax) - 0.01*us_height,
+    ymax=unname(us_bbox$ymax) - .2*us_height
+  ) +
+  theme_void()
+
+

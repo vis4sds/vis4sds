@@ -121,14 +121,14 @@ plot <- anscombe |>
   ggplot(aes(1, ypos))+
   geom_point(colour=site_colours$primary, fill=site_colours$primary, pch=21, size=3) +
   
-  geom_text(data=. %>% filter(row_index %in% c(1,12,23,34)), aes(x=1-.5,y=12, label=paste0("x",xpos)), vjust=0, size=3) +
-  geom_text(data=. %>% filter(row_index %in% c(1,12,23,34)), aes(x=1+.5,y=12, label=paste0("y",xpos)), vjust=0, size=3) +
+  geom_text(data=. |> filter(row_index %in% c(1,12,23,34)), aes(x=1-.5,y=12, label=paste0("x",xpos)), vjust=0, size=3) +
+  geom_text(data=. |> filter(row_index %in% c(1,12,23,34)), aes(x=1+.5,y=12, label=paste0("y",xpos)), vjust=0, size=3) +
   
-  geom_text(data=. %>% filter(row_index %in% c(1,12,23,34)), aes(x=1-.5,y=-0.1, label=mean_x), vjust=0.5, size=3) +
-  geom_text(data=. %>% filter(row_index %in% c(1,12,23,34)), aes(x=1+.5,y=-0.1, label=mean_y), vjust=0.5, size=3) +
-  geom_text(data=. %>% filter(row_index %in% c(1,12,23,34)), aes(x=1-.5,y=-.8, label=var_x), vjust=0.5, size=3) +
-  geom_text(data=. %>% filter(row_index %in% c(1,12,23,34)), aes(x=1+.5,y=-.8, label=var_y), vjust=0.5, size=3) +
-  geom_text(data=. %>% filter(row_index %in% c(1,12,23,34)), aes(x=1,y=-1.5, label=cor), vjust=0.5, size=3) +
+  geom_text(data=. |> filter(row_index %in% c(1,12,23,34)), aes(x=1-.5,y=-0.1, label=mean_x), vjust=0.5, size=3) +
+  geom_text(data=. |> filter(row_index %in% c(1,12,23,34)), aes(x=1+.5,y=-0.1, label=mean_y), vjust=0.5, size=3) +
+  geom_text(data=. |> filter(row_index %in% c(1,12,23,34)), aes(x=1-.5,y=-.8, label=var_x), vjust=0.5, size=3) +
+  geom_text(data=. |> filter(row_index %in% c(1,12,23,34)), aes(x=1+.5,y=-.8, label=var_y), vjust=0.5, size=3) +
+  geom_text(data=. |> filter(row_index %in% c(1,12,23,34)), aes(x=1,y=-1.5, label=cor), vjust=0.5, size=3) +
   
   
   geom_text(aes(x=1-.5,y=ypos, label=x), size=3) +

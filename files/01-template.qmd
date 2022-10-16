@@ -17,7 +17,6 @@ The code block below points to the packages you need to recreate the charts that
 #| eval: false
 # Bundle of packages for doing modern data analysis.
 library(tidyverse)
-
 ```
 
 ## Plotting Anscombe's Quartet
@@ -33,7 +32,7 @@ plot <- anscombe |>
   pivot_longer(
     everything(),
     names_to = c(".value", "dataset"), names_pattern = "(.)(.)"
-    ) %>%
+    ) |>
   ggplot(aes(x, y))+
   geom_point(colour="#003c8f", fill="#003c8f", pch=21) +
   stat_smooth(method=lm, se=FALSE, size=0.6, colour="#636363")+
