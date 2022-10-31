@@ -584,7 +584,12 @@ Visualization design trade-offs
 <p><span class="citation" data-cites="white_symbolization_2017">White (<a href="references.html#ref-white_symbolization_2017" role="doc-biblioref">2017</a>)</span></p>
 </blockquote>
 <p>Implicit in the discussion above, and when making design decisions, is the importance of <a href="https://gistbok.ucgis.org/bok-topics/symbolization-and-visual-variables"><em>symbolisation</em></a>. From the original Washington Post article, the overall pattern that can be discerned is of population-dense coastal and metropolitan counties voting Democrat – densely-packed, tall, wide and blue <i style="color:#3879A1;font-weight:bold" class="fas fa-lg fa-angle-up"></i> marks – contrasted against population-sparse rural and small town areas voting Republican – short, wide and red <i style="color:#DB534D;font-weight:bold" class="fas fa-angle-up"></i> marks. The graphic evokes a distinctive landscape of voting behaviour, emphasised by its caption: “<em>The peaks and valleys of Trump and Clinton’s support</em>”.</p>
-<p><em>Symbolisation</em> is used equally well in a variant of the graphic emphasising two-party <em>Swing</em> between the 2012 and 2016 elections. Each county is represented as a <span style="font-weight:bolder">|</span> mark. The <em>Swing</em> variable is then encoded by continuously varying mark angles: counties swinging Republican are angled to the right <span style="color:#DB534D;font-weight:bold">/</span>; counties swinging Democrat are angled to the left <span style="color:#3879A1;font-weight:bolder">\</span>. Although <em>angle</em> is a less effective channel at encoding quantities than is <em>length</em>, there are obvious links to the political phenomena in the symbolisation – angled right for counties that moved to the right politically. Additionally, the variable itself might be regarded as cyclic – or at least it has a ceiling with an important mid-point that requires emphasis. It is worth taking a second look at the full graphic here. Since there is spatial autocorrelation in county voting, we quickly assemble from the graphic dominant patterns of Swing to the Republicans (Great Lakes, rural East Coast), predictable Republican stasis (the mid west) and to detect more isolated, locally exceptional Swings to the Democrats (rapidly urbanising counties in the deep south).</p>
+<p><em>Symbolisation</em> is used equally well in a variant of the graphic emphasising two-party <em>Swing</em> between the 2012 and 2016 elections (<a href="#fig-wp-swing">Figure&nbsp;<span>3.5</span></a>). Each county is represented as a <span style="font-weight:bolder">|</span> mark. The <em>Swing</em> variable is then encoded by continuously varying mark angles: counties swinging Republican are angled to the right <span style="color:#DB534D;font-weight:bold">/</span>; counties swinging Democrat are angled to the left <span style="color:#3879A1;font-weight:bolder">\</span>. Although <em>angle</em> is a less effective channel at encoding quantities than is <em>length</em>, there are obvious links to the political phenomena in the symbolisation – angled right for counties that moved to the right politically. Additionally, the variable itself might be regarded as cyclic – or at least it has a ceiling with an important mid-point that requires emphasis. It is worth taking a second look at the full graphic here. Since there is spatial autocorrelation in county voting, we quickly assemble from the graphic dominant patterns of Swing to the Republicans (Great Lakes, rural East Coast), predictable Republican stasis (the mid west) and to detect more isolated, locally exceptional Swings to the Democrats (rapidly urbanising counties in the deep south).</p>
+<div id="fig-wp-swing" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="figs/03/wp_spoke.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 3.5: Map of swing in 2016 US presidential election results. Note that for copyright reasons this is a re-implementation of the original <a href="https://www.washingtonpost.com/graphics/politics/2016-election/election-results-from-coast-to-coast/">Washington Post piece</a> in <code>ggplot2</code>.</figcaption><p></p>
+</figure>
+</div>
 </section><section id="checking-perceptual-rankings" class="level3" data-number="3.2.5"><h3 data-number="3.2.5" class="anchored" data-anchor-id="checking-perceptual-rankings">
 <span class="header-section-number">3.2.5</span> Checking perceptual rankings</h3>
 <p>We mentioned that Munzner’s effectiveness ordering of visual channels is informed by empirical evidence – controlled experiments that examine perceptual abilities at making judgements from graphical primitives. It is worth elaborating a little on this experimental work, and on how established knowledge in Cognitive Science can be used to inform design choices.</p>
@@ -620,7 +625,7 @@ Task: click to expose graphic, then count number of occurrences of #3
 <div class="callout-body-container callout-body">
 <div id="fig-no-encoding" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="figs/03/no-encoding.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 3.5: Encoding: <em>none</em>.</figcaption><p></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 3.6: Encoding: <em>none</em>.</figcaption><p></p>
 </figure>
 </div>
 </div>
@@ -641,7 +646,7 @@ Task: click to expose graphic, then count number of occurrences of #3
 <div class="callout-body-container callout-body">
 <div id="fig-area-encoding" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="figs/03/area-encoding.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 3.6: Encoding: <em>area</em>.</figcaption><p></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 3.7: Encoding: <em>area</em>.</figcaption><p></p>
 </figure>
 </div>
 </div>
@@ -662,7 +667,7 @@ Task: click to expose graphic, then count number of occurrences of #3
 <div class="callout-body-container callout-body">
 <div id="fig-angle-encoding" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="figs/03/angle-encoding.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 3.7: Encoding: <em>tilt/angle</em>.</figcaption><p></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 3.8: Encoding: <em>tilt/angle</em>.</figcaption><p></p>
 </figure>
 </div>
 </div>
@@ -684,7 +689,7 @@ Task: click to expose graphic, then count number of occurrences of #3
 <div class="callout-body-container callout-body">
 <div id="fig-hue-encoding" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="figs/03/hue-encoding.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 3.8: Encoding: <em>colour hue</em>.</figcaption><p></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 3.9: Encoding: <em>colour hue</em>.</figcaption><p></p>
 </figure>
 </div>
 </div>
@@ -705,7 +710,7 @@ Task: click to expose graphic, then count number of occurrences of #3
 <div class="callout-body-container callout-body">
 <div id="fig-spatial-encoding" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="figs/03/spatial-encoding.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 3.9: Encoding: <em>spatial region</em>.</figcaption><p></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 3.10: Encoding: <em>spatial region</em>.</figcaption><p></p>
 </figure>
 </div>
 </div>
@@ -721,7 +726,7 @@ Task: click to expose graphic, then count number of occurrences of #3
 <p>Experimental findings vary and so these models of human perception are also subject to variation. Nevertheless, corrections can be applied. In cartography a <a href="https://makingmaps.net/2007/08/28/perceptual-scaling-of-map-symbols/">Flannery compensation</a> is used when representing quantities with area.</p>
 <div id="fig-perception" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="figs/03/perception.svg" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 3.10: Differences in power law exponents for the perception of variation in length and area.</figcaption><p></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 3.11: Differences in power law exponents for the perception of variation in length and area.</figcaption><p></p>
 </figure>
 </div>
 <div class="callout-note callout callout-style-default callout-captioned">
@@ -916,7 +921,7 @@ On histograms
 <span class="header-section-number">3.3.3.1</span> Faceting by region</h4>
 <div id="fig-hist-region" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="figs/03/hist-region.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 3.11: Histograms of Swing variable, grouped by region.</figcaption><p></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 3.12: Histograms of Swing variable, grouped by region.</figcaption><p></p>
 </figure>
 </div>
 <p>Adding a call to <code>facet_*()</code>, we can quickly compare how Swing varies by region (as in <a href="a2-visual.html#fig-hist-region">Figure&nbsp;<span>B.2</span></a>). The plot is annotated with the <em>median</em> value for Swing (4.4) by adding a vertical line layer (<code>geom_vline()</code>) and setting its x-intercept at this value. From this, there is some evidence of a regional geography to the 2019 vote: London and Scotland are particularly distinctive in containing relatively few constituencies swinging greater than the expected midpoint; North East, Yorkshire &amp; The Humber, and to a lesser extent West and East Midlands, appear to show the largest relative number of constituencies swinging greater than the midpoint. It was this graphic, especially the fact that London and Scotland look different from the rest of the country, that prompted the scatterplots in <a href="#fig-gog-demo">Figure&nbsp;<span>3.3</span></a> comparing gain in Conservative vote shares against the Brexit vote.</p>
@@ -924,7 +929,7 @@ On histograms
 <span class="header-section-number">3.3.4</span> Plot ranks/magnitudes</h3>
 <div id="fig-bars" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="figs/03/bars.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 3.12: Plots of vote shares by party.</figcaption><p></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 3.13: Plots of vote shares by party.</figcaption><p></p>
 </figure>
 </div>
 <p>Previously we calculated overall vote share by Political Party. We could continue the exploration of votes by region, re-using this code to generate plots displaying quantities but also comparing by region, using marks and encoding channels that are suitable for magnitudes.</p>
@@ -969,10 +974,10 @@ ggplot2 themes
 <span class="header-section-number">3.3.4.1</span> Faceting by region</h4>
 <div id="fig-bars-region" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="figs/03/bars-region.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 3.13: Plots of vote shares by party and region.</figcaption><p></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 3.14: Plots of vote shares by party and region.</figcaption><p></p>
 </figure>
 </div>
-<p>In <a href="#fig-bars-region">Figure&nbsp;<span>3.13</span></a> the graphic is faceted by region. This requires an updated derived dataset grouping by <code>vote_share</code> <em>and</em> <code>region</code> and of course adding a faceting layer (<code>geom_facet(~region)</code>) to the ggplot2 specification. The graphic is more data-rich, but additional cognitive effort is required in relating the bars representing political parties between different graphical subsets. We can assist this <em>identify</em> and <em>associate</em> task by encoding the bars with an appropriate visual channel: <em>colour hue</em>. The ggplot2 specification for this is as you would expect – we add a mapping to <code>geom_col()</code> and pass the variable name <code>party</code> to the fill argument (<code>aes(fill=party)</code>).</p>
+<p>In <a href="#fig-bars-region">Figure&nbsp;<span>3.14</span></a> the graphic is faceted by region. This requires an updated derived dataset grouping by <code>vote_share</code> <em>and</em> <code>region</code> and of course adding a faceting layer (<code>geom_facet(~region)</code>) to the ggplot2 specification. The graphic is more data-rich, but additional cognitive effort is required in relating the bars representing political parties between different graphical subsets. We can assist this <em>identify</em> and <em>associate</em> task by encoding the bars with an appropriate visual channel: <em>colour hue</em>. The ggplot2 specification for this is as you would expect – we add a mapping to <code>geom_col()</code> and pass the variable name <code>party</code> to the fill argument (<code>aes(fill=party)</code>).</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&lt;</span>derived_data<span class="sc">&gt;</span> <span class="er">|&gt;</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span><span class="fu">reorder</span>(party, vote_share), <span class="at">y=</span>vote_share)) <span class="sc">+</span></span>
@@ -1035,18 +1040,18 @@ Grammar of Graphics-backed visualization toolkits
 </div>
 <div class="callout-body-container callout-body">
 <p>The idea behind visualization toolkits such as <a href="https://vega.github.io/vega-lite/">vega-lite</a>, <a href="https://www.tableau.com/en-gb">Tableau</a> and <a href="https://ggplot2.tidyverse.org/">ggplot2</a> is to insert visual data analysis approaches into the Data Scientist’s workflow. Rather than being overly concerned with low-level aspects of drawing, mapping to screen coordinates and scaling factors, the analyst instead focuses on aspects crucial to analysis – exposing patterns in the data by carefully specifying an encoding of data to visuals. Hadley Wickham talks about the type of workflow you will see used throughout this book – bits of <code>dplyr</code> to prepare data for charting before being piped (<code>|&gt;</code>) to a <code>ggplot2</code> specification – as equivalent to a <a href="https://channel9.msdn.com/Events/useR-international-R-User-conference/useR2016/Towards-a-grammar-of-interactive-graphics">grammar of interactive graphics</a>.</p>
-<p>The process of searching for, defining and inserting manual colour schemes for creating <a href="#fig-bars-region">Figure&nbsp;<span>3.13</span></a> might seem inimical to this. Indeed we were reluctant to include this code so early – there is some reasonably advanced <code>dplyr</code> and a little <a href="https://stat.ethz.ch/R-manual/R-devel/library/base/html/regex.html">regular expression</a> in the data preparation code that you should not be overly concerned with. However, having control of these slightly more low-level properties is sometimes necessary even for exploratory analysis, in this case for enabling a <em>symbolisation</em> that is clear and easily interpretable. Try relating the bars without the manual setting of colours by political party – it certainly requires some mental acuity.</p>
+<p>The process of searching for, defining and inserting manual colour schemes for creating <a href="#fig-bars-region">Figure&nbsp;<span>3.14</span></a> might seem inimical to this. Indeed we were reluctant to include this code so early – there is some reasonably advanced <code>dplyr</code> and a little <a href="https://stat.ethz.ch/R-manual/R-devel/library/base/html/regex.html">regular expression</a> in the data preparation code that you should not be overly concerned with. However, having control of these slightly more low-level properties is sometimes necessary even for exploratory analysis, in this case for enabling a <em>symbolisation</em> that is clear and easily interpretable. Try relating the bars without the manual setting of colours by political party – it certainly requires some mental acuity.</p>
 </div>
 </div>
 </section></section><section id="plot-relationships" class="level3" data-number="3.3.5"><h3 data-number="3.3.5" class="anchored" data-anchor-id="plot-relationships">
 <span class="header-section-number">3.3.5</span> Plot relationships</h3>
 <div id="fig-scatters-con" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="figs/03/scatters-con.svg" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 3.14: Plots of 2019 versus 2017 vote shares.</figcaption><p></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 3.15: Plots of 2019 versus 2017 vote shares.</figcaption><p></p>
 </figure>
 </div>
 <p>In the <a href="#sec-grammar"><span>Section&nbsp;3.2.1</span></a> we demonstrated how scatterplots are specified in <code>ggplot2</code>. Scatterplots are useful examples for introducing <code>ggplot2</code> specifications as they involve working with genuine mark primitives (<code>geom_point()</code>) and can be built up using a wide range of encoding channels.</p>
-<p>To continue the investigation of change in vote shares for the major parties between 2017 and 2019, <a href="#fig-scatters-con">Figure&nbsp;<span>3.14</span></a> contains a scatterplot of vote Conservative share in 2019 (y-axis) against vote share in 2017 (x-axis). The graphic is annotated with a diagonal line. If constituencies voted in 2019 in exactly the same way as 2017, the points would all converge on the diagonal, points above the diagonal indicate a larger vote share than 2017, those below the diagonal represent a smaller vote share than 2017. Points are coloured according to the winning party in 2019 and constituencies that flipped from Labour to Conservative are emphasised using transparency and shape.</p>
+<p>To continue the investigation of change in vote shares for the major parties between 2017 and 2019, <a href="#fig-scatters-con">Figure&nbsp;<span>3.15</span></a> contains a scatterplot of vote Conservative share in 2019 (y-axis) against vote share in 2017 (x-axis). The graphic is annotated with a diagonal line. If constituencies voted in 2019 in exactly the same way as 2017, the points would all converge on the diagonal, points above the diagonal indicate a larger vote share than 2017, those below the diagonal represent a smaller vote share than 2017. Points are coloured according to the winning party in 2019 and constituencies that flipped from Labour to Conservative are emphasised using transparency and shape.</p>
 <p>The code for generating most of the scatterplot comparing Conservative vote shares is below.</p>
 <div class="cell">
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_gb</span> <span class="op">|&gt;</span></span>
@@ -1086,7 +1091,7 @@ A general point from the code blocks in this chapter is of the importance of pro
 <span class="header-section-number">3.3.6</span> Plot geography</h3>
 <div id="fig-map-winners" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="figs/03/map-winners.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 3.15: Choropleth of elected parties in 2019 General Election.</figcaption><p></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 3.16: Choropleth of elected parties in 2019 General Election.</figcaption><p></p>
 </figure>
 </div>
 <p>In the graphics that facet by region, our analysis suggests at a geography to voting and certainly to observed changes in voting comparing the 2017 and 2019 elections (e.g. <a href="a2-visual.html#fig-hist-region">Figure&nbsp;<span>B.2</span></a>). We end the session by generating thematic maps of the results data.</p>
@@ -1098,7 +1103,7 @@ A general point from the code blocks in this chapter is of the importance of pro
 <span><span class="co"># Check class.</span></span>
 <span><span class="co">## [1] "sf"         "data.frame"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The code for generating the <a href="https://en.wikipedia.org/wiki/Choropleth_map">Choropleth maps</a> of winning party by constituency in <a href="#fig-map-winners">Figure&nbsp;<span>3.15</span></a>:</p>
+<p>The code for generating the <a href="https://en.wikipedia.org/wiki/Choropleth_map">Choropleth maps</a> of winning party by constituency in <a href="#fig-map-winners">Figure&nbsp;<span>3.16</span></a>:</p>
 <div class="cell">
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Recode winner_19 as a factor variable for assigning colours.</span></span>
 <span><span class="va">data_gb</span> <span class="op">&lt;-</span> <span class="va">data_gb</span> <span class="op">|&gt;</span></span>
@@ -1137,7 +1142,7 @@ A general point from the code blocks in this chapter is of the importance of pro
 </ol>
 <div id="fig-spoke-map" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="figs/03/spoke-map.svg" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 3.16: Map of Butler Con-Lab Swing in 2019 General Election.</figcaption><p></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 3.17: Map of Butler Con-Lab Swing in 2019 General Election.</figcaption><p></p>
 </figure>
 </div>
 <p>The details of how ggplot2 can be used in more involved visualization design is reserved for the latter chapters of the book. However, since the graphic has been discussed at length, it would be strange not to demonstrate how the encoding in the Washington Post piece can be applied here to analyse our Butler two-party swing variable <span class="citation" data-cites="beecham_using_2020">(e.g. <a href="references.html#ref-beecham_using_2020" role="doc-biblioref">Beecham 2020</a>)</span>.</p>
