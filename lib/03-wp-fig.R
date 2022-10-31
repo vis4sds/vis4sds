@@ -260,6 +260,9 @@ wp_south <- trump_data |>
   )
 
 
+wp_coords <- trump_data |> st_centroid() |> 
+  st_coordinates() |> as_tibble() |> rename_all(tolower)
+
 wp_map <- trump_data |> 
   mutate(
     votes_trump=share_trump*total_pop, net_margin=abs(votes_trump-(.5*total_pop)),
@@ -609,10 +612,10 @@ swing <-  ggplot()+
   geom_spoke(aes(x=0, y=-.35,angle=get_radians(90)),radius=0.55, size=0.15, colour="#636363", lineend="round")+
   geom_spoke(aes(x=0, y=-.35,angle=get_radians(135)),radius=0.55, size=0.15,colour="#636363", linetype = "dashed", lineend="round")+
   geom_spoke(aes(x=0, y=-.35,angle=get_radians(45)),radius=0.55,size=0.15,colour="#636363",linetype = "dashed", lineend="round")+
-  geom_text(aes(label="+24% R",x=.5, y=0), angle=45,hjust="right", family="Avenir Next", size=2, colour="#636363")+
-  geom_text(aes(label="+24% D",x=-.5, y=0), angle=315,hjust="left", family="Avenir Next", size=2, colour="#636363")+
-  geom_text(aes(label="+",x=.3, y=.2),hjust="left", family="Avenir Heavy", size=2.5, colour=winner_cols[1])+
-  geom_text(aes(label="+",x=-.3, y=.2),hjust="left", family="Avenir Heavy", size=2.5, colour=winner_cols[2])+
+  geom_text(aes(label="+24% R",x=.5, y=0), angle=45,hjust="right", family="Avenir Next", size=1.5, colour="#636363")+
+  geom_text(aes(label="+24% D",x=-.5, y=0), angle=315,hjust="left", family="Avenir Next", size=1.5, colour="#636363")+
+  geom_text(aes(label="+",x=.3, y=.2),hjust="left", family="Avenir Heavy", size=2, colour=winner_cols[1])+
+  geom_text(aes(label="+",x=-.3, y=.2),hjust="left", family="Avenir Heavy", size=2, colour=winner_cols[2])+
   geom_curve(aes(x=-.04, y=.2, xend=-.3, yend=.08), size=0.2, curvature = 0.2, arrow=arrow(type="closed", length = unit(.03, "inches")), colour="#636363")+
   geom_curve(aes(x=.04, y=.2, xend=.3, yend=.08), size=0.2, curvature = -0.2, arrow=arrow(type="closed", length = unit(.03, "inches")), colour="#636363")+
   xlim(-0.5,0.5)+
@@ -631,42 +634,147 @@ temp_dat <-tibble(
   x=2:1
 )
 
-party <- temp_dat |>
+line <- temp_dat |>
   ggplot()+
-  geom_spoke(data=. %>%  filter(elected=="TRUMP"), aes(x=x, y=y-.04, radius=.3, angle=get_radians(60), colour=elected), size=0.35, lineend="round")+
-  geom_spoke(data=. %>%  filter(elected=="CLINTON"), aes(x=x, y=y-.04, radius=.3, angle=get_radians(115), colour=elected), size=0.35, lineend="round")+
+  geom_spoke(data=. %>%  filter(elected=="TRUMP"), aes(x=x, y=y-.04, radius=.3, angle=get_radians(55), colour=elected), size=0.6, lineend="round")+
+  geom_spoke(data=. %>%  filter(elected=="CLINTON"), aes(x=x, y=y-.04, radius=.3, angle=get_radians(120), colour=elected), size=0.6, lineend="round")+
   scale_colour_manual(values=winner_cols)+
-  geom_text(
-    aes(label=elected,x=x, y=y-.1, colour=elected),hjust="centre",vjust="top", size=1.5, family="Avenir Next Medium")+
   guides(colour=FALSE)+
-  xlim(.5,2.5)+
+  xlim(0,5)+
   ylim(0.8,1.3) +
   theme_void()
 
-# Use thickness to show flips.
-line <-  ggplot()+
-  geom_spoke(aes(x=-0.2, y=-.25,angle=get_radians(90)),radius=0.45, size=0.2, lineend="round")+
-  geom_spoke(aes(x=0.35, y=-.25,angle=get_radians(90)),radius=0.45, size=0.8, lineend="round")+
-  xlim(-0.5,0.5)+
-  ylim(-0.35,0.35)+
+
+party <- temp_dat |>
+  ggplot()+
+  geom_spoke(data=. %>%  filter(elected=="TRUMP"), aes(x=x, y=y+.05, radius=.1, angle=get_radians(90), colour=elected), size=0.35, lineend="round")+
+  geom_spoke(data=. %>%  filter(elected=="CLINTON"), aes(x=x, y=y+.05, radius=.1, angle=get_radians(90), colour=elected), size=0.35, lineend="round")+
+  scale_colour_manual(values=winner_cols)+
+  geom_text(
+    aes(label=elected,x=x, y=y, colour=elected),hjust="centre",vjust="top", size=1.2, family="Avenir Next Medium")+
+  guides(colour=FALSE)+
+  xlim(0,5)+
+  ylim(.9,1.2) +
   theme_void()
 
 
 
 # Use annotation_custom to organise grobs in legend.
 legend <- ggplot()+
-  geom_text(aes(label="Each county is a line",x=0, y=6.2), hjust="left", vjust="top", family="Avenir Next Medium", size=2.5)+
-  geom_text(aes(label="Colour hue is winning party",x=0.1, y=5.2), hjust="left", vjust="top", family="Avenir Next", size=2)+
-  geom_text(aes(label="Thick stroke county flipped from 2012",x=.1, y=3), hjust="left", vjust="top", family="Avenir Next", size=1.5)+
-  geom_text(aes(label="Line angle -- \n % change in vote share \n from 2012 Rep-Dem",x=.1, y=2.7), hjust="left", vjust="top", family="Avenir Next", size=1)+
-  annotation_custom(grob=ggplotGrob(swing),xmin=2.8,xmax=5.2,ymin=.5,ymax=3.6)+
-  annotation_custom(ggplotGrob(line),xmin=.1,xmax=3,ymin=3.4,ymax=4.6)+
-  annotation_custom(ggplotGrob(party),xmin=.1,xmax=3,ymin=.5,ymax=3)+
-  xlim(0,8)+
+  geom_text(aes(label="Each county is a line",x=0, y=6), hjust="left", vjust="top", family="Avenir Next Medium", size=2)+
+  geom_text(aes(label="Colour hue is \n winning party",x=0.02, y=5.2), hjust="left", vjust="top", family="Avenir Next", size=1.5)+
+  geom_text(aes(label="Thick stroke \ncounty flipped \n from 2012",x=0.02, y=4), hjust="left", vjust="top", family="Avenir Next", size=1.5)+
+  geom_text(aes(label="Swing -- \n % change in vote share \n from 2012 Rep-Dem",x=0.02, y=2.2), hjust="left", vjust="top", family="Avenir Next", size=1.5)+
+  annotation_custom(ggplotGrob(party),xmin=0.1,xmax=1.2,ymin=4.3,ymax=5.3)+
+  annotation_custom(ggplotGrob(line),xmin=0.1,xmax=1.2,ymin=2.8,ymax=3.8)+
+  annotation_custom(grob=ggplotGrob(swing),xmin=0.1,xmax=1.2,ymin=.5,ymax=2.9)+
+  xlim(0,2)+
   ylim(0,6.25) +
   theme_void() 
 
 
+min_shift <- -max(abs(trump_data$shift_trump))
+max_shift <- max(abs(trump_data$shift_trump))
+
+wp_map <- trump_data |> 
+  mutate(
+    votes_trump=share_trump*total_pop, net_margin=abs(votes_trump-(.5*total_pop)),
+    width=map_scale(net_margin, min(net_margin), max(net_margin), min_width, max_width),
+    height=map_scale(total_pop, min(total_pop), max(total_pop), min_height, max_height), 
+    is_trump=share_trump>.5, is_landslide=abs(share_trump-.5)>.2
+  )
+
+
+rural_counties <- trump_data |> bind_cols(wp_coords) |> 
+  mutate(is_flip= flip %in% c("Obama Trump", "Romney Clinton")) |> 
+  filter(is_flip, state_abbr %in% c("ME","NH", "VT"))
+
+rural_counties <- trump_data |> bind_cols(wp_coords) |> 
+  mutate(is_flip= flip %in% c("Obama Trump", "Romney Clinton")) |> 
+  filter(is_flip, state_abbr %in% c("ME","NH", "VT"))
+
+
+rural_counties <- trump_data |> bind_cols(wp_coords) |> 
+  mutate(is_flip= flip %in% c("Obama Trump", "Romney Clinton")) |> 
+  filter(is_flip, county_name == "Aroostook County")
+
+georgia_counties <- trump_data |> bind_cols(wp_coords) |> 
+  mutate(is_flip= flip %in% c("Romney Clinton")) |> 
+  filter(is_flip, state_abbr == "GA")
+
+lakes_counties <- trump_data |> bind_cols(wp_coords) |> 
+  mutate(is_flip= flip %in% c("Obama Trump")) |> 
+  filter(is_flip, state_abbr %in% c("WI","IA"))
+  
+
+
+wp_map <- trump_data |> 
+  bind_cols(wp_coords) |> 
+  mutate(
+    is_flip= flip %in% c("Obama Trump", "Romney Clinton"),
+    is_trump=share_trump>.5
+    ) |> 
+
+  ggplot() +
+  
+  geom_sf(
+    data=state_data,
+    aes(fill=is_trump), colour="#ffffff", size=.2
+  ) +
+  geom_text(
+    data=state_data,
+    aes(label=state_abbr, colour=is_trump, x=x,y=y), size=1.8, family="Avenir Next Demi Bold"
+  ) +
+  geom_spoke(
+    aes(x=x, y=y, 
+        angle=get_radians(map_scale(shift_trump,min_shift,max_shift,135,45)), 
+        colour=is_trump, size=is_flip, radius=.007*us_height), 
+    alpha=0.9, lineend="round") +
+  
+  # geom_circle(data=rural_counties, aes(x0=x, y0=y, r=50000), size=.1) +
+  geom_mark_circle(data=rural_counties, aes(x=x, y=y), size=.1) +
+  geom_mark_circle(data=georgia_counties, aes(x=x, y=y), size=.1) +
+  geom_mark_circle(data=lakes_counties, aes(x=x, y=y), size=.1) +
+  
+  coord_sf(
+    datum=NA,
+    xlim = c(unname(us_bbox$xmin), unname(us_bbox$xmax)), 
+    ylim = c(unname(us_bbox$ymin), unname(us_bbox$ymax))
+  )+
+  
+  scale_colour_manual(values=c("#46779F", "#CD5B4F"), guide="none") +
+  scale_fill_manual(values=c("#EEF4F9", "#FDF1F1"), guide="none") +
+  scale_size_ordinal(range=c(.15,.5), guide="none")+
+  
+  theme(
+    plot.background=element_rect(fill="#ffffff"),
+    axis.text=element_blank(), panel.grid.major=element_blank(),  
+    axis.title.x=element_blank(), axis.title.y=element_blank()
+  )
+
+
+
+great_lakes <- "The Midwest is where Trump redrew the electoral map. States like Michigan and Wisconsin were considered favorable to Clinton, but instead swung to Trump mostly due to voters in mid-sized counties outside the major cities. The most striking change occurred in counties along the junction of Illinois, Wisconsin and Iowa. In this farm country, Trump’s message to people left behind helped him seize a significant advantage."
+north_east <- "Those bold red swings stretching from inland Maine through New Hampshire and into upstate New York are counties that flipped in Trump’s favor from 2012. Away from the large cities on the coast, these counties resemble the pattern seen widely, where cities voted slightly more Democratic, but suburbs and beyond swung way to the right."
+border <- "People closest to where Trump said he would build a wall consistently voted against him, all the way from the Gulf of Mexico to the Pacific Ocean."
+west <- "Even though early voting suggested a historic Hispanic turnout in Nevada, Clinton won the two largest counties in the state by a slightly slimmer margin than Obama did in 2012. California became even more Democratic: Clinton won Orange County, which hasn’t gone for a Democrat since Franklin Roosevelt. In the Pacific Northwest, a pocket of rural counties between Seattle and Portland swung toward Trump."
+deep_south <- "Voters across Alabama, Mississippi and Georgia predictably voted Republican, but in no dramatic fashion. Rapidly urbanizing counties around Atlanta swung hard to the left for Clinton. She flipped three counties in this area that Obama lost in 2012."
+utah <- "The reason you’re seeing counties in Utah swinging has a simple answer: Evan McMullin. The three-way contest with the independent conservative candidate in this state reduced the Republican margin, even though Clinton wasn’t competitive."
+
+
+library(ggforce)
+rural_counties <- trump_data |> bind_cols(wp_coords) |> 
+  mutate(is_flip= flip %in% c("Obama Trump", "Romney Clinton")) |> 
+  filter(is_flip, state_abbr %in% c("ME","NH", "VT"))
+
+rural_counties <- trump_data |> bind_cols(wp_coords) |> 
+  mutate(is_flip= flip %in% c("Obama Trump", "Romney Clinton")) |> 
+  filter(is_flip, state_abbr %in% c("ME","NH", "VT"))
+
+
+rural_counties <- trump_data |> bind_cols(wp_coords) |> 
+  mutate(is_flip= flip %in% c("Obama Trump", "Romney Clinton")) |> 
+  filter(is_flip, county_name == "Aroostook County")
 
 wp <- 
   ggplot() +
@@ -684,7 +792,7 @@ wp <-
   ) +
   annotate("text", 
            x=unname(us_bbox$xmin)+0.75*us_width,y=unname(us_bbox$ymax)+0.07*us_height,
-           label="Vast swaths of the nation voted more Republican than in 2012, with Trump flipping a large number of counties.", 
+           label="Vast swaths of the nation voted more Republican than in 2012", 
            family="Cinzel", hjust="middle", vjust="top", size=3
   )+
   
@@ -698,11 +806,95 @@ wp <-
   
   annotation_custom(
     grob=ggplotGrob(legend),
-    xmin=unname(us_bbox$xmax),
-    xmax=unname(us_bbox$xmax) + 0.6*us_width,
-    ymin=unname(us_bbox$ymax) - 0.01*us_height,
+    xmin=unname(us_bbox$xmax) - .01*us_width,
+    xmax=unname(us_bbox$xmax) + 1*us_width,
+    ymin=unname(us_bbox$ymax),
     ymax=unname(us_bbox$ymax) - .2*us_height
   ) +
-  theme_void()
+  
+  annotate("text", 
+           x=unname(us_bbox$xmin)-.05*us_width,y=unname(us_bbox$ymin)+0.772*us_height,
+           label="THE GREAT LAKES", 
+           hjust="left", vjust="top", size=1.5, family="Avenir Next Demi Bold"
+  )+
+  
+  annotate("text", 
+           x=unname(us_bbox$xmin)-.05*us_width,y=unname(us_bbox$ymin)+0.76*us_height,
+           label=str_wrap(great_lakes,30), 
+           hjust="left", vjust="top", size=1.5
+  )+
+  
+  annotate("text", 
+           x=unname(us_bbox$xmin)+0.35*us_width,y=unname(us_bbox$ymax)+0.012*us_height,
+           label="THE NORTH EAST", 
+           hjust="left", vjust="top", size=1.5, family="Avenir Next Demi Bold"
+  )+
+  
+  annotate("text", 
+           x=unname(us_bbox$xmin)+0.35*us_width,y=unname(us_bbox$ymax)+0.00*us_height,
+           label=str_wrap(north_east,50), 
+           hjust="left", vjust="top", size=1.5
+  )+
+  
+  annotate("text", 
+           x=unname(us_bbox$xmin)+0.78*us_width,y=unname(us_bbox$ymax)-.25*us_height,
+           label="THE DEEP SOUTH", 
+           hjust="left", vjust="top", size=1.5, family="Avenir Next Demi Bold"
+  )+
+  
+  annotate("text", 
+           x=unname(us_bbox$xmin)+0.78*us_width,y=unname(us_bbox$ymax)-0.262*us_height,
+           label=str_wrap(deep_south,40), 
+           hjust="left", vjust="top", size=1.5
+  )+
+  
+  annotate("text", 
+           x=unname(us_bbox$xmax)-0.15*us_width,y=unname(us_bbox$ymin)+.4*us_height,
+           label="ALONG THE BORDER", 
+           hjust="left", vjust="top", size=1.5, family="Avenir Next Demi Bold"
+  )+
+  annotate("text", 
+           x=unname(us_bbox$xmax)-0.15*us_width,y=unname(us_bbox$ymin)+0.388*us_height,
+           label=str_wrap(border,40), 
+           hjust="left", vjust="top", size=1.5
+  )+
+  
+  annotate("text", 
+           x=unname(us_bbox$xmax)-.28*us_width,y=unname(us_bbox$ymin)+.15*us_height,
+           label="THE WEST", 
+           hjust="left", vjust="top", size=1.5, family="Avenir Next Demi Bold"
+  )+
+  annotate("text", 
+           x=unname(us_bbox$xmax)-.28*us_width,y=unname(us_bbox$ymin)+0.138*us_height,
+           label=str_wrap(west,50), 
+           hjust="left", vjust="top", size=1.5
+  )+
+  
+  annotate("text", 
+           x=unname(us_bbox$xmax)-.25*us_width,y=unname(us_bbox$ymin)+.27*us_height,
+           label="UTAH", 
+           hjust="left", vjust="top", size=1.5, family="Avenir Next Demi Bold"
+  )+
+  annotate("text", 
+           x=unname(us_bbox$xmax)-.25*us_width,y=unname(us_bbox$ymin)+0.258*us_height,
+           label=str_wrap(utah,50), 
+           hjust="left", vjust="top", size=1.5
+  )+
+  
+  annotate("text",
+           x=unname(us_bbox$xmin)+.1*us_width,y=unname(us_bbox$ymax)-.01*us_height,
+           label="EAST\n COAST", hjust="middle", vjust="top", size=2.5
+  ) +
+  annotate("text", 
+           x=unname(us_bbox$xmin)+.2*us_width,y=unname(us_bbox$ymin)+.025*us_height,
+           label="WEST\n COAST", hjust="middle", vjust="bottom", size=2.5
+  )+
+  
+  theme(
+    plot.background=element_rect(fill="#ffffff"),
+    axis.text=element_blank(), panel.grid.major=element_blank(),  
+    axis.title.x=element_blank(), axis.title.y=element_blank()
+  )
 
+ggsave(filename=here("figs", "03", "wp_spoke.png"), plot=wp,width=6.5, height=10, dpi=500)
 
