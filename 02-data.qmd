@@ -35,7 +35,7 @@ By the end of this chapter you should gain the following knowledge and practical
 
 ## Introduction
 
-This chapter covers some of the basics of how to describe and organise data. Whilst this might sound prosaic, there are several reasons why being able to consistently describe a dataset is important.  First, it is the initial step in any analysis and helps delimit the analytical procedures that can be deployed. This is especially relevant to data science-type workflows, where it is common to apply the same analysis templates for working over many different datasets. Describing your dataset using a consistent vocabulary enables you to identify which analysis templates to reuse. Second relates to the point in [Chapter -@sec-introduction] that Social Data Science  (SDS) projects usually involve repurposing datasets for the first time. It is often not obvious whether the data contain sufficient detail and structure to characterise the behaviours to be researched and the target populations they are assumed to represent. This leads to additional levels of uncertainty and places greater importance on the initial steps of data processing, description and exploration.
+This chapter covers some of the basics of how to describe and organise data. Whilst this might sound prosaic, there are several reasons why being able to consistently describe a dataset is important.  First, it is the initial step in any analysis and helps delimit the analytical procedures that can be deployed. This is especially relevant to data science-type workflows, where it is common to apply the same analysis templates for working over many different datasets. Describing your dataset using a consistent vocabulary enables you to identify which analysis templates to reuse. Second relates to the point in [Chapter -@sec-introduction] that Social Data Science  (SDS) projects usually involve repurposing datasets for the first time. It is often not obvious whether the data contain sufficient detail and structure to characterise the behaviours being researched and the target populations they are assumed to represent. This leads to additional levels of uncertainty and places greater importance on the initial steps of data processing, description and exploration.
 
 Through the chapter we will learn both language for describing and thinking about data, but also how to deploy some of the most important data processing and organisation techniques in R to wrangle real datasets. We will do so using data from New York's [Citibike](https://www.citibikenyc.com/) scheme, accessed through the `bikedata` package, an API to Citibike's [publicly available origin-destination trip data](https://www.citibikenyc.com/system-data).
 
@@ -56,9 +56,9 @@ Throughout this book we will work with [data frames](http://adv-r.had.co.nz/Data
 
 A familiar classification for describing variables is that developed by @stevens_on_1946 when cosidering the *level of measurement* of a variable. @stevens_on_1946 organises variables into two classes: variables that describe *categories* of things and variables that describe *measurements* of things. 
 
-Categories include attributes like gender, titles, ranked orders (1st, 2nd, 3rd largest etc.). Measurements include quantities like distance, age, travel time. Categories can be further subdivided into those that are unordered (*nominal*) from those that are ordered (*ordinal*). Measurements can also be subdivided. *Interval* measurements are quantities where the computed difference between two values is meaningful. *Ratio* measurements have this property, but also have a meaningful `0` -- `0` means the absence of something -- and the ratio of two values can be computed. The most common cited example of an interval measurement is temperature (in degrees C). Temperatures can be ordered and compared additively, but `0` degrees C does not mean the absence of temperature and 20 degrees C is not twice as "hot" as 10 degrees C.
+Categories include attributes like gender, titles, ranked orders (1st, 2nd, 3rd largest etc.). Measurements include quantities like distance, age, travel time. Categories can be further subdivided into those that are unordered (*nominal*) from those that are ordered (*ordinal*). Measurements can also be subdivided. *Interval* measurements are quantities where the computed difference between two values is meaningful. *Ratio* measurements have this property, but also have a meaningful `0`, where `0` means the absence of something, and the ratio of two values can be computed. The most common cited example of an interval measurement is temperature in &deg;C. Temperatures can be ordered and compared additively, but 0 in &deg;C does not mean the absence of temperature and 20&deg;C is not twice as hot as 10&deg;C.
 
-Why is this important? The measurement level of a variable determines the types of data analysis operations that can be performed and therefore allows us to efficiently make decisions when working with a dataset for the first time (@tbl-variable-types).
+Why is this useful? The measurement level of a variable determines the types of data analysis operations that can be performed and therefore allows us to efficiently make decisions when working with a dataset for the first time (@tbl-variable-types).
 
 ```{r}
 #| label: tbl-variable-types
@@ -102,11 +102,9 @@ kbl(variable_types, protect_latex = TRUE, escape=FALSE) |>
 
 ### Types of observation
 
-Observations either together form an entire *population* or a  subset, or *sample*, that we expect is representative of a *target population*.
+Observations either together form an entire *population* or a  subset, or *sample*, that we expect is representative of a *target population*. In Social Data Science applications we may often be working with datasets that are so-called population-level. The [Citibike dataset]((https://www.citibikenyc.com/system-data)) is a complete, population-level dataset in that every journey made through the  scheme is recorded. Whether or not this is truly a population-level dataset, however, depends on the analysis purpose. When analysing the bikeshare dataset are we interested only in describing use within the Citibike scheme? Or are we taking the patterns observed through our analysis to make claims and inferences about cycling more generally?
 
-In Social Data Science applications we may often be working with datasets that are so-called population-level. The [Citibike dataset]((https://www.citibikenyc.com/system-data)) is a complete, population-level dataset in that every journey made through the  scheme is recorded. Whether or not this is truly a population-level dataset, however, depends on the analysis purpose. When analysing the bikeshare dataset are we interested only in describing use within the Citibike scheme? Or are we taking the patterns observed through our analysis to make claims and inferences about cycling more generally?
-
-If the latter, then there are problems as the level of detail we have on our sample is pretty trivial compared to traditional, 'actively-collected' datasets, where data collection activities are designed with a specified target population in mind. It may therefore be difficult to gauge how representative Citibike users and Citibike cycling is of New York's general cycling population. The flipside is that such 'passively-collected' data do not suffer from the same problems such as non-response bias and social-desirability  bias as traditional, actively-collected datasets.
+If the latter, then there are problems as the level of detail we have on our sample is pretty trivial compared to traditional, *actively-collected* datasets, where data collection activities are designed with a specified target population in mind. It may therefore be difficult to gauge how representative Citibike users and Citibike cycling is of New York's general cycling population. The flipside is that such *passively-collected* data do not suffer from the same problems such as non-response bias and social-desirability  bias as traditional, actively-collected datasets.
 
 ### Tidy data
 
@@ -118,7 +116,7 @@ The three rules for tidy data:
 2. Each observation forms a row.
 3. Each type of observational unit forms a table.
 
-#### Drug treatment dataset
+#### Drug treatment dataset {-}
 
 To elaborate further, we can use the example given in @wickham_tidy_2014, a drug treatment dataset in which two different treatments are administered to participants.
 
@@ -167,7 +165,7 @@ In the *tidy* form, each *observation* is a test result returned for each combin
 
 
 
-#### Gapminder population dataset
+#### Gapminder population dataset {-}
 
 In @wickham_r_2017, the benefits of tidy layouts are demonstrated using the [`gapminder`](https://www.gapminder.org/data/) dataset and with reference to key data processing functions in R.  To consolidate our understanding of *tidy* data let's quickly look at the `gapminder` data, as it is an example that we're probably more likely to encounter in social science research.
 
@@ -215,7 +213,7 @@ From the *tidy* version of the data, we can identify the *variables* and note th
 4. `population`: a ratio (count) variable.
 
 
-An alternative organisation is in @tbl-gapminder (b). This is *untidy* as the observations are spread across two rows, makiing operations that we might want to perform on the `cases` and `population` variables -- for example computing exposure rates -- somewhat tedious.
+An alternative organisation is in @tbl-gapminder (b). This is *untidy* as the observations are spread across two rows, making operations that we might want to perform on the `cases` and `population` variables, for example computing exposure rates, somewhat tedious.
 
 Imagine that the `gapminder` dataset reported values of `cases` separately by gender  -- @tbl-gapminder (c). A type of representation often seen in social science domains, probably as it is helpful for data entry, is where observations are spread across the columns. This too creates problems for performing aggregate functions, but also for specifying visualization designs in [`ggplot2`](https://ggplot2.tidyverse.org/).
 
@@ -411,7 +409,7 @@ glimpse(ny_stations)
 
 ### Transform
 
-#### Transform with `dplyr`
+#### Transform with `dplyr` {-}
 
 ```{r}
 #| label: tbl-dplyr-verbs
@@ -445,13 +443,13 @@ All `dplyr` functions work in the same way:
 
 So every `dplyr` function expects a data frame and will always return a data frame.
 
-####  Use pipes `|>` with `dplyr`
+####  Use pipes `|>` with `dplyr` {-}
 
 `dplyr` is most effective when its functions are chained together -- you will see this shortly as we explore the New York bikeshare data. This chaining of functions can be achieved using the *pipe* operator (`|>`).  Pipes are used for passing information in a program. They take the output of a set of code (a `dplyr` specification) and make it the input of the next set (another `dplyr` specification).
 
 Pipes can be easily applied to `dplyr` functions, and the functions of all packages that form the `tidyverse`. We mentioned in Chapter [-@sec-introduction] that `ggplot2` provides a framework for specifying a *layered grammar of graphics* (more on this in Chapter [-@sec-visual]). Together with the pipe operator (`|>`), `dplyr` supports a *layered grammar of data manipulation*.
 
-#### `count()` rows
+#### `count()` rows {-}
 
 This might sound a little abstract so let's use and combine some `dplyr` functions to generate statistical summaries on the New York bikeshare data.
 
@@ -471,7 +469,7 @@ ny_trips |>
 ```
 There are a few things happening in the `count()` function. It takes the `gender` variable from `ny_trips`, organises or *groups* the rows in the data frame according to its values (`female` | `male` | `unknown`), counts the rows and then orders the *summarised* output descending on the counts.
 
-#### `summarise()` over rows
+#### `summarise()` over rows {-}
 
 ```{r, echo=FALSE}
 #| label: tbl-aggregate-functions
@@ -557,7 +555,7 @@ Remembering that *pipes* (`|>`) take the output of a set of code and make it the
 :::
 
 
-#### Manipulate dates with [`lubridate`](https://lubridate.tidyverse.org/)
+#### Manipulate dates with [`lubridate`](https://lubridate.tidyverse.org/) {-}
 
 Let's continue this investigation of trips by user-type by profiling how usage varies over time. To do this we will need to work with `date-time` variables. The [`lubridate`](https://lubridate.tidyverse.org/) package provides various convenience functions for this.
 
@@ -603,7 +601,7 @@ include_graphics("/figs/hod_dow.png", error = FALSE)
 
 
 
-#### Relate tables with `join()`
+#### Relate tables with `join()` {-}
 
 Trip distance is not recorded directly in the `ny_trips` table, but may be important for profiling usage behaviour. Calculating trip distance is eminently achievable as the `ny_trips` table contains the origin and destination station of every trip and the `ny_stations` table contains coordinates corresponding to those stations. To relate the two tables, we need to specify a *join* between them.
 

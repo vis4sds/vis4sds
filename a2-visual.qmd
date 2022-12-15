@@ -52,7 +52,7 @@ Complete the description table below identifying each *data item* that is encode
 
 ## Component 2: Reproduce
 
-Write some code for reproducing something similar to the graphic below -- a set of histograms of the Swing variable, faceted by region. Place your code into the [03-template.qmd]() file for this session.
+Write some code for reproducing something similar to the graphic below -- a set of histograms of the Swing variable, faceted by region. Place your code into the [03-template.qmd]() file for this chapter.
 
 ```{r}
 #| eval: false
@@ -78,7 +78,7 @@ include_graphics("/figs/hist-region.png", error = FALSE)
 
 ### Scatterplots with multiple encodings
 
-Write some code for reproducing something similar to the graphic below -- a scatterplot comparing 2017 and 2019 vote shares for Labour. Be sure to include *every* encoding as it appears in the graphic (e.g. `shape` and `alpha` according to whether constituencies flipped allegiance). Hint: you may need to use a *conditional statement* to generate a variable for emphasising constituencies that flipped parties between 2017 and 2019. Place your code into the [03-template.qmd]() file for this session.
+Write some code for reproducing something similar to the graphic below -- a scatterplot comparing 2017 and 2019 vote shares for Labour. Be sure to include *every* encoding as it appears in the graphic (e.g. `shape` and `alpha` according to whether constituencies flipped allegiance). Hint: you may need to use a *conditional statement* to generate a variable for emphasising constituencies that flipped parties between 2017 and 2019. Place your code into the [03-template.qmd]() file for this chapter.
 
 ```{r}
 #| eval: false
@@ -89,7 +89,7 @@ Write some code for reproducing something similar to the graphic below -- a scat
 ######################
 ```
 
-* Save your plot as a `.png` file and insert the file as a Figure into your `.qmd` document ([guidance here](https://rmd4sci.njtierney.com/figures-tables-captions-.html)).
+* Save your plot as a `.png` file and insert the file as a Figure into your `.qmd` document.
 
 
 ```{r}
@@ -108,7 +108,7 @@ include_graphics("/figs/scatters-lab.png", error = FALSE)
 
 Write some code for reproducing something similar to the graphic below -- a map of the estimated Leave:Remain vote margin by Parliamentary Constituency. Note the [diverging](https://colorbrewer2.org/#type=diverging&scheme=BrBG&n=3) colour scheme here to distinguish whether the Constituency was majority Leave and Remain  -- brown or green -- and also the *size* of that majority -- the darker the colour, the larger the majority.
 
- Place your code into the [ 03-template.qmd]() file for this session.
+ Place your code into the [ 03-template.qmd]() file for this chapter.
 
 ```{r}
 #| eval: false
@@ -118,7 +118,7 @@ Write some code for reproducing something similar to the graphic below -- a map 
 ######################
 ```
 
-* Save your plot as a `.png` file and insert the file as a Figure into your `.qmd` document ([guidance here](https://rmd4sci.njtierney.com/figures-tables-captions-.html)).
+* Save your plot as a `.png` file and insert the file as a Figure into your `.qmd` document.
 
 
 ```{r}

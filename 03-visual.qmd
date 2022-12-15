@@ -147,9 +147,9 @@ kbl(data) |> kable_minimal() |> column_spec(2, extra_css = "font-family:  Monosp
 
 In evidence in the Washington Post graphic is a judicious *mapping* of data to visuals, underpinned by a secure understanding of analysis context. This act of carefully considering how best to leverage visual systems given the available data and analysis priorities is key to designing effective data graphics.
 
-In the late 1990s Leland Wilkinson, a Computer Scientist and Statistician, introduced the *Grammar of Graphics* [-@wilkinson_grammar_1999] as an approach that captures this process of turning data into visuals. @wilkinson_grammar_1999's thesis is that if graphics can be described in a consistent way according to their structure and composition, then the process of *generating* graphics of different types can be systematised. This has obvious benefits for building visualization toolkits. Different chart types and combinations can be specified systematicaly, thereby formalisising the process of data visualization design. [Tableau](https://www.tableau.com/en-gb), [vega-lite](https://vega.github.io/vega-lite/) and [ggplot2](https://ggplot2.tidyverse.org/) are all underpinned by *Grammar of Graphics* thinking.
+In the late 1990s Leland Wilkinson, a Computer Scientist and Statistician, introduced the *Grammar of Graphics* [-@wilkinson_grammar_1999] as an approach that captures this process of turning data into visuals. @wilkinson_grammar_1999's thesis is that if graphics can be described in a consistent way according to their structure and composition, then the process of *generating* graphics of different types can be systematised. This has obvious benefits for building visualization toolkits. Different chart types and combinations can be specified systematicaly, thereby formalising the process of data visualization design. [Tableau](https://www.tableau.com/en-gb), [vega-lite](https://vega.github.io/vega-lite/) and [ggplot2](https://ggplot2.tidyverse.org/) are all underpinned by *Grammar of Graphics* thinking.
 
-@wilkinson_grammar_1999’s grammar separates the construction of a data graphic into a series of components. Below are the components of the *Layered Grammar of Graphics* on which *ggplot2* is based [@wickham_layered_2010], a slight edit to @wilkinson_grammar_1999’s original work.
+@wilkinson_grammar_1999’s grammar separates the construction of a data graphic into a series of components. Below are the components of the *Layered Grammar of Graphics* on which ggplot2 is based [@wickham_layered_2010], adapted from @wilkinson_grammar_1999’s original work.
 
 
 ```{r}
@@ -157,7 +157,7 @@ In the late 1990s Leland Wilkinson, a Computer Scientist and Statistician, intro
 #| include: false
 #| fig-cap: "Components of @wickham_layered_2010's Layered Grammar of Graphics."
 #| echo: false
-#| out.width: 80%
+#| out.width: 70%
 include_graphics("03/figs/gog.png", error = FALSE)
 ```
 
@@ -579,7 +579,7 @@ You might have noticed that different elements of a ggplot2 specification are ad
 Read this design exposition by [Lunzner and McNamara, 2020](http://tinlizzie.org/histograms/) for an excellent discussion of the analysis and design considerations when working with histograms. There are of course other *geoms* for summarising over 1D distributions: `geom_boxplot()`, `geom_dotplot()`, `geom_violin()`.
 :::
 
-#### Faceting by region
+#### Faceting by region {-}
 
 ```{r}
 #| label: fig-hist-region
@@ -642,7 +642,7 @@ ggplot2 themes control the appearance of all non-data items -- font sizes and ty
 :::
 
 
-#### Faceting by region
+#### Faceting by region {-}
 
 ```{r}
 #| label: fig-bars-region
@@ -805,7 +805,7 @@ include_graphics("/figs/map-winners.png", error = FALSE)
 ```
 ![Choropleth of elected parties in 2019 General Election.](figs/03/map-winners.png){#fig-map-winners width=100% fig-align="center"}
 
-In the graphics that facet by region, our analysis suggests at a geography to voting and certainly to observed changes in voting comparing the 2017 and 2019 elections (e.g. @fig-hist-region). We end the session by generating thematic maps of the results data.
+In the graphics that facet by region, our analysis suggests at a geography to voting and certainly to observed changes in voting comparing the 2017 and 2019 elections (e.g. @fig-hist-region). We end the chapter by generating thematic maps of the results data.
 
 To do this we need to define a join on the boundary data (`cons_outline`):
 
@@ -854,7 +854,7 @@ A breakdown of the `ggplot2` spec:
 1. *Data*: The `dplyr` code updates `data_gb` by recoding `winner_19` as a factor and defining a named vector of colours to supply to `scale_fill_manual()`.
 2. *Encoding*: No surprises here -- `fill` according to `winner_19`.
 3. *Marks*: `geom_sf()` is a special class of geometry. It draws objects depending on the contents of the `geometry` column. In this case `MULTIPOLYGON`, so read this as a *polygon* geometric primitive.
-4. *Coordinates*: `coord_sf` -- we set the coordinate system (CRS) explicitly. In this case [OS British National Grid](https://spatialreference.org/ref/epsg/osgb-1936-british-national-grid/). More on this later in the course.
+4. *Coordinates*: `coord_sf` -- we set the coordinate system (CRS) explicitly. In this case [OS British National Grid](https://spatialreference.org/ref/epsg/osgb-1936-british-national-grid/). 
 5. *Setting*: Constituency boundaries are subtly introduced by setting the `geom_sf()` mark to light grey (`colour="#eeeeee"`) with a thin (`size=0.01`) outline. On the map to the right outlines for regions are added as another `geom_sf` layer.
 
 
