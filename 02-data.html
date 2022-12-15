@@ -305,7 +305,7 @@ Create statistical graphics that expose high-level structure in data for cleanin
 </div>
 <section id="introduction" class="level2" data-number="2.1"><h2 data-number="2.1" class="anchored" data-anchor-id="introduction">
 <span class="header-section-number">2.1</span> Introduction</h2>
-<p>This chapter covers some of the basics of how to describe and organise data. Whilst this might sound prosaic, there are several reasons why being able to consistently describe a dataset is important. First, it is the initial step in any analysis and helps delimit the analytical procedures that can be deployed. This is especially relevant to data science-type workflows, where it is common to apply the same analysis templates for working over many different datasets. Describing your dataset using a consistent vocabulary enables you to identify which analysis templates to reuse. Second relates to the point in <a href="01-intro.html">Chapter&nbsp;<span>1</span></a> that Social Data Science (SDS) projects usually involve repurposing datasets for the first time. It is often not obvious whether the data contain sufficient detail and structure to characterise the behaviours to be researched and the target populations they are assumed to represent. This leads to additional levels of uncertainty and places greater importance on the initial steps of data processing, description and exploration.</p>
+<p>This chapter covers some of the basics of how to describe and organise data. Whilst this might sound prosaic, there are several reasons why being able to consistently describe a dataset is important. First, it is the initial step in any analysis and helps delimit the analytical procedures that can be deployed. This is especially relevant to data science-type workflows, where it is common to apply the same analysis templates for working over many different datasets. Describing your dataset using a consistent vocabulary enables you to identify which analysis templates to reuse. Second relates to the point in <a href="01-intro.html">Chapter&nbsp;<span>1</span></a> that Social Data Science (SDS) projects usually involve repurposing datasets for the first time. It is often not obvious whether the data contain sufficient detail and structure to characterise the behaviours being researched and the target populations they are assumed to represent. This leads to additional levels of uncertainty and places greater importance on the initial steps of data processing, description and exploration.</p>
 <p>Through the chapter we will learn both language for describing and thinking about data, but also how to deploy some of the most important data processing and organisation techniques in R to wrangle real datasets. We will do so using data from New York’s <a href="https://www.citibikenyc.com/">Citibike</a> scheme, accessed through the <code>bikedata</code> package, an API to Citibike’s <a href="https://www.citibikenyc.com/system-data">publicly available origin-destination trip data</a>.</p>
 <div class="callout-note callout callout-style-default callout-captioned">
 <div class="callout-header d-flex align-content-center">
@@ -328,8 +328,8 @@ Data vocabulary
 </section><section id="types-of-variable" class="level3" data-number="2.2.2"><h3 data-number="2.2.2" class="anchored" data-anchor-id="types-of-variable">
 <span class="header-section-number">2.2.2</span> Types of variable</h3>
 <p>A familiar classification for describing variables is that developed by <span class="citation" data-cites="stevens_on_1946">Stevens (<a href="references.html#ref-stevens_on_1946" role="doc-biblioref">1946</a>)</span> when cosidering the <em>level of measurement</em> of a variable. <span class="citation" data-cites="stevens_on_1946">Stevens (<a href="references.html#ref-stevens_on_1946" role="doc-biblioref">1946</a>)</span> organises variables into two classes: variables that describe <em>categories</em> of things and variables that describe <em>measurements</em> of things.</p>
-<p>Categories include attributes like gender, titles, ranked orders (1st, 2nd, 3rd largest etc.). Measurements include quantities like distance, age, travel time. Categories can be further subdivided into those that are unordered (<em>nominal</em>) from those that are ordered (<em>ordinal</em>). Measurements can also be subdivided. <em>Interval</em> measurements are quantities where the computed difference between two values is meaningful. <em>Ratio</em> measurements have this property, but also have a meaningful <code>0</code> – <code>0</code> means the absence of something – and the ratio of two values can be computed. The most common cited example of an interval measurement is temperature (in degrees C). Temperatures can be ordered and compared additively, but <code>0</code> degrees C does not mean the absence of temperature and 20 degrees C is not twice as “hot” as 10 degrees C.</p>
-<p>Why is this important? The measurement level of a variable determines the types of data analysis operations that can be performed and therefore allows us to efficiently make decisions when working with a dataset for the first time (<a href="04-explore.html#tbl-variable-types">Table&nbsp;<span>4.1</span></a>).</p>
+<p>Categories include attributes like gender, titles, ranked orders (1st, 2nd, 3rd largest etc.). Measurements include quantities like distance, age, travel time. Categories can be further subdivided into those that are unordered (<em>nominal</em>) from those that are ordered (<em>ordinal</em>). Measurements can also be subdivided. <em>Interval</em> measurements are quantities where the computed difference between two values is meaningful. <em>Ratio</em> measurements have this property, but also have a meaningful <code>0</code>, where <code>0</code> means the absence of something, and the ratio of two values can be computed. The most common cited example of an interval measurement is temperature in °C. Temperatures can be ordered and compared additively, but 0 in °C does not mean the absence of temperature and 20°C is not twice as hot as 10°C.</p>
+<p>Why is this useful? The measurement level of a variable determines the types of data analysis operations that can be performed and therefore allows us to efficiently make decisions when working with a dataset for the first time (<a href="04-explore.html#tbl-variable-types">Table&nbsp;<span>4.1</span></a>).</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="tbl-variable-types" class="anchored">
@@ -355,7 +355,7 @@ Data vocabulary
 <tr>
 <td style="text-align:left;padding-left: 2em;width: 8em; font-family:  Monospace" indentlevel="1"> Ordinal </td>
    <td style="text-align:left;"> Terrorism threat levels </td>
-   <td style="text-align:left;width: 8em; font-family:  Monospace"> =  ≠ &lt;&gt; </td>
+   <td style="text-align:left;width: 8em; font-family:  Monospace"> =  ≠  </td>
    <td style="text-align:left;"> median </td>
    <td style="text-align:left;"> percentile </td>
   </tr>
@@ -363,14 +363,14 @@ Data vocabulary
 <tr>
 <td style="text-align:left;padding-left: 2em;width: 8em; font-family:  Monospace" indentlevel="1"> Interval </td>
    <td style="text-align:left;"> Temperatures; years </td>
-   <td style="text-align:left;width: 8em; font-family:  Monospace"> =  ≠ &lt;&gt; +  - </td>
+   <td style="text-align:left;width: 8em; font-family:  Monospace"> =  ≠  +  - </td>
    <td style="text-align:left;"> mean </td>
    <td style="text-align:left;"> variance </td>
   </tr>
 <tr>
 <td style="text-align:left;padding-left: 2em;width: 8em; font-family:  Monospace" indentlevel="1"> Ratio </td>
    <td style="text-align:left;"> Distances; prices </td>
-   <td style="text-align:left;width: 8em; font-family:  Monospace"> =  ≠ &lt;&gt; +  - | × ÷ </td>
+   <td style="text-align:left;width: 8em; font-family:  Monospace"> =  ≠  +  - | × ÷ </td>
    <td style="text-align:left;"> mean </td>
    <td style="text-align:left;"> variance </td>
   </tr>
@@ -381,9 +381,8 @@ Data vocabulary
 </div>
 </section><section id="types-of-observation" class="level3" data-number="2.2.3"><h3 data-number="2.2.3" class="anchored" data-anchor-id="types-of-observation">
 <span class="header-section-number">2.2.3</span> Types of observation</h3>
-<p>Observations either together form an entire <em>population</em> or a subset, or <em>sample</em>, that we expect is representative of a <em>target population</em>.</p>
-<p>In Social Data Science applications we may often be working with datasets that are so-called population-level. The <a href="(https://www.citibikenyc.com/system-data)">Citibike dataset</a> is a complete, population-level dataset in that every journey made through the scheme is recorded. Whether or not this is truly a population-level dataset, however, depends on the analysis purpose. When analysing the bikeshare dataset are we interested only in describing use within the Citibike scheme? Or are we taking the patterns observed through our analysis to make claims and inferences about cycling more generally?</p>
-<p>If the latter, then there are problems as the level of detail we have on our sample is pretty trivial compared to traditional, ‘actively-collected’ datasets, where data collection activities are designed with a specified target population in mind. It may therefore be difficult to gauge how representative Citibike users and Citibike cycling is of New York’s general cycling population. The flipside is that such ‘passively-collected’ data do not suffer from the same problems such as non-response bias and social-desirability bias as traditional, actively-collected datasets.</p>
+<p>Observations either together form an entire <em>population</em> or a subset, or <em>sample</em>, that we expect is representative of a <em>target population</em>. In Social Data Science applications we may often be working with datasets that are so-called population-level. The <a href="(https://www.citibikenyc.com/system-data)">Citibike dataset</a> is a complete, population-level dataset in that every journey made through the scheme is recorded. Whether or not this is truly a population-level dataset, however, depends on the analysis purpose. When analysing the bikeshare dataset are we interested only in describing use within the Citibike scheme? Or are we taking the patterns observed through our analysis to make claims and inferences about cycling more generally?</p>
+<p>If the latter, then there are problems as the level of detail we have on our sample is pretty trivial compared to traditional, <em>actively-collected</em> datasets, where data collection activities are designed with a specified target population in mind. It may therefore be difficult to gauge how representative Citibike users and Citibike cycling is of New York’s general cycling population. The flipside is that such <em>passively-collected</em> data do not suffer from the same problems such as non-response bias and social-desirability bias as traditional, actively-collected datasets.</p>
 </section><section id="tidy-data" class="level3" data-number="2.2.4"><h3 data-number="2.2.4" class="anchored" data-anchor-id="tidy-data">
 <span class="header-section-number">2.2.4</span> Tidy data</h3>
 <p>We will be working with data frames organised such that columns always and only refer to variables and rows always and only refer to observations. This arrangement, called <em>tidy</em> <span class="citation" data-cites="wickham_tidy_2014">(<a href="references.html#ref-wickham_tidy_2014" role="doc-biblioref">Wickham 2014</a>)</span>, has two key advantages. First, if data are arranged in a consistent way, then it is easier to apply and re-use tools for wrangling them due to data having the same underlying structure. Second, placing variables into columns, with each column containing a vector of values, means that we can take advantage of R’s vectorised functions for transforming data – we will demonstrate this in the technical element of the chapter.</p>
@@ -393,8 +392,7 @@ Data vocabulary
 <li>Each observation forms a row.</li>
 <li>Each type of observational unit forms a table.</li>
 </ol>
-<section id="drug-treatment-dataset" class="level4" data-number="2.2.4.1"><h4 data-number="2.2.4.1" class="anchored" data-anchor-id="drug-treatment-dataset">
-<span class="header-section-number">2.2.4.1</span> Drug treatment dataset</h4>
+<section id="drug-treatment-dataset" class="level4 unnumbered"><h4 class="unnumbered anchored" data-anchor-id="drug-treatment-dataset">Drug treatment dataset</h4>
 <p>To elaborate further, we can use the example given in <span class="citation" data-cites="wickham_tidy_2014">Wickham (<a href="references.html#ref-wickham_tidy_2014" role="doc-biblioref">2014</a>)</span>, a drug treatment dataset in which two different treatments are administered to participants.</p>
 <div id="tbl-drugs" class="cell tbl-parent quarto-layout-panel anchored">
 <div class="panel-caption table-caption">
@@ -511,8 +509,7 @@ Data vocabulary
 <code>treatment</code>: a categorical nominal variable which takes values: a and b.</li>
 <li>
 <code>result</code>: a measurement ratio variable with six recorded values (including the missing value): –, 16, 3, 2, 11,</li>
-</ol></section><section id="gapminder-population-dataset" class="level4" data-number="2.2.4.2"><h4 data-number="2.2.4.2" class="anchored" data-anchor-id="gapminder-population-dataset">
-<span class="header-section-number">2.2.4.2</span> Gapminder population dataset</h4>
+</ol></section><section id="gapminder-population-dataset" class="level4 unnumbered"><h4 class="unnumbered anchored" data-anchor-id="gapminder-population-dataset">Gapminder population dataset</h4>
 <p>In <span class="citation" data-cites="wickham_r_2017">Wickham and Grolemund (<a href="references.html#ref-wickham_r_2017" role="doc-biblioref">2017</a>)</span>, the benefits of tidy layouts are demonstrated using the <a href="https://www.gapminder.org/data/"><code>gapminder</code></a> dataset and with reference to key data processing functions in R. To consolidate our understanding of <em>tidy</em> data let’s quickly look at the <code>gapminder</code> data, as it is an example that we’re probably more likely to encounter in social science research.</p>
 <div id="tbl-gapminder" class="cell tbl-parent quarto-layout-panel anchored">
 <div class="panel-caption table-caption">
@@ -704,7 +701,7 @@ Data vocabulary
 <li>
 <code>population</code>: a ratio (count) variable.</li>
 </ol>
-<p>An alternative organisation is in <a href="#tbl-gapminder">Table&nbsp;<span>2.3</span></a> (b). This is <em>untidy</em> as the observations are spread across two rows, makiing operations that we might want to perform on the <code>cases</code> and <code>population</code> variables – for example computing exposure rates – somewhat tedious.</p>
+<p>An alternative organisation is in <a href="#tbl-gapminder">Table&nbsp;<span>2.3</span></a> (b). This is <em>untidy</em> as the observations are spread across two rows, making operations that we might want to perform on the <code>cases</code> and <code>population</code> variables, for example computing exposure rates, somewhat tedious.</p>
 <p>Imagine that the <code>gapminder</code> dataset reported values of <code>cases</code> separately by gender – <a href="#tbl-gapminder">Table&nbsp;<span>2.3</span></a> (c). A type of representation often seen in social science domains, probably as it is helpful for data entry, is where observations are spread across the columns. This too creates problems for performing aggregate functions, but also for specifying visualization designs in <a href="https://ggplot2.tidyverse.org/"><code>ggplot2</code></a>.</p>
 </section></section></section><section id="techniques" class="level2" data-number="2.3"><h2 data-number="2.3" class="anchored" data-anchor-id="techniques">
 <span class="header-section-number">2.3</span> Techniques</h2>
@@ -854,8 +851,7 @@ Note
 </div>
 </section><section id="transform" class="level3" data-number="2.3.3"><h3 data-number="2.3.3" class="anchored" data-anchor-id="transform">
 <span class="header-section-number">2.3.3</span> Transform</h3>
-<section id="transform-with-dplyr" class="level4" data-number="2.3.3.1"><h4 data-number="2.3.3.1" class="anchored" data-anchor-id="transform-with-dplyr">
-<span class="header-section-number">2.3.3.1</span> Transform with <code>dplyr</code>
+<section id="transform-with-dplyr" class="level4 unnumbered"><h4 class="unnumbered anchored" data-anchor-id="transform-with-dplyr">Transform with <code>dplyr</code>
 </h4>
 <div class="cell">
 <div class="cell-output-display">
@@ -913,13 +909,12 @@ Note
 <li>Return the updated data frame.</li>
 </ol>
 <p>So every <code>dplyr</code> function expects a data frame and will always return a data frame.</p>
-</section><section id="use-pipes-with-dplyr" class="level4" data-number="2.3.3.2"><h4 data-number="2.3.3.2" class="anchored" data-anchor-id="use-pipes-with-dplyr">
-<span class="header-section-number">2.3.3.2</span> Use pipes <code>|&gt;</code> with <code>dplyr</code>
+</section><section id="use-pipes-with-dplyr" class="level4 unnumbered"><h4 class="unnumbered anchored" data-anchor-id="use-pipes-with-dplyr">Use pipes <code>|&gt;</code> with <code>dplyr</code>
 </h4>
 <p><code>dplyr</code> is most effective when its functions are chained together – you will see this shortly as we explore the New York bikeshare data. This chaining of functions can be achieved using the <em>pipe</em> operator (<code>|&gt;</code>). Pipes are used for passing information in a program. They take the output of a set of code (a <code>dplyr</code> specification) and make it the input of the next set (another <code>dplyr</code> specification).</p>
 <p>Pipes can be easily applied to <code>dplyr</code> functions, and the functions of all packages that form the <code>tidyverse</code>. We mentioned in Chapter <a href="01-intro.html"><span>1</span></a> that <code>ggplot2</code> provides a framework for specifying a <em>layered grammar of graphics</em> (more on this in Chapter <a href="03-visual.html"><span>3</span></a>). Together with the pipe operator (<code>|&gt;</code>), <code>dplyr</code> supports a <em>layered grammar of data manipulation</em>.</p>
-</section><section id="count-rows" class="level4" data-number="2.3.3.3"><h4 data-number="2.3.3.3" class="anchored" data-anchor-id="count-rows">
-<span class="header-section-number">2.3.3.3</span> <code>count()</code> rows</h4>
+</section><section id="count-rows" class="level4 unnumbered"><h4 class="unnumbered anchored" data-anchor-id="count-rows">
+<code>count()</code> rows</h4>
 <p>This might sound a little abstract so let’s use and combine some <code>dplyr</code> functions to generate statistical summaries on the New York bikeshare data.</p>
 <p>First we’ll count the number of trips made in Jun 2020 by gender. <code>dplyr</code> has a convenience function for counting, so we could run the code below, also in the <a href="">02-template.qmd</a> for this chapter. The code block is commented to convey what each line achieves.</p>
 <div class="cell">
@@ -933,8 +928,8 @@ Note
 <span><span class="co">## 2   customer  592681</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>There are a few things happening in the <code>count()</code> function. It takes the <code>gender</code> variable from <code>ny_trips</code>, organises or <em>groups</em> the rows in the data frame according to its values (<code>female</code> | <code>male</code> | <code>unknown</code>), counts the rows and then orders the <em>summarised</em> output descending on the counts.</p>
-</section><section id="summarise-over-rows" class="level4" data-number="2.3.3.4"><h4 data-number="2.3.3.4" class="anchored" data-anchor-id="summarise-over-rows">
-<span class="header-section-number">2.3.3.4</span> <code>summarise()</code> over rows</h4>
+</section><section id="summarise-over-rows" class="level4 unnumbered"><h4 class="unnumbered anchored" data-anchor-id="summarise-over-rows">
+<code>summarise()</code> over rows</h4>
 <div class="cell">
 <div class="cell-output-display">
 <div id="tbl-aggregate-functions" class="anchored">
@@ -1034,8 +1029,7 @@ Note
 <p>Remembering that <em>pipes</em> (<code>|&gt;</code>) take the output of a set of code and make it the input of the next set, you will notice separate lines for each call to the <em>pipe</em> operator. This is good practice for supporting readability of your code.</p>
 </div>
 </div>
-</section><section id="manipulate-dates-with-lubridate" class="level4" data-number="2.3.3.5"><h4 data-number="2.3.3.5" class="anchored" data-anchor-id="manipulate-dates-with-lubridate">
-<span class="header-section-number">2.3.3.5</span> Manipulate dates with <a href="https://lubridate.tidyverse.org/"><code>lubridate</code></a>
+</section><section id="manipulate-dates-with-lubridate" class="level4 unnumbered"><h4 class="unnumbered anchored" data-anchor-id="manipulate-dates-with-lubridate">Manipulate dates with <a href="https://lubridate.tidyverse.org/"><code>lubridate</code></a>
 </h4>
 <p>Let’s continue this investigation of trips by user-type by profiling how usage varies over time. To do this we will need to work with <code>date-time</code> variables. The <a href="https://lubridate.tidyverse.org/"><code>lubridate</code></a> package provides various convenience functions for this.</p>
 <p>In the code block below we extract the <em>day of week</em> and <em>hour of day</em> from the <code>start_time</code> variable using <code>lubridate</code>’s <a href="https://lubridate.tidyverse.org/reference/day.html">day accessor</a> functions. Documentation on these can be accessed in the usual way (<code>?&lt;function-name&gt;</code>), but reading down the code it should be clear to you how this works. Next we count the number of trips made by hour of day, day of week and user-type. The summarised data frame will be re-used several times in our analysis, so we store it as an object with a suitable name (<code>ny_temporal</code>) using the assignment operator.</p>
@@ -1086,8 +1080,7 @@ Note
 <p>Our analysis is based on data from June 2020, a time when New York residents were emerging from lockdown. It would be instructive to compare with data from a non-Covid year. The fact that bikeshare is collected continuously makes this sort of <em>behavioural change</em> analysis possible. Check out <a href="https://github.com/jwoLondon/mobv">Jo Wood’s work</a> analysing Covid-related change in movement behaviours across a range of cities.</p>
 </div>
 </div>
-</section><section id="relate-tables-with-join" class="level4" data-number="2.3.3.6"><h4 data-number="2.3.3.6" class="anchored" data-anchor-id="relate-tables-with-join">
-<span class="header-section-number">2.3.3.6</span> Relate tables with <code>join()</code>
+</section><section id="relate-tables-with-join" class="level4 unnumbered"><h4 class="unnumbered anchored" data-anchor-id="relate-tables-with-join">Relate tables with <code>join()</code>
 </h4>
 <p>Trip distance is not recorded directly in the <code>ny_trips</code> table, but may be important for profiling usage behaviour. Calculating trip distance is eminently achievable as the <code>ny_trips</code> table contains the origin and destination station of every trip and the <code>ny_stations</code> table contains coordinates corresponding to those stations. To relate the two tables, we need to specify a <em>join</em> between them.</p>
 <p>A sensible approach is to:</p>
@@ -1197,8 +1190,8 @@ Note
 <span><span class="co">## # … with 948 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>All of the top 10 docking stations are either in parks, near parks or located along river promenades. This coupled with the fact that these trips occur in much greater relative number for casual than regular users (<code>Customer</code> vs <code>Subscriber</code>) is further evidence that these are valid trips.</p>
-</section><section id="write-functions-of-your-own" class="level4" data-number="2.3.3.7"><h4 data-number="2.3.3.7" class="anchored" data-anchor-id="write-functions-of-your-own">
-<span class="header-section-number">2.3.3.7</span> Write functions of your own</h4>
+</section><section id="write-functions-of-your-own" class="level4" data-number="2.3.3.1"><h4 data-number="2.3.3.1" class="anchored" data-anchor-id="write-functions-of-your-own">
+<span class="header-section-number">2.3.3.1</span> Write functions of your own</h4>
 <p>Through most of the course we will be making use of functions written by others – mainly those developed for packages that form the <code>tidyverse</code> and therefore that follow a consistent syntax. However, there may be times where you need to abstract over some of your code to make functions of your own. <a href="https://r4ds.had.co.nz/functions.html">Chapter 19</a> of <span class="citation" data-cites="wickham_r_2017">Wickham and Grolemund (<a href="references.html#ref-wickham_r_2017" role="doc-biblioref">2017</a>)</span> presents some helpful guidelines around the circumstances under a the data scientist might write functions. Most often this is when you find yourself copy and pasting the same chunks of code with minimal adaptation.</p>
 <p>Functions have three key characteristics:</p>
 <ol type="1">

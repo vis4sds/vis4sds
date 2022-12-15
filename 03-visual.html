@@ -459,8 +459,8 @@ Watch [Miriah Meyer's](https://www.cs.utah.edu/~miriah/) TEDx talk, *Information
 <p><span class="citation" data-cites="tufte_visual_1983">Tufte (<a href="references.html#ref-tufte_visual_1983" role="doc-biblioref">1983</a>)</span></p>
 </blockquote>
 <p>In evidence in the Washington Post graphic is a judicious <em>mapping</em> of data to visuals, underpinned by a secure understanding of analysis context. This act of carefully considering how best to leverage visual systems given the available data and analysis priorities is key to designing effective data graphics.</p>
-<p>In the late 1990s Leland Wilkinson, a Computer Scientist and Statistician, introduced the <em>Grammar of Graphics</em> <span class="citation" data-cites="wilkinson_grammar_1999">(<a href="references.html#ref-wilkinson_grammar_1999" role="doc-biblioref">1999</a>)</span> as an approach that captures this process of turning data into visuals. <span class="citation" data-cites="wilkinson_grammar_1999">Wilkinson (<a href="references.html#ref-wilkinson_grammar_1999" role="doc-biblioref">1999</a>)</span>’s thesis is that if graphics can be described in a consistent way according to their structure and composition, then the process of <em>generating</em> graphics of different types can be systematised. This has obvious benefits for building visualization toolkits. Different chart types and combinations can be specified systematicaly, thereby formalisising the process of data visualization design. <a href="https://www.tableau.com/en-gb">Tableau</a>, <a href="https://vega.github.io/vega-lite/">vega-lite</a> and <a href="https://ggplot2.tidyverse.org/">ggplot2</a> are all underpinned by <em>Grammar of Graphics</em> thinking.</p>
-<p><span class="citation" data-cites="wilkinson_grammar_1999">Wilkinson (<a href="references.html#ref-wilkinson_grammar_1999" role="doc-biblioref">1999</a>)</span>’s grammar separates the construction of a data graphic into a series of components. Below are the components of the <em>Layered Grammar of Graphics</em> on which <em>ggplot2</em> is based <span class="citation" data-cites="wickham_layered_2010">(<a href="references.html#ref-wickham_layered_2010" role="doc-biblioref">Wickham 2010</a>)</span>, a slight edit to <span class="citation" data-cites="wilkinson_grammar_1999">Wilkinson (<a href="references.html#ref-wilkinson_grammar_1999" role="doc-biblioref">1999</a>)</span>’s original work.</p>
+<p>In the late 1990s Leland Wilkinson, a Computer Scientist and Statistician, introduced the <em>Grammar of Graphics</em> <span class="citation" data-cites="wilkinson_grammar_1999">(<a href="references.html#ref-wilkinson_grammar_1999" role="doc-biblioref">1999</a>)</span> as an approach that captures this process of turning data into visuals. <span class="citation" data-cites="wilkinson_grammar_1999">Wilkinson (<a href="references.html#ref-wilkinson_grammar_1999" role="doc-biblioref">1999</a>)</span>’s thesis is that if graphics can be described in a consistent way according to their structure and composition, then the process of <em>generating</em> graphics of different types can be systematised. This has obvious benefits for building visualization toolkits. Different chart types and combinations can be specified systematicaly, thereby formalising the process of data visualization design. <a href="https://www.tableau.com/en-gb">Tableau</a>, <a href="https://vega.github.io/vega-lite/">vega-lite</a> and <a href="https://ggplot2.tidyverse.org/">ggplot2</a> are all underpinned by <em>Grammar of Graphics</em> thinking.</p>
+<p><span class="citation" data-cites="wilkinson_grammar_1999">Wilkinson (<a href="references.html#ref-wilkinson_grammar_1999" role="doc-biblioref">1999</a>)</span>’s grammar separates the construction of a data graphic into a series of components. Below are the components of the <em>Layered Grammar of Graphics</em> on which ggplot2 is based <span class="citation" data-cites="wickham_layered_2010">(<a href="references.html#ref-wickham_layered_2010" role="doc-biblioref">Wickham 2010</a>)</span>, adapted from <span class="citation" data-cites="wilkinson_grammar_1999">Wilkinson (<a href="references.html#ref-wilkinson_grammar_1999" role="doc-biblioref">1999</a>)</span>’s original work.</p>
 <div id="fig-gog" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="figs/03/gog.png" class="img-fluid figure-img" style="width:90.0%"></p>
 <p></p><figcaption aria-hidden="true" class="figure-caption">Figure 3.2: Components of <span class="citation" data-cites="wickham_layered_2010">Wickham (<a href="references.html#ref-wickham_layered_2010" role="doc-biblioref">2010</a>)</span>’s Layered Grammar of Graphics.</figcaption><p></p>
@@ -917,8 +917,7 @@ On histograms
 <p>Read this design exposition by <a href="http://tinlizzie.org/histograms/">Lunzner and McNamara, 2020</a> for an excellent discussion of the analysis and design considerations when working with histograms. There are of course other <em>geoms</em> for summarising over 1D distributions: <code>geom_boxplot()</code>, <code>geom_dotplot()</code>, <code>geom_violin()</code>.</p>
 </div>
 </div>
-<section id="faceting-by-region" class="level4" data-number="3.3.3.1"><h4 data-number="3.3.3.1" class="anchored" data-anchor-id="faceting-by-region">
-<span class="header-section-number">3.3.3.1</span> Faceting by region</h4>
+<section id="faceting-by-region" class="level4 unnumbered"><h4 class="unnumbered anchored" data-anchor-id="faceting-by-region">Faceting by region</h4>
 <div id="fig-hist-region" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="figs/03/hist-region.png" class="img-fluid figure-img" style="width:100.0%"></p>
 <p></p><figcaption aria-hidden="true" class="figure-caption">Figure 3.12: Histograms of Swing variable, grouped by region.</figcaption><p></p>
@@ -933,7 +932,7 @@ On histograms
 </figure>
 </div>
 <p>Previously we calculated overall vote share by Political Party. We could continue the exploration of votes by region, re-using this code to generate plots displaying quantities but also comparing by region, using marks and encoding channels that are suitable for magnitudes.</p>
-<p>To generate a bar chart similar to the left of <a href="04-explore.html#fig-bars">Figure&nbsp;<span>4.4</span></a> the <code>ggplot2</code> specification would be:</p>
+<p>To generate a bar chart similar to the left of <a href="04-explore.html#fig-bars">Figure&nbsp;<span>4.3</span></a> the <code>ggplot2</code> specification would be:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>data_gb <span class="sc">|&gt;</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># The code block summarising vote by party.</span></span>
@@ -970,8 +969,7 @@ ggplot2 themes
 <p>ggplot2 themes control the appearance of all non-data items – font sizes and types, gridlines, axis labels. Checkout the complete list of ggplot2’s <a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">default themes</a>. If you like the look of the BBC’s in-house data graphics, explore their <a href="https://bbc.github.io/rcookbook/">Data Journalism cookbook</a>. We’d recommend working through the cookbook as it is a great resource for distilling many of the non-data-related decisions that are made when communicating graphically.</p>
 </div>
 </div>
-<section id="faceting-by-region-1" class="level4" data-number="3.3.4.1"><h4 data-number="3.3.4.1" class="anchored" data-anchor-id="faceting-by-region-1">
-<span class="header-section-number">3.3.4.1</span> Faceting by region</h4>
+<section id="faceting-by-region-1" class="level4 unnumbered"><h4 class="unnumbered anchored" data-anchor-id="faceting-by-region-1">Faceting by region</h4>
 <div id="fig-bars-region" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="figs/03/bars-region.png" class="img-fluid figure-img" style="width:100.0%"></p>
 <p></p><figcaption aria-hidden="true" class="figure-caption">Figure 3.14: Plots of vote shares by party and region.</figcaption><p></p>
@@ -1094,7 +1092,7 @@ A general point from the code blocks in this chapter is of the importance of pro
 <p></p><figcaption aria-hidden="true" class="figure-caption">Figure 3.16: Choropleth of elected parties in 2019 General Election.</figcaption><p></p>
 </figure>
 </div>
-<p>In the graphics that facet by region, our analysis suggests at a geography to voting and certainly to observed changes in voting comparing the 2017 and 2019 elections (e.g. <a href="a2-visual.html#fig-hist-region">Figure&nbsp;<span>B.2</span></a>). We end the session by generating thematic maps of the results data.</p>
+<p>In the graphics that facet by region, our analysis suggests at a geography to voting and certainly to observed changes in voting comparing the 2017 and 2019 elections (e.g. <a href="a2-visual.html#fig-hist-region">Figure&nbsp;<span>B.2</span></a>). We end the chapter by generating thematic maps of the results data.</p>
 <p>To do this we need to define a join on the boundary data (<code>cons_outline</code>):</p>
 <div class="cell">
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Join constituency boundaries.</span></span>
@@ -1136,7 +1134,7 @@ A general point from the code blocks in this chapter is of the importance of pro
 <li>
 <em>Marks</em>: <code>geom_sf()</code> is a special class of geometry. It draws objects depending on the contents of the <code>geometry</code> column. In this case <code>MULTIPOLYGON</code>, so read this as a <em>polygon</em> geometric primitive.</li>
 <li>
-<em>Coordinates</em>: <code>coord_sf</code> – we set the coordinate system (CRS) explicitly. In this case <a href="https://spatialreference.org/ref/epsg/osgb-1936-british-national-grid/">OS British National Grid</a>. More on this later in the course.</li>
+<em>Coordinates</em>: <code>coord_sf</code> – we set the coordinate system (CRS) explicitly. In this case <a href="https://spatialreference.org/ref/epsg/osgb-1936-british-national-grid/">OS British National Grid</a>.</li>
 <li>
 <em>Setting</em>: Constituency boundaries are subtly introduced by setting the <code>geom_sf()</code> mark to light grey (<code>colour="#eeeeee"</code>) with a thin (<code>size=0.01</code>) outline. On the map to the right outlines for regions are added as another <code>geom_sf</code> layer.</li>
 </ol>
