@@ -112,20 +112,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit"
   }
-}</script><script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script><script>document.addEventListener("DOMContentLoaded", function () {
- var mathElements = document.getElementsByClassName("math");
- var macros = [];
- for (var i = 0; i < mathElements.length; i++) {
-  var texText = mathElements[i].firstChild;
-  if (mathElements[i].tagName == "SPAN") {
-   katex.render(texText.data, mathElements[i], {
-    displayMode: mathElements[i].classList.contains('display'),
-    throwOnError: false,
-    macros: macros,
-    fleqn: false
-   });
-}}});
-  </script><script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
+}</script>
 </head>
 <body class="nav-sidebar floating">
 
@@ -142,7 +129,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Visualization for Social Data Science</a> 
         <div class="sidebar-tools-main">
-    <a href="https://github.com/rogerbeecham/vis4gds/" title="Source Code" class="sidebar-tool px-1"><i class="bi bi-github"></i></a>
+    <a href="https://github.com/vis4sds/vis4sds/" title="Source Code" class="sidebar-tool px-1"><i class="bi bi-github"></i></a>
     <a href="https://twitter.com/intent/tweet?url=%7Curl%7C" title="Twitter" class="sidebar-tool px-1"><i class="bi bi-twitter"></i></a>
 </div>
     </div>
@@ -204,26 +191,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <a href="./references.html" class="sidebar-item-text sidebar-link">References</a>
   </div>
 </li>
-        <li class="sidebar-item sidebar-item-section">
-    <div class="sidebar-item-container"> 
-        <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">Appendices</a>
-      <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
-        <i class="bi bi-chevron-right ms-2"></i>
-      </a>
-    </div>
-    <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
-<li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./a1-data.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Data Fundamentals</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./a2-visual.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Visualization Fundamentals</span></a>
-  </div>
-</li>
-    </ul>
-</li>
     </ul>
 </div>
 </nav><!-- margin-sidebar --><div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
@@ -251,7 +218,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </ul>
 </li>
   <li><a href="#conclusions" id="toc-conclusions" class="nav-link" data-scroll-target="#conclusions"> <span class="header-section-number">1.4</span> Conclusions</a></li>
-  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/rogerbeecham/vis4gds/edit/master/01-intro.qmd" class="toc-action">Edit this page</a></p></div></div></nav>
+  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/vis4sds/vis4sds/edit/master/01-intro.qmd" class="toc-action">Edit this page</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
@@ -287,7 +254,7 @@ Knowledge outcomes
 Appreciate the motivation for this book: why visualization, why R and why <code>ggplot2</code>.</li>
 <li>
 <input type="checkbox" disabled="" checked="">
-Recognise the characteristics of reproducibile research and the role of <em>projects</em> and <em>computational notebooks</em> for curating reproducible data analysis products.<br>
+Recognise the characteristics of reproducibile research and the role of <em>projects</em> and <em>computational notebooks</em> for curating modern data analysis products.<br>
 </li>
 </ul>
 </div>
@@ -320,19 +287,20 @@ Render Quarto files.</li>
 Create <code>R</code> Projects.</li>
 <li>
 <input type="checkbox" disabled="" checked="">
-Read-in datasets from external resources as objects (specifically <code>tibbles</code>).</li>
+Read-in datasets from external resources as objects.</li>
 </ul>
 </div>
 </div>
 <section id="introduction" class="level2" data-number="1.1"><h2 data-number="1.1" class="anchored" data-anchor-id="introduction">
 <span class="header-section-number">1.1</span> Introduction</h2>
-<p>This chapter introduces the <em>what</em>, <em>why</em> and <em>how</em> of the book. An argument is presented for the use of visual approaches in modern data analysis before the key technologies and analysis frameworks for the book are introduced: computational notebooks executed in Quarto. The technical component consolidates on readers’ knowledge and understanding of R and Quarto as well as demonstrating how to organise and curate data science analyses as RStudio Projects.</p>
+<p>This chapter introduces the <em>what</em>, <em>why</em> and <em>how</em> of the book. An argument is presented for the use of visual approaches in modern data analysis, especially Social Data Science analysis, and the key technologies and analysis frameworks for the book are introduced: computational notebooks executed in Quarto. The technical component consolidates on any prior knowledge of R and Quarto as well as demonstrates how to organise data science analyses as RStudio Projects.</p>
 </section><section id="concepts" class="level2" data-number="1.2"><h2 data-number="1.2" class="anchored" data-anchor-id="concepts">
 <span class="header-section-number">1.2</span> Concepts</h2>
 <section id="why-vis4sds" class="level3" data-number="1.2.1"><h3 data-number="1.2.1" class="anchored" data-anchor-id="why-vis4sds">
 <span class="header-section-number">1.2.1</span> Why vis4sds?</h3>
-<p>It is now taken-for-granted that over the last decade or so new data, new technology and new ways of doing science have transformed how we approach the world’s problems. Evidence for this can be seen in the response to the Covid-19 pandemic. Enter <a href="https://www.google.com/search?q=covid-19+github&amp;rlz=1C5CHFA_enGB632GB632&amp;oq=covid-19+github&amp;aqs=chrome..69i57j69i60l3.5575j0j1&amp;sourceid=chrome&amp;ie=UTF-8">Covid19 github</a> into a search and you’ll be confronted with hundreds of repositories demonstrating how an ever-expanding array of data related to the pandemic can be collected, processed and analysed. <em>Data Science</em> is a term used widely to capture this shift.</p>
-<p>The term Data Science has been somewhat stretched over the years, but it has its origins in the work of John Tukey’s <em>The Future of Data Analysis</em> <span class="citation" data-cites="tukey_future_1962">(<a href="references.html#ref-tukey_future_1962" role="doc-biblioref">1962</a>)</span>. Drawing on this, and a survey of more recent work, <span class="citation" data-cites="donoho_50_2017">Donoho (<a href="references.html#ref-donoho_50_2017" role="doc-biblioref">2017</a>)</span> identifies six key facets that a Data Science discipline might encompass<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>:</p>
+<p>It is now taken-for-granted that new data, new technology and new ways of doing science have transformed how we approach the world’s problems. Evidence for this can be seen in the response to the Covid-19 pandemic. Enter <a href="https://www.google.com/search?q=covid-19+github&amp;rlz=1C5CHFA_enGB632GB632&amp;oq=covid-19+github&amp;aqs=chrome..69i57j69i60l3.5575j0j1&amp;sourceid=chrome&amp;ie=UTF-8">Covid19 github</a> into a search and you’ll be confronted with hundreds of repositories demonstrating how various data related to the pandemic can be collected, processed and analysed. <em>Data Science</em> is a catch-all term used to capture this shift.</p>
+<p>The definition has been somewhat stretched over the years, but Data Science has its origins in the work of John Tukey’s <em>The Future of Data Analysis</em> <span class="citation" data-cites="tukey_future_1962">(<a href="references.html#ref-tukey_future_1962" role="doc-biblioref">1962</a>)</span>. Drawing on this, and a survey of more recent work, <span class="citation" data-cites="donoho_50_2017">Donoho (<a href="references.html#ref-donoho_50_2017" role="doc-biblioref">2017</a>)</span> identifies six key facets that a Data Science discipline might encompass[^01-intro-1]:</p>
+<!-- [^01-intro-1]: For an excellent precis and interpretation of this for geographers and social scientists, see @arribas_geography_2018. -->
 <ol type="1">
 <li>data gathering, preparation and exploration;</li>
 <li>data representation and transformation;</li>
@@ -341,41 +309,51 @@ Read-in datasets from external resources as objects (specifically <code>tibbles<
 <li>data modelling;</li>
 <li>and a more introspective “science about data science”</li>
 </ol>
-<p>Glancing at this list, <em>data visualization</em> could be interpreted as a single facet of data science process – something that happens after data gathering, preparation, exploration, but before modelling. Through this book you’ll learn, rather, that data visualization is intrinsic to, and should inform, each of these activities.</p>
-<p>Let’s develop this idea by exploring why data visualizations are used in the first place. The most commonly-cited case for the use of visualization in data anaysis is <a href="https://en.wikipedia.org/wiki/Anscombe%27s_quartet">Anscombe’s quartet</a>. This consists of four datasets, each containing eleven observations and two variables for each observation. The data are synthetic, but let’s say that they are the weight and height of independent samples taken from a population of postgraduate students studying Social Data Science. Presented with a new dataset it makes sense to compute some summaries, and doing so we observe that the data appear identical – they contain the same means, variances and strong positive correlation coefficient (<a href="#fig-anscombe-data">Figure&nbsp;<span>1.1</span></a>). This seems appropriate since the data are measuring individuals’ weight and height. Although there may be some variation, we’d expect taller students to be heavier. Given these statistical summaries we can be assured that we are drawing samples from the same population of (Data Science) students.</p>
+<p>Each is covered to varying degrees within the book, although <em>data visualization and presentation</em> gets a special status. Rather than a single and self-contained facet of data science process – something that happens after data gathering, preparation, exploration, but before modelling – the book demonstrates how data visualization is intrinsic to, or at least should inform, every facet of data science process.</p>
+<p>This special status is justified when considering the circumstances under which Social Data Science (SDS) projects operate. Often new datasets are repurposed for social sciences research for the first time; contain complex structure and relations that cannot be easily captured and modelled using conventional statistics; and, as a consequence, the types of questions asked and techniques deployed to answer them cannot be easily specified in advance. Through the examples in the book, we will demonstrate how visual approaches can capture complex, multivariate structure (chapters <a href="03-visual.html"><span>3</span></a>, <a href="04-explore.html"><span>4</span></a>, <a href="05-network.html"><span>5</span></a>), provoke critical thinking around data transformation and modeling (chapters <a href="04-explore.html"><span>4</span></a> and <a href="06-model.html"><span>6</span></a>) and communicate observed patterns with integrity (chapters <a href="07-uncertainty.html"><span>7</span></a> and <a href="08-storytelling.html"><span>8</span></a>).</p>
+<p><!-- Numeric summaries that simplify patterns are extremely useful and Statistics has at its disposal an array of tools for helping to guard against making false claims from datasets -- a theme that we will return to in chapters [-@sec-model] and [-@sec-uncertainty] when we think critically about the use of visual approaches for building and evaluating model outputs. There remain, though, certain classes of relation and context that cannot be easily captured through statistics alone.
+
+[^01-intro-2]: Checkout @matejka_same_2017's Same Stats, Different Graphs paper for a fun take on this.
+
+Geographic context, for example, is undoubtedly challenging to capture numerically. Many of the early examples of data visualization have been of spatial phenomena and generated by Geographers [see @friendly_brief_2007]. We can also make a special case for the use of visual approaches in Social Data Science (SDS) applications due to their exploratory nature. Often datasets are repurposed for social sciences research for the first time; contain complex structure and relations that cannot be easily captured by statistical summaries alone; and so the types of questions to be asked and the techniques deployed to answer them cannot be easily specified in advance. We will experience this through the book as we explore ([Chapter -@sec-exploratory] and [-@sec-networks]), model under uncertainty ([Chapter -@sec-models] and [-@sec-uncertainty]) and communicate ([Chapter -@sec-storytelling]) with various social science datasets.  --></p>
+<!-- The most commonly-cited case for visualization is [Anscombe's quartet](https://en.wikipedia.org/wiki/Anscombe%27s_quartet). This consists of four datasets, each containing eleven observations and two variables for each observation. The data are synthetic, but let's say that they are the weight and height of independent samples taken from a population of postgraduate students studying Social Data Science. Presented with a new dataset it makes sense to compute some summaries, and doing so we observe that the data appear identical -- they contain the same means, variances and strong positive correlation coefficient (@fig-anscombe-data). This seems appropriate since the data are measuring individuals' weight and height. Although there may be some variation, we'd expect taller students to be heavier. Since the summary statistics are identical, we might reasonably expect that each dataset is a sample drawn from the same population of (Data Science) students. -->
 <!-- In her book *Visualization Analysis and Design*, Tamara @munzner_visualization_2014 considers how humans and computers interface in the decision-making process. She makes the point that data visualization is ultimately about connecting people with data in order to make decisions -- or to install humans in a 'decision-making-loop'. There are very occasionally decision-making loops that are entirely computational and where an automated solution can be rolled out. Most situations, however, require some form of human intervention.
 
 The most commonly-cited example demonstrating problems with relying solely on computation, and so for the use of visualization, is -->
-<div id="fig-anscombe-data" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figs/01/anscombe_data.svg" class="img-fluid figure-img" style="width:95.0%"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 1.1: Data from Anscombe’s quartet</figcaption><p></p>
-</figure>
-</div>
-<p>Laying out the data in a meaningful way, horizontally according to <em>weight</em> (<span class="math inline">x</span>) and vertically according to the <em>height</em> (<span class="math inline">y</span>) to form a scatterplot, we quickly see that whilst these data contain the same high-level statistical properties they are very different. Only <code>dataset #1</code> now looks plausible if it were truly a sample of weights and heights drawn from a population of students.</p>
-<div id="fig-anscombe-plot" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figs/01/anscombe_plot.svg" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 1.2: Plots of Anscombe’s quartet</figcaption><p></p>
-</figure>
-</div>
-<p>Anscombe’s is a deliberately contrived example<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>, but one can imagine many cases where important structure is missed or incorrect assumptions are made without data being subject to visual examination. The consequences are poorly specified models and potentially faulty claims. This is not to undermine the importance of numerical analysis. Numeric summaries that simplify patterns are extremely useful and Statistics has at its disposal an array of tools for helping to guard against making false claims from datasets – a theme that we will return to in chapters <a href="06-model.html"><span>6</span></a> and <a href="07-uncertainty.html"><span>7</span></a> when we think critically about the use of visual approaches for data analysis. There remain, though, certain classes of relation and context that cannot be easily captured through statistics alone.</p>
-<p>Geographic context, for example, is undoubtedly challenging to capture numerically. Many of the early examples of data visualization have been of spatial phenomena and generated by Geographers <span class="citation" data-cites="friendly_brief_2007">(see <a href="references.html#ref-friendly_brief_2007" role="doc-biblioref">Friendly 2007</a>)</span>. We can also make a special case for the use of visual approaches in Social Data Science (SDS) applications due to their exploratory nature. Often datasets are being repurposed for social sciences research for the first time; contain complex structure and relations that cannot be easily captured by statistical summaries alone; and so the types of questions that can be asked and the techniques deployed to answer them cannot be easily specified in advance. We will experience this through the book as we explore (<a href="04-explore.html">Chapter&nbsp;<span>4</span></a> and <a href="05-network.html"><span>5</span></a>), model under uncertainty (<a href="06-model.html">Chapter&nbsp;<span>6</span></a> and <a href="07-uncertainty.html"><span>7</span></a>) and communicate (<a href="08-storytelling.html">Chapter&nbsp;<span>8</span></a>) with various social science datasets.</p>
-<div class="callout-tip callout callout-style-default no-icon callout-captioned">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-caption-container flex-fill">
-Task
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Watch <a href="https://www.youtube.com/embed/FaRBUnO5PZI">Jo Wood’s TEDx</a> talk demonstrating how visual techniques can be used to analyse urban travel behaviours. In the video Jo argues that bikeshare schemes can help democratise cycling, but also for their potential contributions to research – he briefly contrasts new, passively collected data sets with more traditional actively collected data for analysing how people move around cities. A compelling case is then made for the use of visualization to support analysis of these new forms of behavioural data.</p>
-</div>
-</div>
+<!-- ```{r}
+#| eval: true
+#| echo: false
+#| include: false
+#| label: fig-anscombe-data
+#| fig-cap: "Data from Anscombe's quartet"
+knitr::include_graphics("/figs/anscombe_data.png", error = FALSE)
+```
+
+ ![Data from Anscombe's quartet](figs/01/anscombe_data.svg){#fig-anscombe-data width=95% fig-align="center"}
+
+
+Laying out the data in a meaningful way, horizontally according to *weight* ($x$) and vertically according to the *height* ($y$) to form a scatterplot, we quickly see that whilst these data contain the same high-level statistical properties they are very different. Only `dataset #1` now looks plausible if it were truly a sample of weights and heights drawn from a population of students.
+
+
+
+ ![Plots of Anscombe's quartet](figs/01/anscombe_plot.svg){#fig-anscombe-plot width=100% fig-align="center"}
+
+
+
+Anscombe's is a deliberate example[^01-intro-2], but one can imagine many cases where important structure is missed or incorrect assumptions are made without data being subject to visual examination. The consequences are poorly specified models and potentially faulty claims. This is not to undermine the importance of numerical analysis. Numeric summaries that simplify patterns are extremely useful and Statistics has at its disposal an array of tools for helping to guard against making false claims from datasets -- a theme that we will return to in chapters [-@sec-model] and [-@sec-uncertainty] when we think critically about the use of visual approaches for building and evaluating model outputs. There remain, though, certain classes of relation and context that cannot be easily captured through statistics alone.
+
+[^01-intro-2]: Checkout @matejka_same_2017's Same Stats, Different Graphs paper for a fun take on this.
+
+Geographic context, for example, is undoubtedly challenging to capture numerically. Many of the early examples of data visualization have been of spatial phenomena and generated by Geographers [see @friendly_brief_2007]. We can also make a special case for the use of visual approaches in Social Data Science (SDS) applications due to their exploratory nature. Often datasets are repurposed for social sciences research for the first time; contain complex structure and relations that cannot be easily captured by statistical summaries alone; and so the types of questions to be asked and the techniques deployed to answer them cannot be easily specified in advance. We will experience this through the book as we explore ([Chapter -@sec-exploratory] and [-@sec-networks]), model under uncertainty ([Chapter -@sec-models] and [-@sec-uncertainty]) and communicate ([Chapter -@sec-storytelling]) with various social science datasets. -->
+<!-- ::: {.callout-tip icon="false"}
+## Task
+
+Watch [Jo Wood's TEDx](https://www.youtube.com/embed/FaRBUnO5PZI) talk demonstrating how visual techniques can be used to analyse urban travel behaviours. In the video Jo argues that bikeshare schemes can help democratise cycling, but also for their potential contributions to research -- he briefly contrasts new, passively collected data sets with more traditional actively collected data for analysing how people move around cities. A compelling case is then made for the use of visualization to support analysis of these new forms of behavioural data.
+::: -->
 </section><section id="what-vis4sds" class="level3" data-number="1.2.2"><h3 data-number="1.2.2" class="anchored" data-anchor-id="what-vis4sds">
 <span class="header-section-number">1.2.2</span> What vis4sds?</h3>
-<p>The chapters of this book blend both theory and practical coding activity. We will cover the fundamentals of visual data analysis from Information Visualization and Statistics. As the chapters progress, data processing and analysis code is applied to datasets from the Political Science, Urban and Transport Planning and Health domains. So the examples in the book demonstrate how visual approaches can be used to generate and evaluate real findings and knowledge.</p>
-<p>To do this, we have to cover a reasonably broad set of data processing and analysis procedures. As well as developing expertise around designing data-rich, visually compelling graphics, we will need to cover more tedious aspects of data processing and wrangling. Additionally, if we are to learn how to make and communicate claims under uncertainty with our data graphics, then we need to cover some aspects of estimation and modelling from Statistics. In short, we cover most of <span class="citation" data-cites="donoho_50_2017">Donoho (<a href="references.html#ref-donoho_50_2017" role="doc-biblioref">2017</a>)</span>’s six key facets of a data science discipline:</p>
+<p>The chapters of this book blend both theory and practical coding activity to cover the fundamentals of visual data analysis. As the chapters progress, data processing and analysis code is applied to datasets from the Political Science, Urban and Transport Planning and Health domains. So the examples in the book demonstrate how visual approaches can be used to generate and evaluate real findings and knowledge.</p>
+<p>To do this, a reasonably broad set of data processing and analysis procedures is covered. As well as developing expertise around designing data-rich, visually compelling graphics, some tedious aspects of data processing and wrangling are required. Additionally, to learn how to make and communicate claims under uncertainty with data graphics, techniques for estimation and modelling from Statistics are needed. In short, <span class="citation" data-cites="donoho_50_2017">Donoho (<a href="references.html#ref-donoho_50_2017" role="doc-biblioref">2017</a>)</span>’s six key facets of a data science discipline:</p>
 <ol type="1">
 <li>data gathering, preparation, and exploration (Chapters <a href="02-data.html"><span>2</span></a>, <a href="03-visual.html"><span>3</span></a>, <a href="04-explore.html"><span>4</span></a>);</li>
 <li>data representation and transformation (Chapters <a href="02-data.html"><span>2</span></a>, <a href="03-visual.html"><span>3</span></a>);</li>
@@ -384,29 +362,27 @@ Task
 <li>data modelling (Chapters <a href="04-explore.html"><span>4</span></a>, <a href="06-model.html"><span>6</span></a>, <a href="07-uncertainty.html"><span>7</span></a>);</li>
 <li>and the “science about data science” (All chapters)</li>
 </ol>
-<p>There is already a rich and impressive set of open resources practically introducing how to do modern Data Science <span class="citation" data-cites="wickham_r_2017">(<a href="references.html#ref-wickham_r_2017" role="doc-biblioref">Wickham and Grolemund 2017</a>)</span>, Visualization <span class="citation" data-cites="healy_data_2018">(<a href="references.html#ref-healy_data_2018" role="doc-biblioref">Healy 2018</a>)</span> and Geographic Analysis <span class="citation" data-cites="lovelace_geocomputation_2019">(<a href="references.html#ref-lovelace_geocomputation_2019" role="doc-biblioref">Lovelace, Nowosad, and Muenchow 2019</a>)</span>. What makes this book different from these existing resources is that we will be <em>doing</em> applied data science throughout – we will be identifying and diagnosing problems when gathering data, discovering patterns (some may even be spurious) as we do exploratory analysis, and attempt to make claims under uncertainty as we generate models based on observed patterns.</p>
+<p>There is already an impressive set of open resources practically introducing how to do modern Data Science <span class="citation" data-cites="wickham_r_2017">(<a href="references.html#ref-wickham_r_2017" role="doc-biblioref">Wickham and Grolemund 2017</a>)</span>, Visualization <span class="citation" data-cites="healy_data_2018">(<a href="references.html#ref-healy_data_2018" role="doc-biblioref">Healy 2018</a>)</span> and Geographic Analysis <span class="citation" data-cites="lovelace_geocomputation_2019">(<a href="references.html#ref-lovelace_geocomputation_2019" role="doc-biblioref">Lovelace, Nowosad, and Muenchow 2019</a>)</span>. What makes this book different is the emphasis on <em>doing</em> applied data science throughout – we will be identifying and diagnosing problems when gathering data, discovering patterns (some may even be spurious) as we do exploratory analysis, and attempt to make claims under uncertainty as we generate models from observed patterns.</p>
 </section><section id="how-vis4sds" class="level3" data-number="1.2.3"><h3 data-number="1.2.3" class="anchored" data-anchor-id="how-vis4sds">
 <span class="header-section-number">1.2.3</span> How vis4sds?</h3>
 <section id="r-for-modern-data-analysis" class="level4" data-number="1.2.3.1"><h4 data-number="1.2.3.1" class="anchored" data-anchor-id="r-for-modern-data-analysis">
 <span class="header-section-number">1.2.3.1</span> R for modern data analysis</h4>
-<p>All data collection, analysis and reporting activity will be completed using <a href="https://www.r-project.org/">R</a>. Released as open source software as part of a research project in 1995, for some time R was the preserve of academics. From 2010s onwards, the R community expanded rapidly and along with <a href="https://www.python.org/">Python</a> is regarded as a key programming environment technology for modern data analysis.</p>
-<p>There are many benefits that come from being fully open-source, with a critical mass of users. Firstly, there is an array of online fora, tutorials and code examples from which to learn. Second, with such a large community, there are numerous expert R users who themselves contribute by developing <em>packages</em> that extend its use.</p>
-<p>Of particular importance is the <a href="http://www.tidyverse.org"><code>tidyverse</code></a> package. This is a set of packages for doing data science authored by the software development team at <a href="https://posit.co/">Posit</a>. <code>tidyverse</code> packages share a principled underlying philosophy, syntax and documentation. Contained within the <code>tidyverse</code> is its data visualization package, <a href="https://ggplot2.tidyverse.org/"><code>ggplot2</code></a>. This package predates the <code>tidyverse</code> and is one of the most widely-used toolkits for generating data graphics. As with other heavily used visualization toolkits (<a href="https://www.tableau.com/en-gb"><code>Tableau</code></a>, <a href="https://vega.github.io/vega-lite/"><code>vega-lite</code></a>) it is inspired by <span class="citation" data-cites="wilkinson_grammar_1999">Wilkinson (<a href="references.html#ref-wilkinson_grammar_1999" role="doc-biblioref">1999</a>)</span>’s <a href="https://www.springer.com/gp/book/9780387245447">The Grammar of Graphics</a>, the <code>gg</code> in <code>ggplot2</code> stands for Grammar of Graphics. We will cover some of the design principles behind the <em>Grammar of Graphics</em> (and <code>tidyverse</code>) in <a href="03-visual.html">Chapter&nbsp;<span>3</span></a>.</p>
+<p>All data collection, analysis and reporting activity will be completed using the open source statistical programming environment <a href="https://www.r-project.org/">R</a>. There are many benefits that come from being fully open-source, with a critical mass of users. Firstly, there is an array of online fora, tutorials and code examples from which to learn. Second, with such a large community, there are numerous expert R users who themselves contribute by developing <em>packages</em> that extend its use.</p>
+<p>Of particular importance is the <a href="http://www.tidyverse.org"><code>tidyverse</code></a> package. This is a set of packages for doing data science authored by the software development team at <a href="https://posit.co/">Posit</a>. <code>tidyverse</code> packages share a principled underlying philosophy, syntax and documentation. Contained within the <code>tidyverse</code> is its data visualization package, <a href="https://ggplot2.tidyverse.org/"><code>ggplot2</code></a>. This package predates the <code>tidyverse</code> and is one of the most widely-used toolkits for generating data graphics. As with other visualization toolkits it is inspired by <span class="citation" data-cites="wilkinson_grammar_1999">Wilkinson (<a href="references.html#ref-wilkinson_grammar_1999" role="doc-biblioref">1999</a>)</span>’s <a href="https://www.springer.com/gp/book/9780387245447">The Grammar of Graphics</a>, the <code>gg</code> in <code>ggplot2</code> stands for Grammar of Graphics. We will cover some of the design principles behind the <em>Grammar of Graphics</em> (and <code>tidyverse</code>) in <a href="03-visual.html">Chapter&nbsp;<span>3</span></a>.</p>
 </section><section id="quarto-for-reproducible-research" class="level4" data-number="1.2.3.2"><h4 data-number="1.2.3.2" class="anchored" data-anchor-id="quarto-for-reproducible-research">
 <span class="header-section-number">1.2.3.2</span> Quarto for reproducible research</h4>
-<blockquote class="blockquote">
-<p>Reproducible research is the idea that data analyses, and more generally, scientific claims, are published with their data and software code so that others may verify the findings and build upon them.</p>
-<p>Roger Peng, Jeff Leek and Brian Caffo</p>
-</blockquote>
-<p>In recent years there has been much introspection into how science works – into how statistical claims are made from reasoning over evidence. This came on the back of, amongst other things, a high profile paper published in Science <span class="citation" data-cites="osc_estimating_2015">(<a href="references.html#ref-osc_estimating_2015" role="doc-biblioref">Open Science Collaboration 2015</a>)</span>, which found that of 100 contemporary peer-reviewed empirical papers in Psychology, the findings of only 39 could be replicated. The upshot is that researchers must now make every possible effort to make their work transparent, such that “<em>all</em> aspects of the answer generated by any given analysis [can] be tested” <span class="citation" data-cites="brunsdon_opening_2020">(<a href="references.html#ref-brunsdon_opening_2020" role="doc-biblioref">Brunsdon and Comber 2020</a>)</span>.</p>
+<!-- > Reproducible research is the idea that data analyses, and more generally, scientific claims, are published with their data and software code so that others may verify the findings and build upon them.
+>
+> Roger Peng, Jeff Leek and Brian Caffo -->
+<p>In recent years there has been much introspection into how science works – into how statistical claims are made from reasoning over evidence. This came on the back of, amongst other things, a high profile paper published in Science <span class="citation" data-cites="osc_estimating_2015">(<a href="references.html#ref-osc_estimating_2015" role="doc-biblioref">Open Science Collaboration 2015</a>)</span>, which found that of 100 contemporary peer-reviewed empirical papers in Psychology, the findings of only 39 could be replicated. The upshot is that researchers must now endeavour to make their work transparent, such that “<em>all</em> aspects of the answer generated by any given analysis [can] be tested” <span class="citation" data-cites="brunsdon_opening_2020">(<a href="references.html#ref-brunsdon_opening_2020" role="doc-biblioref">Brunsdon and Comber 2020</a>)</span>.</p>
 <p>A reproducible research project should be accompanied with:</p>
 <ul>
 <li>code and data that allows tables and figures presented in research outputs to be regenerated</li>
 <li>code and data that does what it claims (the code works)</li>
 <li>code and data that can be justified and explained through proper documentation</li>
 </ul>
-<p>If these goals are met, then it may be possible for others to use the code on new and different data to study whether the findings reported in one project might be consistent with another. Or alternatively to use the same data, but update the code to extend the original analysis. This model – generate findings, test for replicability in new contexts and re-analysis – is how knowledge development has always worked. However, to achieve this the data and procedures on which findings are generated must be made open and transparent.</p>
-<p>In this setting proprietary data analysis software that support point-and-click interaction, often used widely in the socual sciences, are problematic. First, these software are often underpinned by code for implementing statistical procedures that is closed. It is not possible, and therefore less common, for the researcher to fully interrogate into the underlying processes that are being implemented and the results need to be taken more or less on faith. Second, replicating and updating anayses in light of new data, is chellenging. It would be tedious to make notes describing all interactions performed when working with a dataset via a point-and-click- interface. As a declarative programming environment, it is very easy to provide such a provenance trail in R (with the <code>tidyverse</code>) since this necessarily exists in the analysis scripts. But also, the <a href="https://en.wikipedia.org/wiki/Integrated_development_environment">Integrated Development Environments</a> (IDEs) through which R (and Python) are most often accessed provide notebook environments that allow users to curate reproducible computational documents that blend <em>input code</em>, <em>explanatory prose</em> and <em>outputs</em>. Through the practical exercises, we will prepare these sorts of notebooks using <a href="https://quarto.org/">Quarto</a>.</p>
+<p>If these goals are met, then it may be possible for others to use the code on new and different data to study whether the findings reported in one project might be consistent with another. Or alternatively to use the same data, but update the code to extend the original analysis. This model – generate findings, explore replicability in new contexts and re-analysis – is how knowledge development has always worked. However, to achieve this the data and procedures on which findings are generated must be made open and transparent.</p>
+<p>In this setting proprietary data analysis software that support point-and-click interaction, used widely in the social sciences, are problematic. First, these software are often underpinned by code for implementing statistical procedures that is closed. It is not possible, and therefore less common, for the researcher to fully interrogate into the underlying processes that are being implemented and the results need to be taken more or less on faith. Second, replicating and updating anayses in light of new data is chellenging. It would be tedious to make notes describing all interactions performed when working with a dataset via a point-and-click- interface. As a declarative programming environment, it is very easy to provide such a provenance trail in R (with the <code>tidyverse</code>) since this necessarily exists in the analysis scripts. But also, the <a href="https://en.wikipedia.org/wiki/Integrated_development_environment">Integrated Development Environments</a> (IDEs) through which R is accessed provide notebook environments that allow users to curate reproducible computational documents that blend <em>input code</em>, <em>explanatory prose</em> and <em>outputs</em>. Through the technical elements, we will prepare these sorts of notebooks using <a href="https://quarto.org/">Quarto</a>.</p>
 </section></section></section><section id="techniques" class="level2" data-number="1.3"><h2 data-number="1.3" class="anchored" data-anchor-id="techniques">
 <span class="header-section-number">1.3</span> Techniques</h2>
 <p>Readers of this book might already have some familiarity with R and the <a href="https://www.rstudio.com/">RStudio</a> IDE. If not, then this section is designed to quickly acclimatise readers with R and RStudio and to briefly introduce Quarto, R scripts and RStudio Projects. The accompanying template file, <a href="">01-template.qmd</a> can be downloaded from the book’s companion website.</p>
@@ -418,12 +394,17 @@ Task
 <li>Once installed, open the RStudio IDE.</li>
 <li>Open an R Script by clicking <code>File</code> &gt; <code>New File</code> &gt; <code>R Script</code> .</li>
 </ul>
+<div class="cell">
+<div class="cell-output-display">
 <div id="fig-rstudio" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figs/01/rstudio_annotate.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 1.3: The RStudio IDE</figcaption><p></p>
+<figure class="figure"><p><img src="figs/01/rstudio_annotate.png" class="img-fluid figure-img" width="1868"></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 1.1: The RStudio IDE</figcaption><p></p>
 </figure>
 </div>
-<p>You should see a set of windows roughly similar to those in <a href="#fig-rstudio">Figure&nbsp;<span>1.3</span></a>. The top left pane is used either as a Code Editor (the tab named <code>Untitled1</code>) or Data Viewer. This is where you’ll write, organise and comment R code for execution or inspect datasets as a spreadsheet representation. Below this in the bottom left pane is the R Console, in which you write and execute commands directly. To the top right is a pane with the tabs Environment and History. This displays all objects – data and plot items, calculated functions – stored in-memory during an R session. In the bottom right is a pane for navigating through project directories, displaying plots, details of installed and loaded packages and documentation on their functions.</p>
+</div>
+</div>
+<!-- ![The RStudio IDE](figs/01/rstudio_annotate.png){#fig-rstudio width=100% fig-align="center"} -->
+<p>You should see a set of windows roughly similar to those in <a href="#fig-rstudio">Figure&nbsp;<span>1.1</span></a>. The top left pane is used either as a Code Editor (the tab named <code>Untitled1</code>) or Data Viewer. This is where you’ll write, organise and comment R code for execution or inspect datasets as a spreadsheet representation. Below this in the bottom left pane is the R Console, in which you write and execute commands directly. To the top right is a pane with the tabs Environment and History. This displays all objects – data and plot items, calculated functions – stored in-memory during an R session. In the bottom right is a pane for navigating through project directories, displaying plots, details of installed and loaded packages and documentation on their functions.</p>
 </section><section id="compute-in-the-console" class="level3" data-number="1.3.2"><h3 data-number="1.3.2" class="anchored" data-anchor-id="compute-in-the-console">
 <span class="header-section-number">1.3.2</span> Compute in the console</h3>
 <p>You will write and execute almost all code from the code editor pane. To start though let’s use <code>R</code> as a calculator by typing some commands into the Console. You’ll create an object (<code>x</code>) and assign it a value using the assignment operator (<code>&lt;-</code>), then perform some simple statistical calculations using functions that are held within the <code>base</code> package.</p>
@@ -512,7 +493,7 @@ R package visibility
 </section><section id="experiment-with-quarto" class="level3" data-number="1.3.4"><h3 data-number="1.3.4" class="anchored" data-anchor-id="experiment-with-quarto">
 <span class="header-section-number">1.3.4</span> Experiment with Quarto</h3>
 <p>Quarto documents are suffixed with the extension <code>.qmd</code>. They are computational notebooks that blend code with textual explanation and images, and so are a mechanism for supporting literate programming <span class="citation" data-cites="knuth_literate_1984">(<a href="references.html#ref-knuth_literate_1984" role="doc-biblioref">Knuth 1984</a>)</span>. They resemble <a href="https://en.wikipedia.org/wiki/Markdown">Markdown</a>, a lightweight language designed to minimise tedious markup tags (<code>&lt;header&gt;&lt;/header&gt;</code>) when preparing HTML documents. The idea is that you trade some flexibility in the formatting of your HTML for ease-of-writing. Working with Quarto documents feels very similar to Markdown. Sections are denoted hierarchically with hashes (<code>#</code>, <code>##</code>, <code>###</code>) and emphasis using <code>*</code> symbols (<code>*emphasis* **added**</code> reads <em>emphasis</em> <strong>added</strong> ).</p>
-<p>Different from standard Markdown, Quarto documents can also contain code chunks to be run when the document is rendered: they are a mechanism for producing reproducible, dynamic and interactive notebooks. <em>Dynamic</em> and reproducible because the outputs may change when there are changes to the underlying data; <em>interactive</em> because they can execute not just R code blocks, but also <a href="https://jupyter.org/widgets">Jupyter Widgets</a>, <a href="https://shiny.rstudio.com/">Shiny</a> and <a href="https://observablehq.com/@observablehq/observables-not-javascript">Observable JS</a>. Each chapter has an accompanying Quarto file. In later chapters you will use these to author computational notebooks that blend code, analysis prose and outputs.</p>
+<p>Different from standard Markdown, Quarto documents can also contain code chunks to be run when the document is rendered; they are a mechanism for producing reproducible, dynamic and interactive notebooks. <em>Dynamic</em> and reproducible because the outputs may change when there are changes to the underlying data; <em>interactive</em> because they can execute not just R code blocks, but also <a href="https://jupyter.org/widgets">Jupyter Widgets</a>, <a href="https://shiny.rstudio.com/">Shiny</a> and <a href="https://observablehq.com/@observablehq/observables-not-javascript">Observable JS</a>. Each chapter has an accompanying Quarto file. In later chapters you will use these to author computational notebooks that blend code, analysis prose and outputs.</p>
 <p>Download the <a href="">01-template.qmd</a> file for this chapter and open it in RStudio by clicking <code>File</code> &gt; <code>Open File ...</code> &gt; <code>&lt;your-downloads&gt;/01-template.qmd</code>. Note that there are two tabs that you can switch between when woring with <code>.qmd</code> files. <em>Source</em> retains markdown syntax (e.g.&nbsp;<code>#|##|###</code> for headings); <em>Visual</em> renders these tags and allows you to, for example, perform formatting and build tables through point-and-click utilities.</p>
 <p>A quick anatomy of <code>.qmd</code> files :</p>
 <ul>
@@ -521,11 +502,16 @@ R package visibility
 <li>TEXT - incorporated throughout to document and comment on your analysis.</li>
 <li>CODE chunks - containing discrete blocks that are run when the .qmd file is rendered.</li>
 </ul>
+<div class="cell">
+<div class="cell-output-display">
 <div id="fig-quarto-annotate" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figs/01/quarto.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 1.4: The anatomy of <code>.qmd</code> files</figcaption><p></p>
+<figure class="figure"><p><img src="figs/01/quarto.png" class="img-fluid figure-img" width="1757"></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 1.2: The anatomy of <code>.qmd</code> files</figcaption><p></p>
 </figure>
 </div>
+</div>
+</div>
+<!-- ![The anatomy of `.qmd` files](figs/01/quarto.png){#fig-quarto-annotate width=100% fig-align="center"} -->
 <p>The <a href="https://en.wikipedia.org/wiki/YAML">YAML</a> section of an <code>.qmd</code> file controls how your file is rendered and consists of <code>key : value</code> pairs enclosed by <code>---</code>. Notice that you can change the output format to generate for example <code>.pdf</code>, <code>.docx</code> files for your reports.</p>
 <pre><code>---
 author: "Roger Beecham"
@@ -542,7 +528,7 @@ format: html
 #| echo: true
 #| eval: false
 
-# R that appears below that is not run (evaluated) but which is printed (echoed)
+# Any R code below is not run (evaluated) but printed (echoed)
 # in this position when the .qmd doc is rendered.
 ```</code></pre>
 <p>A quick overview of the parameters.</p>
@@ -557,60 +543,56 @@ format: html
 <code>cache: &lt;true|false&gt;</code> Determines whether the results from the code chunk are cached.</li>
 </ul></section><section id="r-scripts" class="level3" data-number="1.3.5"><h3 data-number="1.3.5" class="anchored" data-anchor-id="r-scripts">
 <span class="header-section-number">1.3.5</span> R Scripts</h3>
-<p>Whilst there are obvious benefits to working in <code>.qmd</code> documents when doing data analysis, there may be occasions where working in a script is preferable. R scripts are plain text files with the extension <code>.R</code>. They are typically used for writing discrete but substantial code blocks that are to be executed. For example, a set of <a href="https://r4ds.had.co.nz/functions.html">functions</a> that relate to a particular use case might be organised into an R script, and those functions referred to in a data analysis from a <code>.qmd</code> in a similar way as one might import a package. Below is an example script file with helper functions to support flow visualizations in R. The script is saved with the file name <code>bezier_path.R</code>. If it were stored in a sensible location, like a project’s <code>code</code> folder, it could be called from a <code>.qmd</code> file with <code>source(./code/bezier_path)</code>. R Scripts can be edited in the same way as Quarto files in RStudio, via the Code Editor pane.</p>
+<p>Whilst there are obvious benefits to working in <code>.qmd</code> documents when doing data analysis, there may be occasions where a script is preferable. R scripts are plain text files with the extension <code>.R</code>. They are typically used for writing discrete but substantial code blocks that are to be executed. For example, a set of <a href="https://r4ds.had.co.nz/functions.html">functions</a> that relate to a particular use case might be organised into an R script, and those functions referred to in a data analysis from a <code>.qmd</code> in a similar way as one might import a package. Below is an example script file with helper functions to support flow visualizations in R. The script is saved with the file name <code>bezier_path.R</code>. If it were stored in a sensible location, like a project’s <code>code</code> folder, it could be called from a <code>.qmd</code> file with <code>source(./code/bezier_path)</code>. R Scripts can be edited in the same way as Quarto files in RStudio, via the Code Editor pane.</p>
 <div class="cell">
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># bezier_path.R</span></span>
 <span><span class="co">#</span></span>
 <span><span class="co"># Author: Roger Beecham</span></span>
 <span><span class="co">##############################################################################</span></span>
 <span></span>
-<span><span class="co">#' Functions for generating input data for asymmetric bezier curve,</span></span>
-<span><span class="co">#' such that the origin is straight and destination curve. The retuned tibble</span></span>
-<span><span class="co">#' is passed to geom_bezier().</span></span>
-<span><span class="co">#'</span></span>
-<span><span class="co">#' Parametrtisation follows that published in Wood et al. 2011.</span></span>
-<span><span class="co">#' doi: 10.3138/carto.46.4.239.</span></span>
-<span><span class="co">#'</span></span>
-<span><span class="co">#' @param data A df with origin and destination pairs of 2D locations</span></span>
-<span><span class="co">#' (o_east, o_north, d_east, d_north) in cartesian space.</span></span>
-<span><span class="co">#' @param degrees For converting to radians.</span></span>
-<span><span class="co">#' @return A tibble of coordinate pairs representing asymmetric curve</span></span>
+<span><span class="co"># This function takes cartesian coordinates defining origin and destination </span></span>
+<span><span class="co"># locations and returns a tibble representing a path for an asymmetric bezier </span></span>
+<span><span class="co"># curve, which curves towards the destination location. </span></span>
+<span><span class="co">#</span></span>
+<span><span class="co"># The tibble has three rows representing an origin, destination and control </span></span>
+<span><span class="co"># point for the bezier curve. The parameterisation follows that published in </span></span>
+<span><span class="co"># Wood et al. 2011. doi: 10.3138/carto.46.4.239.</span></span>
 <span></span>
-<span><span class="va">get_trajectory</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">o_east</span><span class="op">=</span><span class="va">data</span><span class="op">$</span><span class="va">o_east</span></span>
-<span>  <span class="va">o_north</span><span class="op">=</span><span class="va">data</span><span class="op">$</span><span class="va">o_north</span></span>
-<span>  <span class="va">d_east</span><span class="op">=</span><span class="va">data</span><span class="op">$</span><span class="va">d_east</span></span>
-<span>  <span class="va">d_north</span><span class="op">=</span><span class="va">data</span><span class="op">$</span><span class="va">d_north</span></span>
-<span>  <span class="va">od_pair</span><span class="op">=</span><span class="va">data</span><span class="op">$</span><span class="va">od_pair</span></span>
+<span><span class="co"># o_x, o_y : numeric coords of origin</span></span>
+<span><span class="co"># d_x, d_y : numeric coords of destination</span></span>
+<span><span class="co"># od_pair : text string identifying name of od-pair</span></span>
 <span></span>
-<span>  <span class="va">curve_angle</span><span class="op">=</span><span class="fu">get_radians</span><span class="op">(</span><span class="op">-</span><span class="fl">90</span><span class="op">)</span></span>
-<span>  <span class="va">east</span><span class="op">=</span><span class="op">(</span><span class="va">o_east</span><span class="op">-</span><span class="va">d_east</span><span class="op">)</span><span class="op">/</span><span class="fl">6</span></span>
-<span>  <span class="va">north</span><span class="op">=</span><span class="op">(</span><span class="va">o_north</span><span class="op">-</span><span class="va">d_north</span><span class="op">)</span><span class="op">/</span><span class="fl">6</span></span>
-<span>  <span class="va">c_east</span><span class="op">=</span><span class="va">d_east</span> <span class="op">+</span> <span class="va">east</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Trig.html">cos</a></span><span class="op">(</span><span class="va">curve_angle</span><span class="op">)</span> <span class="op">-</span> <span class="va">north</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Trig.html">sin</a></span><span class="op">(</span><span class="va">curve_angle</span><span class="op">)</span></span>
-<span>  <span class="va">c_north</span><span class="op">=</span><span class="va">d_north</span> <span class="op">+</span> <span class="va">north</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Trig.html">cos</a></span><span class="op">(</span><span class="va">curve_angle</span><span class="op">)</span> <span class="op">+</span> <span class="va">east</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/Trig.html">sin</a></span><span class="op">(</span><span class="va">curve_angle</span><span class="op">)</span></span>
-<span>  <span class="va">d</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="op">(</span></span>
-<span>    x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">o_east</span>,<span class="va">c_east</span>,<span class="va">d_east</span><span class="op">)</span>,</span>
-<span>    y<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">o_north</span>,<span class="va">c_north</span>,<span class="va">d_north</span><span class="op">)</span>,</span>
-<span>    od_pair<span class="op">=</span><span class="va">od_pair</span></span>
-<span>  <span class="op">)</span></span>
+<span><span class="va">get_trajectory</span> <span class="op">&lt;-</span> <span class="kw">function</span> <span class="op">(</span><span class="va">o_x</span>, <span class="va">o_y</span>, <span class="va">d_x</span>, <span class="va">d_y</span>, <span class="va">od_pair</span>, <span class="va">curve_extent</span><span class="op">=</span><span class="op">-</span><span class="fl">90</span>, <span class="va">curve_position</span><span class="op">=</span><span class="fl">6</span><span class="op">)</span> </span>
+<span><span class="op">{</span></span>
+<span>    <span class="va">curve_angle</span> <span class="op">=</span> <span class="fu">get_radians</span><span class="op">(</span><span class="op">-</span><span class="va">curve_extent</span><span class="op">)</span></span>
+<span>    <span class="va">x</span> <span class="op">=</span> <span class="op">(</span><span class="va">o_x</span> <span class="op">-</span> <span class="va">d_x</span><span class="op">)</span><span class="op">/</span><span class="va">curve_position</span></span>
+<span>    <span class="va">y</span> <span class="op">=</span> <span class="op">(</span><span class="va">o_y</span> <span class="op">-</span> <span class="va">d_y</span><span class="op">)</span><span class="op">/</span><span class="va">curve_position</span></span>
+<span>    <span class="va">c_x</span> <span class="op">=</span> <span class="va">d_x</span> <span class="op">+</span> <span class="va">x</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Trig.html">cos</a></span><span class="op">(</span><span class="va">curve_angle</span><span class="op">)</span> <span class="op">-</span> <span class="va">y</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Trig.html">sin</a></span><span class="op">(</span><span class="va">curve_angle</span><span class="op">)</span></span>
+<span>    <span class="va">c_y</span> <span class="op">=</span> <span class="va">d_y</span> <span class="op">+</span> <span class="va">y</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Trig.html">cos</a></span><span class="op">(</span><span class="va">curve_angle</span><span class="op">)</span> <span class="op">+</span> <span class="va">x</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Trig.html">sin</a></span><span class="op">(</span><span class="va">curve_angle</span><span class="op">)</span></span>
+<span>    <span class="va">d</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">o_x</span>, <span class="va">c_x</span>, <span class="va">d_x</span><span class="op">)</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">o_y</span>, <span class="va">c_y</span>, </span>
+<span>        <span class="va">d_y</span><span class="op">)</span>, od_pair <span class="op">=</span> <span class="va">od_pair</span><span class="op">)</span></span>
+<span>    <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="co"># Convert degrees to radians.</span></span>
-<span><span class="va">get_radians</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">degrees</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="op">(</span><span class="va">degrees</span> <span class="op">*</span> <span class="va">pi</span><span class="op">)</span> <span class="op">/</span> <span class="op">(</span><span class="fl">180</span><span class="op">)</span></span>
-<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="va">get_radians</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">degrees</span><span class="op">)</span> <span class="op">{</span> <span class="op">(</span><span class="va">degrees</span> <span class="op">*</span> <span class="va">pi</span><span class="op">)</span> <span class="op">/</span> <span class="op">(</span><span class="fl">180</span><span class="op">)</span> <span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>R Scripts are more straightforward than Quarto files in that you don’t have to worry about configuring code chunks. They are really useful for quickly developing bits of code. This can be achieved by highlighting over the code that you wish to execute and clicking the <code>Run</code> icon at the top of the Code Editor pane or by typing <kbd>ctrl</kbd> + <kbd>rtn</kbd> on Windows, <kbd>⌘</kbd> + <kbd>rtn</kbd> on macOS.</p>
 </section><section id="create-an-rstudio-project" class="level3" data-number="1.3.6"><h3 data-number="1.3.6" class="anchored" data-anchor-id="create-an-rstudio-project">
 <span class="header-section-number">1.3.6</span> Create an RStudio Project</h3>
-<p>Throughout the book we will use project-oriented workflows. This is where all files pertaining to a data analysis – data, code and outputs – are organised from a single root folder and where <em>file path discipline</em> is used such that all paths are relative to the project’s root folder (see <a href="https://rstats.wtf/project-oriented-workflow.html">Bryan &amp; Hester 2020</a>). You can imagine that this sort of self-contained project set-up is necessary for achieving reproducibility of your research. It allows anyone to take a project and run it on their own machines without having to make any adjustments.</p>
-<p>You might have noticed that when you open RStudio it automatically <em>points to</em> a working directory, likely the home folder for your local machine, denoted with <code>~/</code> in the Console. RStudio will by default save any outputs to this folder and will also expect any data you use to be saved there. Clearly if you want to incorporate neat, self-contained project workflows then you will want to organise your work from a dedicated project folder rather than the default home folder for your machine. This can be achieved with the <code>setwd(&lt;path-to-your-project&gt;)</code> function. The problem with doing this is that you insert a path which cannot be understood outside of your local machine at the time it was created. This is a real pain. It makes simple things like moving projects around on your machine an arduous task and most importantly it hinders reproducibility if others are to reuse your work.</p>
+<p>Throughout the book we will use project-oriented workflows. This is where all files pertaining to a data analysis – data, code and outputs – are organised from a single root folder and where <em>file path discipline</em> is used such that all paths are relative to the project’s root folder (see <a href="https://rstats.wtf/project-oriented-workflow.html">Bryan &amp; Hester 2020</a>). You can imagine this self-contained project set-up is necessary for achieving reproducibility of your research. It allows anyone to take a project and run it on their own machines with minimal adjustment.</p>
+<p>When opening RStudio, the IDE automatically <em>points to</em> a working directory, likely the home folder for your local machine. RStudio will save any outputs to this folder and expect any data you use to be saved there. Clearly if you want to incorporate neat, self-contained project workflows then you will want a dedicated project folder rather than the default home folder for your machine. This can be achieved with the <code>setwd(&lt;path-to-your-project&gt;)</code> function. The problem with doing this is that you insert a path which cannot be understood outside of your local machine at the time it was created. This is a real pain. It makes simple things like moving projects around on your machine an arduous task and most importantly it hinders reproducibility if others are to reuse your work.</p>
 <p>RStudio Projects resolve these problems. Whenever you load an RStudio Project, <code>R</code> starts up and the working directory is automatically set to the project’s root folder. If you were to move the project elsewhere on your machine, or to another machine, a new root is automatically generated – so RStudio projects ensure that relative paths work.</p>
-<div id="fig-rstudio-project" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figs/01/rstudio_project.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 1.5: Creating an RStudio Project</figcaption><p></p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-studio-project" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="figs/01/rstudio_project.png" class="img-fluid figure-img" width="2236"></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 1.3: Creating an RStudio Project</figcaption><p></p>
 </figure>
 </div>
+</div>
+</div>
+<!-- ![Creating an RStudio Project](figs/01/rstudio_project.png){#fig-rstudio-project width=100% fig-align="center"} -->
 <p>Let’s create a new Project for this book:</p>
 <ul>
 <li>Select <code>File</code> &gt; <code>New Project</code> &gt; <code>New Directory</code>.</li>
@@ -631,15 +613,11 @@ format: html
     01-template.qmd</code></pre>
 </section></section><section id="conclusions" class="level2" data-number="1.4"><h2 data-number="1.4" class="anchored" data-anchor-id="conclusions">
 <span class="header-section-number">1.4</span> Conclusions</h2>
-<p>Visual data analysis approaches are necessary for exploring complex patterns in data and to make and communicate claims under uncertainty. This is especially true of social data science applications, where: datasets are repurposed for social sciences research often for the first time; contain complex structure and geo-spatial relations that cannot be easily captured by statistical summaries alone; and, consequently, where the types of questions that can be asked and the techniques deployed to answer them cannot be easily specified in advance.</p>
-<p>In this book we will demonstrate this as we explore (Chapter <a href="04-explore.html"><span>4</span></a> and <a href="05-network.html"><span>5</span></a>), model under uncertainty (Chapter <a href="06-model.html"><span>6</span></a>) and communicate (Chapter <a href="07-uncertainty.html"><span>7</span></a> and <a href="08-storytelling.html"><span>8</span></a>) with various social science datasets. We will work with both new, large-scale behavioural datasets, as well as more traditional, administrative datasets located within various social science domains: Political Science, Crime Science, Urban and Transport Planning. We will do so using the statistical programming environment <code>R</code>, making use of various tools and software libraries that form part of the <code>R</code> ecosystem: the <code>tidyverse</code> for doing modern data science and Quarto for authoring reproducible research projects.</p>
+<p>Visual data analysis approaches are necessary for exploring complex patterns in data and to make and communicate claims under uncertainty. This is especially true of social data science applications, where: datasets are repurposed for research often for the first time; contain complex structure and geo-spatial relations that cannot be easily captured by statistical summaries alone; and, consequently, where the types of questions that can be asked and the techniques deployed to answer them cannot be specified in advance. This is demonstrated in the book as we explore (Chapter <a href="04-explore.html"><span>4</span></a> and <a href="05-network.html"><span>5</span></a>), model under uncertainty (Chapter <a href="06-model.html"><span>6</span></a>) and communicate (Chapter <a href="07-uncertainty.html"><span>7</span></a> and <a href="08-storytelling.html"><span>8</span></a>) with various social science datasets. All technical activity is completed in <code>R</code>, making use of tools and software libraries that form part of the <code>R</code> ecosystem: the <code>tidyverse</code> for doing modern data science and Quarto for authoring reproducible research projects.</p>
+<!-- We will work with both new, large-scale behavioural datasets, as well as more traditional, administrative datasets located within various social science domains. We will do so using the statistical programming environment `R`, making use of tools and software libraries that form part of the `R` ecosystem: the `tidyverse` for doing modern data science and Quarto for authoring reproducible research projects. -->
 
 
-</section><section class="footnotes footnotes-end-of-document" role="doc-endnotes"><hr>
-<ol>
-<li id="fn1" role="doc-endnote"><p>For an excellent precis and interpretation of this for geographers and social scientists, see <span class="citation" data-cites="arribas_geography_2018">Arribas-Bel and Reades (<a href="references.html#ref-arribas_geography_2018" role="doc-biblioref">2018</a>)</span>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2" role="doc-endnote"><p>Checkout <span class="citation" data-cites="matejka_same_2017">Matejka and Fitzmaurice (<a href="references.html#ref-matejka_same_2017" role="doc-biblioref">2017</a>)</span>’s Same Stats, Different Graphs paper for a fun take on this.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-</ol></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const icon = "";
   const anchorJS = new window.AnchorJS();

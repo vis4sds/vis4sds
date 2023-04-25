@@ -80,7 +80,7 @@ ul.task-list{list-style: none;}
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Visualization for Social Data Science</a> 
         <div class="sidebar-tools-main">
-    <a href="https://github.com/rogerbeecham/vis4gds/" title="Source Code" class="sidebar-tool px-1"><i class="bi bi-github"></i></a>
+    <a href="https://github.com/vis4sds/vis4sds/" title="Source Code" class="sidebar-tool px-1"><i class="bi bi-github"></i></a>
     <a href="https://twitter.com/intent/tweet?url=|url|" title="Twitter" class="sidebar-tool px-1"><i class="bi bi-twitter"></i></a>
 </div>
     </div>
@@ -142,26 +142,6 @@ ul.task-list{list-style: none;}
   <a href="./references.html" class="sidebar-item-text sidebar-link">References</a>
   </div>
 </li>
-        <li class="sidebar-item sidebar-item-section">
-    <div class="sidebar-item-container"> 
-        <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">Appendices</a>
-      <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
-        <i class="bi bi-chevron-right ms-2"></i>
-      </a>
-    </div>
-    <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./a1-data.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Data Fundamentals</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./a2-visual.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Visualization Fundamentals</span></a>
-  </div>
-</li>
-    </ul>
-  </li>
     </ul>
     </div>
 </nav>
@@ -174,14 +154,14 @@ ul.task-list{list-style: none;}
   <li><a href="#concepts" id="toc-concepts" class="nav-link active" data-scroll-target="#concepts"> <span class="header-section-number">6.1</span> Concepts</a></li>
   <li><a href="#techniques" id="toc-techniques" class="nav-link" data-scroll-target="#techniques"> <span class="header-section-number">6.2</span> Techniques</a></li>
   </ul>
-<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/rogerbeecham/vis4gds/edit/master/06-model.qmd" class="toc-action">Edit this page</a></p></div></div></nav>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/vis4sds/vis4sds/edit/master/06-model.qmd" class="toc-action">Edit this page</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span id="sec-models" class="quarto-section-identifier d-none d-lg-block"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Models</span></span></h1>
+<h1 class="title"><span id="sec-model" class="quarto-section-identifier d-none d-lg-block"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Models</span></span></h1>
 </div>
 
 
@@ -208,13 +188,13 @@ Knowledge
 <div class="callout-body-container callout-body">
 <ul class="task-list">
 <li><input type="checkbox" disabled="" checked="">
-Be <strong>reminded</strong> of the basics of linear regression modelling.</li>
+Be reminded of the basics of linear regression modelling.</li>
 <li><input type="checkbox" disabled="" checked="">
-<strong>Appreciate</strong> problems of model bias.</li>
+Appreciate problems of model bias.</li>
 <li><input type="checkbox" disabled="" checked="">
-<strong>Understand</strong> two categories of geographic effect in regression modelling: geographical <em>dependence</em> in values and <em>non-stationarity</em> in processes.</li>
+Understand two categories of geographic effect in regression modelling: geographical <em>dependence</em> in values and <em>non-stationarity</em> in processes.</li>
 <li><input type="checkbox" disabled="" checked="">
-<strong>Learn</strong> how linear regression models can be updated to account for and explore these two effects.</li>
+Learn how linear regression models can be updated to account for and explore these two effects.</li>
 </ul>
 </div>
 </div>
@@ -230,15 +210,13 @@ Practical skills
 <div class="callout-body-container callout-body">
 <ul class="task-list">
 <li><input type="checkbox" disabled="" checked="">
-<strong>Specify</strong> linear regression models in R.</li>
+Specify linear regression models in R.</li>
 <li><input type="checkbox" disabled="" checked="">
-<strong>Extract</strong> model outputs and diagnostics in a <a href="https://vita.had.co.nz/papers/tidy-data.pdf"><code>tidy</code></a> manner.</li>
+Apply <a href="https://purrr.tidyverse.org/articles/other-langs.html">functional-style programming</a> for working over multiple model outputs.</li>
 <li><input type="checkbox" disabled="" checked="">
-<strong>Apply</strong> <a href="https://purrr.tidyverse.org/articles/other-langs.html">functional-style programming</a> for working over multiple model outputs.</li>
+Update linear regression models in R with Fixed Effect (FE) and Interaction terms.</li>
 <li><input type="checkbox" disabled="" checked="">
-<strong>Update</strong> linear regression models in R with Fixed Effect (FE) and Interaction terms.</li>
-<li><input type="checkbox" disabled="" checked="">
-<strong>Extract</strong> model outputs and diagnostics in a <a href="https://vita.had.co.nz/papers/tidy-data.pdf"><code>tidy</code></a> manner.</li>
+Extract model outputs and diagnostics in a <a href="https://vita.had.co.nz/papers/tidy-data.pdf"><code>tidy</code></a> manner.</li>
 </ul>
 </div>
 </div>

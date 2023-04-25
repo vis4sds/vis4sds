@@ -1,1 +1,1 @@
-Sitemap: https://roger-beecham/vis4gds/sitemap.xml
+Sitemap: https://vis4sds/vis4sds/sitemap.xml

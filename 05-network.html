@@ -1,12 +1,9 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="generator" content="quarto-0.9.637">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-
-
 <title>Visualization for Social Data Science - 5&nbsp; Networks</title>
 <style>
 code{white-space: pre-wrap;}
@@ -16,7 +13,6 @@ div.column{display: inline-block; vertical-align: top; width: 50%;}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 </style>
-
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/quarto-nav/headroom.min.js"></script>
@@ -35,8 +31,7 @@ ul.task-list{list-style: none;}
 <link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
-<script id="quarto-search-options" type="application/json">{
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet"><script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
@@ -54,34 +49,25 @@ ul.task-list{list-style: none;}
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit"
   }
-}</script>
-
-
+}</script><script src="site_libs/kePrint-0.0.1/kePrint.js"></script><link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 </head>
-
 <body class="nav-sidebar floating">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-    <div class="container-fluid d-flex justify-content-between">
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }"><div class="container-fluid d-flex justify-content-between">
       <h1 class="quarto-secondary-nav-title"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Networks</span></h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
     </div>
-  </nav>
-</header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Visualization for Social Data Science</a> 
         <div class="sidebar-tools-main">
-    <a href="https://github.com/rogerbeecham/vis4gds/" title="Source Code" class="sidebar-tool px-1"><i class="bi bi-github"></i></a>
-    <a href="https://twitter.com/intent/tweet?url=|url|" title="Twitter" class="sidebar-tool px-1"><i class="bi bi-twitter"></i></a>
+    <a href="https://github.com/vis4sds/vis4sds/" title="Source Code" class="sidebar-tool px-1"><i class="bi bi-github"></i></a>
+    <a href="https://twitter.com/intent/tweet?url=%7Curl%7C" title="Twitter" class="sidebar-tool px-1"><i class="bi bi-twitter"></i></a>
 </div>
     </div>
       </div>
@@ -92,7 +78,7 @@ ul.task-list{list-style: none;}
       </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">Preface</a>
   </div>
@@ -142,46 +128,26 @@ ul.task-list{list-style: none;}
   <a href="./references.html" class="sidebar-item-text sidebar-link">References</a>
   </div>
 </li>
-        <li class="sidebar-item sidebar-item-section">
-    <div class="sidebar-item-container"> 
-        <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">Appendices</a>
-      <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
-        <i class="bi bi-chevron-right ms-2"></i>
-      </a>
-    </div>
-    <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./a1-data.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Data Fundamentals</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./a2-visual.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Visualization Fundamentals</span></a>
-  </div>
-</li>
     </ul>
-  </li>
-    </ul>
-    </div>
-</nav>
-<!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc">
-    <h2 id="toc-title">Table of contents</h2>
+</div>
+</nav><!-- margin-sidebar --><div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#concepts" id="toc-concepts" class="nav-link active" data-scroll-target="#concepts"> <span class="header-section-number">5.1</span> Concepts</a></li>
-  <li><a href="#techniques" id="toc-techniques" class="nav-link" data-scroll-target="#techniques"> <span class="header-section-number">5.2</span> Techniques</a></li>
+<li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"> <span class="header-section-number">5.1</span> Introduction</a></li>
+  <li>
+<a href="#concepts" id="toc-concepts" class="nav-link" data-scroll-target="#concepts"> <span class="header-section-number">5.2</span> Concepts</a>
+  <ul class="collapse">
+<li><a href="#network-data-nodes-and-edges" id="toc-network-data-nodes-and-edges" class="nav-link" data-scroll-target="#network-data-nodes-and-edges"> <span class="header-section-number">5.2.1</span> Network data: nodes and edges</a></li>
+  <li><a href="#node-link-representations" id="toc-node-link-representations" class="nav-link" data-scroll-target="#node-link-representations"> <span class="header-section-number">5.2.2</span> Node-link representations</a></li>
   </ul>
-<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/rogerbeecham/vis4gds/edit/master/05-network.qmd" class="toc-action">Edit this page</a></p></div></div></nav>
+</li>
+  <li><a href="#techniques" id="toc-techniques" class="nav-link" data-scroll-target="#techniques"> <span class="header-section-number">5.3</span> Techniques</a></li>
+  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/vis4sds/vis4sds/edit/master/05-network.qmd" class="toc-action">Edit this page</a></p></div></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title"><span id="sec-networks" class="quarto-section-identifier d-none d-lg-block"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Networks</span></span></h1>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<h1 class="title"><span id="sec-network" class="quarto-section-identifier d-none d-lg-block"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Networks</span></span></h1>
 </div>
 
 
@@ -193,8 +159,9 @@ ul.task-list{list-style: none;}
   </div>
   
 
-</header>
+</header><div class="cell">
 
+</div>
 <p>By the end of this chapter you should gain the following knowledge and practical skills.</p>
 <div class="callout-note callout callout-style-default callout-captioned">
 <div class="callout-header d-flex align-content-center">
@@ -207,9 +174,11 @@ Knowledge
 </div>
 <div class="callout-body-container callout-body">
 <ul class="task-list">
-<li><input type="checkbox" disabled="" checked="">
+<li>
+<input type="checkbox" disabled="" checked="">
 The special structure and vocabulary used to represent network data.</li>
-<li><input type="checkbox" disabled="" checked="">
+<li>
+<input type="checkbox" disabled="" checked="">
 The strengths, weaknesses and trade-offs of network visualizations and of incorporating geographic context.</li>
 </ul>
 </div>
@@ -225,22 +194,101 @@ Practical skills
 </div>
 <div class="callout-body-container callout-body">
 <ul class="task-list">
-<li><input type="checkbox" disabled="" checked="">
+<li>
+<input type="checkbox" disabled="" checked="">
 Write <code>ggplot2</code> specifications that use containment to analyse spatial network origin-destination data.</li>
 </ul>
 </div>
 </div>
-<section id="concepts" class="level2" data-number="5.1">
-<h2 data-number="5.1" class="anchored" data-anchor-id="concepts"><span class="header-section-number">5.1</span> Concepts</h2>
-</section>
-<section id="techniques" class="level2" data-number="5.2">
-<h2 data-number="5.2" class="anchored" data-anchor-id="techniques"><span class="header-section-number">5.2</span> Techniques</h2>
+<section id="introduction" class="level2" data-number="5.1"><h2 data-number="5.1" class="anchored" data-anchor-id="introduction">
+<span class="header-section-number">5.1</span> Introduction</h2>
+<p>Networks are a special class of data used to represent things (entities) and how they relate to one another. Network data consist of two types of element: <em>nodes</em>, the entities themselves, and <em>edges</em>, the connections between nodes. Both nodes and edges can have additional information attached to them – counts, categories and directions. Network data are cumbersome to work with in R as they are not represented well by flat data frames. A common workflow is to split the data across two tables – one representing nodes and one representing edges <span class="citation" data-cites="wickham_ggplot2_2020">(<a href="references.html#ref-wickham_ggplot2_2020" role="doc-biblioref">Wickham, Navarro, and Lin Pedersen 2020</a>)</span>.</p>
+<p>A category of network data used heavily in geospatial analysis is origin-destination (OD) data describing, for example, flows of bikes <span class="citation" data-cites="beecham_connected_2023">(<a href="references.html#ref-beecham_connected_2023" role="doc-biblioref">Beecham et al. 2023</a>)</span> and commuters <span class="citation" data-cites="beecham_characterising_2019">(<a href="references.html#ref-beecham_characterising_2019" role="doc-biblioref">Beecham and Slingsby 2019</a>)</span> around a city, or <a href="https://public.tableau.com/profile/robradburn#!/vizhome/LiquidCapital/VirtualWater">water</a> around a country. These data consist of <em>nodes</em>, origin and destination locations, and <em>edges</em>, flows linking those origins and destinations. Whilst statistics from <a href="https://en.wikipedia.org/wiki/Network_science">Network Science</a> can and have been deployed in the analysis of geospatial OD data, visualization techniques provide much assistance in exposing the types of complex structural patterns and relations that result from locating OD flow data within geographic context.</p>
+<p>In this chapter we will work with an accessible and widely used origin-destination network dataset: Census travel-to-work data. This records counts of individuals commuting between locations (<a href="https://www.ons.gov.uk/methodology/geography/ukgeographies/censusgeography#census-geography">census geographies</a>) of the UK.</p>
+</section><section id="concepts" class="level2" data-number="5.2"><h2 data-number="5.2" class="anchored" data-anchor-id="concepts">
+<span class="header-section-number">5.2</span> Concepts</h2>
+<section id="network-data-nodes-and-edges" class="level3" data-number="5.2.1"><h3 data-number="5.2.1" class="anchored" data-anchor-id="network-data-nodes-and-edges">
+<span class="header-section-number">5.2.1</span> Network data: nodes and edges</h3>
+<p>This chapter introduces techniques for visually representing networks and evaluates their usefulness through an analysis of 2011 Census OD travel-to-work data. It does so using Census travel-to-work data in London. The <em>nodes</em> in this dataset are London’s 33 boroughs and the <em>edges</em> are directed OD pairs between these boroughs.</p>
+<div class="cell">
+<div class="cell-output-display">
+
+<table class=" lightable-minimal" style="font-family: &quot;Trebuchet MS&quot;, verdana, sans-serif; margin-left: auto; margin-right: auto;">
+<caption>Nodes table: London Boroughs.</caption>
+ <thead><tr>
+<th style="text-align:left;"> borough </th>
+   <th style="text-align:left;"> out </th>
+   <th style="text-align:left;"> in </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> Barking and Dagenham </td>
+   <td style="text-align:left;"> 54237 </td>
+   <td style="text-align:left;"> 33605 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Barnet </td>
+   <td style="text-align:left;"> 117657 </td>
+   <td style="text-align:left;"> 72024 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Bexley </td>
+   <td style="text-align:left;"> 77263 </td>
+   <td style="text-align:left;"> 39232 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> ... </td>
+   <td style="text-align:left;"> ... </td>
+   <td style="text-align:left;"> ... </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+
+<table class=" lightable-minimal" style="font-family: &quot;Trebuchet MS&quot;, verdana, sans-serif; margin-left: auto; margin-right: auto;">
+<caption>Edges table: OD pairs between London Boroughs.</caption>
+ <thead><tr>
+<th style="text-align:left;"> origin </th>
+   <th style="text-align:left;"> destination </th>
+   <th style="text-align:left;"> freq </th>
+  </tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;"> Barking and Dagenham </td>
+   <td style="text-align:left;"> Barking and Dagenham </td>
+   <td style="text-align:left;"> 14650 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Barking and Dagenham </td>
+   <td style="text-align:left;"> Barnet </td>
+   <td style="text-align:left;"> 280 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> Barking and Dagenham </td>
+   <td style="text-align:left;"> Bexley </td>
+   <td style="text-align:left;"> 155 </td>
+  </tr>
+<tr>
+<td style="text-align:left;"> ... </td>
+   <td style="text-align:left;"> ... </td>
+   <td style="text-align:left;"> ... </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>In Figure @ref(fig:flows-bor), frequencies of the number of <em>jobs</em> available in each borough and <em>workers</em> living in each borough (the nodes) are represented. Note that job-rich boroughs in central London – Westminster, City of London, Camden, Tower Hamlets – contain many more <em>jobs</em> than <em>workers</em> residing in them. We can therefore infer that there is likely to be a high level of in-commuting to those boroughs and the corollary, a high level of out-commuting for boroughs containing large numbers of <em>workers</em> but comparatively fewer <em>jobs</em>.</p>
+</section><section id="node-link-representations" class="level3" data-number="5.2.2"><h3 data-number="5.2.2" class="anchored" data-anchor-id="node-link-representations">
+<span class="header-section-number">5.2.2</span> Node-link representations</h3>
+<p>Perhaps the most common class of network visualization tha could be used to represent the data in <span class="quarto-unresolved-ref">?tbl-nodes-data</span> and <span class="quarto-unresolved-ref">?tbl-edges-data</span> are node-link diagrams. These depict graphs in two dimensions as a force-directed layout. Nodes are positioned such that those sharing greater connection – edges with greater weights (frequencies) – are closer than those that are less well-connected – that do not share edges with such large weights. Edges are drawn as lines <em>connecting</em> nodes.</p>
+</section></section><section id="techniques" class="level2" data-number="5.3"><h2 data-number="5.3" class="anchored" data-anchor-id="techniques">
+<span class="header-section-number">5.3</span> Techniques</h2>
 
 
-</section>
-
-</main> <!-- /main -->
-<script id="quarto-html-after-body" type="application/javascript">
+</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const icon = "";
   const anchorJS = new window.AnchorJS();
@@ -318,9 +366,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     });
   }
 });
-</script>
-<nav class="page-navigation">
-  <div class="nav-page nav-page-previous">
+</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="./04-explore.html" class="pagination-link">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Exploratory Data Analysis</span></span>
       </a>          
