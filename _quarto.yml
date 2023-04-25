@@ -14,9 +14,6 @@ book:
   sharing: [twitter]
   chapters:
     - index.qmd
-  # - preface.qmd
-  #   - part: dice.qmd
-  #     chapters:
     - 01-intro.qmd
     - 02-data.qmd
     - 03-visual.qmd
@@ -26,25 +23,6 @@ book:
     - 07-uncertainty.qmd
     - 08-storytelling.qmd
     - references.qmd
-  #       - packages.qmd
-  #   - part: cards.qmd
-  #     chapters:
-  #       - objects.qmd
-  #       - notation.qmd
-  #       - modifying.qmd
-  #       - environments.qmd
-  #   - part: slots.qmd
-  #     chapters:
-  #       - programs.qmd
-  #       - s3.qmd
-  #       - loops.qmd
-  #       - speed.qmd
-  # appendices:
-    # - a1-data.qmd
-    # - a2-visual.qmd
-  #   - a3-updating.qmd
-  #   - a4-data.qmd
-  #   - a5-debug.qmd
 
 bibliography: references.bib
 suppress-bibliography: true
