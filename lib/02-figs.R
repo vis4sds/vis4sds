@@ -12,53 +12,6 @@ library(lubridate)
 library(fst)
 
 ###############################################################################
-# T H E M E S
-###############################################################################
-
-site_colours <- list(
-  primary = "#003c8f",
-  primary_selected = "#1565c0",
-  secondary = "#8e0000",
-  secondary_selected = "#c62828"
-)
-
-update_geom_defaults("label", list(family = "Avenir Next"))
-update_geom_defaults("text", list(family = "Avenir Next"))
-
-theme_v_gds <- function(base_size = 11, base_family = "Avenir Next") {
-  return <- theme_minimal(base_size, base_family) +
-    theme(plot.title = element_text(size = rel(1.2),
-                                    family = "Avenir Next Demi Bold"),
-          plot.subtitle = element_text(size = rel(1.1),
-                                       family = "Avenir Next Medium"),
-          plot.caption = element_text(size = rel(.8), color = "grey50",
-                                      family = "Avenir Next",
-                                      margin = margin(t = 10)),
-          plot.tag = element_text(size = rel(.9), color = "grey50",
-                                  family = "Avenir Next"),
-          strip.text = element_text(size = rel(.9),
-                                    family = "Avenir Next"),
-          strip.text.x = element_text(margin = margin(t = 1, b = 1)),
-          panel.border = element_blank(),
-          plot.background = element_rect(fill="#eeeeee", colour = NA),
-          axis.ticks = element_blank(),
-          panel.grid = element_line(colour="#e0e0e0"),
-          axis.title.x = element_text(margin = margin(t = 10)),
-          axis.title.y = element_text(margin = margin(r = 10)),
-          #legend.margin = margin(t = 0),
-          legend.title = element_text(size = rel(0.8)),
-          legend.position = "bottom")
-  
-  return
-}
-
-
-# Set ggplot2 theme
-theme_set(theme_v_gds())
-
-
-
-###############################################################################
 # C H    2
 ###############################################################################
 
@@ -93,6 +46,11 @@ rm(db,stations, trips, bikedb)
 # Read in these local copies of the trips and stations data.
 ny_trips <- read_fst(here("bikedata", "ny_trips.fst"))
 ny_stations <- read_csv(here("bikedata", "ny_stations.csv"))
+url <- "https://vis4sds.github.io/data/ch2/ny_stations.csv"
+ny_stations <- read_csv(url)
+url <- "https://vis4sds.github.io/data/ch2/ny_trips.fst"
+# download.file(url, here("../","data", "ch2", "ny_trips2.fst"))
+ny_trips <- read_fst(here("../","data", "ch2", "ny_trips.fst"))
 
 
 # Recode
@@ -102,9 +60,9 @@ ny_trips <- ny_trips |>
   mutate_at(vars(start_time, stop_time), ~as.POSIXct(., format="%Y-%m-%d %H:%M:%S")) |> 
   mutate(
     bike_id=as.integer(bike_id),
-    user_type=case_when(
-      user_type == 0 ~ "customer",
-      user_type == 1 ~ "subscriber")
+    # user_type=case_when(
+    #   user_type == 0 ~ "customer",
+    #   user_type == 1 ~ "subscriber")
   ) 
 
 ny_stations <- ny_stations |> 
@@ -125,14 +83,14 @@ ny_temporal <- ny_trips |>
 plot <-
   ny_temporal |> 
   ggplot(aes(x=hour, y=count, group=user_type)) +
-  geom_line(aes(colour=user_type), size=1.1) +
+  geom_line(aes(colour=user_type), size=1) +
   scale_colour_manual(values=c("#e31a1c", "#1f78b4")) +
   facet_wrap(~day, nrow=1)+
   labs(
-    title="Citibike trip counts by hour of day, day of week and user type",
-    subtitle="--Jun 2020",
-    caption="Data provided and owned by: NYC Bike Share, LLC and Jersey City Bike Share, LLC",
-    x="", y="trip counts"
+    #title="Citibike trip counts by hour of day, day of week and user type",
+    #subtitle="--Jun 2020",
+    #caption="Data provided and owned by: NYC Bike Share, LLC and Jersey City Bike Share, LLC",
+    x="hour of day", y="trip counts"
   )+
   theme_v_gds()
 
@@ -159,19 +117,19 @@ ny_trips <- ny_trips |>
 # Plot distance travelled
 plot <-
   ny_trips |> 
-  mutate(user_type=factor(user_type, levels=c("subscriber", "customer"))) |> 
+  mutate(user_type=factor(user_type, levels=c("Subscriber", "Customer"))) |> 
   ggplot(aes(dist)) +
   geom_histogram(fill=site_colours$primary) +
   facet_wrap(~user_type)+
   labs(
-    title="Citibike trip distance (straight-line km)",
-    subtitle="--Jun 2020",
-    caption="Data provided and owned by: NYC Bike Share, LLC and Jersey City Bike Share, LLC",
+    #title="Citibike trip distance (straight-line km)",
+    #subtitle="--Jun 2020",
+    #caption="Data provided and owned by: NYC Bike Share, LLC and Jersey City Bike Share, LLC",
     x="distance = km", y="frequency"
   )+
   theme_v_gds()
 
-ggsave(filename=here("figs", "02", "dist.svg"), plot=plot, width=9, height=4)
+ggsave(filename=here("figs", "02", "dist.svg"), plot=plot, width=8, height=4)
 
 
 
@@ -254,7 +212,7 @@ options(dplyr.summarise.inform = FALSE)
 get_summary <- function(df) {
   return(
     df |> group_by(user_type, age_band, dist_bands) |> 
-      summarise(speed=mean(speed), sample_size=n(), std=sd(speed)) |> ungroup() 
+      summarise(avg_speed=mean(speed), sample_size=n(), std=sd(speed), std_n=std/sqrt(sample_size)) |> ungroup() 
   )
 } 
 
@@ -265,7 +223,9 @@ t <- ny_trips |>
     is_weekday==1,
     start_station_id!=end_station_id,
     duration_minutes<=60,
-    between(age, 16, 74)) |> 
+    between(age, 16, 74),
+    dist>.5
+    ) |> 
   mutate(
     dist_bands=case_when(
       dist < 1.5 ~ "<1.5km",
@@ -275,7 +235,7 @@ t <- ny_trips |>
     age_band=if_else(age %% 10 > 4, ceiling(age/5)*5, floor(age/5)*5),
     speed=dist/(duration_minutes/60)
   ) |> 
-  select(user_type, age_band, dist_bands, speed) |> ungroup() |> 
+  select(user_type, age_band, dist_bands, speed) |> 
   nest(data=everything()) |>
   mutate(boots=map(data, rsample::bootstraps, times=100, apparent=TRUE)) 
 
@@ -314,31 +274,70 @@ u <- t |>
 v <- u |> 
   group_by(user_type, dist_bands, age_band) |> 
   mutate(
-    std_error=sd(speed)
+    percentile=percent_rank(avg_speed),
+    std_error=mean(std_n)
+  ) |> 
+  ungroup() |> 
+  filter(id=="Apparent" | percentile %in% c(.99, .01)) |> 
+  select(-c(std, std_n)) |> 
+  mutate(percentile=if_else(!percentile %in% c(.99, .01), .5, percentile)) |> 
+  pivot_wider(names_from=percentile, values_from=avg_speed) |> 
+  group_by(user_type, dist_bands, age_band) |> 
+  mutate(
+    `0.01`=max(`0.01`, na.rm=TRUE),
+    `0.99`=max(`0.99`, na.rm=TRUE),
+    `0.5`=max(`0.5`, na.rm=TRUE)
   ) |> 
   filter(id=="Apparent")
+     
 
 
-plot <- v |> 
+plot <- v |> ungroup() |> 
   # manually recode low where no .95 position
   #mutate(speed_high=if_else(!is.finite(speed_high),7.13, speed_high)) |> 
-  ggplot(aes(x=age_band, y=speed))+
-  geom_line(aes(colour=user_type))+
-  geom_ribbon(aes(ymin=speed-(2*std_error),
-                  ymax=speed+(2*std_error), fill=user_type), alpha=.2) +
+  mutate(low_sample = 
+           case_when(
+             user_type == "Customer" & 
+               dist_bands == ">3-4.5km" & 
+               age_band > 60 ~ TRUE,
+             user_type == "Customer" & 
+                 dist_bands == ">4.5km" & 
+                 age_band > 45 ~ TRUE,
+             TRUE ~ FALSE
+             )
+         ) |> 
+  ggplot(aes(x=age_band, y=`0.5`))+
+  geom_line(data=. %>% filter(user_type=="Customer", low_sample | 
+              (age_band == 60 | (age_band == 45 &  dist_bands == ">4.5km"))), 
+            aes(colour=user_type, group=user_type), linetype=2, alpha=.6) +
+  geom_line(data=. %>% filter(!low_sample), 
+            aes(colour=user_type, group=user_type), linetype=1) +
+  geom_ribbon(data=. %>% filter(!low_sample), aes(ymin=`0.01`,
+                  ymax=`0.99`, fill=user_type), alpha=.2) +
   scale_colour_manual(values=c("#e31a1c", "#1f78b4")) +
   scale_fill_manual(values=c("#e31a1c", "#1f78b4")) +
   facet_wrap(~dist_bands, nrow=1) +
   labs(
-    title="Citibike average trip speeds (approximate) by age, customer type and trip distance",
-    subtitle="--Jun 2020",
-    caption="Data provided and owned by: NYC Bike Share, LLC and Jersey City Bike Share, LLC",
+    #title="Citibike average trip speeds (approximate) by age, customer type and trip distance",
+    #subtitle="--Jun 2020",
+    #caption="Data provided and owned by: NYC Bike Share, LLC and Jersey City Bike Share, LLC",
     x="age - 5 year bands", y="speed - km/h "
   )+
   theme_v_gds()
 
 ggsave(filename="./static/class/02-class_files/speeds.png", plot=plot,width=9, height=5, dpi=300)
 
-ggsave(filename=here("figs", "02", "speeds.svg"), plot=plot,width=9, height=5, dpi=300)
+ggsave(filename=here("figs", "02", "speeds.svg"), plot=plot,width=8, height=4.5, dpi=300)
 
+url <- "https://vis4sds.github.io/data/ch2/ny_spread_rows.csv"
+ny_spread_rows <- read_csv(url) 
+url <- "https://vis4sds.github.io/data/ch2/ny_spread_columns.csv"
+ny_spread_columns <- read_csv(url) 
 
+ny_spread_rows |> 
+  pivot_wider(names_from=summary_type, values_from=value) 
+
+ny_spread_columns |> 
+  pivot_longer(cols = count_weekend:duration_weekday) |> 
+  separate(col = name, into = c("summary_type", "wkday"), sep = "_") |> 
+  pivot_wider(names_from = summary_type, values_from = value)

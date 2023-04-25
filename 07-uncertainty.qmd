@@ -7,9 +7,9 @@ By the end of this chapter you should gain the following knowledge and practical
 
 ## Knowledge
 
-- [x] **Appreciate** the main challenges and objectives of uncertainty representation.
-- [x] **Learn** how visualization techniques can be used to support 'frequency framing' -- the perception of probability and risk.
-- [x] **Understand** how parameter uncertainty can be estimated computationally.
+- [x] Appreciate the main challenges and objectives of uncertainty representation.
+- [x] Learn how visualization techniques can be used to support 'frequency framing' -- the perception of probability and risk.
+- [x] Understand how parameter uncertainty can be estimated computationally.
 
 :::
 
@@ -18,9 +18,9 @@ By the end of this chapter you should gain the following knowledge and practical
 
 ## Practical skills
 
-- [x] **Create** uncertainty visualizations in `ggplot2`.
-- [x] **Generate** estimates of parameter uncertainty using bootstrap resampling.
-- [x] **Apply** [functional-style programming](https://purrr.tidyverse.org/articles/other-langs.html) for working over bootstrap resamples.
+- [x] Create uncertainty visualizations in `ggplot2`.
+- [x] Generate estimates of parameter uncertainty using bootstrap resampling.
+- [x] Apply [functional-style programming](https://purrr.tidyverse.org/articles/other-langs.html) for working over bootstrap resamples.
 :::
 
 ## Concepts

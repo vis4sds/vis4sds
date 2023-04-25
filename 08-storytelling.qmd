@@ -7,8 +7,8 @@ By the end of this chapter you should gain the following knowledge and practical
 
 ## Knowledge
 
-- [x] **Appreciate** the main characteristics of data-driven stories.
-- [x] **Identify** how visual and rhetorical devices are used to communicate with data.
+- [x] Appreciate the main characteristics of data-driven stories.
+- [x] Identify how visual and rhetorical devices are used to communicate with data.
 
 :::
 
@@ -17,7 +17,7 @@ By the end of this chapter you should gain the following knowledge and practical
 
 ## Practical skills
 
-- [x] **Create** `ggplot2` graphics with non-standard annotations.
+- [x] Create `ggplot2` graphics with non-standard annotations.
 :::
 
 ## Concepts

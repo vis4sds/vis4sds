@@ -1,4 +1,4 @@
-# Models {#sec-models}
+# Models {#sec-model}
 
 
 By the end of this chapter you should gain the following knowledge and practical skills.
@@ -7,10 +7,10 @@ By the end of this chapter you should gain the following knowledge and practical
 
 ## Knowledge
 
-- [x] Be **reminded** of the basics of linear regression modelling.
-- [x] **Appreciate** problems of model bias.
-- [x] **Understand** two categories of geographic effect in regression modelling: geographical *dependence* in values and *non-stationarity* in processes.
-- [x] **Learn** how linear regression models can be updated to account for and explore these two effects.
+- [x] Be reminded of the basics of linear regression modelling.
+- [x] Appreciate problems of model bias.
+- [x] Understand two categories of geographic effect in regression modelling: geographical *dependence* in values and *non-stationarity* in processes.
+- [x] Learn how linear regression models can be updated to account for and explore these two effects.
 
 :::
 
@@ -19,11 +19,10 @@ By the end of this chapter you should gain the following knowledge and practical
 
 ## Practical skills
 
-- [x] **Specify** linear regression models in R.
-- [x] **Extract** model outputs and diagnostics in a [`tidy`](https://vita.had.co.nz/papers/tidy-data.pdf) manner.
-- [x] **Apply** [functional-style programming](https://purrr.tidyverse.org/articles/other-langs.html) for working over multiple model outputs.
-- [x] **Update** linear regression models in R with Fixed Effect (FE) and Interaction terms.
-- [x] **Extract** model outputs and diagnostics in a [`tidy`](https://vita.had.co.nz/papers/tidy-data.pdf) manner.
+- [x] Specify linear regression models in R.
+- [x] Apply [functional-style programming](https://purrr.tidyverse.org/articles/other-langs.html) for working over multiple model outputs.
+- [x] Update linear regression models in R with Fixed Effect (FE) and Interaction terms.
+- [x] Extract model outputs and diagnostics in a [`tidy`](https://vita.had.co.nz/papers/tidy-data.pdf) manner.
 :::
 
 ## Concepts

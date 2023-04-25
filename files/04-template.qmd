@@ -1,0 +1,95 @@
+---
+title: "Chapter 04 Template"
+author: "Roger Beecham"
+format: html
+---
+
+## Introduction
+
+Reopen your project and save this `.qmd` to the `reports` folder. When working through the materials from this chapter run each code chunk separately by clicking the small green arrow beside each code chunk. By default I have set `eval : false` on most code chunks, so when you knit the code chunk will not execute.
+
+The technical element involves analysing [`stats19`](https://data.gov.uk/dataset/cb7ae6f0-4be6-4935-9277-47e5ce24a11f/road-safety-data) road crash data.
+
+## Setup
+
+The code block below points to the packages you need.
+
+```{r setup}
+#| echo: true
+#| eval: false
+library(tidyverse) # Bundle of packages for doing modern data analysis
+library(sf) # Spatial operations
+library(here) # For navigating project directory
+library(fst) # For reading/writing large files
+library(lubridate) # For working with dates
+```
+
+Bring in the pedestrian-vehicle crashses dataset (`ped_veh`) as an `.fst` file and supporting [IMD](https://www.gov.uk/government/statistics/english-indices-of-deprivation-2019) and population datasets.
+
+```{r import-sata}
+#| echo: true
+#| eval: false
+url <- "https://vis4sds.github.io/data/ch4/ped_veh.fst"
+download.file(url, here("data", "ped_veh.fst"))
+ped_veh <- read_fst(here("data", "ped_veh.fst"))
+
+url <- "https://vis4sds.github.io/data/ch4/imd.csv"
+download.file(url, here("data", "imd.csv"))
+imd <- read_csv(here("data", "imd.csv"))
+
+url <- "https://vis4sds.github.io/data/ch4/lsoa_pop.csv"
+download.file(url, here("data", "lsoa_pop.csv"))
+lsoa_pop <- read_csv(here("data", "lsoa_pop.csv"))
+```
+
+Run the code block below to recode IMD to quintiles.
+
+```{r recode-data}
+#| echo: true
+#| eval: false
+# Recode imd into quintiles.
+ped_veh <- ped_veh %>%
+  mutate(
+    driver_quintile=case_when(
+      driver_imd_decile == "Most deprived 10%" ~ "1 most deprived",
+      driver_imd_decile == "More deprived 10-20%" ~ "1 most deprived",
+      driver_imd_decile == "More deprived 20-30%" ~ "2 more deprived",
+      driver_imd_decile == "More deprived 30-40%" ~ "2 more deprived",
+      driver_imd_decile == "More deprived 40-50%" ~ "3 mid deprived",
+      driver_imd_decile == "Less deprived 40-50%" ~ "3 mid deprived",
+      driver_imd_decile == "Less deprived 30-40%" ~ "4 less deprived",
+      driver_imd_decile == "Less deprived 20-30%" ~ "4 less deprived",
+      driver_imd_decile == "Less deprived 10-20%" ~ "5 least deprived",
+      driver_imd_decile == "Least deprived 10%" ~ "5 least deprived",
+      TRUE ~ driver_imd_decile),
+    casualty_quintile=case_when(
+      casualty_imd_decile == "Most deprived 10%" ~ "1 most deprived",
+      casualty_imd_decile == "More deprived 10-20%" ~ "1 most deprived",
+      casualty_imd_decile == "More deprived 20-30%" ~ "2 more deprived",
+      casualty_imd_decile == "More deprived 30-40%" ~ "2 more deprived",
+      casualty_imd_decile == "More deprived 40-50%" ~ "3 mid deprived",
+      casualty_imd_decile == "Less deprived 40-50%" ~ "3 mid deprived",
+      casualty_imd_decile == "Less deprived 30-40%" ~ "4 less deprived",
+      casualty_imd_decile == "Less deprived 20-30%" ~ "4 less deprived",
+      casualty_imd_decile == "Less deprived 10-20%" ~ "5 least deprived",
+      casualty_imd_decile == "Least deprived 10%" ~ "5 least deprived",
+      TRUE ~ casualty_imd_decile)
+  )
+
+# Recode IMD dataset, to be linked on crash location.
+imd <- imd %>% mutate(
+  quintile=ntile(decile,5),
+  crash_quintile=case_when(
+    quintile == 1 ~ "1 most deprived",
+    quintile == 2 ~ "2 more deprived",
+    quintile == 3 ~ "3 mid deprived",
+    quintile == 4 ~ "4 less deprived",
+    quintile == 5 ~ "5 least deprived"
+  )
+)
+
+# Bring in IMD class of location. 
+ped_veh <- ped_veh %>%
+  # Crashes in Wales are excluded as English IMD
+  inner_join(imd %>% select(lsoa_code, crash_quintile), by=c("lsoa_of_accident_location"="lsoa_code"))
+```

@@ -1,127 +1,55 @@
 ---
-title: "Chapter 02 Tasks"
+title: "Chapter 02 Template"
 author: "Roger Beecham"
 format: html
 ---
 
 ## Introduction
 
-Reopen the project you created in Chapter 1 and save this `.qmd` to the `reports` folder. When working through the materials from this chapter run each code chunk separately by clicking the small green arrow beside each code chunk. By default `eval : false` on most code chunks, so when you knit the code chunk will not execute. We are working with a reasonably large dataset so this is to avoid the tedium of waiting long periods for this document to render.
+Reopen the project you created in Chapter 1 and save this `.qmd` file to the `reports` folder. When working through the materials from this chapter run each code chunk separately by clicking the small green arrow beside each code chunk. By default `eval : false` on most code chunks, so when you knit the code chunk will not execute. We are working with a reasonably large dataset so this is to avoid the tedium of waiting long periods for this document to render.
 
-The technical element to this chapter involves importing, describing and processing data from a large bikeshare scheme -- New York's [Citibike](https://www.citibikenyc.com/) scheme.
-
+The technical element to this chapter works with data from a large bikeshare scheme -- New York's [Citibike](https://www.citibikenyc.com/) scheme.
 
 ## Setup
 
-The code block below points to the packages you need to do the work discussed in the chapter. If you have been following the instructions from  the last chapter, you will have already installed the key packages -- `tidyverse` , `fst`, `lubridate`, `sf`, `here` -- and so simply need to make them available in session with `library(<package-name>)`. If you wish to use the [bikedata](https://github.com/ropensci/bikedata) package for accessing bikeshare data you will also need to **install** it. This requires the development version of the package which can be installed with `install_github()` using the `devtools` package. As `devtools` is only used on setup, its functions are accessed with `::`, e.g.  `devtools::` rather than `library<package-name>`.
-
-IMPORTANT NOTE : We wanted to include the code for downloading and processing data via the `bikedata` API for information. However, as the package makes available large and reasonably messy data, it is not exactly "entry-level". Depending on how R and existing packages are configured on your machine, you may find several `error` messages relating to package dependencies -- other packages that need to be installed. For this reason we recommend that the code on importing the raw bike data (`import-raw`) be treated as optional (for the interested reader) and instead download the pre-processed data we have made available on a separate repo (`import-collected`).
-
-Required packages necessary for all aspects of the session (**ALL**). If you have not yet downloaded these packages you will need to make separate calls to `install.packages("<package-name>")` as described in the previous session.
+The code block below points to the packages you need to do the work discussed in the chapter. If you have been following the instructions from the last chapter, you will have already installed the key packages -- `tidyverse` , `fst`, `lubridate`, `sf`, `here` -- and so simply need to make them available in session with `library(<package-name>)`. If you have not yet downloaded these packages you will need to make separate calls to `install.packages("<package-name>")` as described in the previous session.
 
 ```{r setup-required}
 #| echo: true
 #| eval: false
-library(tidyverse) # Bundle of packages for doing modern data analysis.
-library(fst) # Fast/efficient working with tbls.
+library(tidyverse) # Bundle of packages for doing modern data analysis
+library(fst) # Fast/efficient working with tbls
 library(sf) # Spatial operations
 library(lubridate) # Work with dates
 library(here) # For navigating project directory
-# install.packages("geosphere") # Uncomment to install.
+# install.packages("geosphere") # Uncomment to install
 ```
 
-Packages necessary for working with `bikedata` (optional for **advanced R programmer only**):
-
-```{r setup-optional}
-#| echo: true
-#| eval: false
-# remotes::install_github("ropensci/bikedata") # API to TfL's trip data. Uncomment to run.
-library(bikedata)
-# install.packages(DBI) # Uncomment to install.
-# install.packages("SQLite") # Uncomment to install.
-```
-
-## Import
-
-### Import raw data (**interested/advanced only**)
-
-You might notice that available via the `bikedata` package are trip and occupancy data for a number of bikeshare schemes. To see which are available, type `bike_cities()` into the Console. We will collect data for New York's [citibike](https://www.citibikenyc.com/) scheme using the `dl_bikedata()` function. Querying the documentation (with `?dl_bikedata()`) you will notice that there are several parameters to set here: the city/ scheme (`city = "citibike"`), time period (`dates = 2020` - we'll look at data from 2020). By default data are downloaded to a temporary directory `temp_dir()` and held in memory.  `bikedata` also has a function for converting downloaded data to an SQLite3 database. SQLite databases can be called from `R` and have various advantages for efficient storage and querying.
-
-The code block below stores the data held in-memory to an SQLite database with `store_bikedata()`.
-The [`fst`](https://www.fstpackage.org/) package is then used for serializing and reading in the these data. `fst` implements in the background various operations such as multi-threading to work on large datasets in-memory in R. Data are then written out to disk with `.fst` and read back into R. This code block takes some time to run and there is also a problem with how `bikedata` handles the New York record data. The code below is therefore for demonstration purposes should you wish to work with other bikeshare data. If you wish, jump to the next code block where we download a cleaned version of the New York data from from an external repository.
-
-
-```{r import-raw}
-#| echo: true
-#| eval: false
-# Create subdirectory in data folder for storing bike data.
-if(!dir.exists(here("data", "bikedata"))) dir.create(here("data", "bikedata"))
-# Download data for June 2020.
-dl_bikedata (city = "citibike",  data_dir = here("data", "bikedata"), dates=202006)
-# Read in and store in SQLite3 database.
-bikedb <- file.path (tempdir (), "bikedb.sqlite") # Create sqlite db container.
-store_bikedata (data_dir = here("data", "bikedata"), bikedb = bikedb)
-# Index dbase to speed up working.
-index_bikedata_db(bikedb = bikedb)
-# Access db with dbplyr
-db <- dplyr::src_sqlite(bikedb, create=F)
-# Check tables that form the dbase.
-dplyr::src_tbls(db)
-# Collect trips and stations tables for writing out to fst.
-trips <- tbl(db, "trips") |>  collect()
-stations <- tbl(db, "stations") |> collect()
-# Write trips out to .fst.
-write_fst(trips, here("data", "ny_trips.fst"))
-# Write stations out to .csv
-write_csv(stations, here("data", "ny_stations.csv"))
-# Clean workspace
-bike_rm_db(bikedb)
-rm(db,stations, trips, bikedb)
-```
-
-### Import pre-processed data (**All**)
-
-Run the code block below to download the pre-processed and extracted data to your project's data folder. Note that you should only run the import code below once. When returning to this work in a new R session, you need only then read in the `ny_trips.fst` and `ny_stations.csv` file that is held locally on your machines. Unfortunately due to storage limitations I had to make `ny_trips.fst` just a 500k random sample of the c.2million records that appear in the session.
+Run the code block below to download the pre-processed and extracted data to your project's data folder. Note that you should only run the import code below once. When returning to this work in a new R session, you need only then read in the `ny_trips.fst` and `ny_stations.csv` file that is held locally on your machines. Unfortunately due to storage limitations I had to make `ny_trips.fst` just a 500k random sample of the c.2million records that appear in the chapter.
 
 ```{r import-collected}
 #| echo: true
 #| eval: false
 # Create subdirectory in data folder for storing bike data.
-if(!dir.exists(here("data", "bikedata"))) dir.create(here("data", "bikedata"))
+if(!dir.exists(here("data"))) dir.create(here("data"))
 
 # Read in .csv file of stations data from url.
-tmp_file <- tempfile()
-url <- "https://www.roger-beecham.com/datasets/ny_stations.csv"
-curl::curl_download(url, tmp_file, mode="wb")
-ny_stations <- read_csv(tmp_file)
+url <- "https://vis4sds.github.io/data/ch2/ny_stations.csv"
+download.file(url, here("data", "ny_stations.csv"))
+ny_stations <- read_csv(here("data", "ny_stations.csv"))
 
 # Read in .fst file of trips data from url.
-tmp_file <- tempfile()
-url <- "https://www.roger-beecham.com/datasets/ny_trips.fst"
-curl::curl_download(url, tmp_file, mode="wb")
-ny_trips <- read_fst(tmp_file)
-
-# Write out to subdirectory for future use.
-write_fst(ny_trips, here("data", "ny_trips.fst"))
-write_csv(ny_stations, here("data", "ny_stations.csv"))
-
-# Clean workspace.
-rm(url, tmp_file)
-```
-
-The code that you would run for reading in the data from your local directory.
-
-```{r read-collected}
-#| echo: true
-#| eval: false
-# Read in these local copies of the trips and stations data.
+url <- "https://vis4sds.github.io/data/ch2/ny_trips.fst"
+download.file(url, here("data", "ny_trips.fst"))
 ny_trips <- read_fst(here("data", "ny_trips.fst"))
-ny_stations <- read_csv(here("data", "ny_stations.csv"))
+
+# Two untidy datasets.
+
 ```
 
 ## Describe
 
-The code block below performs some useful recoding operations:  convert `chr` fields to `int` for efficient storage, temporal fields `dttm` objects, and longitude and latitude to `dbl` so that we can do calculations.
+The code block below performs some useful recoding operations: convert `chr` fields to `int` for efficient storage, temporal fields `dttm` objects, and longitude and latitude to `dbl` so that we can do calculations.
 
 ```{r recode}
 #| echo: true
@@ -210,12 +138,7 @@ ny_temporal |>
   geom_line(aes(colour=gender), size=1.1) +
   scale_colour_manual(values=c("#e31a1c", "#1f78b4")) +
   facet_wrap(~day, nrow=1)+
-  labs(
-    title="Citibike trip counts by gender",
-    subtitle="--Jun 2020",
-    caption="Data provided and owned by: NYC Bike Share, LLC and Jersey City Bike Share, LLC",
-    x="", y="trip counts"
-    )
+  labs(x="", y="trip counts")
 ```
 
 Code for calculating approximate distance travelled by od_pair.
@@ -266,7 +189,7 @@ ny_trips <- ny_trips |> # Take the ny_trips data frame.
   mutate(
     age=get_age(as.POSIXct(birth_year, format="%Y"), as.POSIXct("2020", format="%Y")) # Calculate age from birth_date.
     )
-````
+```
 
 The code for plotting trip speeds (approximate) by age, gender and distance travelled.
 
@@ -300,91 +223,4 @@ temp |>
   geom_line(aes(colour=gender))+
   facet_wrap(~dist_bands, nrow=1)
 
-rm(temp)
-```
-
-
-## Task 1: Describe data
-
-Complete the data description table below:
-
-| Variable name  | Variable value   | Measurement level |
-|----------------|------------------|-------------------|
-| `name`         | "Central Park"   |  <enter here>     |
-| `capacity`     |  80              |                   |
-| `rank_capacity`|  45              |                   |
-| `date_opened`  |  "2014-05-23"    |                   |
-| `longitude`    | -74.00149746     |                   |
-| `latitude`     | 40.74177603      |                   |
-
-
-
-## Task 2: Diagnose data
-
-Provide a layout for a tidy version of the tables below.
-
-### UK General Election Results 2019
-
-| party                   | percent_vote     | num_mps    |
-|-------------------------|------------------|------------|
-| Conservative            | 43.6             |  365       |
-| Labour                  | 32.2             |  202       |
-| Scottish National Party | 3.9              |  48        |
-| Liberal Democrats       | 11.6             |  11        |
-| Democratic Union Party  | 0.8              |  9         |
-
-### UK General Election Results 2017 and 2019
-
-| party                   | percent_vote_2017 | num_mps_2017 | percent_vote_2019 | num_mps_2019 |
-|-------------------------|-------------------|--------------| ------------------|--------------|
-| Conservative            | 42.4              | 317          | 43.6              | 365          |
-| Labour                  | 40.0              | 262          | 32.2              | 202          |
-| Scottish National Party | 3.0               | 35           | 3.9               | 48           |
-| Liberal Democrats       | 7.4               | 12           | 11.6              | 11           |
-| Democratic Union Party  | 0.9               | 10           | 0.8               | 8            |
-
-
-## Task 3: Fix data
-
-The two untidy datasets can be found at:
-
-* [`ny_spread_rows`](https://www.roger-beecham.com/datasets/ny_spread_rows.csv)
-* [`ny_spread_columns`](https://www.roger-beecham.com/datasets/ny_spread_columns.csv)
-
-
-Display your code for fixing the `ny_spread_rows` dataset below and copy and paste the output that was returned to the console.
-
-```{r fix-ny-spread-rows}
-#| echo: true
-#| eval: false
-# Place code for tidying here.
-
-# Copy and paste the RConsole output here.
-
-```
-
-Display your code for fixing the `ny_spread_columns` dataset below and copy and paste the output that was returned to the console.
-
-```{r fix-ny-spread-columns}
-#| echo: true
-#| eval: false
-
-# Place code for tidying here.
-
-# Copy and paste the RConsole output here.
-
-```
-
-## Task 4: Compute from data
-
-Display your code in the block below
-
-```{r compute-ny-fixed-data}
-#| echo: true
-#| eval: false
-# Place code for computing here.
-
-# Copy and paste the RConsole output here.
-
-```
 ```

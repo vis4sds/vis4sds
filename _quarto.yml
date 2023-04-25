@@ -45,7 +45,6 @@ book:
   #   - a3-updating.qmd
   #   - a4-data.qmd
   #   - a5-debug.qmd
-  engine: knitr
 
 bibliography: references.bib
 suppress-bibliography: true

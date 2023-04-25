@@ -14,11 +14,11 @@ By the end of this *Task* you should be able to:
 
 ## Introduction
 
-This task requires you to apply the concepts and skills developed in the chapter on data fundamentals. Do complete each of the task components and be sure to save your work.
+This task requires you to apply the concepts and skills developed in the chapter on data fundamentals. 
 
 ## Component 1: Describe data
 
-Complete the data description table below identifying the **measurement level** of each variable in the (fictional) New York bikeshare stations dataset below.
+Complete the data description table below identifying the *measurement level* of each variable in the  New York bikeshare stations dataset below.
 
 | Variable name  | Variable value   | Measurement level |
 |----------------|------------------|-------------------|
@@ -33,7 +33,7 @@ Complete the data description table below identifying the **measurement level** 
 
 ## Component 2: Diagnose data
 
-Below are two different tables with results from UK General Elections. We will be working with these data in the next session. Identify whether or not each is in **tidy** format [@wickham_tidy_2014]. If they are not, provide a layout for a tidy version. No need to use code here, just edit the markdown table. If you're struggling to work out how to organise markdown tables, you may wish to use this [tables generator](https://www.tablesgenerator.com/markdown_tables).
+Below are two different tables with results from UK General Elections. We will be working with these data in the next session. Identify whether or not each is in *tidy* format [@wickham_tidy_2014]. If they are not, provide a layout for a tidy version. No need to use code here, just edit the markdown table. 
 
 ### UK General Election Results 2019
 

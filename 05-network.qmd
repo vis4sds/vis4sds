@@ -1,5 +1,11 @@
-# Networks {#sec-networks}
+# Networks {#sec-network}
 
+```{r}
+#| echo: false
+library(knitr)
+library(kableExtra)
+library(fontawesome)
+```
 
 By the end of this chapter you should gain the following knowledge and practical skills.
 
@@ -21,6 +27,41 @@ By the end of this chapter you should gain the following knowledge and practical
 
 :::
 
+## Introduction
+
+Networks are a special class of data used to represent things (entities) and how they relate to one another. Network data consist of two types of element: *nodes*, the entities themselves, and *edges*, the connections between nodes. Both nodes and edges can have additional information attached to them -- counts, categories and directions. Network data are cumbersome to work with in R as they are not represented well  by flat data frames. A common workflow is to split the data across two tables -- one representing nodes and one representing edges [@wickham_ggplot2_2020].
+
+A category of network data used heavily in geospatial analysis is origin-destination (OD) data describing, for example, flows of bikes [@beecham_connected_2023] and commuters [@beecham_characterising_2019] around a city, or [water](https://public.tableau.com/profile/robradburn#!/vizhome/LiquidCapital/VirtualWater) around a country. These data consist of *nodes*, origin and destination locations, and *edges*, flows linking those origins and destinations. Whilst statistics from [Network Science](https://en.wikipedia.org/wiki/Network_science) can and have been deployed in the analysis of geospatial OD data, visualization techniques provide much assistance in exposing the types of complex structural patterns and relations that result from locating OD flow data within geographic context.
+
+In this chapter we will work with an accessible and widely used origin-destination network dataset: Census travel-to-work data. This records counts of individuals commuting between locations ([census geographies](https://www.ons.gov.uk/methodology/geography/ukgeographies/censusgeography#census-geography)) of the UK.
+
+
 ## Concepts
+
+<!-- ### Network data: nodes and edges
+
+This session introduces techniques for visually representing networks and evaluates their usefulness through an analysis of 2011 Census OD travel-to-work data.  We will focus on travel-to-work data in London -- the **nodes** in this dataset are London's 33 boroughs and the **edges** are directed OD pairs between these boroughs.
+
+```{r nodes-data, echo=FALSE, out.width="50%"}
+data <- tibble::tibble(
+  "borough" = c("Barking and Dagenham", "Barnet", "Bexley", "..."),
+  "out" = c("54237", "117657", "77263", "..."),
+  "in" = c("33605", "72024", "39232", "...")
+  )
+kbl(data,  caption = "Nodes table: London Boroughs.", escape = FALSE) |> kable_minimal()
+```
+
+
+```{r edges-data, echo=FALSE, out.width="50%"}
+data <- tibble::tibble(
+  "origin" = c("Barking and Dagenham", "Barking and Dagenham", "Barking and Dagenham", "..."),
+  "destination" = c("Barking and Dagenham", "Barnet", "Bexley", "..."),
+  "freq" = c("14650", "280", "155", "...")
+  )
+kbl(data,  caption = "Edges table: OD pairs between London Boroughs.", escape = FALSE) |> kable_minimal()
+```
+ -->
+
+
 
 ## Techniques

@@ -23,8 +23,6 @@ mosaic <- ped_veh |>
   filter(!is_inner) |> 
   ggplot() +
   geom_mosaic(aes(x=product(is_weekend, vehicle_type), alpha=is_weekend, fill=vehicle_type), offset = 0.008)+
-  #scale_fill_manual(values=c("#377eb8","#ff7f00"))+
-  #scale_fill_manual(values=c("#2171b5", "#525252"))+
   guides(fill="none", alpha="none") +
   theme_v_gds() +
   coord_flip() +
@@ -44,6 +42,30 @@ plot_data <- ggplot_build(mosaic)$data |> as.data.frame() |>
   summarise(xmin=min(xmin),xmax=max(xmax), ymin=min(ymin),ymax=max(ymax),
             vehicle_prop_bor=sum(.wt)/sum(bor_total), bor_total=min(bor_total)) |> ungroup() |> 
   left_join(london_squared) 
+
+mosaic <- ped_veh |>
+  inner_join(london_squared) |>
+  filter(!is.na(BOR)) |> 
+  mutate(
+    is_weekend=if_else(day_of_week %in% c("Saturday", "Sunday"), "weekend", "weekday"),
+    vehicle_type=fct_rev(vehicle_type)) |> 
+  ggplot() +
+  geom_mosaic(aes(x=product(is_weekend, vehicle_type), fill=vehicle_type, colour=vehicle_type, alpha=is_weekend), offset = 0.008)+
+  scale_fill_brewer(palette="Set1", direction=-1)+
+  scale_alpha_ordinal(range=c(.3,.9))+
+  theme_v_gds() +
+  labs(fill="vehicle type")+
+  facet_wrap(~BOR, ncol=7)+
+  guides(fill=guide_legend(reverse = TRUE))+
+  theme(
+    panel.grid.major.y=element_blank(), panel.grid.minor = element_blank(), 
+    axis.text.x = element_blank(), axis.text.y = element_blank(),
+    axis.title.y = element_blank(), axis.title.x = element_blank(),
+    legend.position = "right",
+  ) +
+  coord_flip()
+
+
 
 
 mosaic <- ped_veh |>
@@ -189,181 +211,6 @@ borough_select_model <- mosaic +
   ) 
 
 
-mosaic <- ped_veh |>
-  left_join(london_squared) |>
-  filter(
-    !is.na(BOR), 
-    local_authority_district %in% c("Westminster", "Harrow"),
-    vehicle_type %in% c("Car", "Motorcycle","Taxi", "Bicycle")
-  ) |> 
-  mutate(
-    is_weekend=if_else(day_of_week %in% c("Saturday", "Sunday"), "weekend", "weekday"),
-    #vehicle_type=fct_rev(vehicle_type),
-    vehicle_type=fct_rev(factor(vehicle_type, levels=c("Car", "Motorcycle","Taxi", "Bicycle"))), 
-    local_authority_district=factor(local_authority_district, levels=c("Westminster", "Harrow"))
-  ) |> 
-  ggplot() +
-  geom_mosaic(aes(x=product(vehicle_type), fill=vehicle_type), alpha=.3, offset = 0.008)+
-  #geom_mosaic(aes(x=product(vehicle_type)), fill="#2171b5", alpha=.3, offset = 0.008)+
-  scale_fill_manual(values=c("#4daf4a", "#984ea3", "#377eb8", "#e41a1c"))+
-  theme_v_gds() +
-  coord_flip() +
-  facet_wrap(~local_authority_district, nrow=2)+
-  scale_x_productlist(position="top", name="")+
-  theme(
-    aspect.ratio = 1,
-    panel.grid.major.y=element_blank(), panel.grid.minor = element_blank(), 
-    axis.text.x = element_blank(), axis.text.y = element_blank(), axis.title.x = element_blank()
-  ) 
-
-plot_data <- ggplot_build(mosaic)$data |> as.data.frame() |> 
-  group_by(PANEL) |>
-  mutate(bor_total=sum(.wt)) |> ungroup() |>
-  group_by(PANEL, x__fill__vehicle_type) |>
-  summarise(xmin=min(xmin),xmax=max(xmax), ymin=min(ymin),ymax=max(ymax),
-            vehicle_prop_bor=sum(.wt)/sum(bor_total), bor_total=min(bor_total)) |> ungroup() |> 
-  left_join(london_squared, by=c("bor_total"="bor_total_filtered")) |> 
-  mutate(
-    local_authority_district=factor(local_authority_district, levels=c("Westminster", "Harrow"))
-  )
-
-
-exp <- ped_veh |>
-  inner_join(london_squared) |>
-  mutate(is_weekend=day_of_week %in% c("Saturday", "Sunday")) |> 
-  filter(vehicle_type %in% c("Car", "Motorcycle","Taxi", "Bicycle")) |> 
-  #group_by(vehicle_type) |> 
-  mutate(glob_exp=mean(is_weekend)) |> 
-  group_by(local_authority_district, vehicle_type) |> 
-  summarise(
-    glob_exp=first(glob_exp), 
-    freq=n(), 
-    #obs=mean(is_weekend)*freq, 
-    #exp=glob_exp*freq,
-    obs=mean(is_weekend),
-    exp=glob_exp,
-    diff=obs-exp,
-    resid=(obs-exp)/sqrt(exp)
-  )
-
-borough_select_model_fill <- mosaic + 
-  geom_rect(
-    data=plot_data %>% inner_join(exp, by=c("x__fill__vehicle_type"="vehicle_type","local_authority_district"="local_authority_district")) |> 
-      #data=plot_data %>% inner_join(exp, by=c("x__vehicle_type"="vehicle_type","local_authority_district"="local_authority_district")), 
-      mutate(max_diff=max(abs(diff)), diff_rescaled=map_scale(diff, -max_diff, max_diff, 0,1), local_authority_district=factor(local_authority_district, levels=c("Westminster", "Harrow"))),
-    aes(xmin=xmin, xmax=xmax, ymin=.5, ymax=diff_rescaled, fill=x__fill__vehicle_type)
-  ) +
-  geom_segment(
-    data=plot_data, #%>% left_join(exp, by=c("x__vehicle_type"="vehicle_type")),
-    aes(x=xmin, xend=xmax, y=.5, yend=.5),  size=.3
-  ) +
-  geom_text(
-    data=plot_data, 
-    aes(
-      x=xmin+0.5*(xmax-xmin), y=ymin+0.5*(ymax-ymin),label=x__fill__vehicle_type, size=vehicle_prop_bor
-    ), 
-    alpha=.7,family="Avenir Book")+
-  geom_text(
-    data=plot_data %>%
-      filter(x__fill__vehicle_type=="Car", BOR=="HRW"),
-    aes(x=xmax-.05, y=1), hjust=1,
-    label="more wknd",family="Avenir Book", size=2.5, alpha=.8
-  )+
-  geom_text(
-    data=plot_data %>%
-      filter(x__fill__vehicle_type=="Car", BOR=="HRW"),
-    aes(x=xmax-.05, y=0), hjust=0,
-    label="more wkdy",family="Avenir Book", size=2.5, alpha=.8
-  )+
-  scale_size(range=c(0, 10))+
-  scale_alpha_discrete(range=c(0.3,0.9))+
-  guides(size=FALSE, alpha=FALSE, fill=FALSE)+
-  labs(subtitle="hue (associative) <br> direct encoded exp", 
-       # caption=" <p>
-       # <span style = 'color: #e41a1c;'>car</span>
-       # <span style = 'color: #377eb8;'>mbike</span>
-       # <span style = 'color: #984ea3;'>taxi</span>
-       # <span style = 'color: #4daf4a;'>bike</span>
-       # </p>"
-  ) +
- # scale_fill_manual(values=c("#4daf4a", "#984ea3", "#377eb8", "#e41a1c"))+
-  #theme_v_gds()+
-  theme(
-    panel.grid.major.y=element_blank(), panel.grid.minor = element_blank(), 
-    axis.text.x = element_blank(), axis.text.y = element_blank(), axis.title.x = element_blank(), 
-    #legend.position = "right",
-    panel.spacing=unit(-0.1, "lines"),
-    plot.margin = margin(r=25),
-    plot.subtitle = ggtext::element_markdown(size=10, hjust=0),
-    plot.caption=ggtext::element_markdown(size=9, hjust=.5), plot.caption.position = "panel",
-    legend.key.size = unit(.4, 'cm'), legend.title = element_text(size=7)
-  )
-
-
-
-mosaic <- ped_veh |>
-  left_join(london_squared) |>
-  filter(
-    !is.na(BOR), 
-    local_authority_district %in% c("Westminster", "Harrow")#,
-    #vehicle_type %in% c("Car", "Motorcycle","Taxi", "Bicycle")
-  ) |> 
-  mutate(
-    is_weekend=if_else(day_of_week %in% c("Saturday", "Sunday"), "weekend", "weekday"),
-    vehicle_type=fct_rev(vehicle_type),
-    #vehicle_type=fct_rev(factor(vehicle_type, levels=c("Car", "Motorcycle","Taxi", "Bicycle"))), 
-    local_authority_district=factor(local_authority_district, levels=c("Westminster", "Harrow"))
-  ) |> 
-  ggplot() +
-  #geom_mosaic(aes(x=product(vehicle_type), fill=vehicle_type), alpha=.3, offset = 0.008)+
-  geom_mosaic(aes(x=product(vehicle_type)), fill="#2171b5", alpha=.3, offset = 0.008)+
-  #scale_fill_manual(values=c("#4daf4a", "#984ea3", "#377eb8", "#e41a1c"))+
-  theme_v_gds() +
-  coord_flip() +
-  facet_wrap(~local_authority_district, nrow=2)+
-  scale_x_productlist(position="top", name="")+
-  theme(
-    aspect.ratio = 1,
-    panel.grid.major.y=element_blank(), panel.grid.minor = element_blank(), 
-    axis.text.x = element_blank(), axis.text.y = element_blank(), axis.title.x = element_blank()
-  ) 
-plot_data <- ggplot_build(mosaic)$data |> as.data.frame() |> 
-  group_by(PANEL) |>
-  mutate(bor_total=sum(.wt)) |> ungroup() |>
-  group_by(PANEL, x__vehicle_type) |>
-  summarise(xmin=min(xmin),xmax=max(xmax), ymin=min(ymin),ymax=max(ymax),
-            vehicle_prop_bor=sum(.wt)/sum(bor_total), bor_total=min(bor_total)) |> ungroup() |> 
-  left_join(london_squared) |> 
-  mutate(
-    local_authority_district=factor(local_authority_district, levels=c("Westminster", "Harrow"))
-  )
-
-
-borough_select <- mosaic + 
-  geom_rect(
-    data=plot_data %>% inner_join(exp, by=c("x__vehicle_type"="vehicle_type","local_authority_district"="local_authority_district")) |> 
-      mutate(max_diff=max(abs(diff)), diff_rescaled=map_scale(diff, -max_diff, max_diff, 0,1)),
-    aes(xmin=xmin, xmax=xmax, ymin=.5, ymax=diff_rescaled), fill="#2171b5"
-  ) +
-  geom_text(
-    data=plot_data, 
-    aes(
-      x=xmin+0.5*(xmax-xmin), y=ymin+0.5*(ymax-ymin),label=x__vehicle_type, size=vehicle_prop_bor
-    ), 
-    alpha=.7,family="Avenir Book")+
-  scale_size(range=c(0, 10))+
-  guides(size=FALSE, alpha=FALSE)+
-  labs(subtitle="direct encoded <br> <span style = 'color: #08306b;'>expectation</span>") +
-  #theme_v_gds()+
-  theme(
-    panel.grid.major.y=element_blank(), panel.grid.minor = element_blank(), 
-    axis.text.x = element_blank(), axis.text.y = element_blank(), axis.title.x = element_blank(), 
-    #legend.position = "right",
-    panel.spacing=unit(-0.1, "lines"),
-    plot.margin = margin(r=25),
-    plot.subtitle = ggtext::element_markdown(size=10, hjust=1),
-    legend.text=element_text(size=6), legend.key.size = unit(.4, 'cm'), legend.title = element_text(size=7)
-  ) 
 
 
 
@@ -510,4 +357,117 @@ plot_imd_driver <- plot_data |>
     axis.title.y = element_blank(),
     axis.line.y = element_blank(),
     legend.position="right")
+
+
+###########################
+mosaic <- ped_veh |>
+  inner_join(london_squared, by=c("local_authority_district"="local_authority_district")) |>
+  filter(!is.na(BOR), vehicle_type %in% c("Car", "Motorcycle","Taxi", "Bicycle")) |> 
+  mutate(
+    is_weekend=if_else(day_of_week %in% c("Saturday", "Sunday"), "weekend", "weekday"),
+    vehicle_type=fct_rev(factor(vehicle_type, levels=c("Car", "Motorcycle","Taxi", "Bicycle")))
+  ) |> 
+  ggplot() +
+  geom_mosaic(aes(x=product(vehicle_type), fill=vehicle_type, colour=vehicle_type), alpha=.3, offset = 0.008)+
+  #scale_fill_brewer(palette="Set1", direction=-1)+
+  scale_alpha_ordinal(range=c(.3,.9))+
+  theme_v_gds() +
+  labs(fill="vehicle type")+
+  facet_grid(-fY~fX)+
+  guides(fill=guide_legend(reverse = TRUE))+
+  theme(
+    panel.grid.major.y=element_blank(), panel.grid.minor = element_blank(), 
+    axis.text.x = element_blank(), axis.text.y = element_blank(),
+    axis.title.y = element_blank(), axis.title.x = element_blank(),
+    legend.position = "right"
+  ) +
+  coord_flip()
+
+plot_data <- ggplot_build(mosaic)$data |> as.data.frame() |>
+  group_by(PANEL) |>
+  mutate(bor_total=sum(.wt)) |> ungroup() |>
+  group_by(PANEL, x__fill__vehicle_type) |>
+  summarise(xmin=min(xmin),xmax=max(xmax), ymin=min(ymin),ymax=max(ymax),
+            vehicle_prop_bor=sum(.wt)/sum(bor_total), bor_total=min(bor_total)) |> ungroup() |> 
+  left_join(london_squared, by=c("bor_total"='bor_total_filtered'))
+
+
+
+plot <- mosaic + 
+  geom_rect(
+    data=plot_data %>% inner_join(exp, by=c("x__fill__vehicle_type"="vehicle_type","local_authority_district"="local_authority_district")) |> 
+      #data=plot_data %>% inner_join(exp, by=c("x__vehicle_type"="vehicle_type","local_authority_district"="local_authority_district")), 
+      mutate(max_diff=max(abs(diff)), diff_rescaled=map_scale(diff, -max_diff, max_diff, 0,1), local_authority_district=factor(local_authority_district, levels=c("Westminster", "Harrow"))),
+    aes(xmin=xmin, xmax=xmax, ymin=.5, ymax=diff_rescaled, fill=x__fill__vehicle_type)
+  ) +
+  geom_segment(
+    data=plot_data, #%>% left_join(exp, by=c("x__vehicle_type"="vehicle_type")),
+    aes(x=xmin, xend=xmax, y=.5, yend=.5),  size=.3
+  ) +
+  geom_text(
+    data=plot_data %>% filter(x__fill__vehicle_type=="Car"), 
+    aes(
+      x=.5, y=.5,label=BOR
+    ), 
+    alpha=.7,family="Avenir Book") +
+  scale_size(range=c(0, 10))+
+  scale_alpha_discrete(range=c(0.3,0.9))+
+  guides(size=FALSE, alpha=FALSE, fill=FALSE)+
+  labs( 
+    caption=" <p>
+       <span style = 'color: #e41a1c;'>car</span>
+       <span style = 'color: #377eb8;'>mbike</span>
+       <span style = 'color: #984ea3;'>taxi</span>
+       <span style = 'color: #4daf4a;'>bike</span>
+       </p>"
+  ) +
+  scale_fill_manual(values=c("#4daf4a", "#984ea3", "#377eb8", "#e41a1c"))+
+  #theme_v_gds()+
+  theme(
+    panel.grid.major.y=element_blank(), panel.grid.minor = element_blank(), 
+    axis.text.x = element_blank(), axis.text.y = element_blank(), axis.title.x = element_blank(), 
+    #legend.position = "right",
+    panel.spacing=unit(-0.1, "lines"),
+    panel.grid.major=element_blank(),
+    plot.margin = margin(r=25),
+    plot.subtitle = ggtext::element_markdown(size=10, hjust=0),
+    plot.caption=ggtext::element_markdown(size=11, hjust=.5), plot.caption.position = "panel",
+    legend.key.size = unit(.4, 'cm'), legend.title = element_text(size=7),
+    strip.text.x = element_blank(), strip.text.y = element_blank()
+  )
+
+borough_alpha_colour <- mosaic + 
+  geom_text(
+    data=plot_data, 
+    aes(
+      x=xmin+0.5*(xmax-xmin), y=ymin+0.5*(ymax-ymin),label=x__fill__vehicle_type, size=vehicle_prop_bor
+    ), 
+    alpha=.7,family="Avenir Book")+
+  scale_size(range=c(0, 7))+
+  guides(size=FALSE)+
+  theme(
+    panel.grid.major.y=element_blank(), panel.grid.minor = element_blank(), 
+    axis.text.x = element_blank(), axis.text.y = element_blank(),
+    axis.title.y = element_blank(), axis.title.x = element_blank(), legend.position = "right",
+    legend.text=element_text(size=6), legend.key.size = unit(.4, 'cm'), 
+    legend.title = element_text(size=7), strip.text=element_blank(), strip.text.x = element_blank(), panel.grid=element_blank(),
+    panel.spacing=unit(-0.2, "lines")
+  )
+
+
+plot <- borough_alpha_colour +
+  plot_annotation(
+    title="Pedestrian casualties by vehicle type and period of week",
+    subtitle="--Relaxed spatial layout of London boroughs",
+    caption="Stats19 data accessed via `stats19` package") 
+
+
+plot <- plot + 
+  plot_annotation(title="Pedestrian casualties by vehicle and Borough",
+                  subtitle="--After the Flood's LondonSquared layout is used",
+                  caption="Stats19 data accessed via `stats19` package",
+                  theme = theme_v_gds())
+
+ggsave(filename=here("figs", "04", "mosaic_boroughs_spatial.png"), plot=plot,width=7, height=6, dpi=350)
+ggsave(filename=here("figs", "04", "mosaic_boroughs_spatial.svg"), plot=plot,width=7, height=6)
 
