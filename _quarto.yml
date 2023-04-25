@@ -7,8 +7,8 @@ book:
   author: "Roger Beecham and Robin Lovelace"
   description: ""
   # cover-image: images/cover.png
-  site-url: https://roger-beecham/vis4gds
-  repo-url: https://github.com/rogerbeecham/vis4gds/
+  site-url: https://vis4sds/vis4sds
+  repo-url: https://github.com/vis4sds/vis4sds/
   repo-branch: master
   repo-actions: [edit]
   sharing: [twitter]
@@ -40,8 +40,8 @@ book:
   #       - loops.qmd
   #       - speed.qmd
   appendices:
-    - a1-data.qmd
-    - a2-visual.qmd
+    # - a1-data.qmd
+    # - a2-visual.qmd
   #   - a3-updating.qmd
   #   - a4-data.qmd
   #   - a5-debug.qmd
