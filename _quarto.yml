@@ -39,7 +39,7 @@ book:
   #       - s3.qmd
   #       - loops.qmd
   #       - speed.qmd
-  appendices:
+  # appendices:
     # - a1-data.qmd
     # - a2-visual.qmd
   #   - a3-updating.qmd

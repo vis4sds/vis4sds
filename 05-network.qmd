@@ -38,9 +38,9 @@ In this chapter we will work with an accessible and widely used origin-destinati
 
 ## Concepts
 
-<!-- ### Network data: nodes and edges
+### Network data: nodes and edges
 
-This session introduces techniques for visually representing networks and evaluates their usefulness through an analysis of 2011 Census OD travel-to-work data.  We will focus on travel-to-work data in London -- the **nodes** in this dataset are London's 33 boroughs and the **edges** are directed OD pairs between these boroughs.
+This chapter introduces techniques for visually representing networks and evaluates their usefulness through an analysis of 2011 Census OD travel-to-work data.  It does so using Census travel-to-work data in London. The *nodes* in this dataset are London's 33 boroughs and the *edges* are directed OD pairs between these boroughs.
 
 ```{r nodes-data, echo=FALSE, out.width="50%"}
 data <- tibble::tibble(
@@ -60,8 +60,13 @@ data <- tibble::tibble(
   )
 kbl(data,  caption = "Edges table: OD pairs between London Boroughs.", escape = FALSE) |> kable_minimal()
 ```
- -->
 
+In Figure \@ref(fig:flows-bor), frequencies of the number of *jobs* available in each borough and *workers* living in each borough (the nodes) are represented. Note that job-rich boroughs in central London -- Westminster, City of London, Camden, Tower Hamlets -- contain many more *jobs* than *workers* residing in them. We can therefore infer that there is likely to be a high level of in-commuting to those boroughs and the corollary, a high level of out-commuting for boroughs containing large numbers of *workers* but comparatively fewer *jobs*. 
+
+
+### Node-link representations
+
+Perhaps the most common class of network visualization tha could be used to represent the data in  @tbl-nodes-data and @tbl-edges-data are node-link diagrams. These depict graphs in two dimensions as a force-directed layout. Nodes are positioned such that those sharing greater connection -- edges with greater weights (frequencies) -- are closer than those that are less well-connected -- that do not share edges with such large weights. Edges are drawn as lines *connecting* nodes.
 
 
 ## Techniques
