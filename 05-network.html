@@ -140,6 +140,8 @@ ul.task-list{list-style: none;}
   <ul class="collapse">
 <li><a href="#network-data-nodes-and-edges" id="toc-network-data-nodes-and-edges" class="nav-link" data-scroll-target="#network-data-nodes-and-edges"> <span class="header-section-number">5.2.1</span> Network data: nodes and edges</a></li>
   <li><a href="#node-link-representations" id="toc-node-link-representations" class="nav-link" data-scroll-target="#node-link-representations"> <span class="header-section-number">5.2.2</span> Node-link representations</a></li>
+  <li><a href="#matrix-representations" id="toc-matrix-representations" class="nav-link" data-scroll-target="#matrix-representations"> <span class="header-section-number">5.2.3</span> Matrix representations</a></li>
+  <li><a href="#od-maps" id="toc-od-maps" class="nav-link" data-scroll-target="#od-maps"> <span class="header-section-number">5.2.4</span> OD maps</a></li>
   </ul>
 </li>
   <li><a href="#techniques" id="toc-techniques" class="nav-link" data-scroll-target="#techniques"> <span class="header-section-number">5.3</span> Techniques</a></li>
@@ -209,41 +211,12 @@ Write <code>ggplot2</code> specifications that use containment to analyse spatia
 <span class="header-section-number">5.2</span> Concepts</h2>
 <section id="network-data-nodes-and-edges" class="level3" data-number="5.2.1"><h3 data-number="5.2.1" class="anchored" data-anchor-id="network-data-nodes-and-edges">
 <span class="header-section-number">5.2.1</span> Network data: nodes and edges</h3>
-<p>This chapter introduces techniques for visually representing networks and evaluates their usefulness through an analysis of 2011 Census OD travel-to-work data. It does so using Census travel-to-work data in London. The <em>nodes</em> in this dataset are London’s 33 boroughs and the <em>edges</em> are directed OD pairs between these boroughs.</p>
+<p>This chapter introduces techniques for visually representing networks and evaluates their usefulness through an analysis of Census OD travel-to-work data in London. The <em>nodes</em> in this dataset are London’s 33 boroughs and the <em>edges</em> are directed OD pairs between these boroughs.</p>
 <div class="cell">
-<div class="cell-output-display">
 
-<table class=" lightable-minimal" style="font-family: &quot;Trebuchet MS&quot;, verdana, sans-serif; margin-left: auto; margin-right: auto;">
-<caption>Nodes table: London Boroughs.</caption>
- <thead><tr>
-<th style="text-align:left;"> borough </th>
-   <th style="text-align:left;"> out </th>
-   <th style="text-align:left;"> in </th>
-  </tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;"> Barking and Dagenham </td>
-   <td style="text-align:left;"> 54237 </td>
-   <td style="text-align:left;"> 33605 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Barnet </td>
-   <td style="text-align:left;"> 117657 </td>
-   <td style="text-align:left;"> 72024 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> Bexley </td>
-   <td style="text-align:left;"> 77263 </td>
-   <td style="text-align:left;"> 39232 </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> ... </td>
-   <td style="text-align:left;"> ... </td>
-   <td style="text-align:left;"> ... </td>
-  </tr>
-</tbody>
-</table>
 </div>
+<div id="tbl-nodes-data" class="cell tbl-parent quarto-layout-panel anchored" data-tbl-cap="Pedestrian casualties by vehicle involved and injury severity.">
+
 </div>
 <div class="cell">
 <div class="cell-output-display">
@@ -280,12 +253,33 @@ Write <code>ggplot2</code> specifications that use containment to analyse spatia
 </table>
 </div>
 </div>
-<p>In Figure @ref(fig:flows-bor), frequencies of the number of <em>jobs</em> available in each borough and <em>workers</em> living in each borough (the nodes) are represented. Note that job-rich boroughs in central London – Westminster, City of London, Camden, Tower Hamlets – contain many more <em>jobs</em> than <em>workers</em> residing in them. We can therefore infer that there is likely to be a high level of in-commuting to those boroughs and the corollary, a high level of out-commuting for boroughs containing large numbers of <em>workers</em> but comparatively fewer <em>jobs</em>.</p>
+<p>In <span class="quarto-unresolved-ref">?fig-flows-bor</span> frequencies of the number of <em>jobs</em> available in each borough and <em>workers</em> living in each borough (the nodes) are represented. Note that job-rich boroughs in central London – Westminster, City of London, Camden, Tower Hamlets – contain many more <em>jobs</em> than <em>workers</em> residing in them. We can infer that there is a high level of in-commuting to those boroughs and the corollary, a high level of out-commuting for boroughs containing large numbers of <em>workers</em> but comparatively fewer <em>jobs</em>.</p>
 </section><section id="node-link-representations" class="level3" data-number="5.2.2"><h3 data-number="5.2.2" class="anchored" data-anchor-id="node-link-representations">
 <span class="header-section-number">5.2.2</span> Node-link representations</h3>
 <p>Perhaps the most common class of network visualization tha could be used to represent the data in <span class="quarto-unresolved-ref">?tbl-nodes-data</span> and <span class="quarto-unresolved-ref">?tbl-edges-data</span> are node-link diagrams. These depict graphs in two dimensions as a force-directed layout. Nodes are positioned such that those sharing greater connection – edges with greater weights (frequencies) – are closer than those that are less well-connected – that do not share edges with such large weights. Edges are drawn as lines <em>connecting</em> nodes.</p>
+<p>Figure <span class="quarto-unresolved-ref">?fig-flows-bor</span> uses a force-directed layout to represent the travel-to-work data. This shows large numbers of flows between job-rich boroughs, particularly Westminster, and boroughs containing large resident populations: Wandsworth, Lambeth, Southwark close to central London; Barnet, Brent, Haringey further from central London. If the aim is to compare relative frequencies of flows and <em>locate</em> them in geographic context – to understand both the distribution and geography of travel-to-work in London, then we can make better use of <em>position</em>. In Figure <span class="quarto-unresolved-ref">?fig-lines-geog</span>, nodes (boroughs) are placed in their exact geographic position (geometric centroid of boroughs), and line width and transparency is used to encode flow frequency. In the plot on the bottom row, flow <em>direction</em> is encoded by making flow lines asymmetric <span class="citation" data-cites="wood_visualizing_2011">(following <a href="references.html#ref-wood_visualizing_2011" role="doc-biblioref">Wood, Slingsby, and Dykes 2011</a>)</span>: the straight ends are origins, the curved ends destinations.</p>
+<p>The geophraphic positioning of nodes adds context and the encoding of direction provides further detail around, for example, the pattern of commuting into central London boroughs versus more peripheral boroughs (asymmetric flows into Westminster, more symmetric pattern between outer London boroughs like Brent and Enfield). However, there are problems that affect the usefulness of the graphic:</p>
+<ul>
+<li>Flows that start and end at the same location are not shown;</li>
+<li>Longer flows are more visually dominant than are shorter flows;</li>
+<li>The graphic is cluttered with a ‘hairball’ effect due to multiple overlapping lines;</li>
+<li>Aggregating to the somewhat arbitrary geometric centre of boroughs and drawing lines between these locations implies an undue level of spatial precision.</li>
+</ul></section><section id="matrix-representations" class="level3" data-number="5.2.3"><h3 data-number="5.2.3" class="anchored" data-anchor-id="matrix-representations">
+<span class="header-section-number">5.2.3</span> Matrix representations</h3>
+<p>An alternative way to represent these edge frequencies is origin-destination matrices, as in Figure <span class="quarto-unresolved-ref">?fig-matrices</span>. The columns are destinations, London boroughs to which residents commute for work; the rows are origins, London boroughs from which residents commute out for work. Edge frequencies are encoded using colour value – the darker the colour, the larger the number of commutes between those boroughs. Boroughs are ordered left-to-right and top-to-bottom according to the total number of jobs accessed in each borough.</p>
+<p>Whilst using colour rather than line width to show flow magnitude is a less effective encoding channel <span class="citation" data-cites="munzner_visualization_2014">(following <a href="references.html#ref-munzner_visualization_2014" role="doc-biblioref">Munzner 2014</a>)</span>, there are obvious advantages. The salience bias of longer flows is removed. Ordering cells of the matrix by destination size (number of jobs accessed in each borough) helps to emphasise patterns in the job-rich boroughs, but also encourages <em>within</em> and <em>between</em> borough comparison. For example, the lack of colour outside of the diagonals in the less job-rich boroughs, which also tend to be in outer London, suggests that labour markets there might be more self-contained: that is, people are less likely to commute-in from outside of those boroughs for work. The layout also supports ‘look-up’ type tasks – for example in the top-right plot, where the same OD commutes are removed, we can efficiently identify the boroughs importing the second (WNS) and third (LAM) largest number of workers to Westminster. By applying a local scaling on destination (bottom plot), whereby a separate colour scale is created for each destination borough, we can explore the theme of <em>self-containment</em> more directly. The vertical blue bars for Hammersmith and Kingston suggest that there are comparatively large numbers commuting into- these boroughs for work, especially given their size in terms of available jobs.</p>
+</section><section id="od-maps" class="level3" data-number="5.2.4"><h3 data-number="5.2.4" class="anchored" data-anchor-id="od-maps">
+<span class="header-section-number">5.2.4</span> OD maps</h3>
+<p>The OD matrices expose new structure that could not be so easily inferred from the node-link visualizations. Although their layout is space-efficient, clearly for phenomena such as commuting, <em>geographic context</em> is highly relevant. It is possible to make better use of layout and position to support the spatial dimension of analysis. <a href="https://xeno.graphics/od-map/">OD Maps</a> were proposed by <span class="citation" data-cites="wood_visualisation_2010">Wood, Dykes, and Slingsby (<a href="references.html#ref-wood_visualisation_2010" role="doc-biblioref">2010</a>)</span> as a means of supporting such an analysis. They take a little to get your head around, but the idea is very elegant.</p>
+<p>An OD map contains exactly the same cells as an OD matrix, but the cells are <em>re-ordered</em> with an approximate geographic arrangement, as in <span class="quarto-unresolved-ref">?fig-reordered-matrix</span>. So, for example, we may be interested in focussing on <em>destination</em>, or workplace, boroughs. In the first highlighted example, commutes into Westminster are considered (the left-most column). Cells in the highlighted column are coloured according to the number of workers resident in each borough that travel into Westminster for work. These cells are then <em>re-ordered</em> spatially, as in the inset map for Westminster in the figure. The geographic ordering allows us to see that residents access jobs in Westminster in large numbers from many boroughs in London, but especially from Wandsworth, Lambeth and Southwark immediately to the south of Westminster. In the second example, we focus on <em>origins</em>: commutes out of Hackney are considered (the middle row). Cells in the highlighted row are coloured according to the number of jobs accessed in each borough by residents travelling out of Hackney for work. Cells are again reordered in the inset map. This demonstrates that patterns of commuting are reasonably localised. The modal destination/workplace borough remains Westminster, but relatively large numbers of jobs are accessed in Camden, Islington, Tower Hamlets and the City of London.</p>
+<p>OD maps extend this idea by displaying <em>all cells</em> of the OD matrix with a geographic arrangement. This is achieved via a “map-within-map” layout. In the destination-focussed example in Figure @ref(fig:od-map-layout), each larger (reference) cell identifies destinations and the smaller cells are coloured according to origins – the number of residents in each borough commuting into the reference cell for work.</p>
+<p>The first map uses a <em>global</em> colour scaling and the second a <em>local</em> colour scaling. Ordering cells geographically helps better appreciate this distinction. As demonstrated in <span class="quarto-unresolved-ref">?fig-flows-bor</span>, Westminster contains a large portion of jobs filled by London residents. It makes sense then that, outside of the reference cells (residents living and working in the same borough), the darkest colours corresponding with the largest flow counts are in the map where Westminster is the reference cell. Due to this dominant pattern, however, it is difficult to read too much into the patterns of commuting outside of Westminster. This is where a local scaling is useful. Flow counts are summarised over each reference borough (destination in this case) and normalised according to the <em>maximum</em> flow count for that reference borough. Most often this maximum flow count (darkest blue) is the reference cell – residents living and working in the same borough. The City of London, which contains many jobs but few residents, is the obvious exception.</p>
+<p>The local scaling allows us to characterise the geography of commuting into boroughs in some detail. The two job-rich boroughs – Westminster and City of London – clearly draw workers in large proportions across London boroughs and to a lesser extent this is the case for other central/inner boroughs such as Islington (ISL), Camden (CMD), Kingston (KNS). For many outer London boroughs, commuting patterns are very localised – large numbers of available jobs are filled by workers living in those boroughs or immediately neighbouring boroughs. Notice that for inner London boroughs south of the river – Lambeth (LAM), Wandsworth (WNS), Southwark (SWR) – they tend to draw workers in greater number from neighbouring boroughs that are also south of the river.</p>
 </section></section><section id="techniques" class="level2" data-number="5.3"><h2 data-number="5.3" class="anchored" data-anchor-id="techniques">
 <span class="header-section-number">5.3</span> Techniques</h2>
+<ul>
+<li>Use of <code>gridmappr</code> for analysing spatial structure in commuting.</li>
+</ul>
 
 
 </section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
