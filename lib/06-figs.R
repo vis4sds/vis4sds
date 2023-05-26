@@ -611,7 +611,7 @@ plot <- #cons_data |> filter(constituency_name!="Orkney and Shetland") |>
     axis.line = element_blank()
   )
 
-ggsave(filename=here("figs", "06", "lineups_fe.png"), plot=plot,width=10, height=5.6, dpi=300)
+ggsave(filename=here("figs", "06", "lineups_fe.png"), plot=plot,width=6.5, height=8, dpi=300)
 
 
 
