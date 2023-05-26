@@ -411,7 +411,7 @@ plot <- cons_data |> filter(constituency_name!="Orkney and Shetland") |>
   geom_sf(data=. %>% group_by(region) %>% summarise(), colour="#636363", linewidth=0.05, fill="transparent")+
   geom_sf(data=. %>% group_by(id) %>% summarise(), colour="#636363", linewidth=0.1, fill="transparent")+
   coord_sf(crs=27700, datum=NA) +
-  facet_wrap(~id, ncol=5) +
+  facet_wrap(~id, ncol=3) +
   scale_fill_distiller(palette="RdBu", direction=1,
                        limits=c(-max_resid, max_resid), guide="none") +
   theme(
@@ -425,11 +425,11 @@ plot <- #cons_data |> filter(constituency_name!="Orkney and Shetland") |>
   inner_join(permuted_data, by=c("cons_code"="pcon19cd")) |> 
   mutate(id=factor(id, sample(ids)), id=paste0("p", as.numeric(id))) |> 
   ggplot() +
-  geom_sf(aes(fill=.resid), colour="#636363", linewidth=0.02)+
-  geom_sf(data=. %>% group_by(region) %>% summarise(), colour="#636363", linewidth=0.1, fill="transparent")+
-  geom_sf(data=. %>% group_by(id) %>% summarise(), colour="#636363", linewidth=0.15, fill="transparent")+
+  geom_sf(aes(fill=.resid), colour="#636363", linewidth=0.05)+
+  geom_sf(data=. %>% group_by(region) %>% summarise(), colour="#636363", linewidth=0.2, fill="transparent")+
+  geom_sf(data=. %>% group_by(id) %>% summarise(), colour="#636363", linewidth=0.25, fill="transparent")+
   #coord_sf(crs=27700, datum=NA) +
-  facet_wrap(~id, ncol=5) +
+  facet_wrap(~id, ncol=3) +
   scale_fill_distiller(palette="RdBu", direction=1,
                        limits=c(-max_resid, max_resid), guide="none") +
   theme(
@@ -598,15 +598,15 @@ plot <- #cons_data |> filter(constituency_name!="Orkney and Shetland") |>
   inner_join(permuted_data, by=c("cons_code"="pcon19cd")) |> 
   mutate(id=factor(id, sample(ids)), id=paste0("p",as.numeric(id))) |> 
   ggplot() +
-  geom_sf(aes(fill=.resid), colour="#636363", linewidth=0.02)+
-  geom_sf(data=. %>% group_by(region) %>% summarise(), colour="#636363", linewidth=0.1, fill="transparent")+
-  geom_sf(data=. %>% group_by(id) %>% summarise(), colour="#636363", linewidth=0.15, fill="transparent")+
+  geom_sf(aes(fill=.resid), colour="#636363", linewidth=0.05)+
+  geom_sf(data=. %>% group_by(region) %>% summarise(), colour="#636363", linewidth=0.2, fill="transparent")+
+  geom_sf(data=. %>% group_by(id) %>% summarise(), colour="#636363", linewidth=0.25, fill="transparent")+
   #coord_sf(crs=27700, datum=NA) +
-  facet_wrap(~id, ncol=5) +
+  facet_wrap(~id, ncol=3) +
   scale_fill_distiller(palette="RdBu", direction=1,
                        limits=c(-max_resid, max_resid), guide="none") +
   theme(
-    strip.text.x = element_blank(),
+   # strip.text.x = element_blank(),
     axis.text = element_blank(),
     axis.line = element_blank()
   )
