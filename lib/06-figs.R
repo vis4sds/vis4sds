@@ -1,0 +1,709 @@
+###############################################################################
+# Figures for vis4sds 
+# Chapter 6
+# Author: Roger Beecham
+###############################################################################
+
+# install.packages("parlitools")
+library(parlitools)
+#install.packages("tidymodels")
+library(tidymodels)
+library(sf)
+library(here)
+library(jsonlite) 
+
+# ODI Hex layout for LADs
+hex_data <- fromJSON(here("cons.hexjson"))  %>% as_tibble() %>%
+  dplyr::select(-layout) %>%  mutate(cons_code=names(hexes)) %>%
+  mutate(col_names=map(hexes, ~names(.x)),
+         col_values=map(hexes, ~unname(.x))) %>% dplyr::select(-c(hexes)) %>%
+  unnest(c(col_names, col_values)) %>%
+  mutate(col_values=unlist(col_values)) %>%
+  pivot_wider(names_from=col_names, values_from=col_values) %>%
+  mutate(across(c(q,r), ~as.numeric(.x))) %>%
+  mutate(row=r, col=q) %>%
+  st_as_sf(coords = c("q","r"))
+
+# Dimensions of hex
+min_col <- min(hex_data$col)
+max_col <- max(hex_data$col)
+width <- max_col-min_col
+
+min_row <- min(hex_data$row)
+max_row <- max(hex_data$row)
+height <- max_row-min_row
+
+# Hexagon tesselation over points.
+hex_grid <-
+  st_sf(
+    geom=st_make_grid(hex_data, n=c(width,height), what="polygons", square=FALSE, flat_topped=FALSE, cellsize=1)
+  ) %>%
+  mutate(id=row_number())
+
+# Find centroids of hexagons.
+hex_centroids <- hex_grid %>% st_centroid() %>% st_coordinates() %>% as_tibble() %>%
+  rename("east"="X", "north"="Y")
+
+# Add centroid locations to hex_grid object.
+hex_grid <- hex_grid %>%
+  add_column(hex_centroids %>% dplyr::select(east), hex_centroids %>% dplyr::select(north))
+
+# Col positions. Find number of unique column positions.
+col_positions <- hex_grid %>% st_drop_geometry() %>%  mutate(east=round(east,1)) %>% pull(east) %>% unique() %>%  length()
+
+# Row positions. Find number of unique row positions.
+row_positions <- hex_grid %>% st_drop_geometry() %>% pull(north) %>% unique() %>%  length()
+
+
+# Rescaling function.
+map_scale <- function(value, min1, max1, min2, max2) {
+  return  (min2+(max2-min2)*((value-min1)/(max1-min1)))
+}
+# To match with hex_data rows must be integer positions.
+hex_grid <- hex_grid %>%
+  mutate(
+    north_recode=
+      floor(map_scale(dense_rank(north), 1, row_positions, min_row, min_row+row_positions)),
+    
+    north_recode=if_else(north_recode==36,35, north_recode)
+    )
+
+
+# Note that height should be 34 when in fact 40.
+# Note that height should be 44 when in fact 52.
+# Note that width should be 31 when in fact 63.
+hex_grid |>  ggplot() + geom_sf() +
+  geom_text(aes(x=east, y=north+.15, label=east), size=2) +
+  geom_text( aes(x=east, y=north-.15, label=paste("r", north_recode)), size=2)
+
+# hex_grid <- hex_grid %>%
+#   filter(between(north_recode, -16, 29)) %>% 
+#   mutate(
+#     north_recode=
+#       round(map_scale(north_recode, -16, max_row+1, min_row, max_row),0))
+# Now transform column references depending on whether on an even/odd row.
+hex_grid <- hex_grid |> 
+  mutate(
+    east_recode=if_else(north_recode %% 2 ==0, floor(round(east,2)), ceiling(round(east,2))))
+
+hex_grid %>% ggplot() + geom_sf() +
+  geom_text(aes(x=east, y=north+.15, label=east_recode), size=2) +
+  geom_text( aes(x=east, y=north-.15, label=paste("r", north_recode)), size=2)
+
+# And inner_join on hex_data in order to generate LA hexagon map.
+hex_map <- hex_grid %>%
+  inner_join(hex_data %>% st_drop_geometry() %>%
+               dplyr::select(cons_code, col, row), by=c("east_recode"="col", "north_recode"="row"))
+
+
+hex_map <- hex_data %>% st_drop_geometry() |> select(cons_code, col, row) |> 
+  inner_join(hex_grid, by=c("col"="east_recode","row"="north_recode"))
+
+
+hex_map |> ggplot() + geom_sf()
+
+cons_hex <- hex_map |> inner_join(cons_data |> st_drop_geometry() |> select(pcon19cd, region), by=c("cons_code"="pcon19cd"))
+st_write(cons_hex, here("../", "data", "ch6", "cons_hex.geojson"))
+
+
+
+
+url <- "https://www.roger-beecham.com/datasets/cons_outline.geojson"
+cons_outline <- st_read(url, crs=27700)
+
+explanatory <- census_11 %>% 
+  transmute(
+    ons_const_id=ons_const_id, constituency_name=constituency_name, region=region,
+    population=population, population_density=population_density,
+    younger=age_20_to_24+age_25_to_29+age_30_to_44,
+    own_home=house_owned,
+    no_car=cars_none, white=ethnicity_white_british+ethnicity_white_irish,eu_born=born_other_eu, christian,
+    professional=nssechigher_manager+nssechigher_professional, degree=qual_level_4,
+    not_good_health=health_fair+health_bad+health_very_bad, heavy_industry=industry_manufacturing+industry_transport
+  )
+gb_leave <- .519
+outcome <- leave_votes_west %>% 
+  select(ons_const_id, constituency_name, leave=figure_to_use) %>% 
+  inner_join(explanatory %>% select(ons_const_id, region)) %>% 
+  mutate(resid_unform=leave-gb_leave)
+
+cons_data <- cons_outline |> select(pcon19cd, bng_e, bng_n, st_lengths, st_areasha) |>  
+  inner_join(outcome, by=c("pcon19cd"="ons_const_id"))
+
+cons_data <- cons_data |> 
+  inner_join(explanatory |> select(-c(region, constituency_name)),
+             by=c("pcon19cd"="ons_const_id"))
+
+write_csv(cons_data, here("../", "data", "ch6", "cons_data.csv"))
+
+
+
+cons_data <- cons_data |> mutate(resid_uniform = leave-gb_leave)
+
+explanatory_z_scores <- cons_data |> st_drop_geometry() |> 
+  mutate(
+    across(
+      .cols=c(younger:heavy_industry), .fns=~(.x-mean(.x))/sd(.x)
+    )
+  )
+
+max_resid <-max(abs(outcome$resid_unform))
+
+map <- cons_data |> filter(constituency_name!="Orkney and Shetland") |> 
+  ggplot() +
+  geom_sf(aes(fill=leave-gb_leave), colour="#757575", linewidth=0.1)+
+  geom_sf(data=. %>% group_by(region) %>% summarise(), colour="#757575", fill="transparent", linewidth=0.25)+
+  coord_sf(crs=27700, datum=NA) +
+  theme(legend.position = "right") +
+  scale_fill_distiller(palette="RdBu", direction=1, 
+                       limits=c(-max_resid, max_resid), guide="none")
+
+map_hex <- cons_hex |> select(-region) |> 
+  inner_join(cons_data |> st_drop_geometry(), by=c("cons_code"="pcon19cd")) |> 
+  ggplot() +
+  geom_sf(aes(fill=leave-gb_leave), colour="#757575", linewidth=0.12)+
+  geom_sf(data=. %>% group_by(region) %>% summarise(), colour="#757575", fill="transparent", linewidth=0.3)+
+  theme(legend.position = "right") +
+  scale_fill_distiller(palette="RdBu", direction=1, 
+                       limits=c(-max_resid, max_resid), guide="none") +
+  theme_void()
+
+bars <- cons_data |> st_drop_geometry() |> 
+  ggplot(aes(x=reorder(constituency_name,-leave), y=resid_uniform, fill=resid_uniform))+
+  geom_col(width = 1)+
+  scale_fill_distiller(palette = "RdBu", type="div", direction=1, 
+                       limits=c(-max_resid, max_resid), guide=FALSE)+
+  scale_x_discrete(breaks=c("Hackney North and Stoke Newington","East Worthing and Shoreham","Boston and Skegness"), labels = function(x) str_wrap(x, width = 15)) +
+  scale_y_continuous(limits=c(-max_resid, max_resid))+
+  geom_hline(aes(yintercept=0), colour="#757575")+
+  #annotate("text", x=4, y=-0.01, hjust=1, vjust=0, label="blue + pos > model", size=2) +
+  #annotate("text", x=628, y=0.01, hjust=0, vjust=1, label="red + neg < model", size=2) +
+  annotate("segment", x=316, xend=316, y=.005, yend=.3,
+           arrow = arrow(ends = "both", length = unit(.1,"cm")), size=.18)+
+  annotate("text", x=325, y=0.15, hjust=0.5, vjust=0, label=str_wrap("bar length is",30), size=3.5) +
+  annotate("text", x=309, y=0.15, hjust=0.5, vjust=1, label=str_wrap("obs - model",30), size=3.5) +
+  labs(x="Constituencies by Leave", y="GB 52% Leave")+
+  coord_flip() 
+
+plot <-  bars+map + map_hex 
+
+ggsave(filename=here("figs", "06", "map_uniform.png"), plot=plot,width=11.5, height=6, dpi=500)
+
+
+order_vars <- 
+  cons_data |> st_drop_geometry() |>  
+  select(-c(population, population_density)) |> 
+  mutate(
+    across(c(younger:heavy_industry), ~(.x-mean(.x))/sd(.x))
+  ) |> 
+  pivot_longer(cols=younger:heavy_industry, names_to="expl_var", values_to="prop") |> 
+  group_by(expl_var) |>  
+  summarise(cor=cor(leave,prop)) |>  ungroup() |>   arrange(cor) |>  
+  pull(expl_var)
+
+
+plot <- cons_data |> st_drop_geometry() |> 
+  select(-c(population, population_density)) |> 
+  mutate(
+    across(c(younger:heavy_industry), ~(.x-mean(.x))/sd(.x))
+  ) |> 
+  pivot_longer(cols=younger:heavy_industry, names_to="expl_var", values_to="prop") |>  
+  group_by(expl_var) |> 
+  mutate(cor=cor(leave,prop)) |>  ungroup() |> 
+  mutate(expl_var=factor(expl_var, levels=order_vars)) |> 
+  ggplot(aes(y=leave,x=prop)) +
+  geom_point(alpha=.3, colour=site_colours$primary) +
+  geom_text(data=. %>% filter(constituency_name=="Aberavon"), aes(y=.65,x=4.5, label=paste0("cor:\n",round(cor,2))), size=3.5, hjust="right")+
+  facet_wrap(~expl_var) +
+  labs(x="z-score", y="share of leave")
+
+ggsave(filename=here("figs", "06", "scatters.png"), plot=plot,width=10, height=7, dpi=500)
+
+# Additional dependency.
+plot_data <- cons_data |> st_drop_geometry() |> 
+  select(-c(population, population_density)) |> 
+  mutate(
+    across(c(younger:heavy_industry), ~(.x-mean(.x))/sd(.x))
+  ) |> 
+  # Identify Leave/Remain majority and deciles.
+  mutate(
+    is_leave=leave>.5,
+    majority=if_else(is_leave, "Leave", "Remain"),
+    leave_transformed=(leave-mean(leave))/sd(leave),
+    decile=ntile(leave, 10),
+    is_extreme = decile > 9 | decile < 2
+  )  |> 
+  # Select out variables needed for plot.
+  select(
+    majority, decile, is_extreme, 
+    #extreme_extent,
+    region, 
+    is_leave, constituency_name, leave=leave_transformed, 
+    degree, professional, younger, eu_born, no_car, white, own_home, christian, not_good_health, heavy_industry
+    ) |>  
+  # Change polarity in selected variables.
+  mutate(degree=-degree, professional=-professional, younger=-younger, eu_born=-eu_born, no_car=-no_car) |>  
+  # Gather explanatory variables for along rows.
+  pivot_longer(cols= c(leave:not_good_health), names_to="var", values_to="z_score") |> 
+  ungroup() |> 
+  # Recode new explanatory variable as factor variable ordered according to known
+  # assocs. Reverse order here as I've used coord_flip.
+  mutate(
+    var=factor(var, levels=c("leave", order_vars)),
+    var=fct_rev(var)
+  ) 
+# Holborn and St Pancras
+# Basildon and Billericay
+
+high <- plot_data %>%  filter(decile==10) %>% sample_n(1)
+low <-  plot_data %>%  filter(decile==1) %>% sample_n(1)
+
+plot <- plot_data |>  
+  ggplot()+
+  # Plot all constituencies.
+  geom_path(
+    aes(x=var, y=z_score, group=c(constituency_name), colour=is_leave), alpha=0.15, linewidth=.2
+  )+
+  # Highlight extreme remain/leave constituencies and animate over using the 
+  # decile var.
+  geom_path(
+    data= . %>%  filter(constituency_name==low$constituency_name),
+    aes(x=var, y=z_score, group=constituency_name, colour=is_leave), alpha=1, linewidth=.4
+  )+
+  geom_path(
+    data= . %>%  filter(constituency_name==high$constituency_name),
+    aes(x=var, y=z_score, group=constituency_name, colour=is_leave), alpha=1, linewidth=.4
+  )+
+  
+  # Annotate with text describing the transitions -- tedious.
+  # annotate(geom="text", x="leave", y=-4.3, label="heavy vote for:", vjust=-2.8, hjust=0, size=4.5) +
+  geom_text(
+      data= . %>%  filter(constituency_name==low$constituency_name) %>% slice(1),
+      aes(x="leave", y=-3.0, label=str_wrap(constituency_name,15), colour=is_leave), size=3.5, vjust=-.5, hjust="centre") +
+  geom_text(
+    data= . %>%  filter(constituency_name==high$constituency_name) %>% slice(1),
+    aes(x="leave", y=1.5, label=str_wrap(constituency_name,15), colour=is_leave), size=3.5, vjust=-.5, hjust="centre") +
+  # Setting parameters.
+  scale_colour_manual(values=c("#b2182b","#2166ac")) +
+  guides(colour="none") +
+  coord_flip()
+
+ggsave(filename=here("figs", "06", "pcps.png"), plot=plot,width=7, height=6.5, dpi=500)
+
+
+# Correlations plot 
+transform_value <- function(x_i,y_i,lamda_r){
+  return( (lamda_r*x_i + (1-lamda_r)*y_i )/ (sqrt( lamda_r^2 + (1-lamda_r)^2 ) ) ) 
+}
+
+lamda<- function(start,target){
+  return(
+    ( (start-1)*(target^2+start)+sqrt( target^2*((start^2-1)*(target^2-1)) ) ) /
+      ( (start-1)*(2*(target^2)+start-1) )
+  )
+}
+recentre <- function(value, current_mean, current_sd, new_mean, new_sd)
+{
+  ((value-current_mean)/current_sd)*new_sd+new_mean
+}
+targets<- c(1,.8,.3,-.3,-.8,-1)
+labels <- c("perfect positive", "strong positive", "modest positive", 
+            "modest negative", "strong negative", "perfect negative")
+get_cor_data <- function(target, label){
+  x<- rnorm(100, mean = 0, sd=2)
+  y<- rnorm(100, mean = 0, sd=2)
+  correlation_data <- data.frame(x,y)
+  start<-cor(x,y)
+  lamda_r<-lamda(start,target)
+  correlation_data <- correlation_data %>%
+    mutate(y_t=transform_value(x,y,lamda_r), 
+           x_std = recentre(x, mean(x), sd(x), 0.5, 0.2),
+           y_std = recentre(y_t, mean(y_t), sd(y_t), 0.5, 0.2),
+           r=paste0(label,"\n",target),
+           target=target
+    )
+  return(correlation_data)
+}
+
+cor_data <- map2_df(targets, labels, ~get_cor_data(.x, .y))
+r_levels <- map2(targets, labels, ~paste0(.y,"\n",.x))
+
+plot <- cor_data |> 
+  mutate(r=fct_rev(factor(r,levels=r_levels)), x_std=if_else(target>0,x_std,-x_std)) %>% 
+  ggplot(aes(x=x_std, y=y_std))+
+  geom_point(colour=site_colours$primary, size=1.6) +
+  facet_wrap(~r, nrow=1, scales="free_x") +
+  labs(x="", y="")+
+  theme(axis.text.x=element_blank(),axis.text.y=element_blank())
+
+ggsave(filename=here("figs", "06", "cors.png"), plot=plot,width=10, height=3, dpi=300)
+
+
+model <- cons_data |> st_drop_geometry() |> 
+  select(-c(population, population_density)) |> 
+  mutate(
+    across(c(younger:heavy_industry), ~(.x-mean(.x))/sd(.x))
+  ) %>%
+  lm(leave ~ degree  + eu_born + white  + no_car +  
+       not_good_health + heavy_industry, data=.)
+
+outputs <- tidy(model)
+glance(model)
+augment(model) %>% select(.resid)
+plot <- outputs %>% 
+  filter(term != "(Intercept)") %>% 
+  ggplot(
+    aes(x=reorder(term, -estimate), 
+        y=estimate,ymin=estimate-1.96*std.error, ymax=estimate+1.96*std.error)) +
+  geom_pointrange(colour=site_colours$primary) +
+  geom_hline(yintercept = 0, size=.2)+
+  labs(y="estimated coefficient", x="explanatory variable") +
+  coord_flip()
+
+ggsave(filename=here("figs", "06", "outputs.png"), plot=plot,width=6.5, height=3.5, dpi=300)
+
+
+
+model <- cons_data |> st_drop_geometry() |> 
+  select(-c(population, population_density)) |> 
+  mutate(
+    across(c(younger:heavy_industry), ~(.x-mean(.x))/sd(.x))
+  ) |> 
+  mutate(type="full_dataset") |> 
+  nest(data=-type) |> 
+  mutate(
+    model=map(data, ~lm(leave ~ degree  + eu_born + white  + no_car +
+                          not_good_health + heavy_industry, data=.x)),
+    # glance() for each model fit
+    fits = map(model, glance),
+    # tidy() for coefficients
+    coefs = map(model, tidy),
+    # augment() for predictions/residuals
+    values=map(model, augment)
+  )
+
+
+# Generate permuted data: randomly shuffling residuals values around 
+# constituencies.
+permuted_data <- model |>  
+  mutate(
+    resids=map(values, ~.x |>  select(.resid))
+  ) |> 
+  select(-c(coefs, model, fits, model, values)) |>  
+  unnest(cols=c(data,resids)) |>  
+  select(pcon19cd, .resid) |>  
+  permutations(permute=c(pcon19cd), times=8, apparent=TRUE) |> 
+  mutate(data=map(splits, ~rsample::analysis(.))) |> 
+  select(id, data) |> 
+  unnest(cols=data)
+
+# Store max value of residuals for setting limits in map colour scheme.
+max_resid <- max(abs(permuted_data$.resid))
+# Store vector of permutation IDs for shuffling facets in the plots.
+ids <- permuted_data %>% pull(id) %>% unique()
+# Plot lineup.
+plot <- cons_data |> filter(constituency_name!="Orkney and Shetland") |> 
+  select(pcon19cd, region) |> 
+  inner_join(permuted_data) |> 
+  mutate(id=factor(id, sample(ids))) |> 
+  ggplot() +
+  geom_sf(aes(fill=.resid), colour="#636363", linewidth=0.02)+
+  geom_sf(data=. %>% group_by(region) %>% summarise(), colour="#636363", linewidth=0.05, fill="transparent")+
+  geom_sf(data=. %>% group_by(id) %>% summarise(), colour="#636363", linewidth=0.1, fill="transparent")+
+  coord_sf(crs=27700, datum=NA) +
+  facet_wrap(~id, ncol=5) +
+  scale_fill_distiller(palette="RdBu", direction=1,
+                       limits=c(-max_resid, max_resid), guide="none") +
+  theme(
+    strip.text.x = element_blank()
+  )
+
+
+plot <- #cons_data |> filter(constituency_name!="Orkney and Shetland") |> 
+  cons_hex |>   
+  select(cons_code, region) |> 
+  inner_join(permuted_data, by=c("cons_code"="pcon19cd")) |> 
+  mutate(id=factor(id, sample(ids)), id=paste0("p", as.numeric(id))) |> 
+  ggplot() +
+  geom_sf(aes(fill=.resid), colour="#636363", linewidth=0.02)+
+  geom_sf(data=. %>% group_by(region) %>% summarise(), colour="#636363", linewidth=0.1, fill="transparent")+
+  geom_sf(data=. %>% group_by(id) %>% summarise(), colour="#636363", linewidth=0.15, fill="transparent")+
+  #coord_sf(crs=27700, datum=NA) +
+  facet_wrap(~id, ncol=5) +
+  scale_fill_distiller(palette="RdBu", direction=1,
+                       limits=c(-max_resid, max_resid), guide="none") +
+  theme(
+    # strip.text.x = element_blank(),
+    axis.text = element_blank(),
+    axis.line = element_blank()
+  )
+
+
+ggsave(filename=here("figs", "06", "lineups_hex.png"), plot=plot,width=10, height=5.6, dpi=300)
+
+
+### Multi-level model experiments
+install.packages("broom.mixed") 
+library(broom.mixed)
+library(multilevelmod)
+model_data <- single_model_fits <- cons_data |> st_drop_geometry() |> 
+  select(-c(population, population_density)) |> 
+  mutate(
+    across(c(younger:heavy_industry), ~(.x-mean(.x))/sd(.x))
+  ) |> 
+  pivot_longer(cols=younger:heavy_industry, names_to="expl_var", values_to="z_score") |> 
+  mutate(region=as.factor(region)) 
+
+
+single_model_fits <- model_data |> 
+  nest(data=-expl_var) |>   # nest to generate list-column by expl_var.
+  mutate(
+    # Use map() to iterate over the list of datasets to fit a model to each nested dataset.
+    model = map(data, ~
+                  linear_reg() |>  set_engine("lmer") |> 
+                  fit(leave ~ z_score + (1 | region), data = .x)),
+    # glance() for each model fit
+    fits = map(model, glance),
+    # tidy() for coefficients
+    coefs = map(model, tidy),
+    # augment() for predictions/residuals
+    values=map2(model, data, ~augment(.x, new_data=.y))
+  )
+
+# Multivariate model: Multilevel 
+model <- cons_data |> st_drop_geometry() |> 
+  select(-c(population, population_density)) |> 
+  mutate(
+    across(c(younger:heavy_industry), ~(.x-mean(.x))/sd(.x))
+  ) |> 
+  mutate(type="full_dataset", region=as.factor(region)) %>%
+  nest(data=-type) %>%
+  mutate(
+    # Include `-1` to eliminate the constant term and include a dummy for every area
+    model=map(data, ~ linear_reg() |>  set_engine("lmer") |> 
+                fit(leave ~  degree  + eu_born + white  + no_car +
+                          not_good_health + heavy_industry + (1 | region), data=.x)),
+    # glance() for each model fit
+    fits = map(model, glance),
+    # tidy() for coefficients
+    coefs = map(model, tidy),
+    # augment() for predictions/residuals
+    values=map2(model, data, ~augment(.x, new_data=.y)),
+    model_r=map(data, ~lme4::lmer(leave ~  degree  + eu_born + white  + no_car +
+                                      not_good_health + heavy_industry + (1 | region), data=.x)),
+    randoms = map(model_r, ~lme4::ranef(.x) %>% as_tibble())
+  )
+
+plot <- model |> 
+  unnest(cols = coefs) |>  # unnest output from glance
+  mutate(
+    is_fe=!str_detect(term, "region"),
+    term=str_remove(term,"region"),
+    coef_type=if_else(!is_fe, "FE constants", "coefficients"),
+    coef_type=factor(coef_type, levels=c("FE constants", "coefficients")),
+    yintercept=0
+  ) |> 
+  filter(effect=="fixed") |> 
+  select(term, estimate, std.error, is_fe) |> 
+  bind_rows(
+    model |> select(randoms) |> unnest(cols=randoms) |> 
+      select(term=grp, estimate=condval, std.error=condsd) |> mutate(is_fe=FALSE)
+  ) |> 
+  filter(term != "(Intercept)") |> 
+  mutate(is_fe=if_else(is_fe, "Fixed effects", "Random intercepts")) |> 
+  ggplot(
+    aes(x=reorder(term, -estimate),
+        y=estimate,ymin=estimate-1.96*std.error, ymax=estimate+1.96*std.error)) +
+  geom_pointrange(colour=site_colours$primary) +
+  geom_hline(aes(yintercept=0), size=.2)+
+  scale_alpha_discrete(c(0,1), guide=FALSE)+
+  facet_wrap(~is_fe, scales="free", shrink=TRUE) +
+  coord_flip() +
+  labs(y="", x="")
+performance::performance(m)
+
+
+
+# Multivariate model : FE
+model <- cons_data |> st_drop_geometry() |> 
+  select(-c(population, population_density)) |> 
+  mutate(
+    across(c(younger:heavy_industry), ~(.x-mean(.x))/sd(.x))
+  ) |> 
+  mutate(type="full_dataset", region=as.factor(region)) %>%
+  nest(data=-type) %>%
+  mutate(
+    # Include `-1` to eliminate the constant term and include a dummy for every area
+    model=map(data, ~lm(leave ~ region +  degree  + eu_born + white  + no_car +
+                          not_good_health + heavy_industry -1, data=.x)),
+    # glance() for each model fit
+    fits = map(model, glance),
+    # tidy() for coefficients
+    coefs = map(model, tidy),
+    # augment() for predictions/residuals
+    values=map(model, augment)
+  )
+
+model %>%
+  unnest(cols = fits) %>% # unnest output from glance
+  select(-c(data, model, coefs, model, values)) %>% View() # remove other list-columns
+
+
+plot <- model |> 
+  unnest(cols = coefs) %>% # unnest output from glance
+  select(-c(data, model, fits, model, values)) %>%
+  mutate(
+    is_fe=!str_detect(term, "region"),
+    term=str_remove(term,"region"),
+    coef_type=if_else(!is_fe, "FE constants", "coefficients"),
+    coef_type=factor(coef_type, levels=c("FE constants", "coefficients")),
+    yintercept=0
+  ) %>%
+  #filter(term != "(Intercept)") %>%
+  ggplot(
+    aes(x=reorder(term, -estimate),
+        y=estimate,ymin=estimate-1.96*std.error, ymax=estimate+1.96*std.error)) +
+  geom_pointrange(colour=site_colours$primary) +
+  geom_hline(aes(yintercept=yintercept, alpha=is_fe), size=.2)+
+  scale_alpha_discrete(c(0,1), guide=FALSE)+
+  facet_wrap(~coef_type, scales="free", shrink=TRUE) +
+  coord_flip() +
+  labs(y="", x="")
+
+
+ggsave(filename=here("figs", "06", "outputs_fe.png"), plot=plot,width=8.5, height=3.8, dpi=300)
+
+# Generate permuted data: randomly shuffling residuals values around 
+# constituencies.
+permuted_data <- model |>  
+  mutate(
+    resids=map(values, ~.x |>  select(.resid))
+  ) |> 
+  select(-c(coefs, model, fits, model, values)) |>  
+  unnest(cols=c(data,resids)) |>  
+  select(pcon19cd, constituency_name, .resid) |>  
+  permutations(permute=c(pcon19cd), times=8, apparent=TRUE) |> 
+  mutate(data=map(splits, ~rsample::analysis(.))) |> 
+  select(id, data) |> 
+  unnest(cols=data)
+
+# Store max value of residuals for setting limits in map colour scheme.
+max_resid <- max(abs(permuted_data$.resid))
+# Store vector of permutation IDs for shuffling facets in the plots.
+ids <- permuted_data %>% pull(id) %>% unique()
+
+plot <- #cons_data |> filter(constituency_name!="Orkney and Shetland") |> 
+  cons_hex |>   
+  select(cons_code, region) |> 
+  inner_join(permuted_data, by=c("cons_code"="pcon19cd")) |> 
+  mutate(id=factor(id, sample(ids)), id=paste0("p",as.numeric(id))) |> 
+  ggplot() +
+  geom_sf(aes(fill=.resid), colour="#636363", linewidth=0.02)+
+  geom_sf(data=. %>% group_by(region) %>% summarise(), colour="#636363", linewidth=0.1, fill="transparent")+
+  geom_sf(data=. %>% group_by(id) %>% summarise(), colour="#636363", linewidth=0.15, fill="transparent")+
+  #coord_sf(crs=27700, datum=NA) +
+  facet_wrap(~id, ncol=5) +
+  scale_fill_distiller(palette="RdBu", direction=1,
+                       limits=c(-max_resid, max_resid), guide="none") +
+  theme(
+    strip.text.x = element_blank(),
+    axis.text = element_blank(),
+    axis.line = element_blank()
+  )
+
+ggsave(filename=here("figs", "06", "lineups_fe.png"), plot=plot,width=10, height=5.6, dpi=300)
+
+
+
+model <- cons_data |> st_drop_geometry() |> 
+  select(-c(population, population_density)) |> 
+  mutate(
+    across(c(younger:heavy_industry), ~(.x-mean(.x))/sd(.x))
+  ) |> 
+  mutate(type="full_dataset", region=as.factor(region), cons=1) %>%
+  nest(data=-type) %>%
+  mutate(
+    # `:` Notation implies interaction variables
+    model=map(data, ~lm(leave ~ 0 +  (cons + degree  + eu_born + white  + no_car +
+                                        not_good_health + heavy_industry):(region), data=.x)),
+    # glance() for each model fit
+    fits = map(model, glance),
+    # tidy() for coefficients
+    coefs = map(model, tidy),
+    # augment() for predictions/residuals
+    values=map(model, augment)
+  )
+
+model %>%
+  unnest(cols = fits) %>% View()
+
+plot <- model %>%
+  unnest(cols = coefs) %>% # unnest output from glance
+  select(-c(data, model, fits, model, values)) %>%
+  separate(term, into= c("term", "region"), sep=":") %>%
+  mutate(
+    region=str_remove(region,"region"),
+    region=if_else(region=="Yorkshire and The Humber", "Yorkshire & Humber", region)
+  ) %>%
+  filter(term!="cons") %>%
+  ggplot() +
+  geom_col(aes(x=reorder(term, -estimate), y=estimate), fill=site_colours$primary, alpha=.3)+
+  geom_pointrange(aes(x=reorder(term, -estimate),
+                      y=estimate,ymin=estimate-1.96*std.error, ymax=estimate+1.96*std.error), colour=site_colours$primary) +
+  geom_hline(yintercept = 0, size=.2)+
+  facet_wrap(~region) +
+  coord_flip()+
+  labs(y="estimated coefficient", x="explanatory variable")
+
+
+ggsave(filename=here("figs", "06", "outputs_interact.png"), plot=plot,width=10, height=6, dpi=300)
+
+
+# Random slopes
+
+# Multivariate model: Multilevel 
+model <- cons_data |> st_drop_geometry() |> 
+  select(-c(population, population_density)) |> 
+  mutate(
+    across(c(younger:heavy_industry), ~(.x-mean(.x))/sd(.x))
+  ) |> 
+  mutate(type="full_dataset", region=as.factor(region)) |> 
+  nest(data=-type) |> 
+  mutate(
+    model_r=map(data, ~lme4::lmer(leave ~ 
+                                        degree + 
+                                        eu_born + (1 + eu_born | region) +
+                                        white + 
+                                        no_car + 
+                                        not_good_health + 
+                                        heavy_industry,
+                                      data=.x))),
+    randoms = map(model_r, ~lme4::ranef(.x) %>% as_tibble())
+    # Include `-1` to eliminate the constant term and include a dummy for every area
+    model=map(data, ~ linear_reg() |>  set_engine("lmer") |> 
+                fit(leave ~ 
+                      degree + eu_born + white + no_car + not_good_health + heavy_industry + 
+                      (1 + degree + eu_born + white + no_car + not_good_health + heavy_industry | region) , 
+                    data=.x))
+    
+  ),
+    # glance() for each model fit
+    fits = map(model, glance),
+    # tidy() for coefficients
+    coefs = map(model, tidy),
+    # augment() for predictions/residuals
+    values=map2(model, data, ~augment(.x, new_data=.y)),
+  )
+
+
+v |> 
+  rename(region=groupID, estimate=mean, std.error=sd) |> 
+  filter(term!="(Intercept)") |> 
+  ggplot() +
+  geom_col(aes(x=reorder(term, -estimate), y=estimate), fill=site_colours$primary, alpha=.3)+
+  geom_pointrange(aes(x=reorder(term, -estimate),
+                      y=estimate,ymin=estimate-1.96*std.error, ymax=estimate+1.96*std.error), colour=site_colours$primary) +
+  geom_hline(yintercept = 0, size=.2)+
+  facet_wrap(~region) +
+  coord_flip()+
+  labs(y="estimated coefficient", x="explanatory variable")

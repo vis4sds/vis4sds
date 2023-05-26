@@ -4,7 +4,7 @@ project:
 
 book:
   title: "Visualization for Social Data Science"
-  author: "Roger Beecham and Robin Lovelace"
+  author: "Roger Beecham"
   description: ""
   # cover-image: images/cover.png
   site-url: https://vis4sds/vis4sds

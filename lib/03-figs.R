@@ -1,6 +1,6 @@
 ###############################################################################
 # Figures for vis4sds 
-# Chapter 2
+# Chapter 3
 # Author: Roger Beecham
 ###############################################################################
 
@@ -9,11 +9,8 @@ library(here)
 library(sf)
 library(tidyverse)
 
-###############################################################################
-# C H    3
-###############################################################################
 
-
+## ----------------------- D A T A ---------------------------------------------
 trump_data <- country_list |> 
   mutate(geom_rot = st_geometry(.)*rot(pi/2)) |>
   st_drop_geometry() |>
@@ -21,14 +18,10 @@ trump_data <- country_list |>
   st_set_geometry("geometry")
 
 
-
-# Contituency boundaries -- simplified using mapshapr From -- https://geoportal.statistics.gov.uk/
-constituency_boundaries <- st_read(here("../", "uk-general-election-vis-sandpit", "data", "constituency_boundaries.geojson"), crs=27700)
-
-# dataset -- https://docs.evanodell.com/parlitools/articles/bes-2019.html
-# reset_colours
-# Reset colours to those used by Flourish :
-# https://flourish.studio/2019/11/26/charts-for-the-uk-elections-2019/
+# Constituency boundaries, simplified using mapshapr. 
+# From -- https://geoportal.statistics.gov.uk/
+constituency_boundaries <-
+  st_read(here("../", "uk-general-election-vis-sandpit", "data", "constituency_boundaries.geojson"), crs=27700)
 
 # Swing
 bes_2019
@@ -63,12 +56,8 @@ dup <- "#be1a40"
 # Other :
 other <- "#bdbdbd"
 
-
 # con_1719 against  estimated constituency-level leave vote
-elected_parties <- c(
-  "Conservative",
-  "Labour",
-  "Other")
+elected_parties <- c("Conservative", "Labour", "Other")
 
 # Store as vector and recode elected variable as factor for use in scale_colour_manual.
 t <- bes_2019 |>
@@ -80,30 +69,20 @@ t <- bes_2019 |>
 colours <- c(con, lab, other)
 names(colours) <- levels(t$elected)
 
+## ----------------------- D A T A ---------------------------------------------
 
 plot <- bes_2019 |>
   filter(region != "Northern Ireland", constituency_name != "Chorley") |>
   ggplot(mapping=aes(x=leave_hanretty, y=con_1719)) +
   geom_point(alpha=.8) +
-  labs(
-    # title="Conservative gain in vote shares by Leave vote (estimated).",
-    #  subtitle="-- Constituencies in Great Britain. Gain is diff in vote shares between 2017-2019 GE.",
-    #  caption="Data: Published by House of Commons Library, accessed via parlitools package",
-    x="% Leave", y="% gain in Conservative vote share"
-  )+
-  theme_v_gds()
+  labs(x="% Leave", y="% gain in Conservative vote share")
 
 plot2 <- t |>
   filter(constituency_name != "Chorley", region != "Northern Ireland") |>
   ggplot(mapping=aes(x=leave_hanretty, y=con_1719)) +
   geom_point(mapping=aes(colour=elected), alpha=.8)+
   scale_colour_manual(values=colours)+
-  labs(
-    #title="Conservative gain in vote shares by Leave vote (estimated)",
-    #subtitle="-- Constituencies in Great Britain. Gain is diff in vote shares between 2017-2019 GE.",
-    #caption="Data: Published by House of Commons Library, accessed via parlitools package",
-    x="% Leave", y="% gain in Conservative vote share"
-  )+
+  labs(x="% Leave", y="% gain in Conservative vote share")+
   guides(colour=guide_legend(title="Winning party"))
 
 # shape -- on flipped
@@ -856,7 +835,7 @@ gb <- data_gb |>
   annotate(geom="segment", xend=stoke$bng_e, yend=stoke$bng_n, x=stoke$bng_e-.15*uk_width, y=stoke$bng_n+0.05*uk_height, size=.2)+
   annotate(geom="text", x=stoke$bng_e-0.16*uk_width, y=stoke$bng_n+0.05*uk_height, hjust="right", label=paste0(stoke$constituency_name), family="Avenir Next", size=3.5)+
   guides(colour=FALSE, fill=FALSE, size=FALSE)+
-  theme_v_gds() +
+  #theme_v_gds() +
   theme(axis.title.x= element_blank(), axis.title.y= element_blank())
 
 
@@ -895,7 +874,7 @@ london <- data_gb |>
   scale_colour_manual(values=party_colours)+
   scale_fill_manual(values=party_colours)+
   guides(colour=FALSE, fill=FALSE, size=FALSE)+
-  theme_v_gds() +
+  #theme_v_gds() +
   theme(axis.title.x= element_blank(), axis.title.y= element_blank())
 
 
@@ -912,8 +891,8 @@ swing <-  ggplot()+
   xlim(-0.5,0.5)+
   ylim(-0.35,0.35)+
   coord_equal() +
-  theme_void()
-theme_v_gds() +
+  theme_void() +
+#theme_v_gds() +
   theme(axis.title.x= element_blank(), axis.title.y= element_blank(), axis.text = element_blank())
 # Use colour to encode party.
 temp_dat <-tibble(

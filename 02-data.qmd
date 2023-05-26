@@ -35,7 +35,7 @@ By the end of this chapter you should gain the following knowledge and practical
 
 ## Introduction
 
-This chapter covers the basics of how to describe and organise data. Whilst this might sound prosaic, there are several reasons why being able to consistently describe a dataset is important.  First, it is the initial step in any analysis and helps delimit the analytical procedures that can be deployed. This is especially relevant to data science-type workflows, where it is common to apply the same analysis templates for working over many different datasets. Describing data using a consistent vocabulary enables you to identify which analysis templates to reuse. Second relates to the point in [Chapter -@sec-introduction] that Social Data Science  (SDS) projects usually involve repurposing datasets for the first time. It is often not obvious whether the data contain sufficient detail and structure to characterise the behaviours being researched and the target populations they are assumed to represent. This leads to additional levels of uncertainty and places greater importance on the initial steps of data processing, description and exploration.
+This chapter covers the basics of how to describe and organise data. Whilst this might sound prosaic, there are several reasons why being able to consistently describe a dataset is important.  First, it is the initial step in any analysis and helps delimit the analytical procedures that can be deployed. This is especially relevant to data science-type workflows, where it is common to apply the same analysis templates for working over many different datasets. Describing data using a consistent vocabulary enables you to identify which analysis templates to reuse. Second relates to the point in [Chapter -@sec-introduction] that social data science projects usually involve repurposing datasets for the first time. It is often not obvious whether the data contain sufficient detail and structure to characterise the behaviours being researched and the target populations they are assumed to represent. This leads to additional levels of uncertainty and places greater importance on the initial steps of data processing, description and exploration.
 
 Through the chapter we will learn vocabulary for describing and thinking about data, as well as some of the most important data processing and organisation techniques in R . We will do so using data from New York's [Citibike](https://www.citibikenyc.com/) scheme. 
 
@@ -99,9 +99,10 @@ variable_types <- tibble::tibble(
 )
 
 kbl(variable_types, protect_latex = TRUE, escape=FALSE) |>
+ row_spec(0, extra_css = "border-bottom: 1px solid;") |>
  pack_rows("Categories", 1, 2, bold=FALSE, label_row_css = "border-bottom: 0px solid;") |>
  pack_rows("Measures", 3, 4, bold=FALSE, label_row_css = "border-bottom: 0px solid;") |>
- column_spec(c(1,3), width = "8em",  extra_css = "font-family:  Monospace") |> kable_minimal()
+ column_spec(c(1,3), width = "8em",  extra_css = "font-family:  Monospace") 
 ```
 
 ::: {.callout-tip icon="false"}
@@ -120,7 +121,7 @@ Complete the data description table below identifying the *measurement level* of
 
 ### Types of observation
 
-Observations either together form an entire *population* or a *sample* that we expect is representative of a *target population*. In Social Data Science applications we often work with datasets that are so-called population-level. The [Citibike dataset]((https://www.citibikenyc.com/system-data)) is a complete, population-level dataset in that every journey made through the  scheme is recorded. Whether or not this is truly a population-level dataset, however, depends on the analysis purpose. When analysing the bikeshare dataset are we interested only in describing use within the Citibike scheme? Or are we taking the patterns observed through our analysis to make claims and inferences about cycling more generally? If the latter, then there are problems as the level of detail we have on our sample is pretty trivial compared to traditional, *actively-collected* datasets, where data collection activities are designed with a specified target population in mind. It may therefore be difficult to gauge how representative Citibike users and Citibike cycling is of New York's general cycling population. The flipside is that so-called *passively-collected* data do not suffer from the same problems such as non-response bias and social-desirability  bias as traditional, *actively-collected* data.
+Observations either together form an entire *population* or a *sample* that we expect is representative of a *target population*. In social data science applications we often work with datasets that are so-called population-level. The [Citibike dataset]((https://www.citibikenyc.com/system-data)) is a complete, population-level dataset in that every journey made through the  scheme is recorded. Whether or not this is truly a population-level dataset, however, depends on the analysis purpose. When analysing the bikeshare dataset are we interested only in describing use within the Citibike scheme? Or are we taking the patterns observed through our analysis to make claims and inferences about cycling more generally? If the latter, then there are problems as the level of detail we have on our sample is pretty trivial compared to traditional, *actively-collected* datasets, where data collection activities are designed with a specified target population in mind. It may therefore be difficult to gauge how representative Citibike users and Citibike cycling is of New York's general cycling population. The flipside is that so-called *passively-collected* data do not suffer from the same problems such as non-response bias and social-desirability  bias as traditional, *actively-collected* data.
 
 ### Tidy data
 
@@ -239,7 +240,7 @@ Imagine that the `gapminder` dataset reported values of `cases` separately by ge
 
 The technical element to this chapter imports, describes, transforms and tidies data from New York's [Citibike](https://www.citibikenyc.com/) scheme.
 
-* Download the [02-template.qmd]() file and save it to the `reports` folder of your `vis4sds` project,  created in chapter 1.
+* Download the [02-template.qmd]() file and save it to the `reports` folder of your `vis4sds` project,  created in Chapter [-@sec-introduction].
 * Open your `vis4sds` project in RStudio and load the template file by clicking `File` > `Open File ...` > `reports/02-template.qmd`.
 
 
@@ -339,9 +340,9 @@ include_graphics("figs/02/view.png", error = FALSE)
 
 <!-- ![`ny_trips` and `ny_stations` as they appear when calling `View()`](figs/01/view.png){#fig-view-annotate width=100% fig-align="center"} -->
 
-The `glimpse()` function can be used to quickly describe a data frame's dimensions. We have 500,000 trip observations in `ny_trips` and 11 variables; the 500,000 represents a random sample of the c.1.9 million trips recorded in June 2020. The function also prints out the object type for each of these variables, with the variables either of type `int`, `chr` or `dbl` in this case. 
+The `glimpse()` function can be used to quickly describe a data frame's dimensions. We have 500,000 trip observations in `ny_trips` and 11 variables; the 500,000 represents a random sample of the c.1.9 million trips recorded in June 2020. The function also prints out the object type for each of these variables, with the variables either of type `int`, `chr` or `dbl`. 
 
-In this case, the assignment needs correcting. `start_time` and `stop_time` may be better represented in date-time format; the *station identifier* variables are more efficient when converted to `int` types; and the geographic coordinates, currently stored as text strings (`chr`) are better converted as floating points (`dbl`) or [`POINT`](https://r-spatial.github.io/sf/articles/sf1.html#simple-feature-geometry-types) geometry types. In the [02-template.qmd]() file are code chunks for doing these conversions. There are some slightly more involved data transform procedures in this code, which you may wish to ignore at this stage.
+In this case the assignment needs correcting. `start_time` and `stop_time` may be better represented in `date-time` format; the *station identifier* variables are more efficient when converted to `int` types; and the geographic coordinates, currently stored as text strings (`chr`) are better converted as floating points (`dbl`) or [`POINT`](https://r-spatial.github.io/sf/articles/sf1.html#simple-feature-geometry-types) geometry types. In the [02-template.qmd]() file are code chunks for doing these conversions. There are some slightly more involved data transform procedures in this code, which you may wish to ignore at this stage.
 
 ```{r}
 #| echo: true
@@ -396,7 +397,17 @@ data_types <- tibble::tibble(
 
 ### Transform
 
-#### Transform with `dplyr` {-}
+#### Transform with `dplyr` and pipes (`|>`) {-}
+
+[`dplyr`](https://dplyr.tidyverse.org/) is perhaps *the* package within the tidyverse. It provides a *grammar of data manipulation*, with access to functions that can be variously combined to support most data processing and transformation tasks. Once familiar with `dplyr` functions you will find yourself generating analysis templates to re-use whenever working on a dataset.
+
+All `dplyr` functions operate in a consistent way:
+
+1. Start with a data frame.
+2. Pass arguments to a function performing some updates to the data frame.
+3. Return the updated data frame.
+
+So every `dplyr` function expects a data frame and will always return a data frame.
 
 ```{r}
 #| label: tbl-dplyr-verbs
@@ -417,29 +428,16 @@ dplyr_verbs <- tibble::tibble(
   )
 )
 
-kbl(dplyr_verbs) |> column_spec(1, extra_css = "font-family:  Monospace") |> kable_minimal()
+
+kbl(dplyr_verbs) |> column_spec(1, extra_css = "font-family:  Monospace") |> row_spec(0, extra_css = "border-bottom: 1px solid;")
 ```
 
-[`dplyr`](https://dplyr.tidyverse.org/) is perhaps *the* package within the tidyverse. It provides a *grammar of data manipulation*, with access to functions that can be variously combined to support most data processing and transformation tasks. Once familiar with `dplyr` functions you will find yourself generating analysis templates to re-use whenever working on a dataset.
 
-All `dplyr` functions operate in a consistent way:
+`dplyr` is most effective when its functions are chained together -- you will see this shortly as we explore the New York bikeshare data. This chaining of functions can be achieved using the *pipe* operator (`|>`).  Pipes are used for passing information in a program. They take the output of a set of code (a `dplyr` specification) and make it the input of the next set (another `dplyr` specification). Pipes can be easily applied to `dplyr` functions and the functions of all packages that form the `tidyverse`. We mentioned in Chapter [-@sec-introduction] that `ggplot2` provides a framework for specifying a *layered grammar of graphics* (more on this in Chapter [-@sec-visual]). Together with the pipe operator (`|>`), `dplyr` supports a *layered grammar of data manipulation*. You will see this throughout the book as we develop and re-use code templates for performing some data manipulation that is then piped to a `ggplot2` specification for visual analysis.
 
-1. Start with a data frame.
-2. Pass arguments to a function performing some updates to the data frame.
-3. Return the updated data frame.
+#### `count()`  and `summarise()` over rows {-}
 
-So every `dplyr` function expects a data frame and will always return a data frame.
-
-####  Use pipes `|>` with `dplyr` {-}
-
-`dplyr` is most effective when its functions are chained together -- you will see this shortly as we explore the New York bikeshare data. This chaining of functions can be achieved using the *pipe* operator (`|>`).  Pipes are used for passing information in a program. They take the output of a set of code (a `dplyr` specification) and make it the input of the next set (another `dplyr` specification).
-
-Pipes can be easily applied to `dplyr` functions, and the functions of all packages that form the `tidyverse`. We mentioned in Chapter [-@sec-introduction] that `ggplot2` provides a framework for specifying a *layered grammar of graphics* (more on this in Chapter [-@sec-visual]). Together with the pipe operator (`|>`), `dplyr` supports a *layered grammar of data manipulation*.
-
-#### `count()` rows {-}
-
-Let's use and combine some `dplyr` functions to generate statistical summaries on the New York bikeshare data. First we'll count the number of trips made in June 2020 by gender. `dplyr` has a convenience  function for counting, so we could run the code below, also in the [02-template.qmd]() for this chapter. 
-
+Let's use and combine some `dplyr` functions to generate statistical summaries on the New York bikeshare data. First we'll count the number of trips made in June 2020 by gender. `dplyr` has a convenience  function for counting, so we could run the code below, also in the [02-template.qmd]() for this chapter.  
 ```{r}
 #| echo: true
 #| eval: false
@@ -452,30 +450,8 @@ ny_trips |>
 ## 1 Subscriber 347204
 ## 2   Customer 152796
 ```
-There are a few things happening in the `count()` function. It takes the `gender` variable from `ny_trips`, organises or *groups* the rows in the data frame according to its values (`female` | `male` | `unknown`), counts the rows and then orders the *summarised* output descending on the counts.
 
-#### `summarise()` over rows {-}
-
-Often you will want to do more than simply counting and you may also want to be more explicit in the way the data frame is *grouped* for computation. We'll demonstrate this here with a more involved analysis of the usage data and with some key aggregate functions (@tbl-aggregate-functions).
-
-```{r, echo=FALSE}
-#| label: tbl-aggregate-functions
-#| tbl-cap: "A breakdown of aggregate functions commonly used with `summarise()`."
-#| echo: false
-
-aggregate_functions <- tibble::tibble(
-  Function = c("n()", "n_distinct(var)", "sum(var)", "max(var)|min(var)", "mean(var)|median(var)| ...", "..."),
-  Description = c(
-    "Counts the number of observations",
-    "Counts the number of unique observations",
-    "Sums the values of observations",
-    "Finds the min|max values of observations ",
-    "Calculates central tendency of observations ",
-    "Many more"
-  )
-)
-kbl(aggregate_functions) |> column_spec(1, extra_css = "font-family:  Monospace") |> kable_minimal()
-```
+There are a few things happening in the `count()` function. It takes the `gender` variable from `ny_trips`, organises or *groups* the rows in the data frame according to its values (`female` | `male` | `unknown`), counts the rows and then orders the *summarised* output descending on the counts. Often you will want to do more than simply counting and you may also want to be more explicit in the way the data frame is *grouped* for computation. We'll demonstrate this here with a more involved analysis of the usage data and with some key aggregate functions (@tbl-aggregate-functions).
 
 A common workflow is to combine `group_by()` and `summarise()`, and in this case `arrange()` to replicate the `count()` example.
 
@@ -498,9 +474,7 @@ ny_trips |>
 ## 2 Customer   152796
 ```
 
-In `ny_trips` there is a variable measuring trip duration in seconds (`trip_duration`) and distinguishing  casual users from those formally registered to use the scheme (`user_type` - `customer` vs. `subscriber`). It may be instructive to calculate some summary statistics to see how trip duration varies between these groups.
-
-The code below uses `group_by()`, `summarise()` and `arrange()` in exactly the same way, but with the addition of other aggregate functions summarises the `trip_duration` variable according to central tendency (mean and standard deviation) and by `user_type`.
+In `ny_trips` there is a variable measuring trip duration in seconds (`trip_duration`) and distinguishing  casual users from those formally registered to use the scheme (`user_type` - `customer` vs. `subscriber`). It may be instructive to calculate some summary statistics to see how trip duration varies between these groups. The code below uses `group_by()`, `summarise()` and `arrange()` in exactly the same way, but with the addition of other aggregate functions summarises the `trip_duration` variable according to central tendency (mean and standard deviation) and by `user_type`.
 
 ```{r}
 #| echo: true
@@ -533,6 +507,26 @@ ny_trips |>
 
 
 As each line is commented you hopefully get a sense of what is happening in the code above. You will notice that `dplyr` functions read like *verbs*, and this is a very deliberate design decision. With the code laid out as above -- each `dplyr` verb occupying a single line, separated by a pipe (`|>`) -- you can generally understand the code with a cursory glance. There are obvious benefits to this. Once you are familiar with `dplyr` it becomes very easy to read, write and share code.
+
+
+```{r, echo=FALSE}
+#| label: tbl-aggregate-functions
+#| tbl-cap: "A breakdown of aggregate functions commonly used with `summarise()`."
+#| echo: false
+
+aggregate_functions <- tibble::tibble(
+  Function = c("n()", "n_distinct(var)", "sum(var)", "max(var)|min(var)", "mean(var)|median(var)| ...", "..."),
+  Description = c(
+    "Counts the number of observations",
+    "Counts the number of unique observations",
+    "Sums the values of observations",
+    "Finds the min|max values of observations ",
+    "Calculates central tendency of observations ",
+    "Many more"
+  )
+)
+kbl(aggregate_functions) |> column_spec(1, extra_css = "font-family:  Monospace") |> row_spec(0, extra_css = "border-bottom: 1px solid;")
+```
 
 
 ::: {.callout-note}
@@ -645,7 +639,7 @@ join_functions <- tibble::tibble(
 )
 kbl(join_functions, col.names = NULL) |> column_spec(1, width = "10em") |> add_header_above(c("*_join(x, y) ..."=1, " ")) |>
 column_spec(1, extra_css = "font-family:  Monospace") |>
-row_spec(0, extra_css = "font-family:  Monospace") |> kable_minimal()
+row_spec(0, extra_css = "font-family:  Monospace; border-bottom: 1px solid;")
 
 ```
 
@@ -792,7 +786,7 @@ To re-organise the table in tidy form, we should identify what constitutes a dis
 * `dist`: total distance in kms (cumulative) of trips for observation type
 * `duration`: total duration in minutes (cumulative) of trips for observation type
 
-There are two functions for reshaping untidy data, from the [`tidyr`](https://tidyr.tidyverse.org/) package: [`pivot_longer()`](https://tidyr.tidyverse.org/reference/pivot_longer.html) and [`pivot_wider()`](https://tidyr.tidyverse.org/reference/pivot_wider.html). `pivot_longer()` is used to tidy data in which observations are spread across columns; `pivot_wider()` to tidy data in which variables are spread across rows. The functions are especially useful in visual data analysis to fix messy data, but also flexibly reshape data supplied to `ggplot2` specifications (more on this in Chapters [-@sec-visual] and [-@sec-exploratory]).
+There are two functions for reshaping untidy data, from the [`tidyr`](https://tidyr.tidyverse.org/) package: [`pivot_longer()`](https://tidyr.tidyverse.org/reference/pivot_longer.html) and [`pivot_wider()`](https://tidyr.tidyverse.org/reference/pivot_wider.html). `pivot_longer()` is used to tidy data in which observations are spread across columns; `pivot_wider()` to tidy data in which variables are spread across rows. The functions are especially useful in visual data analysis to fix messy data, but also flexibly reshape data supplied to `ggplot2` specifications (more on this in Chapters [-@sec-visual] and [-@sec-explore]).
 
 To fix `ny_spread_rows`, we use `pivot_wider()` and pass to the function's arguments the name of the problematic column and the column containing values used to populate the newly created columns. 
 
@@ -951,4 +945,4 @@ untidy_wide |>
 
 ## Conclusions
 
-Developing the vocabulary and technical skills to systematically describe and organise data is crucial to modern data analysis. This chapter has covered the fundamentals: that data consist of *observations* and *variables* of different types [@stevens_on_1946] and that in order to work effectively with datasets, these data must be organised according to the rules of *tidy*  data [@wickham_tidy_2014]. Most of the content was dedicated to the techniques that enable these concepts to be operationalised. We covered how to download, transform and reshape a reasonably large dataset from New York's [Citibike]() scheme.  In doing so, we generated insights that might inform further data collection and analysis activity. In the next chapter we will extend this conceptual and technical knowledge as we introduce the fundamentals of visual data analysis and `ggplot2`'s grammar of graphics.
+Developing the vocabulary and technical skills to systematically describe and organise data is crucial to modern data analysis. This chapter has covered the fundamentals: that data consist of *observations* and *variables* of different types [@stevens_on_1946] and that in order to work effectively with datasets, these data must be organised according to the rules of *tidy*  data [@wickham_tidy_2014]. Most of the content was dedicated to the techniques that enable these concepts to be operationalised. We covered how to download, transform and reshape a reasonably large dataset from New York's [Citibike]() scheme.  In doing so, we generated insights that might inform further data collection and analysis activity. In the next chapter we will extend this conceptual and technical knowledge as we introduce the fundamentals of visual data analysis and `ggplot2`'s *grammar of graphics*.

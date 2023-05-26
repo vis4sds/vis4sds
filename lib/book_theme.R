@@ -12,7 +12,7 @@ site_colours <- list(
 update_geom_defaults("label", list(family = "Avenir Next"))
 update_geom_defaults("text", list(family = "Avenir Next"))
 
-theme_v_gds <- function(base_size = 14, base_family = "Avenir Next") {
+theme_v_sds <- function(base_size = 14, base_family = "Avenir Next") {
   return <- theme_classic(base_size, base_family) +
     theme(plot.title = element_text(size = rel(1.2),
                                     family = "Avenir Next Demi Bold"),
@@ -43,4 +43,5 @@ theme_v_gds <- function(base_size = 14, base_family = "Avenir Next") {
 
 
 # Set ggplot2 theme
-theme_set(theme_v_gds())
+theme_set(theme_v_sds())
+

@@ -23,7 +23,7 @@ ped_veh <-
   read_fst(url)
 ped_veh <- 
   read_fst(here("../", "data", "ch4", "ped_veh.fst"))
-
+write_fst(ped_veh, here("../", "data", "ch4", "ped_veh.fst"))
 
 # IMD data.
 temp_url <- "https://services3.arcgis.com/ivmBBrHfQfDnDf8Q/arcgis/rest/services/Indices_of_Multiple_Deprivation_(IMD)_2019/FeatureServer"
@@ -33,9 +33,82 @@ imd <- read_csv(here("../","data", "ch4", "imd.csv"))
 
 
 # Pop data. https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/lowersuperoutputareamidyearpopulationestimates
-lsoa_pop <- read_csv(here("files", "csv", "lsoa_pop.csv"))
+lsoa_pop <- read_csv(here("../","data", "ch4", "lsoa_pop.csv"))
 la_pop <- lsoa_pop |> group_by(la_name) |> summarise(pop=sum(pop)) |> ungroup()
 
+# Recode imd into quintiles.
+ped_veh <- ped_veh %>%
+  mutate(
+    driver_quintile=case_when(
+      driver_imd_decile == "Most deprived 10%" ~ "1 most deprived",
+      driver_imd_decile == "More deprived 10-20%" ~ "1 most deprived",
+      driver_imd_decile == "More deprived 20-30%" ~ "2 more deprived",
+      driver_imd_decile == "More deprived 30-40%" ~ "2 more deprived",
+      driver_imd_decile == "More deprived 40-50%" ~ "3 mid deprived",
+      driver_imd_decile == "Less deprived 40-50%" ~ "3 mid deprived",
+      driver_imd_decile == "Less deprived 30-40%" ~ "4 less deprived",
+      driver_imd_decile == "Less deprived 20-30%" ~ "4 less deprived",
+      driver_imd_decile == "Less deprived 10-20%" ~ "5 least deprived",
+      driver_imd_decile == "Least deprived 10%" ~ "5 least deprived",
+      TRUE ~ driver_imd_decile),
+    casualty_quintile=case_when(
+      casualty_imd_decile == "Most deprived 10%" ~ "1 most deprived",
+      casualty_imd_decile == "More deprived 10-20%" ~ "1 most deprived",
+      casualty_imd_decile == "More deprived 20-30%" ~ "2 more deprived",
+      casualty_imd_decile == "More deprived 30-40%" ~ "2 more deprived",
+      casualty_imd_decile == "More deprived 40-50%" ~ "3 mid deprived",
+      casualty_imd_decile == "Less deprived 40-50%" ~ "3 mid deprived",
+      casualty_imd_decile == "Less deprived 30-40%" ~ "4 less deprived",
+      casualty_imd_decile == "Less deprived 20-30%" ~ "4 less deprived",
+      casualty_imd_decile == "Less deprived 10-20%" ~ "5 least deprived",
+      casualty_imd_decile == "Least deprived 10%" ~ "5 least deprived",
+      TRUE ~ casualty_imd_decile)
+  )
+
+
+lsoa_boundaries <- lsoa_boundaries |> 
+  mutate(
+    quintile=ntile(IMDRank,5),
+    crash_quintile=case_when(
+      quintile == 1 ~ "1 most deprived",
+      quintile == 2 ~ "2 more deprived",
+      quintile == 3 ~ "3 mid deprived",
+      quintile == 4 ~ "4 less deprived",
+      quintile == 5 ~ "5 least deprived")
+  )
+
+# First join based on lsoa name.
+ped_veh <- ped_veh |> 
+  left_join(
+    lsoa_boundaries |> st_drop_geometry() |>  select(lsoa11cd, crash_quintile), 
+    by=c("lsoa_of_accident_location"="lsoa11cd"))
+
+
+# Some lsoas England failed to join -- 5533 crashes -- so do spatial join on easting and northing of crash location.
+ped_veh_spat <- st_as_sf(x=ped_veh |> mutate(x=location_easting_osgr, y=location_northing_osgr) |>  filter(!is.na(location_easting_osgr)), coords=c("x", "y"), crs=27700)
+
+ped_veh_spat <- ped_veh_spat |> select(accident_index) |>  st_join(lsoa_boundaries) 
+
+ped_veh_spat <- ped_veh_spat |>  st_drop_geometry() |> select(accident_index, crash_quintile_spat=crash_quintile) |> unique() 
+
+
+ped_veh <- ped_veh |> 
+  left_join(ped_veh_spat, by=c("accident_index"="accident_index")) |> mutate(crash_quintile=if_else(is.na(crash_quintile), crash_quintile_spat, crash_quintile)) 
+
+
+
+
+
+ped_veh_spat <- ped_veh_spat |> select(-c(lsoa11cd, c_quintile))
+
+
+16822
+# 
+# ped_veh <- ped_veh |> select(-crash_quintile) |> left_join(imd |> select(lsoa_code, crash_quintile), by=c("lsoa_of_accident_location"="lsoa_code"))
+
+
+ped_veh <- ped_veh_pop |> select(-pop)
+                                
 
 ###############################################################################
 # F I G    4 . 1
@@ -527,8 +600,8 @@ plot_data <- exp |> ungroup() |>
   filter(!is.na(col)) |> 
   st_as_sf()
 
-cell_width <- (grid_all |> filter(col==2, row==1) |> pull(x)) - (grid_all |> filter(col==1, row==1) |> pull(x))
-cell_height <- (grid_all |> filter(col==1, row==2) |> pull(y)) - (grid_all |> filter(col==1, row==1) |> pull(y))
+cell_width <- abs((grid |> filter(col==5, row==2) |> pull(x)) - (grid |> filter(col==6, row==2) |> pull(x)))
+cell_height <- abs((grid |> filter(col==5, row==2) |> pull(y)) - (grid |> filter(col==5, row==3) |> pull(y)))
 
 cell_width = cell_width * .95
 cell_height = cell_height * .95
@@ -550,9 +623,11 @@ grids_vehicle <- plot_data |>
   geom_text(aes(x = x, y = y, label = str_extract(local_authority_district, "^.{3}")), size = 3, alpha=.8) +
   coord_sf() +
   facet_wrap(~vehicle_type) +
+  labs(caption= "<span style = 'color: #4A679D;'> weekend </span> | <span style = 'color: #3B7EBA;'>weekday </span>") +
   theme(
     panel.grid.major=element_blank(), panel.grid.minor = element_blank(), axis.title.y=element_blank(), 
-    axis.text.x = element_blank(), axis.text.y = element_blank(), axis.title.x = element_blank(), axis.line = element_blank()
+    axis.text.x = element_blank(), axis.text.y = element_blank(), axis.title.x = element_blank(), axis.line = element_blank(),
+    plot.caption=ggtext::element_markdown(family = "Avenir Medium", size=13)
 )
 
 labels <- grid |> 
@@ -565,15 +640,16 @@ labels <- grid |>
   )
   
 plot <- grids_vehicle +  plot_layout(width=c(1)) + plot_annotation(
-  subtitle="<span style = 'color: #415F96;'>weekend </span> | <span style = 'color: #677797;'> weekday </span> ",
                   #subtitle="-- Stats19 crashes 2010-2019",
                   #caption="Stats19 data accessed via `stats19` package"
   ,
-                  theme=theme_v_gds() + theme(plot.subtitle=ggtext::element_markdown(family = "Avenir Next", size=13))) 
+                  theme=theme_v_gds() + theme(plot.caption=ggtext::element_markdown(family = "Avenir Next", size=13))) 
 
 
 
-ggsave(filename= here("figs", "04", "grids_vehicle.svg"), plot=plot,width=7, height=7)
+ggsave(filename= here("figs", "04", "grids_vehicle.svg"), plot=grids_vehicle,width=7, height=6.5)
+
+ggsave(filename= here("figs", "04", "grids_vehicle.png"), plot=grids_vehicle,width=7, height=6.5)
 
 
 ###############################################################################
@@ -1394,6 +1470,7 @@ ggsave(filename="figs/04/borough-freqs-resids.png", plot=plot,width=7, height=6,
 
 ped_veh_complete <- ped_veh |> 
   filter(
+    !is.na(crash_quintile),
     !is.na(casualty_quintile), 
     casualty_quintile != "Data missing or out of range", 
     driver_quintile != "Data missing or out of range"
@@ -1412,9 +1489,9 @@ ped_veh |>
 # A tibble: 3 × 2
 accident_severity prop_complete
 <chr>                     <dbl>
-  1 Fatal                     0.303
-2 Serious                   0.288
-3 Slight                    0.215
+  1 Fatal                     0.260
+2 Serious                   0.261
+3 Slight                    0.196
 
 ped_veh |> 
   mutate(
@@ -1430,6 +1507,7 @@ plot <- ped_veh |>
   ) |> 
   group_by(crash_quintile, is_ksi) |> 
   summarise(prop_complete=mean(is_complete)) |> 
+  filter(!is.na(crash_quintile)) |> 
   ggplot() +
   geom_point(aes(y=crash_quintile, x=prop_complete, colour=is_ksi), size=3) +
   scale_colour_manual(values=c("#67000d", "#fb6a4a")) +
@@ -1439,8 +1517,10 @@ plot <- ped_veh |>
 
 ggsave(filename= here("figs", "04", "completeness.svg"), plot=plot,width=5, height=3.5)  
 
+ggsave(filename= here("figs", "04", "completeness.png"), plot=plot,width=5, height=3.5, dpi=300)  
+
 plot_data <- ped_veh_complete |> 
-  inner_join(imd |> select(lsoa_code, total_pop), by=c("lsoa_of_accident_location"="lsoa_code"))  |>
+  # inner_join(imd |> select(lsoa_code, total_pop), by=c("lsoa_of_accident_location"="lsoa_code"))  |>
   select(driver_quintile, casualty_quintile, crash_quintile) |> 
   pivot_longer(cols=everything(), names_to="location_type", values_to="imd") |>
   group_by(location_type, imd) |> 
@@ -1453,30 +1533,30 @@ plot_data <- ped_veh_complete |>
       TRUE ~ type)
   ) 
   
-imd_pop <- imd |> 
-  inner_join(ped_veh |> select(lsoa_code=lsoa_of_accident_location) |> unique()) |> 
-  rename(imd=crash_quintile) |> 
-  group_by(imd) |> 
-  summarise(pop=sum(total_pop)) |> ungroup() |> 
-  mutate(prop=pop/sum(pop), type="location") |> 
-  left_join(plot_data) |> 
-  mutate(exp=sum(count)*prop) 
-
-plot <- plot_data |>
-    left_join(imd_pop) |> 
-    mutate(
-      type=factor(type, levels=c("location", "pedestrian", "driver"))
-    ) |> 
-    ggplot() + 
-    geom_col(aes(x=imd, y=count), fill="#003c8f", alpha=.9) +
-    geom_col(aes(x=imd, y=exp), fill="#003c8f", colour="#003c8f", linetype="dashed", alpha=.3, linewidth=.2) +
-    scale_x_discrete(labels=c("most","", "mid", "", "least")) +
-  facet_wrap(~type)
+# imd_pop <- imd |> 
+#   inner_join(ped_veh |> select(lsoa_code=lsoa_of_accident_location) |> unique()) |> 
+#   rename(imd=crash_quintile) |> 
+#   group_by(imd) |> 
+#   summarise(pop=sum(total_pop)) |> ungroup() |> 
+#   mutate(prop=pop/sum(pop), type="location") |> 
+#   left_join(plot_data) |> 
+#   mutate(exp=sum(count)*prop) 
+# 
+# plot <- plot_data |>
+#     left_join(imd_pop) |> 
+#     mutate(
+#       type=factor(type, levels=c("location", "pedestrian", "driver"))
+#     ) |> 
+#     ggplot() + 
+#     geom_col(aes(x=imd, y=count), fill="#003c8f", alpha=.9) +
+#     geom_col(aes(x=imd, y=exp), fill="#003c8f", colour="#003c8f", linetype="dashed", alpha=.3, linewidth=.2) +
+#     scale_x_discrete(labels=c("most","", "mid", "", "least")) +
+#   facet_wrap(~type)
 
 
 
 plot <- ped_veh_complete |> 
-  inner_join(imd |> select(lsoa_code, total_pop), by=c("lsoa_of_accident_location"="lsoa_code"))  |>
+  # inner_join(imd |> select(lsoa_code, total_pop), by=c("lsoa_of_accident_location"="lsoa_code"))  |>
   select(driver_quintile, casualty_quintile, crash_quintile) |> 
   pivot_longer(cols=everything(), names_to="location_type", values_to="imd") |>
   group_by(location_type, imd) |> 
@@ -1495,6 +1575,8 @@ plot <- ped_veh_complete |>
   facet_wrap(~type)
 
 ggsave(filename= here("figs", "04", "freqs_imd.svg"), plot=plot,width=6, height=3) 
+
+ggsave(filename= here("figs", "04", "freqs_imd.png"), plot=plot,width=6, height=3, dpi=300) 
 
 model_ped_veh <- ped_veh_complete |> 
   # Record the grand_total: total pedestrian crashes.
@@ -1756,6 +1838,8 @@ plot <- (plot_imd_driver |  plot_imd_driver_resid) /
 
 ggsave(here("figs", "04", "imd_driver_cas.svg"), plot=plot,width=8, height=5)
 
+ggsave(here("figs", "04", "imd_driver_cas.png"), plot=plot,width=8, height=5, dpi=300)
+
 
 plot_data <- ped_veh_complete |> 
   mutate(
@@ -1793,7 +1877,7 @@ plot_imd_driver_area_obs <- ped_veh_complete |>
   geom_tile(aes(fill=observed), colour="#707070", size=.2) +
   scale_fill_distiller(palette="Blues", direction=1) +
   facet_wrap(~crash_quintile, nrow=1) +
-  theme_v_gds() +
+#  theme_v_gds() +
   labs(x="IMD quintile of casualty", y="IMD quintile of driver", subtitle="Observed") +
   theme(axis.text.x=element_blank(), axis.text.y = element_blank(), 
         axis.title.x = element_blank(), axis.title.y = element_blank(),
@@ -1869,6 +1953,8 @@ plot_demog_dists <- demog_distances |>
 plot <- plot_imd_driver_area_obs / plot_demog_dists / plot_imd_driver_area_model
 
 ggsave(filename= here("figs", "04", "model_imd_location.svg"), plot=plot,width=9, height=7) 
+
+ggsave(filename= here("figs", "04", "model_imd_location.png"), plot=plot,width=9, height=7, dpi=300) 
 
 
 # plot_imd_driver_area_obs_local <- ped_veh |> 
