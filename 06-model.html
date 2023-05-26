@@ -1,12 +1,9 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="generator" content="quarto-0.9.637">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-
-
 <title>Visualization for Social Data Science - 6&nbsp; Models</title>
 <style>
 code{white-space: pre-wrap;}
@@ -16,7 +13,6 @@ div.column{display: inline-block; vertical-align: top; width: 50%;}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 </style>
-
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/quarto-nav/headroom.min.js"></script>
@@ -35,8 +31,7 @@ ul.task-list{list-style: none;}
 <link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
-<script id="quarto-search-options" type="application/json">{
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet"><script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
@@ -54,34 +49,39 @@ ul.task-list{list-style: none;}
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit"
   }
-}</script>
-
-
+}</script><script src="site_libs/kePrint-0.0.1/kePrint.js"></script><link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+<script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script><script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script><script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
 </head>
-
 <body class="nav-sidebar floating">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-    <div class="container-fluid d-flex justify-content-between">
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }"><div class="container-fluid d-flex justify-content-between">
       <h1 class="quarto-secondary-nav-title"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Models</span></h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
     </div>
-  </nav>
-</header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Visualization for Social Data Science</a> 
         <div class="sidebar-tools-main">
     <a href="https://github.com/vis4sds/vis4sds/" title="Source Code" class="sidebar-tool px-1"><i class="bi bi-github"></i></a>
-    <a href="https://twitter.com/intent/tweet?url=|url|" title="Twitter" class="sidebar-tool px-1"><i class="bi bi-twitter"></i></a>
+    <a href="https://twitter.com/intent/tweet?url=%7Curl%7C" title="Twitter" class="sidebar-tool px-1"><i class="bi bi-twitter"></i></a>
 </div>
     </div>
       </div>
@@ -92,7 +92,7 @@ ul.task-list{list-style: none;}
       </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">Preface</a>
   </div>
@@ -143,24 +143,29 @@ ul.task-list{list-style: none;}
   </div>
 </li>
     </ul>
-    </div>
-</nav>
-<!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc">
-    <h2 id="toc-title">Table of contents</h2>
+</div>
+</nav><!-- margin-sidebar --><div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#concepts" id="toc-concepts" class="nav-link active" data-scroll-target="#concepts"> <span class="header-section-number">6.1</span> Concepts</a></li>
-  <li><a href="#techniques" id="toc-techniques" class="nav-link" data-scroll-target="#techniques"> <span class="header-section-number">6.2</span> Techniques</a></li>
+<li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"> <span class="header-section-number">6.1</span> Introduction</a></li>
+  <li>
+<a href="#concepts" id="toc-concepts" class="nav-link" data-scroll-target="#concepts"> <span class="header-section-number">6.2</span> Concepts</a>
+  <ul class="collapse">
+<li><a href="#quantifying-and-exploring-variation" id="toc-quantifying-and-exploring-variation" class="nav-link" data-scroll-target="#quantifying-and-exploring-variation"> <span class="header-section-number">6.2.1</span> Quantifying and exploring variation</a></li>
+  <li><a href="#quantifying-and-exploring-co-variation" id="toc-quantifying-and-exploring-co-variation" class="nav-link" data-scroll-target="#quantifying-and-exploring-co-variation"> <span class="header-section-number">6.2.2</span> Quantifying and exploring co-variation</a></li>
+  <li><a href="#modelling-for-co-variation" id="toc-modelling-for-co-variation" class="nav-link" data-scroll-target="#modelling-for-co-variation"> <span class="header-section-number">6.2.3</span> Modelling for co-variation</a></li>
+  <li><a href="#evaluating-model-bias" id="toc-evaluating-model-bias" class="nav-link" data-scroll-target="#evaluating-model-bias"> <span class="header-section-number">6.2.4</span> Evaluating model bias</a></li>
+  <li><a href="#geographic-context-as-grouped-nuisance-term" id="toc-geographic-context-as-grouped-nuisance-term" class="nav-link" data-scroll-target="#geographic-context-as-grouped-nuisance-term"> <span class="header-section-number">6.2.5</span> Geographic context as grouped nuisance term</a></li>
+  <li><a href="#geographic-context-as-grouped-effects" id="toc-geographic-context-as-grouped-effects" class="nav-link" data-scroll-target="#geographic-context-as-grouped-effects"> <span class="header-section-number">6.2.6</span> Geographic context as grouped effects</a></li>
+  <li><a href="#estimate-volatility-and-alternative-modelling-structures" id="toc-estimate-volatility-and-alternative-modelling-structures" class="nav-link" data-scroll-target="#estimate-volatility-and-alternative-modelling-structures"> <span class="header-section-number">6.2.7</span> Estimate volatility and alternative modelling structures</a></li>
   </ul>
-<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/vis4sds/vis4sds/edit/master/06-model.qmd" class="toc-action">Edit this page</a></p></div></div></nav>
+</li>
+  <li><a href="#techniques" id="toc-techniques" class="nav-link" data-scroll-target="#techniques"> <span class="header-section-number">6.3</span> Techniques</a></li>
+  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/vis4sds/vis4sds/edit/master/06-model.qmd" class="toc-action">Edit this page</a></p></div></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
 <h1 class="title"><span id="sec-model" class="quarto-section-identifier d-none d-lg-block"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Models</span></span></h1>
 </div>
 
@@ -173,8 +178,9 @@ ul.task-list{list-style: none;}
   </div>
   
 
-</header>
+</header><div class="cell">
 
+</div>
 <p>By the end of this chapter you should gain the following knowledge and practical skills.</p>
 <div class="callout-note callout callout-style-default callout-captioned">
 <div class="callout-header d-flex align-content-center">
@@ -187,13 +193,14 @@ Knowledge
 </div>
 <div class="callout-body-container callout-body">
 <ul class="task-list">
-<li><input type="checkbox" disabled="" checked="">
+<li>
+<input type="checkbox" disabled="" checked="">
 Be reminded of the basics of linear regression modelling.</li>
-<li><input type="checkbox" disabled="" checked="">
-Appreciate problems of model bias.</li>
-<li><input type="checkbox" disabled="" checked="">
+<li>
+<input type="checkbox" disabled="" checked="">
 Understand two categories of geographic effect in regression modelling: geographical <em>dependence</em> in values and <em>non-stationarity</em> in processes.</li>
-<li><input type="checkbox" disabled="" checked="">
+<li>
+<input type="checkbox" disabled="" checked="">
 Learn how linear regression models can be updated to account for and explore these two effects.</li>
 </ul>
 </div>
@@ -209,28 +216,324 @@ Practical skills
 </div>
 <div class="callout-body-container callout-body">
 <ul class="task-list">
-<li><input type="checkbox" disabled="" checked="">
+<li>
+<input type="checkbox" disabled="" checked="">
 Specify linear regression models in R.</li>
-<li><input type="checkbox" disabled="" checked="">
+<li>
+<input type="checkbox" disabled="" checked="">
 Apply <a href="https://purrr.tidyverse.org/articles/other-langs.html">functional-style programming</a> for working over multiple model outputs.</li>
-<li><input type="checkbox" disabled="" checked="">
+<li>
+<input type="checkbox" disabled="" checked="">
 Update linear regression models in R with Fixed Effect (FE) and Interaction terms.</li>
-<li><input type="checkbox" disabled="" checked="">
-Extract model outputs and diagnostics in a <a href="https://vita.had.co.nz/papers/tidy-data.pdf"><code>tidy</code></a> manner.</li>
+<li>
+<input type="checkbox" disabled="" checked="">
+Extract model outputs and diagnostics in a <a href="https://vita.had.co.nz/papers/tidy-data.pdf"><code>tidy</code></a> manner.</li>
 </ul>
 </div>
 </div>
-<section id="concepts" class="level2" data-number="6.1">
-<h2 data-number="6.1" class="anchored" data-anchor-id="concepts"><span class="header-section-number">6.1</span> Concepts</h2>
-</section>
-<section id="techniques" class="level2" data-number="6.2">
-<h2 data-number="6.2" class="anchored" data-anchor-id="techniques"><span class="header-section-number">6.2</span> Techniques</h2>
+<section id="introduction" class="level2" data-number="6.1"><h2 data-number="6.1" class="anchored" data-anchor-id="introduction">
+<span class="header-section-number">6.1</span> Introduction</h2>
+<p>So far the analysis presented has been quite data-driven. Having described data in a consistent way (<a href="02-data.html"><span>Chapter&nbsp;2</span></a>), visual analysis approaches have been applied to expose structure in datasets, informed by established visualization guidelines. Chapters <a href="04-explore.html"><span>4</span></a> and <a href="05-network.html"><span>5</span></a> involved model building, but these were largely value-free models based on limited prior theory.</p>
+<p>This chapter works through a dataset with a more explicit and theoretically-informed motivation. We will explore variation in voting behaviour in the UK’s 2016 referendum on leaving the EU. You might remember that whilst there was a slight majority for Leave (51.9%), the vote varied between different parts of the country. There were many theories and explanations offered around for why particular places voted the way they did, often related to the demographic composition of those areas. We will explore whether the sorts of compositional demographic factors discussed vary systematically with area-level Leave voting. Using regression frameworks, we will model the relative effect of each of these compositional factors in structuring variation in the vote and construct data graphics that allow these models and parameters to be considered and evaluated in detail.</p>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This chapter assumes some basic familiarity with linear regression modelling. For a clear and detailed overview, with excellent social science examples, you may wish to try <span class="citation" data-cites="bartholomew_analysis_2008">Bartholomew et al. (<a href="references.html#ref-bartholomew_analysis_2008" role="doc-biblioref">2008</a>)</span>.</p>
+</div>
+</div>
+</section><section id="concepts" class="level2" data-number="6.2"><h2 data-number="6.2" class="anchored" data-anchor-id="concepts">
+<span class="header-section-number">6.2</span> Concepts</h2>
+<section id="quantifying-and-exploring-variation" class="level3" data-number="6.2.1"><h3 data-number="6.2.1" class="anchored" data-anchor-id="quantifying-and-exploring-variation">
+<span class="header-section-number">6.2.1</span> Quantifying and exploring variation</h3>
+<!-- Variation is central to most data analysis, and certainly regression modelling: quantifying variation, exploring how it is structured and accounting for (or explaining) it using a combination of empirical data, prior theory and knowledge. -->
+<p>In <a href="#fig-map-uniform">Figure&nbsp;<span>6.1</span></a> is a map and bar chart displaying total variation in vote shares for Leave in Great Britain (GB), estimated at Parliamentary Constituency level <span class="citation" data-cites="hanretty_areal_2017">(see <a href="references.html#ref-hanretty_areal_2017" role="doc-biblioref">Hanretty 2017</a>)</span>. The values themselves are the difference in estimated vote shares from an expectation that the Leave vote by constituency (<span class="math inline">y_{i}</span>), our <em>outcome</em> of interest, is uniformly distributed across the country and so equivalent to the overall vote share for Leave, which for constituencies is 51.9%. Although a slightly contrived formulation, we could express this as an intercept-only linear regression model, where the estimated <em>slope</em> (<span class="math inline">\beta_{1}</span>) is ‘turned off’ (takes the value <span class="math inline">0</span>) and the <em>intercept</em> (<span class="math inline">\beta_{0}</span>) is the GB average vote share for Leave (<span class="math inline">\bar{y}</span>):</p>
+<p><span class="math display">\begin{align*}
+       y_{i}= \beta_{0} + \beta_{1} + \varepsilon_{i}
+\end{align*}</span></p>
+<p>So we estimate the Leave vote in each constituency (<span class="math inline">y_{i}</span>) as a function of:</p>
+<ul>
+<li>
+<span class="math inline">\beta_{0}</span>, the intercept, the GB average vote share (<span class="math inline">\bar{y}</span>) <span class="math inline">+</span>
+</li>
+<li>
+<span class="math inline">\beta_{1}=0</span>, a negated slope, <span class="math inline">+</span>
+</li>
+<li>
+<span class="math inline">\varepsilon_{i}</span>, a statistical error term capturing the difference between <span class="math inline">y_{i}</span>, the observed Leave vote in a constituency, and the unobservable ‘true population’ value of the Leave vote in each constituency</li>
+</ul>
+<p>How does this relate to the idea of characterising variation? The length and colour of each bar in <a href="#fig-map-uniform">Figure&nbsp;<span>6.1</span></a> is scaled according to model <em>residuals</em>: the difference between <span class="math inline">y_{i}</span>, the observed value, and the expected value of the Leave vote under the uniform model. The sum of these bar lengths is therefore the total variance that we later try to account for by updating our regression model to generate new expected values using information on the demographic composition of constituencies.</p>
+<p><a href="#fig-map-uniform">Figure&nbsp;<span>6.1</span></a> is similar to the maps that were <a href="https://www.theguardian.com/politics/2016/jun/24/eu-voting-map-lays-bare-depth-of-division-across-britain">published widely in press reports</a> in the aftermath of the vote, and demonstrates that there is indeed substantial variation in Leave voting between different parts of the country. The intercept-only model, which assumes a uniform distribution of Leave across the country, consistently underestimates the vote in Scotland and most of London. Outside of this, constituencies voting in smaller proportions than would be expected for Leave are distributed more discretely in the country: the dark red dot with surrounding red area in the east of England is Cambridge and Cambridgeshire, constituencies in Bristol (south west), Manchester and Liverpool (north west), Brighton (south), are also reasonably strong red.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-map-uniform" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="figs/06/map_uniform.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 6.1: Residuals from uniform model comparing constituency Leave vote to GB average</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>When evaluating the effectiveness of modelled values, there are various checks that can be performed. An obvious one here is wether there is bias in the residuals – whether they have any underlying structure that suggests that they are grouped in a way not captured by the model. Given the motivation behind our analysis, it is no surprise that there is a geographic pattern to the residuals in <a href="#fig-map-uniform">Figure&nbsp;<span>6.1</span></a>, but also the non-symmetrical shape of the ‘signed’ bars is instructive. There are more constituencies with positive values than negative – the Leave vote is underestimated by the uniform model for 57% of constituencies – and certain constituencies with extreme negative values – the strongest vote for Leave was Boston and Skegness (76%) but the strongest for Remain was Hackney North and Stoke Newington (80%).</p>
+</section><section id="quantifying-and-exploring-co-variation" class="level3" data-number="6.2.2"><h3 data-number="6.2.2" class="anchored" data-anchor-id="quantifying-and-exploring-co-variation">
+<span class="header-section-number">6.2.2</span> Quantifying and exploring co-variation</h3>
+<p>More interesting is whether the pattern of variation in <a href="#fig-map-uniform">Figure&nbsp;<span>6.1</span></a> is correlated with compositional factors that we think explain this variation; and also whether bias or structure in residuals exists even after accounting for these compositional factors.</p>
+<p>In <a href="#tbl-variables">Table&nbsp;<span>6.1</span></a> is a list of candidate explanatory variables describing the demographic composition of constituencies. Each variable is expressed as a proportion of the constituency’s population. So the <em>degree educated</em> variable describes the proportion of residents in the constituency educated at least to degree-level. Comparison across these variables is challenging due to the fact that their ranges differ: the <em>EU-born</em> variable ranges from 0.6% to 17%; the <em>white</em> variable from 14% to 98%. There are also obvious ceilings that limit how successful explanatory variables are likely to be at discriminating variation. Common practice for addressing the range problem is to <a href="https://en.wikipedia.org/wiki/Standard_score">z-score transform</a> the variables so that each value is expressed in standard deviation units from its variable’s mean.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="tbl-variables" class="anchored">
+
+<table>
+<caption>Table 6.1:  Breakdown of variable types </caption>
+ <thead><tr>
+<th style="text-align:left;border-bottom: 1px solid;"> Census variable </th>
+   <th style="text-align:left;border-bottom: 1px solid;"> Constituency % </th>
+  </tr></thead>
+<tbody>
+<tr grouplength="4"><td colspan="2" style="border-bottom: 0px solid;">post-industrial / knowledge economy</td></tr>
+<tr>
+<td style="text-align:left;padding-left: 2em;width: 60%; " indentlevel="1"> degree-educated </td>
+   <td style="text-align:left;"> with degrees + </td>
+  </tr>
+<tr>
+<td style="text-align:left;padding-left: 2em;width: 60%; " indentlevel="1"> professional occupations </td>
+   <td style="text-align:left;"> ns-sec manager/professional </td>
+  </tr>
+<tr>
+<td style="text-align:left;padding-left: 2em;width: 60%; " indentlevel="1"> younger adults </td>
+   <td style="text-align:left;"> adults aged &lt;44 </td>
+  </tr>
+<tr>
+<td style="text-align:left;padding-left: 2em;width: 60%; " indentlevel="1"> heavy industry </td>
+   <td style="text-align:left;"> manufacturing and transport </td>
+  </tr>
+<tr grouplength="4"><td colspan="2" style="border-bottom: 0px solid;">diversity/values/outcomes</td></tr>
+<tr>
+<td style="text-align:left;padding-left: 2em;width: 60%; " indentlevel="1"> not good health </td>
+   <td style="text-align:left;"> reported fair, bad, very bad </td>
+  </tr>
+<tr>
+<td style="text-align:left;padding-left: 2em;width: 60%; " indentlevel="1"> white </td>
+   <td style="text-align:left;"> ethnicity white British/Irish </td>
+  </tr>
+<tr>
+<td style="text-align:left;padding-left: 2em;width: 60%; " indentlevel="1"> Christian </td>
+   <td style="text-align:left;"> Christian </td>
+  </tr>
+<tr>
+<td style="text-align:left;padding-left: 2em;width: 60%; " indentlevel="1"> EU-born </td>
+   <td style="text-align:left;"> EU-born (not UK) </td>
+  </tr>
+<tr grouplength="2"><td colspan="2" style="border-bottom: 0px solid;">metropolitan / 'big city'</td></tr>
+<tr>
+<td style="text-align:left;padding-left: 2em;width: 60%; " indentlevel="1"> own home </td>
+   <td style="text-align:left;"> own home </td>
+  </tr>
+<tr>
+<td style="text-align:left;padding-left: 2em;width: 60%; " indentlevel="1"> no car </td>
+   <td style="text-align:left;"> don't own a car </td>
+  </tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<p><a href="#fig-scatters">Figure&nbsp;<span>6.2</span></a> presents scatterplots from which the extent of linear association between these demographics and Leave voting in each constituency can be inferred. Each dot is a constituency, arranged on the x-axis according to the value of each candidate explanatory variable and the y-axis according to the share of Leave vote. The scatterplots are faceted by explanatory variable and ordered left-to-right and top-to-bottom according to correlation coefficient. The variable most heavily correlated with Leave voting is that measuring levels of <em>degree</em> education: as the share of a constituency’s population educated at least to <em>degree-level</em> increases, the share of Leave vote in that constituency decreases. An association in the same direction, but to a lesser extent, is observed for variables representing similar concepts: <em>professional occupations</em>, <em>younger adults</em>, <em>EU-born</em>, <em>no-car</em> and the reverse for <em>Christian</em>, <em>not-good health</em> and <em>heavy industry</em>.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-scatters" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="figs/06/scatters.png" class="img-fluid figure-img" style="width:90.0%"></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 6.2: Scatterplots of constituency Leave vote against candidate explanatory variables</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>It is of course possible, and likely, that there is some some autocorrelation in the compositional characteristics of constituencies and Leave voting. Parallel coordinate plots are useful for visually exploring this multivariate correlation. Whereas in scatterplots, observations are represented as points located in x- and y- axes that are orthogonal, in a parallel coordinate plot axes are parallel and the values of an observation encoded via a line connecting the multiple parallel axes, as in <a href="#fig-pcps">Figure&nbsp;<span>6.3</span></a>. Each of the thin lines is a constituency coloured according to whether the constituency voted majority Remain (red) or Leave (blue); a high Remain and Leave constituency is highlighted. The first variable encoded is the size of the Leave vote (z-score transformed) and variables are then ordered according to linear association with Leave. Note that we have reversed the polarity of variables such as <em>degree-educated</em> and <em>professional</em> so that we expect more Leave (blue lines) towards the right locations of the parallel axis. That the blue and red lines are reasonably separated suggests that there is autocorrelation in the demographics of Leave and Remain constituencies.</p>
+<!-- Although they enable some aspects of association between multiple variables to be encoded, parallel coordinate plots have several deficiencies;  -->
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-pcps" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="figs/06/pcps.png" class="img-fluid figure-img" style="width:70.0%"></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 6.3: Parallel coordinate plot of constituency Leave vote and candidate explanatory variables</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Although parallel coordinate plots enable some aspects of association between multiple variables to be inferred, they have several deficiencies. Association can only really be directly inferred by comparing variables that are immediately adjacent in parallel space; the order of parallel variables can affect the visual appearance and patterns of plots; and relatedly, visual patterns of the plot that are salient may not always be important to the phenomena being investigated.</p>
+</div>
+</div>
+<!--
+::: {.callout-note}
+
+ You will remember from introductory stats courses that that the correlation coefficient can be used to summarise the strength of linear association between two variables. It is a quantity that ranges from perfect negative correlation, -1 -- as one value increases another decreases in the same proportion -- to perfect positive correlation, +1 -- as one value increases another increases in the same proportion. A value of 0 indicates no association -- the values increase and decrease independently of each other.
 
 
-</section>
+::: {.cell}
+::: {.cell-output-display}
+![Scatterplots of synthetic bivariate data with extent of correlation coefficient systematically varied](figs/06/cors.png){#fig-cors width=100%}
+:::
+:::
 
-</main> <!-- /main -->
-<script id="quarto-html-after-body" type="application/javascript">
+
+::: -->
+</section><section id="modelling-for-co-variation" class="level3" data-number="6.2.3"><h3 data-number="6.2.3" class="anchored" data-anchor-id="modelling-for-co-variation">
+<span class="header-section-number">6.2.3</span> Modelling for co-variation</h3>
+<p>Linear regression provides a framework for systematically describing the associations implied by the scatterplots and parallel coordinate plot, and with respect to the constituency-level variation identified in <a href="#fig-map-uniform">Figure&nbsp;<span>6.1</span></a>. Having seen this new data, the candidate demographic variables in <a href="#fig-scatters">Figure&nbsp;<span>6.2</span></a>, we can derive expected values closer to those observed and so better account for constituency-level variation in Leave voting.</p>
+<p>To express this in equation form, we update the uniform model such that Leave vote is a <em>function</em> of the candidate explanatory variables. For single-variable linear regression, we might select the proportion of residents educated at least to <em>degree-level</em> (<span class="math inline">{d_{i1}}</span>):</p>
+<p><span class="math display">\begin{align*}
+       y_{i}&amp;= \beta_{0} + \beta_{1}{d_{i1}} + \varepsilon_{i}  \\
+\end{align*}</span></p>
+<p>So we now estimate the Leave vote in each constituency (<span class="math inline">y_{i}</span>) as a function of:</p>
+<ul>
+<li>
+<span class="math inline">\beta_{0}</span>, the intercept, the GB average vote share (<span class="math inline">\bar{y}</span>) <span class="math inline">+</span>
+</li>
+<li>
+<span class="math inline">\beta_{1}=\beta_{1}{d_{i1}}</span>, the slope, indicating in which direction and to what extent <em>degree-educated</em> is associated with Leave, <span class="math inline">+</span>
+</li>
+<li>
+<span class="math inline">\varepsilon_{i}</span>, the difference between <span class="math inline">y_{i}</span> (the observed value) and the unobservable ‘true population’ value of the Leave vote in that constituency (statistical error)</li>
+</ul>
+<p>There are different algorithms that can be used to estimate these parameters. Most obvious is ordinary least squares (OLS), which aims to minimise the sum of the (squared) residuals between the observed Leave vote in a constituency, <span class="math inline">y_{i}</span>, and that expected given the association with the <em>degree-educated</em> explanatory variable <span class="math inline">d_{i1}</span>. Eyeballing the scatterplots in <a href="#fig-scatters">Figure&nbsp;<span>6.2</span></a> we can already infer many of the parameters estimated via OLS regression. <em>Degree-educated</em> is most consistently associated with Leave voting and, according to our linear regression model, explains 60% of the total variation (the summed bars in <a href="#fig-map-uniform">Figure&nbsp;<span>6.1</span></a>) in constituency-level Leave voting. Also from the scatterplots, especially those associating Leave with <em>degree-educated</em> and <em>professionals</em>, there is a grouping of constituencies where the Leave vote is lower than we might expect given that constituency’s population characteristics – and this is reflected when inspecting the 1D distribution of residuals in histograms (not included here).</p>
+<p>It is of course possible, and likely, that some of these variables account for different elements of the variation in the Leave vote than others. You will be aware that the linear regression model can be extended to include many explanatory variables:</p>
+<p><span class="math display">\begin{align*}
+      y_{i}&amp;= \beta_{0} +\beta_{1}x_{i1} + ... + \beta_{k}x_{ik} + \varepsilon_{i}  \\
+\end{align*}</span></p>
+<p>So this results in <em>separate</em> <span class="math inline">\beta_{k}</span> coefficients for separate explanatory variables. These coefficients can be interpreted as the degree of association between the explanatory variable <span class="math inline">k</span> and the outcome variable, keeping all the other explanatory variables constant – or the distinct correlation between an explanatory variable <span class="math inline">k</span> and the outcome variable, net of the other correlated variables.</p>
+<p>In <a href="#fig-outputs">Figure&nbsp;<span>6.4</span></a> are regression coefficients (<span class="math inline">\beta_{k}</span>) from a multiple regression model with <em>degree-educated</em>, <em>no car</em>, <em>white</em>, <em>heavy industry</em>, <em>EU-born</em> and <em>not good health</em> selected as explanatory variables. Coefficients are reported as dots with estimates of uncertainty represented as lines encoding 95% <a href="http://www.sumsar.net/blog/2013/12/an-animation-of-the-construction-of-a-confidence-interval/">confidence intervals</a>. <!-- the range of values the true (*unobservable*) coefficient is likely to take --> Most variables’ coefficients are in the direction that would be expected given the associations in <a href="#fig-scatters">Figure&nbsp;<span>6.2</span></a>. Net of variation in the other compositional factors, increased levels of <em>degree education</em> in a constituency has the effect of reducing the Leave vote. The two exceptions are <em>EU-born</em> and <em>white</em>: after controlling for variation in the other demographic variables, increased proportions of residents identifying as <em>white</em> reduces the Leave vote and increased proportions of residents that are <em>EU-born</em> increases the Leave vote. Since the confidence interval for <em>white</em> crosses zero, this coefficient is subject to much uncertainty; further exploration may allow us to identify whether these counter-intuitive effects are genuine or the result of a poorly-specified model.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-outputs" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="figs/06/outputs.png" class="img-fluid figure-img" style="width:70.0%"></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 6.4: Outputs from multiple regression model of Leave vote by demographic composition of constituency</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Given the spirit of this book, you might have wondered about the reasonably abbreviated discussion of techniques for representing model outputs and their uncertainty estimates (via Confidence Intervals). More involved coverage of this is in <a href="07-uncertainty.html"><span>Chapter&nbsp;7</span></a>.</p>
+</div>
+</div>
+</section><section id="evaluating-model-bias" class="level3" data-number="6.2.4"><h3 data-number="6.2.4" class="anchored" data-anchor-id="evaluating-model-bias">
+<span class="header-section-number">6.2.4</span> Evaluating model bias</h3>
+<p>The new expected values for Leave in derived from the multivariate model are much closer to the observed in the data; the model accounts for a reasonably large share (c.76%) of the variation in constituency-level Leave voting. However, our analysis becomes more interesting when we start to explore and characterise model <em>bias</em>: any underlying structure to the observations which are better or less well accounted for by the model.</p>
+<p>For area-level regression models such as ours, it is usual for residuals to exhibit some <a href="https://rspatial.org/raster/analysis/3-spauto.html">spatial autocorrelation</a> structure. For certain parts of a country, a model will overestimate an outcome given the relationship implied by associations between explanatory and outcome variables; for other parts, the outcome will be underestimated. This might occur due to:</p>
+<ul>
+<li>
+<em>Spatial dependence</em> in <em>variable values</em> over space. We know that the geography of GB is quite socially distinctive, so it is reasonable to expect, for example, the range in variables like <em>heavy industry</em> and <em>white</em> to be bounded to economic regions and metropolitan-versus-peripheral regional contexts.</li>
+<li>
+<em>Spatial nonstationarity</em> in <em>processes</em> over space. It is possible that associations between variables might be grouped over space – that the associations vary for different parts of the country. For example, high levels of <em>EU-born</em> migration might affect political attitudes, and thus area-level voting, differently in different parts of a country.</li>
+</ul>
+<p>We can test for and characterise <a href="https://rspatial.org/raster/analysis/3-spauto.html">spatial autocorrelation</a> by performing a graphical inference test, a map line-up <span class="citation" data-cites="beecham_map_2017 wickham_graphical_2010">(<a href="references.html#ref-beecham_map_2017" role="doc-biblioref">Beecham et al. 2017</a>; <a href="references.html#ref-wickham_graphical_2010" role="doc-biblioref">Wickham et al. 2010</a>)</span> against a null hypothesis of <em>complete spatial randomness</em> (CSR) in residuals. Here a plot of real data, the true map of residuals, is hidden amongst a set of decoys, in this case maps with the residual values randomly permuted around constitutencies. If the real map can be correctly identified from the decoys, then this lends statistical credibility to the claim that the observed data are not consistent with the null of CSR. Graphical line-up tests have been used in various domains, also to test regression assumptions <span class="citation" data-cites="loy_model_2017">(<a href="references.html#ref-loy_model_2017" role="doc-biblioref">Loy, Hofmann, and Cook 2017</a>)</span>. The map line-up in <a href="#fig-lineup">Figure&nbsp;<span>6.5</span></a> demonstrates that there <em>is</em> very obviously spatial (and <em>regional</em>) autocorrelation in residuals, and therefore structure that our regression model misses.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-lineup" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="figs/06/lineups_hex.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 6.5: Map line-up of residuals in which the ‘real’ dataset is presented alongside 8 decoy plots generated by randomly permuting the observed residuals around constituencies.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>There are different ways of updating our model according to this geographic context. We have talked about patterning in residuals as being <em>spatial</em>, with values varying smoothly and continuously depending on location. This might be the case, and spatial autocorrelation is present in almost all datasets. But given the phenomena we are studying, it also plausible that distinct contexts are linked to regions. The residuals in <a href="#fig-lineup">Figure&nbsp;<span>6.5</span></a> – the real being plot 5 – do seem to be grouped by regional boundaries, particularly Scotland looks categorically different. This suggests that geographic context might be usefully represented as a <em>category</em> rather than continuous variable (location in <em>x,y</em>). We will therefore update our model representing geographic context as a <em>regional</em> grouping and cover approaches both to modelling <em>spatial dependence</em> in <em>values</em> and <em>spatial non-stationarity</em> in <em>processes</em>.</p>
+</section><section id="geographic-context-as-grouped-nuisance-term" class="level3" data-number="6.2.5"><h3 data-number="6.2.5" class="anchored" data-anchor-id="geographic-context-as-grouped-nuisance-term">
+<span class="header-section-number">6.2.5</span> Geographic context as grouped nuisance term</h3>
+<p>A common approach to treating geographic dependence in the values of variables is to model geographic context as a Fixed Effect (FE). A dummy variable is created for each group (region in our case), and every region receives a constant. Any group-level sources of variation in the outcome are collapsed into the FE variable, which means that regression coefficients are not complicated by this more messy variation – they now capture the association between demographics and Leave after adjusting for systematic differences in the Leave vote due to region. So, for example, we know that Scotland is politically different from the rest of GB and that this appears to drag down the observed Leave vote for its constituencies, and so the constant term on region adjusts for this and prevents the estimated regression coefficients (inferred associations between variables) from being affected. The constant term also the ‘base level’ of the outcome for each grouping variable to be estimated – e.g.&nbsp;net of demographic composition, the expected Leave vote in a particular region.</p>
+<p>The linear regression model an be easily extended with the FE term (<span class="math inline">{\gamma_{j}}</span>). For a single variable model:</p>
+<p><span class="math display">\begin{align*}
+       y_{i}&amp;= {\gamma_{j}}  + \beta_{1}x_{i1} + \varepsilon_{i}  \\
+\end{align*}</span></p>
+<p>So we now estimate the Leave vote in each constituency (<span class="math inline">y_{i}</span>) as a function of:</p>
+<ul>
+<li>
+<span class="math inline">{\gamma_{j}}</span>, a constant term similar to an intercept for region <span class="math inline">j</span>, <span class="math inline">+</span>
+</li>
+<li>
+<span class="math inline">\beta_{1}=\beta_{1}x_{i1}</span>, the slope, indicating in which direction and to what extent some explanatory variable measured at constituency <span class="math inline">i</span> is associated with Leave, <span class="math inline">+</span>
+</li>
+<li>
+<span class="math inline">\varepsilon_{i}</span>, the difference between <span class="math inline">y_{i}</span> (the observed value) at constituency <span class="math inline">i</span> and the <em>unobservable</em> true population value of the Leave vote in that constituency (statistical error)</li>
+</ul>
+<p>Presented in <a href="#fig-outputs-fe">Figure&nbsp;<span>6.6</span></a> are updated regression coefficients for a multivariate model fit with a FE on region. In the left panel are the FE constants. Together these capture the variance in Leave vote between regions after accounting for demographic composition. These coefficients have useful properties: they are the estimated size of the Leave vote for a constituency in a region <em>net</em> of demographic composition. London is in interesting here. When initially analysing variation in the vote, constituencies in Scotland and London were distinctive in voting in much smaller proportions than the rest of the country for Leave. Given the associations we observe with Leave voting and demographic composition, however, if we were to randomly sample two constituencies that contain the same demographic characteristics, one in London and one in another region (say North West), on average we would expect Leave from the constituency in London to be higher (~60%) than that sampled from North West (~51%). A separate, and more anticipated pattern is that Scotland would have a lower Leave vote (~38%) – that is, net of demographics there is some additional context in Scotland that means Leave is lower than in other regions.</p>
+<p>In the right panel are the regression coefficients net of this between-region variation. In the previous model, the <em>white</em> variable was shown counterintuitively to have a slight negative association with Leave (although there was high uncertainty here). Now the <em>white</em> variable has a direction of effect that conforms to expectation – net of variation in other demographics increased proportions of <em>white</em> residents is associated with increased Leave voting. For the other variable with a counterintuitive effect – <em>EU born</em> – the coefficient still suggests a positive association with Leave.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-outputs-fe" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="figs/06/outputs_fe.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 6.6: Output from multiple regression model of Leave vote by demographic composition of constituency with FE on region</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p><a href="#fig-lineup-fe">Figure&nbsp;<span>6.7</span></a> is a map line-up of the residuals from this updated model. Certainly adding fixed effect on region has addressed systematic over- and under- estimation of the vote between regions. The residuals nevertheless exhibit obvious spatial autocorrelation, plot 7 being the real data. Further investigative analysis, for example of the constituencies for which Leave is particularly over- and under- represented, may be instructive.</p>
+<!-- Further investigative analysis, for example of the constituencies for which Leave is particularly over- and under- represented, is often instructive in  .   -->
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-lineup-fe" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="figs/06/lineups_fe.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 6.7: Map line-up of residuals from model with fixed effect on region. The ‘real’ dataset is presented alongside 8 decoy plots generated by randomly permuting the observed residuals around constituencies.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="geographic-context-as-grouped-effects" class="level3" data-number="6.2.6"><h3 data-number="6.2.6" class="anchored" data-anchor-id="geographic-context-as-grouped-effects">
+<span class="header-section-number">6.2.6</span> Geographic context as grouped effects</h3>
+<p>The benefit of the FE adjustment is that it provides coefficient estimates that are not affected by between-region variation. The FE constants themselves also allow group differences to be quantified net of differences in demographics. However, they simply identify the fact that this variation exists – they do not permit non-stationarity in <em>process</em>. It is conceivable that the strength and direction of association between Leave and the candidate demographic variables may vary between regions. For example, that increased levels of <em>EU-born</em> (non-UK) residents might affect area-level voting differently in certain regions than others.</p>
+<p>Rather than simply allowing a constant term to vary, we can update the linear regression model with an <a href="https://en.wikipedia.org/wiki/Interaction_(statistics)">interaction term</a> (<span class="math inline">{\beta_{1j}}{x_{i1}}</span>) that allows the coefficient estimates to vary depending on region. This means we get a separate constant term and coefficient estimate of the effect of each variable on Leave for every region.</p>
+<p><span class="math display">\begin{align*}
+       y_{i}&amp;= {\gamma_{j}} + {\beta_{1j}}x_{i1} + \varepsilon_{i}  \\
+\end{align*}</span></p>
+<ul>
+<li>
+<span class="math inline">{\gamma_{j}}</span>, a constant term similar to an intercept for region <span class="math inline">j</span>, <span class="math inline">+</span>
+</li>
+<li>
+<span class="math inline">{\beta_{1j}}x_{i1}</span>, the region-specific slope, indicating in which direction and to what extent some demographic variable at constituency <span class="math inline">i</span> and in region <span class="math inline">j</span> is associated with Leave, <span class="math inline">+</span>
+</li>
+<li>
+<span class="math inline">\varepsilon_{i}</span>, the difference between <span class="math inline">y_{i}</span> (the observed value) at constituency <span class="math inline">i</span> and the <em>unobservable</em> true ‘population’ value of the Leave vote in that constituency (statistical error)</li>
+</ul>
+<p>In <a href="#fig-outputs-interact">Figure&nbsp;<span>6.8</span></a> are region-specific coefficients derived from a multivariate model with an interaction term introduced on region. In each region, <em>degree-educated</em> has a negative coefficient and with reasonably tight uncertainty estimates, or at least CIs that do not cross 0. The other variables are subject to more uncertainty. The <em>no-car</em> variable is also negatively associated with Leave, a variable we thought may separate metropolitan versus peripheral contexts, but the strength of negative association, after controlling for variation in other demographic factors, does vary by region. The <em>heavy industry</em> variable, previously identified as being strongly associated with Leave, has a clear positive association only for London and to a much lesser extent for North West and Wales (small coefficients). The <em>EU-born</em> variable is again the least consistent as it flips between positive and negative association when analysed at the regional-level: after controlling for variation in other demographic characteristics it is positively associated with Leave for North West, Scotland, South West, but negatively associated with Leave for the North East (though with coefficients that are subject to much variation).</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-outputs-interact" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="figs/06/outputs_interact.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 6.8: Output from multiple regression model of Leave vote by demographic composition of constituency with FE and interaction on region.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="estimate-volatility-and-alternative-modelling-structures" class="level3" data-number="6.2.7"><h3 data-number="6.2.7" class="anchored" data-anchor-id="estimate-volatility-and-alternative-modelling-structures">
+<span class="header-section-number">6.2.7</span> Estimate volatility and alternative modelling structures</h3>
+<p>Our treatment of regression frameworks has in this chapter been reasonably breezy. Introducing FE and interaction terms without adding data, for example, reduces statistical power as data are heavily partitioned. This risks overfitting as our coefficients may begin to fit noise rather than true effects. Given the fact that our data are hierarchically structured (constituencies sit within regions) hierarchical multi-level modelling may be more appropriate to modelling this sort of regional grouping. Multi-level modelling uses partial pooling, borrowing data, to make estimated coefficients more conservative, less locally biased, where there are comparatively few observations in particular groupings <span class="citation" data-cites="gelman_data_2006">(see <a href="references.html#ref-gelman_data_2006" role="doc-biblioref">Gelman and Hill 2006</a>)</span>. There are also many ways in which associations between values can be modelled <em>continuously</em> over space. In the case of geographically weighted regression (GWR) <span class="citation" data-cites="brunsdon_geographically_2002">(<a href="references.html#ref-brunsdon_geographically_2002" role="doc-biblioref">Brunsdon, Fortheringham, and Charlton 2002</a>)</span>, Local regression coefficients, for each spatial unit. If applied to our dataset, separate regression coefficients for each constituency are estimated that take into account observed values for Leave and the demographic variables in nearby constituencies. GW-statistics enables spatial non-stationarity in process to be flexibly explored and characterised. As GWR involves generating many hundreds of parameter estimates, visual analysis are often used in its interpretation <span class="citation" data-cites="dykes_geographically_2007">(e.g. <a href="references.html#ref-dykes_geographically_2007" role="doc-biblioref">Dykes and Brunsdon 2007</a>)</span>.</p>
+</section></section><section id="techniques" class="level2" data-number="6.3"><h2 data-number="6.3" class="anchored" data-anchor-id="techniques">
+<span class="header-section-number">6.3</span> Techniques</h2>
+
+
+</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const icon = "";
   const anchorJS = new window.AnchorJS();
@@ -308,9 +611,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     });
   }
 });
-</script>
-<nav class="page-navigation">
-  <div class="nav-page nav-page-previous">
+</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="./05-network.html" class="pagination-link">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Networks</span></span>
       </a>          

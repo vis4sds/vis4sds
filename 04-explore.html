@@ -268,7 +268,7 @@ Knowledge outcomes
 An appreciation of how data graphics can support exploratory data analysis (EDA) workflows.</li>
 <li>
 <input type="checkbox" disabled="" checked="">
-The main chart types, their benefirs and drawbacks, for summarising variation within- and between- variables.</li>
+The main chart types, their benefits and drawbacks, for summarising variation within- and between- variables.</li>
 <li>
 <input type="checkbox" disabled="" checked="">
 Three strategies for effecting <em>comparison</em> in EDA: juxtaposition, superposition and direct encoding <span class="citation" data-cites="gleicher_visual_2011">(<a href="references.html#ref-gleicher_visual_2011" role="doc-biblioref">Gleicher and Roberts 2011</a>)</span>.</li>
@@ -305,7 +305,7 @@ Skills outcomes
 >
 > John Tukey -->
 <p>In Exploratory Data Analysis (EDA), graphical and statistical summaries are used to build knowledge and understanding of a dataset. The goal of EDA is to infer relationships, identify anomalies and test new ideas and hypotheses; it is a knowlegde-building activity. Rather than a formal set of techniques, EDA should be considered an <em>outlook</em> to analysis. It aims to reveal properties, patterns and relationships in a dataset, and from there expectations, codified via models, to be further investigated in context via more targeted data graphics and statistics.</p>
-<p>The early stages of an EDA may be very data-driven. Datasets are described abstractly according to their measurement level and corresponding graphics and summary statistics for characterising variation within and between variables are suggested from this (e.g. <a href="#tbl-variable-types">Table&nbsp;<span>4.1</span></a>). As knowlegde and understanding of the dataset increases, researchers might apply more targeted theory and prior knowledge when developing and evaluating models.</p>
+<p>The early stages of an EDA may be very data-driven. Datasets are described abstractly according to their measurement level and corresponding data graphics and summary statistics suggested from this (e.g. <a href="#tbl-variable-types">Table&nbsp;<span>4.1</span></a>). As knowledge and understanding of the dataset increases, researchers might apply more targeted theory and prior knowledge when developing and evaluating models.</p>
 <p>Visual approaches play an important role in both these stages of analysis. For example, when first examining variables according to their shape and location (e.g. <a href="#tbl-variable-types">Table&nbsp;<span>4.1</span></a>), data graphics help identify patterns that statistical summaries miss; such as whether variables are multi-modal, the extent and direction of outliers. When more specialised models are proposed, graphical summaries can add important detail around where, and by how much, the observed data depart from the model. It is for this reason that data visualization is seen as intrinsic to EDA <span class="citation" data-cites="tukey_exploratory_1977">(<a href="references.html#ref-tukey_exploratory_1977" role="doc-biblioref">Tukey 1977</a>)</span>.</p>
 <!-- @wickham_r_2017 identify two initial questions that an EDA should address:
 
@@ -317,44 +317,44 @@ When summarising within-variable variation, we are interested in a variable's sp
 <div class="cell-output-display">
 <div id="tbl-variable-types" class="anchored">
 
-<table class=" lightable-minimal" style="font-family: &quot;Trebuchet MS&quot;, verdana, sans-serif; margin-left: auto; margin-right: auto;">
+<table>
 <caption>Table 4.1:  Breakdown of variable types. </caption>
  <thead><tr>
-<th style="text-align:left;"> Measurement type </th>
-   <th style="text-align:left;"> Statistic </th>
-   <th style="text-align:left;"> Chart type </th>
+<th style="text-align:left;border-bottom: 1px solid;"> Measurement type </th>
+   <th style="text-align:left;border-bottom: 1px solid;"> Statistic </th>
+   <th style="text-align:left;border-bottom: 1px solid;"> Chart type </th>
   </tr></thead>
 <tbody>
 <tr grouplength="3"><td colspan="3" style="border-bottom: 0px solid;">Within-variable variation</td></tr>
 <tr>
-<td style="text-align:left;padding-left: 2em;width: 8em; font-family:  Monospace" indentlevel="1"> Nominal </td>
-   <td style="text-align:left;"> mode | entropy </td>
+<td style="text-align:left;padding-left: 2em;width: 8em; width: 30%; font-family:  Monospace" indentlevel="1"> Nominal </td>
+   <td style="text-align:left;width: 30%; "> mode | entropy </td>
    <td style="text-align:left;"> bar charts, dot plots ... </td>
   </tr>
 <tr>
-<td style="text-align:left;padding-left: 2em;width: 8em; font-family:  Monospace" indentlevel="1"> Ordinal </td>
-   <td style="text-align:left;"> median | percentile </td>
+<td style="text-align:left;padding-left: 2em;width: 8em; width: 30%; font-family:  Monospace" indentlevel="1"> Ordinal </td>
+   <td style="text-align:left;width: 30%; "> median | percentile </td>
    <td style="text-align:left;"> bar charts, dot plots ... </td>
   </tr>
 <tr>
-<td style="text-align:left;padding-left: 2em;width: 8em; font-family:  Monospace" indentlevel="1"> Continuous </td>
-   <td style="text-align:left;"> mean | variance </td>
+<td style="text-align:left;padding-left: 2em;width: 8em; width: 30%; font-family:  Monospace" indentlevel="1"> Continuous </td>
+   <td style="text-align:left;width: 30%; "> mean | variance </td>
    <td style="text-align:left;"> histograms, box plots, density plots ... </td>
   </tr>
 <tr grouplength="3"><td colspan="3" style="border-bottom: 0px solid;">Between-variable variation</td></tr>
 <tr>
-<td style="text-align:left;padding-left: 2em;width: 8em; font-family:  Monospace" indentlevel="1"> Nominal </td>
-   <td style="text-align:left;"> contingency tables </td>
+<td style="text-align:left;padding-left: 2em;width: 8em; width: 30%; font-family:  Monospace" indentlevel="1"> Nominal </td>
+   <td style="text-align:left;width: 30%; "> contingency tables </td>
    <td style="text-align:left;"> mosaic/spine plots ... </td>
   </tr>
 <tr>
-<td style="text-align:left;padding-left: 2em;width: 8em; font-family:  Monospace" indentlevel="1"> Ordinal </td>
-   <td style="text-align:left;"> rank correlation </td>
+<td style="text-align:left;padding-left: 2em;width: 8em; width: 30%; font-family:  Monospace" indentlevel="1"> Ordinal </td>
+   <td style="text-align:left;width: 30%; "> rank correlation </td>
    <td style="text-align:left;"> slope/bump charts ... </td>
   </tr>
 <tr>
-<td style="text-align:left;padding-left: 2em;width: 8em; font-family:  Monospace" indentlevel="1"> Continuous </td>
-   <td style="text-align:left;"> correlation </td>
+<td style="text-align:left;padding-left: 2em;width: 8em; width: 30%; font-family:  Monospace" indentlevel="1"> Continuous </td>
+   <td style="text-align:left;width: 30%; "> correlation </td>
    <td style="text-align:left;"> scatterplots, parallel coordinate plots ... </td>
   </tr>
 </tbody>
@@ -369,16 +369,16 @@ When summarising within-variable variation, we are interested in a variable's sp
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-univariate-continuous" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figs/04/univariate-plots.svg" class="img-fluid figure-img" style="width:70.0%"></p>
+<figure class="figure"><p><img src="figs/04/univariate-plots.png" class="img-fluid figure-img" style="width:70.0%"></p>
 <p></p><figcaption aria-hidden="true" class="figure-caption">Figure 4.1: Univariate plots of dispersion in casualty ages from a sample of pedestrian-vehicle road crashes.</figcaption><p></p>
 </figure>
 </div>
 </div>
 </div>
 <!-- ![Univariate plots of dispersion.](figs/04/univariate-plots.svg){#fig-univariate-continuous width=100% fig-align="center"} -->
-<p>In the left-most row is a <em>strip-plot</em>. Every observation is displayed as a dot and mapped to <code>x-position</code>, with transparency and a random vertical perturbation applied to resolve occlusion due to overlapping observations. Although strip-plots scale poorly, the advantage is that all observations are displayed without the need to impose an aggregation. It is possible to visually identify the <em>location</em> of the distribution – denser dots towards 20-25 age range – but also that there is a degree of spread across the age values.</p>
+<p>In the left-most row is a <em>strip-plot</em>. Every observation is displayed as a dot and mapped to <code>y-position</code>, with transparency and a random vertical perturbation applied to resolve occlusion due to overlapping observations. Although strip-plots scale poorly, the advantage is that all observations are displayed without the need to impose an aggregation. It is possible to visually identify the <em>location</em> of the distribution – denser dots towards 20-25 age range – but also that there is a degree of spread across the age values.</p>
 <p><em>Histograms</em> partition observations into equal-range bins and observations in each bin are counted. These counts are encoded on an aligned scale using bar height. Increasing the size of the bins increases the resolution of the graphical summary. If reasonable decisions are made around choice of bin, histograms give distributions a shape that is expressive. It is easy to identify the <em>location</em> of a distribution and, in using length on aligned scale to encode frequency, estimate relative densities between different parts of the distribution. Different from the strip-plot, the histogram allows us to intuit that despite the heavy spread, the distribution of <code>casualty_age</code> is right-skewed, and we’d expect this given the location of the mean (36 years) relative to the median (33 years).</p>
-<p>A problem with histograms is the potential for discontinuities and artificial edge-effects around the bins. <em>Density plots</em> overcome this and can be thought of as smoothed histograms. They show the <a href="https://en.wikipedia.org/wiki/Probability_density_function">probability density function</a> of a variable – the relative amount of probability attached to each value of <code>casualty_age</code>. From glancing at the density plots an overall shape to the distribution can be immediately derived. It is also possible to infer statistical properties: the mode of the distribution (the peak density), the mean and median (by sort of visual averaging and approximating the midpoint of the area under the curve).</p>
+<p>A problem with histograms is the potential for discontinuities and artificial edge-effects around the bins. <em>Density plots</em> overcome this and can be thought of as smoothed histograms. They show the <a href="https://en.wikipedia.org/wiki/Probability_density_function">probability density function</a> of a variable – the relative amount of probability attached to each value of <code>casualty_age</code>. From glancing at the density plots an overall shape to the distribution can be immediately derived. It is also possible to infer statistical properties: the mode of the distribution, the peak density; the mean and median, by sort of visual averaging and approximating the midpoint of the area under the curve.</p>
 <p><!-- Density plots are better suited to datasets that contain a reasonably large number of observations. --></p>
 <p>Finally, <em>boxplots</em> <span class="citation" data-cites="mcgill_variations_1978">(<a href="references.html#ref-mcgill_variations_1978" role="doc-biblioref">McGill and Larsen 1978</a>)</span> encode the statistical properties inferred from strip-plots, histograms and density plots directly. The box is the interquartile range (<span class="math inline">IQR</span>) of the <code>casualty_age</code> variable, the vertical line splitting the box is the median, and the whiskers are placed at observations <span class="math inline">\leq 1.5*IQR</span>. Whilst we lose important information around the shape of a distribution, box-plots are space-efficient and useful for comparing many distributions at once.</p>
 <div class="callout-note callout callout-style-default callout-captioned">
@@ -391,11 +391,11 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Since the average age of road casualties is quite low, it may be instructive to quickly explore the distribution of <code>casualty_age</code> conditioning on another variable and differentiating between variable values using colour. <a href="#fig-boxplots-class">Figure&nbsp;<span>4.2</span></a> displays boxplots and denisty plots of the location and spread in <code>casualty_age</code> by vehicle and <code>casualty_class</code> for all crashes involving pedestrians. A noteworthy pattern is that riders of bicycles and motorcycles tend to be younger than the pedestrians they are contacting with, whereas for buses, taxis, HGVs and cars the reverse is true. Pedestrians involved in crashes with cars are especially skewed towards the younger ages. Although less space efficient, the density plots display richer information around the nature of the driver-pedestrian age distributions.</p>
+<p>Since the average age of road casualties is quite low, it may be instructive to explore the distribution of <code>casualty_age</code> conditioning on another variable and differentiating between variable values using colour. <a href="#fig-boxplots-class">Figure&nbsp;<span>4.2</span></a> displays boxplots and density plots of the location and spread in <code>casualty_age</code> by vehicle and <code>casualty_class</code> for all crashes involving pedestrians. A noteworthy pattern is that riders of bicycles and motorcycles tend to be younger than the pedestrians they are contacting with, whereas for buses, taxis, HGVs and cars the reverse is true. Pedestrians involved in crashes with cars are especially skewed towards the younger ages. Although less space efficient, the density plots display richer information around the nature of the driver-pedestrian age distributions.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-boxplots-class" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figs/04/boxplot-by-class.svg" class="img-fluid figure-img" style="width:90.0%"></p>
+<figure class="figure"><p><img src="figs/04/boxplot-by-class.png" class="img-fluid figure-img" style="width:90.0%"></p>
 <p></p><figcaption aria-hidden="true" class="figure-caption">Figure 4.2: Boxplots of casualty age by vehicle type and class.</figcaption><p></p>
 </figure>
 </div>
@@ -408,9 +408,6 @@ Note
 <p>The previous chapter included several <em>scatterplots</em> for displaying association between two quantitative variables. Scatterplots are used to check whether the association between variables is linear, but also to make inferences about the direction and intensity of linear correlation between variables – the extent to which values in one variable depend on the values of another – and also around the nature of variation between variables – the extent to which variation in one variable depends on another (<a href="https://en.wikipedia.org/wiki/Heteroscedasticity">heteroscedasticity</a>). Although other chart types for displaying bivariate data exist, empirical studies in Information Visualization have demonstrated that aggregate correlation statistics can be reliably estimated from scatterplots <span class="citation" data-cites="rensink_perception_2010 harrison_ranking_2014 kay_beyond_2016 correll_regression_2017">(<a href="references.html#ref-rensink_perception_2010" role="doc-biblioref">Rensink and Baldridge 2010</a>; <a href="references.html#ref-harrison_ranking_2014" role="doc-biblioref">Harrison et al. 2014</a>; <a href="references.html#ref-kay_beyond_2016" role="doc-biblioref">Kay and Heer 2016</a>; <a href="references.html#ref-correll_regression_2017" role="doc-biblioref">Correll and Heer 2017</a>)</span>.</p>
 <p>There are few variables in the STATS19 dataset measured on a continuous scale. In an EDA it is common to quickly compare associations between many quantitive variables in a dataset using <a href="https://en.wikipedia.org/wiki/Scatter_plot#Scatter_plot_matrices">scatterplot matrices</a> or alternatively <a href="https://en.wikipedia.org/wiki/Parallel_coordinates">parallel coordinate plots</a>. We will use both in chapter <a href="06-model.html"><span>6</span></a> when building models that attempt to formally structure and explain between-variable covariation.</p>
 <!-- There are few variables in the STATS19 dataset measured on a continuous scale, but based on the analysis above, we may wish to explore more directly whether an association exists between the age of pedestrians and drivers for pedestrian-vehicle crashes. The scatterplots in @fig-scatters-type show that no obvious linear association exists. -->
-<div class="cell">
-
-</div>
 <!-- ![Scatterplots of pedestrian age by driver age and grouped by vehicle type.](figs/04/scatter-by-type.svg){#fig-scatters-age-class width=100% fig-align="center"} -->
 <!-- ::: {.callout-note}
 It is common in an EDA to quickly compare associations between many quantitive variables in a dataset using [scatterplot matrices](https://en.wikipedia.org/wiki/Scatter_plot#Scatter_plot_matrices) or alternatively [parallel coordinate plots](https://en.wikipedia.org/wiki/Parallel_coordinates). We will use both in chapters 6 and 7 when building  models that attempt to formally structure and explain between-variable covariation.
@@ -422,18 +419,18 @@ It is common in an EDA to quickly compare associations between many quantitive v
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-bars" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figs/04/bars.svg" class="img-fluid figure-img"></p>
+<figure class="figure"><p><img src="figs/04/bars.png" class="img-fluid figure-img" width="1650"></p>
 <p></p><figcaption aria-hidden="true" class="figure-caption">Figure 4.3: Bars displaying crash frequencies by vehicle type.</figcaption><p></p>
 </figure>
 </div>
 </div>
 </div>
 <!-- ![Bars displaying crash frequencies by vehicle type.](figs/04/bars.svg){#fig-bars width=100% fig-align="center"} -->
-<p>Bar charts are effective at conveying frequencies where the number of categories is reasonably small. For summarising frequencies across many categories, alternative chart types that minimise non-data-ink, such as <a href="https://en.wikipedia.org/wiki/Dot_plot_(statistics)">Cleveland dot plots</a> may be appropriate. The left plot in <a href="#fig-dots-heatmap">Figure&nbsp;<span>4.4</span></a> displays pedestrian crash counts for boroughs in London, ordered by crash frequency and grouped by whether boroughs are in inner- or outer- London. To the right, dots for crashes recorded between time periods – weekends and weekdays – are added. The addition of lines to connect dots is a useful stratgey for emphasising the differences between time periods. Although a consistent pattern is of greater crash counts during weekdays, the gap is less obvious four outer London boroughs; there may be in relative terms many more pedestrian crashes occurring in central London boroughs during weekdays. The third graphic is a heatmap with the same ordering and grouping of boroughs, but with columns coloured according to crash frequencies by vehicle type, further grouped by weekday and weekend times. Remembering <span class="citation" data-cites="munzner_visualization_2014">Munzner (<a href="references.html#ref-munzner_visualization_2014" role="doc-biblioref">2014</a>)</span>’s ordering of visual channels, we trade-off some precision in estimation when encoding frequencies in heatmaps. A greater difficulty, irrespective of encoding chanel, comes from the dominace of cars and weekdays; variation between vehicle types and time periods outside of this is almost imperceptible.</p>
+<p>Bar charts are effective at conveying frequencies where the number of categories is reasonably small. For summarising frequencies across many categories, alternative chart types that minimise non-data-ink, such as <a href="https://en.wikipedia.org/wiki/Dot_plot_(statistics)">Cleveland dot plots</a> may be appropriate. The left plot in <a href="#fig-dots-heatmap">Figure&nbsp;<span>4.4</span></a> displays pedestrian crash counts for boroughs in London, ordered by crash frequency and grouped by whether boroughs are in inner- or outer- London. To the right, dots for crashes recorded between time periods – weekends and weekdays – are added. The addition of lines to connect dots is a useful stratgey for emphasising the differences between time periods. Although a consistent pattern is of greater crash counts during weekdays, the gap is less obvious four outer London boroughs; there may be in relative terms many more pedestrian crashes occurring in central London boroughs during weekdays. The third graphic is a heatmap with the same ordering and grouping of boroughs, but with columns coloured according to crash frequencies by vehicle type, further grouped by weekday and weekend times. Remembering <span class="citation" data-cites="munzner_visualization_2014">Munzner (<a href="references.html#ref-munzner_visualization_2014" role="doc-biblioref">2014</a>)</span>’s ordering of visual channels, we trade-off some precision in estimation when encoding frequencies in heatmaps. A greater difficulty, irrespective of encoding channel, comes from the dominance of cars and weekdays; variation between vehicle types and time periods outside of this is almost imperceptible.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-dots-heatmap" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figs/04/borough-freqs.svg" class="img-fluid figure-img"></p>
+<figure class="figure"><p><img src="figs/04/borough-freqs.png" class="img-fluid figure-img" width="1470"></p>
 <p></p><figcaption aria-hidden="true" class="figure-caption">Figure 4.4: <a href="https://en.wikipedia.org/wiki/Dot_plot_(statistics)">Cleveland dot plots</a> and heatmaps summarising crash frequencies by London borough, period of day and vehicle type.</figcaption><p></p>
 </figure>
 </div>
@@ -453,12 +450,12 @@ The table presents counts by injury severity for pedestrians only; so these are 
 
 </div>
 <p>In <a href="#fig-dots-heatmap">Figure&nbsp;<span>4.4</span></a> we began to make between-category comparison; we asked whether there are relatively greater or fewer crashes by time period or vehicle type in certain boroughs than others. There are chart types that explicitly support these sorts of analysis tasks. <a href="#fig-bars-vehicle-injury">Figure&nbsp;<span>4.5</span></a> compares pedestrian crash frequencies in London by vehicle type involved and whether the crash occured on weekdays or weekends.</p>
-<p>First, stacked bars are ordered by frequency, distinguishing time period using colour lightness. Cars are by far the dominant travel mode, causing the largest number of crashes resulting in injury to pedestrians. Whether or not pedestrian injuries involving cars occur relatively more on weekends than other modes is not clear from the left-most chart. Length encodes absolute crash counts effectively but relative comparison on time periods between vehicle types is challenging. In standardised bars the absolute length of bars is fixed and bars are split according to proportional weekday / weekend crashes (middle). The plot is also annotated according to the expected proprtion of weekday crashes if crashes occured by time period indpendently of vehicle type (22%). This encoding shows pedestrian crashes involving taxis occur in much greater frequency than would be expected at weekends, whilst the reverse is true of crashes involving vans, bikes and HGVs. However, we lose a sense of the absolute numbers involved.</p>
-<p>Failing to encode information on absolute number – the amount of information in support of some observed pattern – is a problem in EDA. Since proportional summaries are agnostic to sample size, they can induce false discoveries, overemphasising patterns that may be unlikely to replicate in out-of-sample tests. It is sometimes desirable, then, to update standardised bar charts so that they are weighted by frequency: to make more visually salient those categories that occur more often and visually downweight those that occur less often. This is possible using mosaic plots <span class="citation" data-cites="friendly_mosaic_1992">(<a href="references.html#ref-friendly_mosaic_1992" role="doc-biblioref">Friendly 1992</a>)</span>. Bar widths and heights are allowed to vary; so bar area is proportional to absolute number of observations and bars are further subdivided for relative comparison across category values. Mosaic plots are useful tools for exploratory analysis. That they are space-efficient and regularly sized (squarified) means they can be flexibly laid out for comparison.</p>
+<p>First, stacked bars are ordered by frequency, distinguishing time period using colour lightness. Cars are by far the dominant travel mode, contributing the largest number of crashes resulting in injury to pedestrians. Whether or not pedestrian injuries involving cars occur relatively more on weekends than other modes is not clear from the left-most chart. Length encodes absolute crash counts effectively but relative comparison on time periods between vehicle types is challenging. In standardised bars the absolute length of bars is fixed and bars are split according to proportional weekday / weekend crashes (middle). The plot is also annotated according to the <em>expected proportion</em> of weekday crashes if crashes occurred by time period independently of vehicle type (22%). This encoding shows pedestrian crashes involving taxis occur in much greater frequency than would be expected at weekends, whilst the reverse is true of crashes involving vans, bikes and HGVs. However, we lose a sense of the absolute numbers involved.</p>
+<p>Failing to encode absolute number – the amount of information in support of some observed pattern – is a problem in EDA. Since proportional summaries are agnostic to sample size, they can induce false discoveries, overemphasising patterns that may be unlikely to replicate in out-of-sample tests. It is sometimes desirable, then, to update standardised bar charts so that they are weighted by frequency: to make more visually salient those categories that occur more often and visually downweight those that occur less often. This is possible using mosaic plots <span class="citation" data-cites="friendly_mosaic_1992">(<a href="references.html#ref-friendly_mosaic_1992" role="doc-biblioref">Friendly 1992</a>)</span>. Bar widths and heights are allowed to vary; so bar area is proportional to absolute number of observations and bars are further subdivided for relative comparison across category values. Mosaic plots are useful tools for exploratory analysis. That they are space-efficient and regularly sized, means they can be flexibly laid out for comparison.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-bars-vehicle-injury" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figs/04/bars-assoc.svg" class="img-fluid figure-img"></p>
+<figure class="figure"><p><img src="figs/04/bars-assoc.png" class="img-fluid figure-img" width="1800"></p>
 <p></p><figcaption aria-hidden="true" class="figure-caption">Figure 4.5: Bars (and Mosaic plot) displaying association between vehicle type and injury severity.</figcaption><p></p>
 </figure>
 </div>
@@ -628,15 +625,15 @@ The benefit for EDA is that the signed-scores are very quick and easy to compute
 2. Model an expectation derived from pattern
 3. Show deviation from expectation -->
 </section><section id="updating-graphics-to-show-deviation-from-expectation" class="level4 unnumbered"><h4 class="unnumbered anchored" data-anchor-id="updating-graphics-to-show-deviation-from-expectation">Updating graphics to show deviation from expectation</h4>
-<p>The heatmaps in <a href="#fig-dots-heatmap">Figure&nbsp;<span>4.4</span></a> reflect the dominating effect of cars and weekdays. Any additional structure by time period and vehicle type in boroughs outside of this is visually unintelligible. An alternative approach could be to colour cells according to some relevant effect size statistic: for example, differences in the proportion of weekend crashes occurring in any vehicle-type and borough combination against the global average proportion, or expectation, of 22% of crashes occurring on weekends. Diminishing sample sizes in certain borough-vehicle type combinations (for some cells of <a href="#fig-dots-heatmap">Figure&nbsp;<span>4.4</span></a> no crashes are recorded) nervetheless means such an encoding risks overstating large proportional effects based on negligible differences in absolute crash frequencies.</p>
+<p>The heatmaps in <a href="#fig-dots-heatmap">Figure&nbsp;<span>4.4</span></a> reflect the dominating effect of cars and weekdays. Any additional structure by time period and vehicle type in boroughs outside of this is visually unintelligible. An alternative approach could be to colour cells according to some relevant effect size statistic: for example, differences in the proportion of weekend crashes occurring in any vehicle-type and borough combination against the global average proportion, or expectation, of 22% of crashes occurring on weekends. Diminishing sample sizes in certain borough-vehicle type combinations nevertheless means such an encoding risks overstating large proportional effects based on negligible differences in absolute crash frequencies.</p>
 <p>There are measures of effect size sensitive both to absolute and relative differences from expectation. Signed chi-score residuals <span class="citation" data-cites="visalingam_signed_1981">(<a href="references.html#ref-visalingam_signed_1981" role="doc-biblioref">Visalingam 1981</a>)</span>, for example, represent expected values as <em>counts</em> separately for each category combination in a dataset – in this case, pedestrian crashes recorded in a borough in a stated time period involving a stated vehicle type. Observed counts (<span class="math inline">O_i ... O_n</span>) are then compared to expected counts (<span class="math inline">E_i ... E_n</span>) as below:</p>
 <p><span class="math inline">\chi=\frac{O_i - E_i}{\sqrt{E_i}}</span></p>
-<p>The way in which the differences between observed and expected values (residuals) are standardised in the denominator is important. If the denominator was simply the raw expected value, the residuals would express the proportional difference between each observation and its expected value. The denominator is instead transformed using the square root (<span class="math inline">\sqrt{E_i}</span>), which has the effect of inflating smaller expected values and squashing larger expected values, thereby giving greater saliency to differences from expectation that are large in both relative and absolute number.</p>
-<p><a href="#fig-borough-freqs-resids">Figure&nbsp;<span>4.6</span></a> updates the heatmaps with signed residuals encoded using a <a href="https://web.natur.cuni.cz/~langhamr/lectures/vtfg1/mapinfo_2/barvy/colors.html#diverging">diverging colour scheme</a> – red for cells with greater crash counts than expected, blue for cells with fewer crash counts than expected. The assumption, the modelled expectation, in the first heatmap is that crash counts by borough distribute independently of vehicle type. Laying out the heatmap such that inner and outer London boroughs are grouped for comparison is instructive: fewer than expected crashes in inner London are recorded for cars; greater than expected for all other vehicle types but especially taxis and bicycles. This pattern is strongest (largest residuals) for very central boroughs, where pedestrian crash frequencies are also likely to be highest and where cars are comparatively less dominant as a travel mode. For almost all boroughs, again especially central London boroughs, there is a clear pattern of modes other than cars, taxis and buses overrepresented amongst crashes occuring on weekdays; again reflecting the transport dynamics of the city.</p>
+<p>The way in which the differences between observed and expected values (residuals) are standardised in the denominator is important. If the denominator was simply the raw expected value, the residuals would express the proportional difference between each observation and its expected value. The denominator is instead transformed using the square root (<span class="math inline">\sqrt{E_i}</span>), which has the effect of inflating smaller expected values and squashing larger expected values in the denominator, thereby giving greater saliency to differences from expectation that are large in both relative and absolute number.</p>
+<p><a href="#fig-borough-freqs-resids">Figure&nbsp;<span>4.6</span></a> updates the heatmaps with signed residuals encoded using a <a href="https://web.natur.cuni.cz/~langhamr/lectures/vtfg1/mapinfo_2/barvy/colors.html#diverging">diverging colour scheme</a> – red for cells with greater crash counts than expected, blue for cells with fewer crash counts than expected. The assumption in the first heatmap is that crash counts by borough distribute independently of vehicle type. Laying out the heatmap such that inner and outer London boroughs are grouped for comparison is instructive: fewer than expected crashes in inner London are recorded for cars; greater than expected for all other vehicle types but especially taxis and bicycles. This pattern is strongest (largest residuals) for very central boroughs, where pedestrian crash frequencies are also likely to be highest and where cars are comparatively less dominant as a travel mode. For almost all boroughs, again especially central London boroughs, there is a clear pattern of modes other than cars, taxis and buses overrepresented amongst crashes occurring on weekdays, again reflecting the transport dynamics of the city.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-borough-freqs-resids" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figs/04/borough-freqs-resids.svg" class="img-fluid figure-img" style="width:90.0%"></p>
+<figure class="figure"><p><img src="figs/04/borough-freqs-resids.png" class="img-fluid figure-img" style="width:80.0%"></p>
 <p></p><figcaption aria-hidden="true" class="figure-caption">Figure 4.6: Heatmaps of crashes by preiod of week and vehicle type for London Boroughs.</figcaption><p></p>
 </figure>
 </div>
@@ -656,12 +653,12 @@ The discussion of Risk Ratios (RRs) was reasonably abbreviated. RRs are interpre
 <div class="cell-output-display">
 <div id="tbl-comparison-strategies" class="anchored">
 
-<table class=" lightable-minimal" style="font-family: &quot;Trebuchet MS&quot;, verdana, sans-serif; margin-left: auto; margin-right: auto;">
+<table>
 <caption>Table 4.2:  Implementing Gleicher et al.’s (2011) three comparison strategies in ggplot2. </caption>
  <thead><tr>
-<th style="text-align:left;"> Strategy </th>
-   <th style="text-align:left;"> Function </th>
-   <th style="text-align:left;"> Use </th>
+<th style="text-align:left;border-bottom: 1px solid;"> Strategy </th>
+   <th style="text-align:left;border-bottom: 1px solid;"> Function </th>
+   <th style="text-align:left;border-bottom: 1px solid;"> Use </th>
   </tr></thead>
 <tbody>
 <tr>
@@ -672,7 +669,7 @@ The discussion of Risk Ratios (RRs) was reasonably abbreviated. RRs are interpre
 <tr>
 <td style="text-align:left;font-size: 90%"> Juxtaposition </td>
    <td style="text-align:left;font-family:  Monospace; font-size: 90%"> patchwork pkg </td>
-   <td style="text-align:left;font-size: 90%"> Flexibly arrange plots of different data types, encodings and coordinate space. </td>
+   <td style="text-align:left;font-size: 90%"> Flexibly arrange plots of different data type, encoding and coordinate space. </td>
   </tr>
 <tr>
 <td style="text-align:left;font-size: 90%"> Superposition </td>
@@ -689,10 +686,10 @@ The discussion of Risk Ratios (RRs) was reasonably abbreviated. RRs are interpre
 </div>
 </div>
 </div>
-<p>As with most visualization design, each involves trade-offs and so careful decision-making. In <a href="#fig-dots-heatmap">Figure&nbsp;<span>4.4</span></a> dotplots representing counts of weekend and weekday crashes are <em>superposed</em> on the same coordinate space, with connecting lines added to emphasise difference. This strategy is fine where two categories of similar orders of magnitude are compared, but if instead all eight vehicle types were to be encoded in the same way, superposed with categories differentiated using colour and a dominating modal category (cars), the plot would be substantially more challening to process. In <a href="#fig-borough-freqs-resids">Figure&nbsp;<span>4.6</span></a>, comparison by vehicle type is instead effected using direct encoding – residuals coloured above or below an expectation. Notice also the use of <em>containment</em>, <em>juxtaposition</em> and <em>layout</em> in both plots. By containing frequencies for inner- and outer- London boroughs in separate, juxtaposed plots, and within each laying out plot elements top-to-bottom on frequency, the systematic differences in the composition of vehicle types involved in crashes between inner- and outer- London can be inferred.</p>
+<p>As with most visualization design, each involves trade-offs and so careful decision-making. In <a href="#fig-dots-heatmap">Figure&nbsp;<span>4.4</span></a> dotplots representing counts of weekend and weekday crashes are <em>superposed</em> on the same coordinate space, with connecting lines added to emphasise difference. This strategy is fine where two categories of similar orders of magnitude are compared, but if instead all eight vehicle types were to be encoded in the same way, superposed with categories differentiated using colour and a dominating modal category (cars), the plot would be substantially more challenging to process. In <a href="#fig-borough-freqs-resids">Figure&nbsp;<span>4.6</span></a>, comparison by vehicle type is instead effected using direct encoding – residuals coloured above or below an expectation. Notice also the use of <em>containment</em>, <em>juxtaposition</em> and <em>layout</em> in both plots. By containing frequencies for inner- and outer- London boroughs in separate, juxtaposed plots, and within each laying out plot elements top-to-bottom on frequency, the systematic differences in the composition of vehicle types involved in crashes between inner- and outer- London can be inferred.</p>
 <section id="comparison-and-layout" class="level4 unnumbered"><h4 class="unnumbered anchored" data-anchor-id="comparison-and-layout">Comparison and layout</h4>
-<p>A theme throughout the book is of the importance of layout in visual data analysis: judiciously laid out data graphics can be used to explore and test complex patterns that would be difficult to capture through numerical summaries alone. In <a href="#fig-spatial-layout">Figure&nbsp;<span>4.7</span></a> mosaic plots of crash frequencies (bar height) and relative number of weekday/weekend crashes (dark bar width) are presented for each borough in London, with plots for vehicle type juxtaposed side-by-side for comparison. Rather than laying out boroughs top-to-bottom on frequency, boroughs are given an approximate spatial arrangement, generated using the <a href="https://www.roger-beecham.com/gridmappr/index.html"><code>gridmappr</code></a> package. This arrangement enables several patterns to be quickly inferred. That pedestrian crashes involving bicycles and taxis generally occur more in central London boroughs; those involving cars and taxis occur in greater relative number during weekends, especially so for those that take place in central London boroughs; and, different from other vehicle types, pedestrian crashes involving cars occur in reasonably large numbers in outer London boroughs.</p>
-<!-- Alternatively we could directly encode difference from expectation by centering the dark bars and varying the widths according to how much the relative number of weekend crashes is above (oriented to right) or below (oriented to left) this expectation (middle plot). The latter approach helps highlight boroughs that are different from the London average: the more dark blue the more atypical that borough is. The largest differences from expectation are in Westminster, with crashes involving vans, mototcycles and bicycles overrepresented amongst weekdays. Finally, if we are to compare across all 33 London boroughs we may chose to reduce some of the detail in the graphic and focus on a subset of vehicle types. As vehicle type is a categorical nominal variable it may also be sensible to encode that variable using colour hue to help asociate vehicle types between boroughs. 
+<p>The effective use of layout is fundamental to visual data analysis. Judiciously laid out data graphics can help explore and test complex patterns that would be difficult to capture through numerical summaries alone. In <a href="#fig-spatial-layout">Figure&nbsp;<span>4.7</span></a> mosaic plots of crash frequencies (bar height) and relative number of weekday/weekend crashes (dark bar width) are presented for each borough in London, with plots for vehicle type juxtaposed side-by-side for comparison. Rather than laying out boroughs top-to-bottom on frequency, boroughs are given an approximate spatial arrangement, generated using the <a href="https://www.roger-beecham.com/gridmappr/index.html"><code>gridmappr</code></a> package. This arrangement enables several patterns to be quickly inferred. From it, we can observe that pedestrian crashes involving bicycles and taxis generally occur more in central London boroughs; those involving cars and taxis occur in greater relative number during weekends, especially so for those that take place in central London boroughs; and, different from other vehicle types, pedestrian crashes involving cars occur in reasonably large numbers in outer London boroughs.</p>
+<!-- Alternatively we could directly encode difference from expectation by centring the dark bars and varying the widths according to how much the relative number of weekend crashes is above (oriented to right) or below (oriented to left) this expectation (middle plot). The latter approach helps highlight boroughs that are different from the London average: the more dark blue the more atypical that borough is. The largest differences from expectation are in Westminster, with crashes involving vans, motocycles and bicycles overrepresented amongst weekdays. Finally, if we are to compare across all 33 London boroughs we may chose to reduce some of the detail in the graphic and focus on a subset of vehicle types. As vehicle type is a categorical nominal variable it may also be sensible to encode that variable using colour hue to help associate vehicle types between boroughs.
 
 
  ::: {.cell}
@@ -702,8 +699,8 @@ The discussion of Risk Ratios (RRs) was reasonably abbreviated. RRs are interpre
  :::
 
 
-@fig-mosaic-boroughs-alpha shows this updated design with borooughs grouped by whether they are in inner or outer London. This grouping usefully reinforces the distinctive pattern of vehicle categories involved in pedestrian crashes. In inner London, crashes between pedestrians and vehicles other than cars are in relative terms much more common, with motorcycles and bicycles overrepresented amongst crashes taking place during weekdays and cars and taxis very much overrepresented amongst weekend crashes.
- 
+@fig-mosaic-boroughs-alpha shows this updated design with boroughs grouped by whether they are in inner or outer London. This grouping usefully reinforces the distinctive pattern of vehicle categories involved in pedestrian crashes. In inner London, crashes between pedestrians and vehicles other than cars are in relative terms much more common, with motorcycles and bicycles overrepresented amongst crashes taking place during weekdays and cars and taxis very much overrepresented amongst weekend crashes.
+
 
 
  ::: {.cell}
@@ -729,7 +726,7 @@ include_graphics("figs/04/mosaic_boroughs_spatial.svg", error = FALSE)
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-spatial-layout" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figs/04/grids_vehicle.svg" class="img-fluid figure-img"></p>
+<figure class="figure"><p><img src="figs/04/grids_vehicle.png" class="img-fluid figure-img" width="1050"></p>
 <p></p><figcaption aria-hidden="true" class="figure-caption">Figure 4.7: Mosaic plots of vehicle type and period for London Boroughs with geo-spatial arrangement.</figcaption><p></p>
 </figure>
 </div>
@@ -743,14 +740,14 @@ include_graphics("figs/04/mosaic_boroughs_spatial.svg", error = FALSE)
 <li>Model an expectation derived from pattern</li>
 <li>Show deviation from expectation</li>
 </ol>
-<p>It does so by exploring the characterstics of individuals involved in pedestrian crashes, with a special focus on inequalities. Research suggests those living in more deprived neighborhoods are at elevated risk of road crash injury than those living in less-deprived areas. A follow-up question that we explore here is around the characteristics of those involved in crashes. To what extent do drivers share demographic characteristics with the pedestrians they crash into, and does this vary in expected ways by the location in which crashes take place?</p>
+<p>It does so by exploring the characteristics of individuals involved in pedestrian crashes, with a special focus on inequalities. Research suggests those living in more deprived neighbourhoods are at elevated risk of road crash injury than those living in less-deprived areas <span class="citation" data-cites="tortosa_cycling_2021">(<a href="references.html#ref-tortosa_cycling_2021" role="doc-biblioref">Vidal Tortosa et al. 2021</a>)</span>. A follow-up question is around the characteristics of those involved in crashes. To what extent do drivers share demographic characteristics with the pedestrians they crash into, and does this vary in expected ways by the location in which crashes take place?</p>
 <section id="import" class="level3" data-number="4.3.1"><h3 data-number="4.3.1" class="anchored" data-anchor-id="import">
 <span class="header-section-number">4.3.1</span> Import</h3>
 <ul>
 <li>Download the <a href="">04-template.qmd</a> file for this chapter and save it to the <code>reports</code> folder of your <code>vis4sds</code> project.</li>
 <li>Open your <code>vis4sds</code> project in RStudio and load the template file by clicking <code>File</code> &gt; <code>Open File ...</code> &gt; <code>reports/04-template.qmd</code>.</li>
 </ul>
-<p>The presented analysis is based on that published in <span class="citation" data-cites="beecham_vis_2022">Beecham and Lovelace (<a href="references.html#ref-beecham_vis_2022" role="doc-biblioref">2022</a>)</span> and investigates vehicle–pedestrian crashes in STATS19 between 2010 and 2019, where the IMD class of the pedestrian, driver and crash location is recorded.</p>
+<p>The presented analysis is based on that published in <span class="citation" data-cites="beecham_vis_2022">Beecham and Lovelace (<a href="references.html#ref-beecham_vis_2022" role="doc-biblioref">2022</a>)</span> and investigates vehicle–pedestrian crashes in STATS19 between 2010 and 2019, where the Indeces of Multiple Deprivation (IMD) class of the pedestrian, driver and crash location is recorded.</p>
 <p>STATS19 is a form used by the police to record road crashes that result in injury. Raw data are released by the Department for Transport, but can be also accessed via the <a href="https://docs.ropensci.org/stats19/"><code>stats19</code></a> R package. The data are organised into three tables:</p>
 <ul>
 <li>
@@ -760,23 +757,23 @@ include_graphics("figs/04/mosaic_boroughs_spatial.svg", error = FALSE)
 <li>
 <em>Vehicles</em>: Each observation is a vehicle involved in a crash. Again <em>Vehicles</em> can be linked with <em>Crashes</em> and <em>Casualties</em> via the <code>accident_index</code> variable. As well as the vehicle type and manoeuvre being made, information on driver characteristics is recorded in this table.</li>
 </ul>
-<p>An <a href="https://www.fstpackage.org/"><code>.fst</code></a> dataset containing pedestrian crahses linked to casualty and driver characteristics has been stored in the book’s accompanying <a href="https://github.com/vis4sds/data">data repository</a>. There are simplifications and assumptions made when generating this linked dataset, detailed in the template file.</p>
+<p>An <a href="https://www.fstpackage.org/"><code>.fst</code></a> dataset containing pedestrian crashes linked to casualty and driver characteristics has been stored in the book’s accompanying <a href="https://github.com/vis4sds/data">data repository</a>. There are simplifications and assumptions made when generating this linked dataset, detailed in the template file.</p>
 <!-- Some pedestrian crashes involve many vehicles, but ideally for the analysis we need a single vehicle (and vehicle type) to be attributed to a single pedestrian casualty. For each pedestrian casualty, the *largest* vehicle involved is assigned to the crash. Sometimes several vehicles of the same type  may be involved in a crash, so we use the `vehicle_reference` variable, which takes values of `1` to `n`, and make the assumption that `vehicle_reference=1` is the main vehicle involved in the crash. So *single* vehicles are linked to *single* casualties based first on the largest vehicle involved and then on `vehicle_reference`. -->
 <!-- Collected in the STATS19 dataset is the [Indices of Multiple Deprivation](https://www.gov.uk/government/statistics/english-indices-of-deprivation-2019) decile of the small area neighbourhood in which casualties and drivers live. Often IMD is reported at the quintile level (5 rather than 10 quantiles), and we aggregate to this level in our EDA. Code for performing this aggregation is in the template. The crashes data do not automatically contain information on the IMD status of the neighbourhood in which the crash took place. A final bit of data processing code in the template is to download the full English IMD dataset and assign this to crahses dataset based on crash location. -->
 </section><section id="sample" class="level3" data-number="4.3.2"><h3 data-number="4.3.2" class="anchored" data-anchor-id="sample">
 <span class="header-section-number">4.3.2</span> Sample</h3>
-<!-- The focus of our analysis is in inequalities in the characteristcs of those involved in pedestrian crashes. For this, the IMD status of the pedestrian, driver and crash location must be recorded. -->
+<!-- The focus of our analysis is in inequalities in the characteristics of those involved in pedestrian crashes. For this, the IMD status of the pedestrian, driver and crash location must be recorded. -->
 <p>We first create a new dataset – <code>ped_veh_complete</code> – identifying those linked crashes where the full IMD data are recorded:</p>
 <div class="cell">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Complete demographics for pedestrians, drivers and crash locations.</span></span>
-<span><span class="va">ped_veh_complete</span> <span class="op">&lt;-</span> <span class="va">ped_veh</span> <span class="op">|&gt;</span> </span>
+<span><span class="va">ped_veh_complete</span> <span class="op">&lt;-</span> <span class="va">ped_veh</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span></span>
-<span>    <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">casualty_quintile</span><span class="op">)</span>, </span>
-<span>    <span class="va">casualty_quintile</span> <span class="op">!=</span> <span class="st">"Data missing or out of range"</span>, </span>
+<span>    <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">casualty_quintile</span><span class="op">)</span>,</span>
+<span>    <span class="va">casualty_quintile</span> <span class="op">!=</span> <span class="st">"Data missing or out of range"</span>,</span>
 <span>    <span class="va">driver_quintile</span> <span class="op">!=</span> <span class="st">"Data missing or out of range"</span></span>
 <span>    <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The dataset contains c.&nbsp;49,000 observatons, 23% of recorded pedestrian crashes. Although this is a large number, there may be some systematic bias in the types of pedestrian crashes for which full demographic data are recorded, a challenge often encountered when datasets are repurposed for analysis. For brevity, we will not extensively investigate this bias, but below “record completeness rates” are calculated for selected crash types. As anticipated, lower completeness rates appear for crashes coded as <em>Slight</em> in injury severity. Interestingly for our study, there are also lower completeness rates for crashes occurring in the highest deprivation quintile.</p>
+<p>The dataset contains c.&nbsp;49,000 observations, 23% of recorded pedestrian crashes. Although this is a large number, there may be some systematic bias in the types of pedestrian crashes for which full demographic data are recorded, a challenge often encountered when datasets are repurposed for analysis. For brevity, we will not extensively investigate this bias, but below ‘record completeness rates’ are calculated for selected crash types. As anticipated, lower completeness rates appear for crashes coded as <em>Slight</em> in injury severity. Interestingly for our study, there are also lower completeness rates for crashes occurring in the highest deprivation quintile.</p>
 <div class="cell">
 
 </div>
@@ -784,25 +781,25 @@ include_graphics("figs/04/mosaic_boroughs_spatial.svg", error = FALSE)
 <div class="cell-output-display">
 <div id="tbl-completeness-rates" class="anchored">
 
-<table class=" lightable-minimal" style="font-family: &quot;Trebuchet MS&quot;, verdana, sans-serif; margin-left: auto; margin-right: auto;">
+<table>
 <caption>Table 4.3:  Proportion of records – or completeness rates – where IMD status of pedestrian, driver and crash location are recorded. </caption>
  <thead><tr>
-<th style="text-align:left;"> Crash category </th>
-   <th style="text-align:left;"> Completeness rate </th>
+<th style="text-align:left;border-bottom: 1px solid;"> Crash category </th>
+   <th style="text-align:left;border-bottom: 1px solid;"> Completeness rate </th>
   </tr></thead>
 <tbody>
 <tr grouplength="3"><td colspan="2" style="border-bottom: 0px solid; font-size:  90%">Casualty severity</td></tr>
 <tr>
 <td style="text-align:left;padding-left: 2em;width: 30%; font-size:  90%" indentlevel="1"> Fatal </td>
-   <td style="text-align:left;width: 20%; font-size:  90%"> 30% </td>
+   <td style="text-align:left;width: 20%; font-size:  90%"> 26% </td>
   </tr>
 <tr>
 <td style="text-align:left;padding-left: 2em;width: 30%; font-size:  90%" indentlevel="1"> Serious </td>
-   <td style="text-align:left;width: 20%; font-size:  90%"> 29% </td>
+   <td style="text-align:left;width: 20%; font-size:  90%"> 26% </td>
   </tr>
 <tr>
 <td style="text-align:left;padding-left: 2em;width: 30%; font-size:  90%" indentlevel="1"> Slight </td>
-   <td style="text-align:left;width: 20%; font-size:  90%"> 22% </td>
+   <td style="text-align:left;width: 20%; font-size:  90%"> 20% </td>
   </tr>
 <tr grouplength="5"><td colspan="2" style="border-bottom: 0px solid;font-size:  90%">IMD class of crash location</td></tr>
 <tr>
@@ -811,30 +808,30 @@ include_graphics("figs/04/mosaic_boroughs_spatial.svg", error = FALSE)
   </tr>
 <tr>
 <td style="text-align:left;padding-left: 2em;width: 30%; font-size:  90%" indentlevel="1"> 4 Less deprived </td>
-   <td style="text-align:left;width: 20%; font-size:  90%"> 24% </td>
-  </tr>
-<tr>
-<td style="text-align:left;padding-left: 2em;width: 30%; font-size:  90%" indentlevel="1"> 3 Mid deprived </td>
    <td style="text-align:left;width: 20%; font-size:  90%"> 25% </td>
   </tr>
 <tr>
-<td style="text-align:left;padding-left: 2em;width: 30%; font-size:  90%" indentlevel="1"> 2 More deprived </td>
+<td style="text-align:left;padding-left: 2em;width: 30%; font-size:  90%" indentlevel="1"> 3 Mid deprived </td>
    <td style="text-align:left;width: 20%; font-size:  90%"> 24% </td>
   </tr>
 <tr>
+<td style="text-align:left;padding-left: 2em;width: 30%; font-size:  90%" indentlevel="1"> 2 More deprived </td>
+   <td style="text-align:left;width: 20%; font-size:  90%"> 23% </td>
+  </tr>
+<tr>
 <td style="text-align:left;padding-left: 2em;width: 30%; font-size:  90%" indentlevel="1"> 1 Most deprived </td>
-   <td style="text-align:left;width: 20%; font-size:  90%"> 22% </td>
+   <td style="text-align:left;width: 20%; font-size:  90%"> 19% </td>
   </tr>
 </tbody>
 </table>
 </div>
 </div>
 </div>
-<p>This difference in record completeness may reflect genuine differences in recording behaviour for crashes occurring in high deprivation neighbourhoods, or it might be a function of some confounding context. For example, one might expect that crashes that are more serious in nature are reported in greater detail and so have higher completion rates; this might then explain the varying completeness rates if crashes resulting in Slight injuries are overrepresented in high deprivation areas. To explore this further we can calulate completeness rates separately by crash injury severity (<a href="#fig-completeness">Figure&nbsp;<span>4.8</span></a>). This does suggest that, even net of injury severity, record completion rates are lower for crashes taking place in the high deprivation neighbourhoods.</p>
+<p>This difference in record completeness may reflect genuine differences in recording behaviour for crashes occurring in high deprivation neighbourhoods, or it might be a function of some confounding context. For example, one might expect that crashes that are more serious in nature are reported in greater detail and so have higher completion rates; this might then explain the varying completeness rates if crashes resulting in slight injuries are overrepresented in high deprivation areas. To explore this further we can calculate completeness rates separately by crash injury severity (<a href="#fig-completeness">Figure&nbsp;<span>4.8</span></a>). This demonstrates an expected difference in completion rates depending on injury severity, but that record completion rates are still lower for crashes taking place in the high deprivation neighbourhoods.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-completeness" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figs/04/completeness.svg" class="img-fluid figure-img"></p>
+<figure class="figure"><p><img src="figs/04/completeness.png" class="img-fluid figure-img" style="width:60.0%"></p>
 <p></p><figcaption aria-hidden="true" class="figure-caption">Figure 4.8: Completeness rates by IMD class of crash location and crash injury severity.</figcaption><p></p>
 </figure>
 </div>
@@ -842,17 +839,17 @@ include_graphics("figs/04/mosaic_boroughs_spatial.svg", error = FALSE)
 </div>
 <p>The code:</p>
 <div class="cell">
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ped_veh</span> <span class="op">|&gt;</span> </span>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ped_veh</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">mutate</span><span class="op">(</span></span>
 <span>    is_complete<span class="op">=</span><span class="va">accident_index</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="op">(</span><span class="va">ped_veh_complete</span> <span class="op">|&gt;</span> <span class="fu">pull</span><span class="op">(</span><span class="va">accident_index</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>    is_ksi<span class="op">=</span><span class="fu">if_else</span><span class="op">(</span><span class="va">accident_severity</span> <span class="op">!=</span> <span class="st">"Slight"</span>, <span class="st">"Fatal | Serious"</span>, <span class="st">"Slight"</span><span class="op">)</span></span>
-<span>  <span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">crash_quintile</span>, <span class="va">is_ksi</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">summarise</span><span class="op">(</span>prop_complete<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">is_complete</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">crash_quintile</span>, <span class="va">is_ksi</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">summarise</span><span class="op">(</span>prop_complete<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">is_complete</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_point</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>y<span class="op">=</span><span class="va">crash_quintile</span>, x<span class="op">=</span><span class="va">prop_complete</span>, colour<span class="op">=</span><span class="va">is_ksi</span><span class="op">)</span>, size<span class="op">=</span><span class="fl">2</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">scale_colour_manual</span><span class="op">(</span>values<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"#67000d"</span>, <span class="st">"#fb6a4a"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">scale_x_continuous</span><span class="op">(</span>limits<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.1</span>,<span class="fl">.4</span><span class="op">)</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="fu">scale_x_continuous</span><span class="op">(</span>limits<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.1</span>,<span class="fl">.4</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>A breakdown of the <code>ggplot2</code> spec:</p>
 <ol type="1">
@@ -867,11 +864,11 @@ include_graphics("figs/04/mosaic_boroughs_spatial.svg", error = FALSE)
 </ol></section><section id="abstract-and-relate" class="level3" data-number="4.3.3"><h3 data-number="4.3.3" class="anchored" data-anchor-id="abstract-and-relate">
 <span class="header-section-number">4.3.3</span> Abstract and relate</h3>
 <p>Motivating this analysis is the characteristics, as measured by neighbourhood-level IMD, of pedestrians involved in road crashes, the drivers crashing into them and the locations in which crashes occur. We wish to ask to what extent drivers share demographic characteristics with the pedestrians they crash into, and does this vary by the location in which crashes take place?</p>
-<p>To start, we abstract over the variables from which this profile is to be drawn: five IMD classes from high-to-low deprivation (IMD quintile 1–5) for pedestrians, drivers, and crash locations. <a href="#fig-imd-freqs">Figure&nbsp;<span>4.9</span></a> summarises frequencies across these categories. Pedestrian crashes occur more frequently in higher deprvation neighbourhoods; those injured more often live in higher deprivation neighbourhoods; and the same applies to drivers involved in crashes. This high-level pattern is consistent with existng research <span class="citation" data-cites="tortosa_cycling_2021">(<a href="references.html#ref-tortosa_cycling_2021" role="doc-biblioref">Vidal Tortosa et al. 2021</a>)</span> and is a function of various conditioning context. High deprivation areas are located in greater number in urban areas and so we would expect greater numbers of pedestrian crashes to occurr in such areas. The shapes of the bars nevertheless suggest that are are inequalities in the characteristics of pedestrians and drivers involved in crashes: the frequencies are most skewed towards high deprivation for pedestrians and more uniform across deprivation classes for drivers. This may indicate an importing effect of drivers living in lower deprivation areas crashing into pedestrians living in higher deprivation areas.</p>
+<p>To start, we abstract over the variables from which this profile is to be drawn: five IMD classes from high-to-low deprivation (IMD quintile 1–5) for pedestrians, drivers, and crash locations. <a href="#fig-imd-freqs">Figure&nbsp;<span>4.9</span></a> summarises frequencies across these categories. Pedestrian crashes occur more frequently in higher deprivation neighbourhoods; those injured more often live in higher deprivation neighbourhoods; and the same applies to drivers involved in crashes. This high-level pattern is consistent with existing research <span class="citation" data-cites="tortosa_cycling_2021">(<a href="references.html#ref-tortosa_cycling_2021" role="doc-biblioref">Vidal Tortosa et al. 2021</a>)</span> and is a function of various conditioning context. High deprivation areas are located in greater number in urban areas and so we would expect greater numbers of pedestrian crashes to occur in such areas. The shapes of the bars nevertheless suggest that are are inequalities in the characteristics of pedestrians and drivers involved in crashes: the frequencies are most skewed towards high deprivation for pedestrians and more uniform across deprivation classes for drivers. This may indicate an importing effect of drivers living in lower deprivation areas crashing into pedestrians living in higher deprivation areas.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-imd-freqs" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figs/04/freqs_imd.svg" class="img-fluid figure-img"></p>
+<figure class="figure"><p><img src="figs/04/freqs_imd.png" class="img-fluid figure-img" style="width:70.0%"></p>
 <p></p><figcaption aria-hidden="true" class="figure-caption">Figure 4.9: Frequencies of pedestrian crashes by IMD class of crash location, pedestrian injured and driver involved.</figcaption><p></p>
 </figure>
 </div>
@@ -879,21 +876,21 @@ include_graphics("figs/04/mosaic_boroughs_spatial.svg", error = FALSE)
 </div>
 <p>The code:</p>
 <div class="cell">
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ped_veh_complete</span> <span class="op">|&gt;</span> </span>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ped_veh_complete</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">inner_join</span><span class="op">(</span><span class="va">imd</span> <span class="op">|&gt;</span> <span class="fu">select</span><span class="op">(</span><span class="va">lsoa_code</span>, <span class="va">total_pop</span><span class="op">)</span>, by<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"lsoa_of_accident_location"</span><span class="op">=</span><span class="st">"lsoa_code"</span><span class="op">)</span><span class="op">)</span>  <span class="op">|&gt;</span></span>
-<span>  <span class="fu">select</span><span class="op">(</span><span class="va">driver_quintile</span>, <span class="va">casualty_quintile</span>, <span class="va">crash_quintile</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">select</span><span class="op">(</span><span class="va">driver_quintile</span>, <span class="va">casualty_quintile</span>, <span class="va">crash_quintile</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">pivot_longer</span><span class="op">(</span>cols<span class="op">=</span><span class="fu">everything</span><span class="op">(</span><span class="op">)</span>, names_to<span class="op">=</span><span class="st">"location_type"</span>, values_to<span class="op">=</span><span class="st">"imd"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">location_type</span>, <span class="va">imd</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">summarise</span><span class="op">(</span>count<span class="op">=</span><span class="fu">n</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">ungroup</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">separate</span><span class="op">(</span>col<span class="op">=</span><span class="va">location_type</span>, into<span class="op">=</span><span class="st">"type"</span>, sep<span class="op">=</span><span class="st">"_"</span>, extra <span class="op">=</span> <span class="st">"drop"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">location_type</span>, <span class="va">imd</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">summarise</span><span class="op">(</span>count<span class="op">=</span><span class="fu">n</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">ungroup</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">separate</span><span class="op">(</span>col<span class="op">=</span><span class="va">location_type</span>, into<span class="op">=</span><span class="st">"type"</span>, sep<span class="op">=</span><span class="st">"_"</span>, extra <span class="op">=</span> <span class="st">"drop"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">mutate</span><span class="op">(</span></span>
 <span>    type<span class="op">=</span><span class="fu">case_when</span><span class="op">(</span></span>
 <span>      <span class="va">type</span><span class="op">==</span><span class="st">"casualty"</span> <span class="op">~</span> <span class="st">"pedestrian"</span>,</span>
 <span>      <span class="va">type</span><span class="op">==</span><span class="st">"crash"</span> <span class="op">~</span> <span class="st">"location"</span>,</span>
 <span>      <span class="cn">TRUE</span> <span class="op">~</span> <span class="va">type</span><span class="op">)</span>,</span>
 <span>    type<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">type</span>, levels<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"location"</span>, <span class="st">"pedestrian"</span>, <span class="st">"driver"</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_col</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">imd</span>, y<span class="op">=</span><span class="va">count</span><span class="op">)</span>, fill<span class="op">=</span><span class="st">"#003c8f"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">scale_x_discrete</span><span class="op">(</span>labels<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"most"</span>,<span class="st">""</span>, <span class="st">"mid"</span>, <span class="st">""</span>, <span class="st">"least"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">facet_wrap</span><span class="op">(</span><span class="op">~</span><span class="va">type</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -901,91 +898,91 @@ include_graphics("figs/04/mosaic_boroughs_spatial.svg", error = FALSE)
 <p>The <code>ggplot2</code> spec:</p>
 <ol type="1">
 <li>
-<em>Data</em>: First identfy the IMD class of crash locations by joining the <code>lsoa_code</code> recorded for those locations on the <code>imd</code> dataset. Next, we calculate frequencies on which the plot depends: the IMD status of crash locations, pedestrians or drivers involved in pedestrian crashes. To do this, we <code>pivot_longer()</code> on the respective IMD variables so that each row is a crash record and IMD class. The dataset is then grouped on these variables in order to count frequencies of location, pedestrian and drivers by IMD class involved. Finally, we use <code>mutate()</code> to recode the <code>type</code> variable with more expressive labels for locations, pedestrians and drivers and cast the variable as a factor in order to control the order in which variables appear when <code>type</code> is conditioned on to generate a faceted plot.</li>
+<em>Data</em>: First identify the IMD class of crash locations by joining the <code>lsoa_code</code> recorded for those locations on the <code>imd</code> dataset. Next, we calculate frequencies on which the plot depends: the IMD status of crash locations, pedestrians or drivers involved in pedestrian crashes. To do this, we <code>pivot_longer()</code> on the respective IMD variables so that each row is a crash record and IMD class. The dataset is then grouped on these variables in order to count frequencies of location, pedestrian and drivers by IMD class involved. Finally, we use <code>mutate()</code> to recode the <code>type</code> variable with more expressive labels for locations, pedestrians and drivers and cast the variable as a factor in order to control the order in which variables appear when <code>type</code> is conditioned on to generate a faceted plot.</li>
 <li>
-<em>Encoding</em>: Bars arranged vertically (<code>y</code> position) on frequency and horizontally (<code>x</code> position) on ìmd`class.</li>
+<em>Encoding</em>: Bars arranged vertically (<code>y</code> position) on frequency and horizontally (<code>x</code> position) on <code>imd</code> class.</li>
 <li>
 <em>Marks</em>: <code>geom_col()</code> for drawing bars.</li>
 <li>
 <em>Facets</em>: <code>facet_wrap()</code> for faceting on the <code>type</code> variable (location, pedestrian or driver).</li>
 </ol></section><section id="model-and-residual-pass-1" class="level3" data-number="4.3.4"><h3 data-number="4.3.4" class="anchored" data-anchor-id="model-and-residual-pass-1">
 <span class="header-section-number">4.3.4</span> Model and residual: Pass 1</h3>
-<p>To explore how the characteristics of pedestrians and drivers co-vary more directly, we can compute the joint frequency of each permutation of driver-pedestrian IMD quintile group. This results in <span class="math inline">5x5</span> combinations and in <a href="#fig-imd-driver-cas">Figure&nbsp;<span>4.10</span></a> these combinations are represented in a heatmap. Cells of the heatmap are ordered lef-to-right on the IMD class of pedestrian and bottom-to-top on the IMD class of driver. Arranging cells in this way encourages linearity in the association to be emphasised. The darker blues in the diagonals demonstrate that an association between pedestrian-driver IMD characteristics exists: drivers and passengers living in similar types of neighborhoods are involved in crashes with one another with greater frequency than those living in different types of neighborhoods.</p>
+<p>To explore how the characteristics of pedestrians and drivers co-vary more directly, we can compute the joint frequency of each permutation of driver-pedestrian IMD quintile group. This results in <span class="math inline">5x5</span> combinations and in <a href="#fig-imd-driver-cas">Figure&nbsp;<span>4.10</span></a> these combinations are represented in a heatmap. Cells of the heatmap are ordered left-to-right on the IMD class of pedestrian and bottom-to-top on the IMD class of driver. Arranging cells in this way encourages linearity in the association to be emphasised. The darker blues in the diagonals demonstrate that an association between pedestrian-driver IMD characteristics exists: drivers and passengers living in similar types of neighbourhoods are involved in crashes with one another with greater frequency than those living in different types of neighbourhoods.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-imd-driver-cas" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figs/04/imd_driver_cas.svg" class="img-fluid figure-img" style="width:90.0%"></p>
+<figure class="figure"><p><img src="figs/04/imd_driver_cas.png" class="img-fluid figure-img" style="width:90.0%"></p>
 <p></p><figcaption aria-hidden="true" class="figure-caption">Figure 4.10: Pedestrian casualties by IMD quintile of pedestrian and driver.</figcaption><p></p>
 </figure>
 </div>
 </div>
 </div>
-<p>A consequence of the heavy concentration of crash counts, and thus color, in the high-deprivation cells is that it is difficult to gauge variation and the strength of association between IMD class of driver and pedestrian in the lower deprivation cells. Again we can use exploratory models to support our analysis. In this case, our (naive) expectation is that crash frequencies distribute independently of the IMD class of the pedestrian-driver involved and compute signed chi-scores describing how different the observed number of crashes in each cell position is from this expectation. The second row of <a href="#fig-imd-driver-cas">Figure&nbsp;<span>4.10</span></a> demonstrates how expectation is spread based on absolute numbers within rows and columns of the hearmap: expected values for each cell are derived from multiplying across these column and row marginals.</p>
-<p>The observed-versus-expected plot highlights the largest positive residuals are in and around the diagonals and the largest negative residuals are those furthest from the diagonals: we see higher crash frequencies between drivers and pedestrians living in the same or similar IMD quintiles and fewer between those in different quintiles than would be expected given no association between pedestrian-driver IMD characteristics. That the bottom left cell – high-deprivation-driver + high-deprivation-pedestrian – is dark red can be understood when remembering that signed chi-scores emphasise effect sizes that are large in absolute as well as relative number. Not only is there an association between the characteristics of drivers and casualties, but larger crash counts are recorded in locations containing the highest deprivation and so residuals here are large. The largest positive residuals are nevertheless recorded in the top right of the heatmap – and this is more surprising. Against an expectation of no association between the IMD characteristics of drivers and pedestrians, there is a particularly high number of crashes between drivers and pedestrians living in neighborhoods containing the lowest deprivation. An alternative phrasing: the MD characteristics of those involved in pedestrian crashes are most narrow between drivers and pedestrians who live in the lowest deprivation quintiles.</p>
+<p>A consequence of the heavy concentration of crash counts, and thus colour, in the high-deprivation cells is that it is difficult to gauge variation and the strength of association between IMD class of driver and pedestrian in the lower deprivation cells. Again we can use exploratory models to support our analysis. In this case, our (naive) expectation is that crash frequencies distribute independently of the IMD class of the pedestrian-driver involved and compute signed chi-scores describing how different the observed number of crashes in each cell position is from this expectation. The second row of <a href="#fig-imd-driver-cas">Figure&nbsp;<span>4.10</span></a> demonstrates how expectation is spread based on absolute numbers within rows and columns of the heatmap: expected values for each cell are derived from multiplying across these column and row marginals.</p>
+<p>The observed-versus-expected plot highlights the largest positive residuals are in and around the diagonals and the largest negative residuals are those furthest from the diagonals: we see higher crash frequencies between drivers and pedestrians living in the same or similar IMD quintiles and fewer between those in different quintiles than would be expected given no association between pedestrian-driver IMD characteristics. That the bottom left cell – high-deprivation-driver + high-deprivation-pedestrian – is dark red can be understood when remembering that signed chi-scores emphasise effect sizes that are large in absolute as well as relative number. Not only is there an association between the characteristics of drivers and casualties, but larger crash counts are recorded in locations containing the highest deprivation and so residuals here are large. The largest positive residuals are nevertheless recorded in the top right of the heatmap – and this is more surprising. Against an expectation of no association between the IMD characteristics of drivers and pedestrians, there is a particularly high number of crashes between drivers and pedestrians living in neighbourhoods containing the lowest deprivation. An alternative phrasing: the IMD characteristics of those involved in pedestrian crashes are most narrow between drivers and pedestrians who live in the lowest deprivation quintiles.</p>
 <p>The code:</p>
 <div class="cell">
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">model_data</span> <span class="op">&lt;-</span> <span class="va">ped_veh_complete</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">mutate</span><span class="op">(</span>grand_total<span class="op">=</span><span class="fu">n</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">driver_quintile</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">mutate</span><span class="op">(</span>row_total<span class="op">=</span><span class="fu">n</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">ungroup</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">casualty_quintile</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">mutate</span><span class="op">(</span>col_total<span class="op">=</span><span class="fu">n</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">ungroup</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">casualty_quintile</span>, <span class="va">driver_quintile</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">model_data</span> <span class="op">&lt;-</span> <span class="va">ped_veh_complete</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">mutate</span><span class="op">(</span>grand_total<span class="op">=</span><span class="fu">n</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">driver_quintile</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">mutate</span><span class="op">(</span>row_total<span class="op">=</span><span class="fu">n</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">ungroup</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">casualty_quintile</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">mutate</span><span class="op">(</span>col_total<span class="op">=</span><span class="fu">n</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">ungroup</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">casualty_quintile</span>, <span class="va">driver_quintile</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">summarise</span><span class="op">(</span></span>
-<span>    observed<span class="op">=</span><span class="fu">n</span><span class="op">(</span><span class="op">)</span>, </span>
-<span>    row_total<span class="op">=</span><span class="fu">first</span><span class="op">(</span><span class="va">row_total</span><span class="op">)</span>, </span>
+<span>    observed<span class="op">=</span><span class="fu">n</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>    row_total<span class="op">=</span><span class="fu">first</span><span class="op">(</span><span class="va">row_total</span><span class="op">)</span>,</span>
 <span>    col_total<span class="op">=</span><span class="fu">first</span><span class="op">(</span><span class="va">col_total</span><span class="op">)</span>,</span>
 <span>    grand_total<span class="op">=</span><span class="fu">first</span><span class="op">(</span><span class="va">grand_total</span><span class="op">)</span>,</span>
 <span>    expected<span class="op">=</span><span class="op">(</span><span class="va">row_total</span><span class="op">*</span><span class="va">col_total</span><span class="op">)</span><span class="op">/</span><span class="va">grand_total</span>,</span>
 <span>    resid<span class="op">=</span><span class="op">(</span><span class="va">observed</span><span class="op">-</span><span class="va">expected</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="va">expected</span><span class="op">)</span>,</span>
-<span>  <span class="op">)</span> </span>
+<span>  <span class="op">)</span></span>
 <span></span>
-<span><span class="va">model_data</span> <span class="op">|&gt;</span> </span>
+<span><span class="va">model_data</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_tile</span><span class="op">(</span></span>
-<span>    <span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">casualty_quintile</span>, y<span class="op">=</span><span class="va">driver_quintile</span>, fill<span class="op">=</span><span class="va">resid</span><span class="op">)</span>, </span>
+<span>    <span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">casualty_quintile</span>, y<span class="op">=</span><span class="va">driver_quintile</span>, fill<span class="op">=</span><span class="va">resid</span><span class="op">)</span>,</span>
 <span>    colour<span class="op">=</span><span class="st">"#707070"</span>, size<span class="op">=</span><span class="fl">.2</span></span>
 <span>    <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">scale_fill_distiller</span><span class="op">(</span></span>
-<span>    palette<span class="op">=</span><span class="st">"RdBu"</span>, </span>
-<span>    direction<span class="op">=</span><span class="op">-</span><span class="fl">1</span>, </span>
+<span>    palette<span class="op">=</span><span class="st">"RdBu"</span>,</span>
+<span>    direction<span class="op">=</span><span class="op">-</span><span class="fl">1</span>,</span>
 <span>    limits<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">model_data</span><span class="op">$</span><span class="va">resid</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">model_data</span><span class="op">$</span><span class="va">resid</span><span class="op">)</span><span class="op">)</span></span>
 <span>    <span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">coord_equal</span><span class="op">(</span><span class="op">)</span>  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="fu">coord_equal</span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The <code>ggplot2</code> spec:</p>
 <ol type="1">
 <li>
 <em>Data</em>: We create a staged dataset for plotting. Observed values for each cell of the heatmap are computed, along with row and column marginals for calculating expected values. The way in which the signed chi-score residuals are calculated follows that described earlier in the chapter.</li>
 <li>
-<em>Encoding</em>: Cells of the hearmap are arranged in <code>x</code> and <code>y</code> on the IMD class of pedestrians and drivers and filled accordiing to signed chi-score residuals .</li>
+<em>Encoding</em>: Cells of the heatmap are arranged in <code>x</code> and <code>y</code> on the IMD class of pedestrians and drivers and filled according to signed chi-score residuals .</li>
 <li>
 <em>Marks</em>: <code>geom_tile()</code> for drawing cells of the heatmap.</li>
 <li>
 <em>Scale</em>: <code>scale_fill_distiller()</code> for continuous <a href="https://colorbrewer2.org/#type=sequential&amp;scheme=BuGn&amp;n=3">ColorBrewer</a> scheme, diverging using the <code>RdBu</code> palette. To make the scheme centred on 0, the maximum absolute residual value in <code>model_data</code> is used.</li>
 </ol></section><section id="model-and-residual-pass-2" class="level3" data-number="4.3.5"><h3 data-number="4.3.5" class="anchored" data-anchor-id="model-and-residual-pass-2">
 <span class="header-section-number">4.3.5</span> Model and residual: Pass 2</h3>
-<p>An obvious confounding factor, neglected in the analysis above, is the IMD class of the <em>location</em> in which crashes occur. To explore this, we can condition (or facet) on the IMD class of crash location, laying out the faceted plot left-to-right on the ordered IMD classes. Eyeballing this graphic of observed counts (<a href="#fig-imd-driver-cas-crash">Figure&nbsp;<span>4.11</span></a>) we see the again the association between IMD characteristics for crashes occurring in the least deprived quintile and elsewhere slightly more ‘mixing’. Few pedestrians living outside the most deprived quintile are involved in crashes that occur in that quintile. Given the dominating pattern is of crashes occurring in the most deprived quintiles, however, it is difficult to see too much variation from the diagonal cell in the less-deprived quintiles. An easy adjustment would be to apply a local colour scale for each faceted plot and compare relative “leakage” from the diagonal for each deprivation level of crash location. The more interesting question, however, is whether this known association between pedestrian and driver characteristics is stronger for certain driver-pedestrian-location combinations than others: that is, net of the dominant pattern, in which cells are there greater or fewer crash counts?</p>
-<p>The concept that we are exploring is whether crash counts vary depending on how different are the IMD characteristics of pedestrians and drivers from those of the locations in which crashes occur. We calculate a new variable measuring this distance (“geodemographic distance”): the euclidean distance between the IMD class of the driver-pedestrian-crash location, treating the IMD class as a continuous variable ranging from 1 to 5. The second row of <a href="#fig-imd-driver-cas-crash">Figure&nbsp;<span>4.11</span></a> encodes this directly. We then specify a Poisson regression model, modelling crash counts in each driver-pedestrian-crash location cell as a function of geodemographic distance for that cell. Since the range of the crash count varies systematically by IMD class, the model is extended with with a group-level intercept term that varies on the IMD class of the crash location. If regression modelling frameworks are new to you, don’t worry about the specifics. The residuals from this regression model are expressed in the same way as in the signed-chi-score model and show whether there are greater or fewer crash counts in any pedestrian-driver-location combination than would be expected given the amount of geodemographic difference between individuals and locations involved. Our expectation is that crash counts vary inversely with geodeographic distance. In EDA, we are not overly concerned with “confirming” this to be the case; instead we use our data graphics to explore where in the distribution, and by how much, the observed data depart from this expecation.</p>
+<p>An obvious confounding factor, neglected in the analysis above, is the IMD class of the <em>location</em> in which crashes occur. To explore this, we can condition (or facet) on the IMD class of crash location, laying out the faceted plot left-to-right on the ordered IMD classes. Eyeballing this graphic of observed counts (<a href="#fig-imd-driver-cas-crash">Figure&nbsp;<span>4.11</span></a>) we see again the association between IMD characteristics for crashes occurring in the least deprived quintile and elsewhere slightly more ‘mixing’. Few pedestrians living outside the most deprived quintile are involved in crashes that occur in that quintile. Given the dominating pattern is of crashes occurring in the most deprived quintiles, however, it is difficult to see too much variation from the diagonal cell in the less-deprived quintiles. An easy adjustment would be to apply a local colour scale for each faceted plot and compare relative ‘leakage’ from the diagonal for each deprivation level of crash location. The more interesting question, however, is whether this known association between pedestrian and driver characteristics is stronger for certain driver-pedestrian-location combinations than others: that is, net of the dominant pattern in <a href="#fig-imd-driver-cas-crash">Figure&nbsp;<span>4.11</span></a>, in which cells are there greater or fewer crash counts?</p>
+<p>The concept that we are exploring is whether crash counts vary depending on how different are the IMD characteristics of pedestrians and drivers from those of the locations in which crashes occur. We calculate a new variable measuring this distance: ‘geodemographic distance’, the euclidean distance between the IMD class of the driver-pedestrian-crash location, treating the IMD class as a continuous variable ranging from 1 to 5. The second row of <a href="#fig-imd-driver-cas-crash">Figure&nbsp;<span>4.11</span></a> encodes this directly. We then specify a Poisson regression model, modelling crash counts in each driver-pedestrian-crash location cell as a function of geodemographic distance for that cell. Since the range of the crash count varies systematically by IMD class, the model is extended with with a group-level intercept term that varies on the IMD class of the crash location. If regression modelling frameworks are new to you, don’t worry about the specifics. The residuals from this regression model are expressed in the same way as in the signed-chi-score model and show whether there are greater or fewer crash counts in any pedestrian-driver-location combination than would be expected given the amount of geodemographic difference between individuals and locations involved. Our expectation is that crash counts vary inversely with geodemographic distance. In EDA, we are not overly concerned with confirming this to be the case; instead we use our data graphics to explore where in the distribution, and by how much, the observed data depart from this expectation.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-imd-driver-cas-crash" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figs/04/model_imd_location.svg" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 4.11: Pedestrian casualties by IMD quintile of pedestrian and driver.</figcaption><p></p>
+<figure class="figure"><p><img src="figs/04/model_imd_location.png" class="img-fluid figure-img" style="width:90.0%"></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 4.11: Pedestrian casualties by IMD quintile of pedestrian, driver and crash location.</figcaption><p></p>
 </figure>
 </div>
 </div>
 </div>
-<p>The vertical block of red in the left column of the left-most matrix (crashes occurring in high-deprivation areas) indicates higher than expected crash counts for pedestrians living and being hit in the most deprived quintile, both by drivers living in that high-deprivation quintile and the less-deprived quintiles (especially the lowest to quintiles), as evidenced by the vertical strip. This pattern is important as it persists even after having modeled for “geodemographic distance.” There is much to unpick elswhere in the graphic. Like many health issues, pedestrian road injuries have a heavy socio-economic element and our analysis has identified several patterns that may be worthy of more formal investigation.</p>
-<!-- It is replicated to a lesser extent for pedestrians living and being hit in the second most deprived quintile, but does not appear so strongly for the mid- and low-deprivation quintiles. Studying the plots closely there is a tendency for red cells to appear in the lower half of the cells for matrices describing the mid-low deprivation crash locations. This indicates that, net of geodemographic distance, drivers living in higher deprivation neighborhoods are involved in road crashes with pedestrians in greater number than would be expected given geodemographic distance, and for crashes occurring in the lower deprivation areas in which they do not live. -->
+<p>The vertical block of red in the left column of the left-most matrix (crashes occurring in high-deprivation areas) indicates higher than expected crash counts for pedestrians living and being hit in the most deprived quintile, both by drivers living in that high-deprivation quintile and the less-deprived quintiles (especially the lowest quintiles), as evidenced by the vertical strip. This pattern is important as it persists even after having modelled for ‘geodemographic distance’. There is much to unpick elsewhere in the graphic. Like many health issues, pedestrian road injuries have a heavy socio-economic element and our analysis has identified several patterns that may be worthy of more formal investigation.</p>
+<!-- It is replicated to a lesser extent for pedestrians living and being hit in the second most deprived quintile, but does not appear so strongly for the mid- and low-deprivation quintiles. Studying the plots closely there is a tendency for red cells to appear in the lower half of the cells for matrices describing the mid-low deprivation crash locations. This indicates that, net of geodemographic distance, drivers living in higher deprivation neighbourhoods are involved in road crashes with pedestrians in greater number than would be expected given geodemographic distance, and for crashes occurring in the lower deprivation areas in which they do not live. -->
 <!-- Hopefully from this you get a sense of the common workflow for EDA:
 
 * Expose pattern
 * Model an expectation derived from pattern
 * Show deviation from expectation -->
-<p>The modelling is somewhat involved – a more gentle introduction to model-based visual analysis appears in Chapters -<a href="06-model.html"><span>Chapter&nbsp;6</span></a> and -<a href="07-uncertainty.html"><span>Chapter&nbsp;7</span></a> – but the code for generating the model and graphics in <span class="quarto-unresolved-ref">?fig-imd-fig-imd-driver-cas-crash</span> is:</p>
+<p>The modelling is somewhat involved – a more gentle introduction to model-based visual analysis appears in Chapters <a href="06-model.html"><span>6</span></a> and <a href="07-uncertainty.html"><span>7</span></a> – but the code for generating the model and graphics in <a href="#fig-imd-driver-cas-crash">Figure&nbsp;<span>4.11</span></a> is:</p>
 <div class="cell">
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">model_data</span> <span class="op">&lt;-</span> <span class="va">ped_veh_complete</span> <span class="op">|&gt;</span> </span>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">model_data</span> <span class="op">&lt;-</span> <span class="va">ped_veh_complete</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">mutate</span><span class="op">(</span></span>
 <span>    <span class="co"># Derive numeric values from IMD classes (ordered factor variable).</span></span>
 <span>    <span class="fu">across</span><span class="op">(</span></span>
@@ -999,13 +996,13 @@ include_graphics("figs/04/mosaic_boroughs_spatial.svg", error = FALSE)
 <span>      <span class="op">(</span><span class="va">casualty_quintile_num</span><span class="op">-</span><span class="va">crash_quintile_num</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span> <span class="op">+</span></span>
 <span>      <span class="op">(</span><span class="va">driver_quintile_num</span><span class="op">-</span><span class="va">crash_quintile_num</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span></span>
 <span>    <span class="op">)</span></span>
-<span>  <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="co"># Calculate over observed cells: each ped-driver IMD class combination.</span></span>
-<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">casualty_quintile</span>, <span class="va">driver_quintile</span>, <span class="va">crash_quintile</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">casualty_quintile</span>, <span class="va">driver_quintile</span>, <span class="va">crash_quintile</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">summarise</span><span class="op">(</span>crash_count<span class="op">=</span><span class="fu">n</span><span class="op">(</span><span class="op">)</span>, demog_dist<span class="op">=</span><span class="fu">first</span><span class="op">(</span><span class="va">demog_dist</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">ungroup</span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Model crash count against demographic distance allowing the intercept to vary</span></span>
-<span><span class="co"># on crash quintile. </span></span>
+<span><span class="co"># on crash quintile.</span></span>
 <span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu">lme4</span><span class="fu">::</span><span class="fu">glmer</span><span class="op">(</span><span class="va">crash_count</span> <span class="op">~</span> <span class="va">demog_dist</span> <span class="op">+</span> <span class="op">(</span> <span class="fl">1</span> <span class="op">|</span> <span class="va">crash_quintile</span><span class="op">)</span>,</span>
 <span>                     data<span class="op">=</span><span class="va">model_data</span>, family<span class="op">=</span><span class="va">poisson</span>, nAGQ <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
 <span></span>
@@ -1014,10 +1011,10 @@ include_graphics("figs/04/mosaic_boroughs_spatial.svg", error = FALSE)
 <span>  <span class="fu">mutate</span><span class="op">(</span>ml_resids<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/residuals.html">residuals</a></span><span class="op">(</span><span class="va">model</span>, type<span class="op">=</span><span class="st">"pearson"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Plot.</span></span>
-<span><span class="va">model_data</span> <span class="op">|&gt;</span> </span>
+<span><span class="va">model_data</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_tile</span><span class="op">(</span></span>
-<span>    <span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">casualty_quintile</span>, y<span class="op">=</span><span class="va">driver_quintile</span>, fill<span class="op">=</span><span class="va">ml_resids</span><span class="op">)</span>, </span>
+<span>    <span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">casualty_quintile</span>, y<span class="op">=</span><span class="va">driver_quintile</span>, fill<span class="op">=</span><span class="va">ml_resids</span><span class="op">)</span>,</span>
 <span>    colour<span class="op">=</span><span class="st">"#707070"</span>, size<span class="op">=</span><span class="fl">.2</span></span>
 <span>    <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">scale_fill_distiller</span><span class="op">(</span></span>
@@ -1029,7 +1026,7 @@ include_graphics("figs/04/mosaic_boroughs_spatial.svg", error = FALSE)
 </div>
 </section></section><section id="conclusion" class="level2" data-number="4.4"><h2 data-number="4.4" class="anchored" data-anchor-id="conclusion">
 <span class="header-section-number">4.4</span> Conclusion</h2>
-<p>Exploratory data analysis (EDA) is an approach to analysis that aims to amplify knowledge and understanding of a dataset. The idea is to explore structure, and data-driven hypotheses, by quickly generating many often throwaway statistical and graphical summaries. In this chapter we discussed chart types for exposing distributions and relationships in a dataset, depending on data type. We also showed that EDA is not model-free. Data graphics help us to see dominant patterns and from here formulate expectations that are to be modelled. Different from so-called confirmatory data analysis, however, in an EDA the goal of model-building is not “to identify whether the model fits or not […] but rather to understand in what ways the fitted model departs from the data” <span class="citation" data-cites="gelman_exploratory_2004">(<a href="references.html#ref-gelman_exploratory_2004" role="doc-biblioref">Gelman 2004</a>)</span>. We covered visualization approaches to supporting comparison between data and expectation using juxtaposition, superimposition and direct encoding <span class="citation" data-cites="gleicher_visual_2011">(<a href="references.html#ref-gleicher_visual_2011" role="doc-biblioref">Gleicher and Roberts 2011</a>)</span>. The chapter did not provide an exhaustive survey of EDA approaches, and certainly not an exhaustive set of chart types and model formulations for exposing distributions and relationships. By locating the session closely in the STATS19 dataset, we learnt a workflow for EDA that is common to most effective data analysis (and communication) activity:</p>
+<p>Exploratory data analysis (EDA) is an approach to analysis that aims to amplify knowledge and understanding of a dataset. The idea is to explore structure, and data-driven hypotheses, by quickly generating many often throwaway statistical and graphical summaries. In this chapter we discussed chart types for exposing distributions and relationships in a dataset, depending on data type. We also showed that EDA is not model-free. Data graphics help us to see dominant patterns and from here formulate expectations that are to be modelled. Different from so-called confirmatory data analysis, however, in an EDA the goal of model-building is not “to identify whether the model fits or not […] but rather to understand in what ways the fitted model departs from the data” <span class="citation" data-cites="gelman_exploratory_2004">(<a href="references.html#ref-gelman_exploratory_2004" role="doc-biblioref">Gelman 2004</a>)</span>. We covered visualization approaches to supporting comparison between data and expectation using juxtaposition, superimposition and direct encoding <span class="citation" data-cites="gleicher_visual_2011">(<a href="references.html#ref-gleicher_visual_2011" role="doc-biblioref">Gleicher and Roberts 2011</a>)</span>. The chapter did not provide an exhaustive survey of EDA approaches, and certainly not an exhaustive set of chart types and model formulations for exposing distributions and relationships. By locating the session closely in the STATS19 dataset, we learnt a workflow for EDA that is common to most effective data analysis and communication activity:</p>
 <ol type="1">
 <li>Expose pattern</li>
 <li>Model an expectation derived from pattern</li>
