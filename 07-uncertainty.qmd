@@ -1,5 +1,12 @@
 # Uncertainty {#sec-uncertainty}
 
+```{r}
+#| echo: false
+library(knitr)
+library(kableExtra)
+library(fontawesome)
+```
+
 
 By the end of this chapter you should gain the following knowledge and practical skills.
 
@@ -23,6 +30,288 @@ By the end of this chapter you should gain the following knowledge and practical
 - [x] Apply [functional-style programming](https://purrr.tidyverse.org/articles/other-langs.html) for working over bootstrap resamples.
 :::
 
+
+## Introduction
+
+Uncertainty is a key preoccupation of those working in statistics and data analysis. A lot of time is spent providing estimates for it, reasoning about it and trying to take it into account when making evidence-based claims and decisions. There are many ways in which uncertainty can enter a data analysis and many ways in which it can be conceptually represented. This chapter focuses mainly on parameter uncertainty -- that is, quantifying and conveying the different possible values that a quantity of interest might take. Intuitively, visualization should help with providing support here. We can use data graphics to represent these different values and give greater emphasis to those for which we have greater certainty -- to communicate or *imply* levels of uncertainty in the background. This is, however, quite challenging. In @sec-visual, we learnt that there is often a gap between the visual encoding of data and its perception and the tendency in standard data graphics to imbue data with marks that over-imply precision. We will consider research in Cartography and Information Visualization on representing uncertainty information, before  exploring and applying techniques for quantifying and visually representing parameter uncertainty.  We will do so using [STATS19](https://data.gov.uk/dataset/cb7ae6f0-4be6-4935-9277-47e5ce24a11f/road-safety-data) road safety data, exploring how injury severity rates in pedestrian-vehicle crashes vary over time and by geographic area.
+
 ## Concepts
+
+
+### Uncertainty visualization
+
+Cartographers, and more recently those working in Information Visualization, have been concerned for some time with *visual variables*, or adopting @munzner_visualization_2014's vocabulary *visual channels*, that might be used to represent uncertainty information. @fig-uncertainty-variables is adapted from @kinkeldey_how_2014 and displays visual variables that could be used to encode uncertainty information. Ideally, visual variables for representing uncertainty should be intuitive, logically related to notions of precision and accuracy, whilst also allowing sufficient discriminative power when deployed in data dense visualizations.
+
+@kinkeldey_how_2014 provides an overview of empirical research that explore the effectiveness of proposed visual variables against these criteria. As intuitive signifiers of uncertainty, or lack of precision, *fuzziness* (not encoded in @fig-uncertainty-variables) and *location* have been shown to work well. Slightly less intuitive, but nevertheless successful in terms of discrimination are *size*, *transparency* and *colour value*. *Sketchiness* is another intuitive signifier, proposed in @boukhelifa_evaluating_2012 and @wood_sketchy_2012. As with many visual variables, sketchiness is probably best considered as an ordinal visual variable to the extent that there is a limited range of sketchiness levels that can be discriminated. An additional feature of sketchiness is that, different from the other visual variables, it is related to informality -- this may be desirable in certain contexts, less so in others [see @wood_sketchy_2012].
+
+```{ojs}
+//| include: false
+//| echo: false
+function rStyle(roughness) {
+  const rStyle = {roughness: roughness};
+  rStyle;
+  return(rStyle)
+}
+
+function drawPointsSketch(r, pts) {
+  pts.map(function(d) { 
+    r.setRoughStyle(rStyle(d.roughness))
+    .fill("#636363").ellipse(d.x, d.y, .3)} )
+return r;
+}
+
+function drawPointsSize(r, pts) {
+  pts.map(function(d) { r.fill("#636363").strokeWidth(0).ellipse(d.x, d.y, d.size)} )
+return r;
+}
+function drawPointsColour(r, pts) {
+  pts.map(function(d) { r.fill(d.cls).strokeWidth(0).ellipse(d.x, d.y, .3)} )
+return r;
+}
+
+function drawPointsAlpha(r, pts) {
+  pts.map(function(d) { 
+    r.strokeWidth(1).stroke(d.alphs).fill("#ffffff00").ellipse(d.x, d.y, .35)
+    r.strokeWidth(2).line([[d.x, .65], [d.x, 1.35]])
+    r.line([[d.x-.35, d.y], [d.x+.35, d.y]])
+    r.fill(d.alphs).strokeWidth(0).ellipse(d.x, d.y, .25)
+    } )
+return r;
+}
+
+function drawPointsLocation(r, pts) {
+  pts.map(function(d) {
+    r.strokeWidth(1).stroke("#636363").fill("#ffffff00").ellipse(d.x, d.y, .35)
+    r.strokeWidth(.8).line([[d.x, .65], [d.x, 1.35]])
+    r.line([[d.x-.35, d.y], [d.x+.35, d.y]])
+    r.strokeWidth(0).fill("#636363").
+    ellipse(
+      d.x + ((Math.round(Math.random()) * 2 - 1)* .5*(d.location)), 
+      d.y + ((Math.round(Math.random()) * 2 - 1)* .5*(d.location)), 
+      .05)
+    } )
+return r;
+}
+
+```
+
+```{ojs}
+//| include: false
+//| echo: false
+import { Renderer } from "@jwolondon/renderer"
+import { aq, op } from '@uwdata/arquero'
+w = 480;
+h = 50;
+border = 1;
+
+testDat = aq.table({
+    x: [2.2, 3.2, 4.2, 5.2, 6.2, 7.2],
+    y: [1, 1, 1, 1, 1, 1],
+    size: [.35, .3, .25, .2, .15, .1],
+    cls: ["#252525", "#525252", "#737373", "#969696", "#bdbdbd", "#d9d9d9"],
+    alphs: ["#252525E6", "#252525BF", "#25252599", "#25252573", "#25252559", "#25252533"],
+    location: [.01, .18, .25, .32, .38, .45],
+    roughness: [0.2, 1, 2, 3, 4.2, 6.5]
+  });
+
+xSc = d3
+   .scaleLinear()
+   .domain([0,9.5])
+   .range([border, w - border]);
+ySc = d3
+    .scaleLinear()
+    .domain([0.5, 1.5])
+    .range([h - border, border]);
+
+
+r0 = new Renderer(w, h-10, "svg")
+  .setScales(xSc, ySc)
+  .font("Avenir Next Ultra Light")
+  .textAlign("left")
+  .textBaseline("middle")
+  .textSize(10)
+  .text("certain",1.8,1)
+  .textAlign("right")
+  .text("uncertain", 7.3,1)
+  .line([[2.8,1], [6,1]])
+r0.render(); 
+
+r1 = new Renderer(w, h, "svg")
+  .setScales(xSc, ySc)
+  .font("Avenir Next Ultra Light")
+  .textAlign("left")
+  .textBaseline("middle")
+  .textSize(10)
+  .text("size",0,1)
+drawPointsSize(r1, testDat.objects()).render();
+
+r2 = new Renderer(w, h, "svg")
+  .setScales(xSc, ySc)
+  .font("Avenir Next Ultra Light")
+  .textAlign("left")
+  .textBaseline("middle")
+  .textSize(10)
+  .text("colour",0,1)
+drawPointsColour(r2, testDat.objects()).render();
+
+r3 = new Renderer(w, h, "svg")
+  .setScales(xSc, ySc)
+  .font("Avenir Next Ultra Light")
+  .textAlign("left")
+  .textBaseline("middle")
+  .textSize(10)
+  .text("transparency",0,1)
+drawPointsAlpha(r3, testDat.objects()).render();
+
+r4 = new Renderer(w, h, "svg")
+  .setScales(xSc, ySc)
+  .font("Avenir Next Ultra Light")
+  .textAlign("left")
+  .textBaseline("middle")
+  .textSize(10)
+  .text("location",0,1)
+drawPointsLocation(r4, testDat.objects()).render();
+
+r5 = new Renderer(w, h, "roughsvg")
+  .setScales(xSc, ySc)
+  .font("Avenir Next Ultra Light")
+  .textAlign("left")
+  .textBaseline("middle")
+  .textSize(10)
+  .text("sketchy",0,1)
+drawPointsSketch(r5, testDat.objects()).render();
+
+```
+
+```{r}
+#| label: fig-uncertainty-variables
+#| out.width: 65%
+#| fig-cap: "Visual variables that can be used to represent levels of uncertainty information"
+#| echo: false
+#| eval: true
+
+include_graphics("figs/07/uncertainty_vars.png", error = FALSE)
+```
+
+From within the Uncertainty Visualization literature, a key maxim that consistently appears for successful uncertainty visualization is that:
+
+> *Things that are not precise should not be encoded with symbols that look precise.*
+
+An example appearing in many primers on uncertainty visualization is the [National Hurricane Center's](https://www.nhc.noaa.gov/) [@nhc_cone_2023] cone graphic used to represent major storm events (@fig-hurricane-vis). The cone starts at the storm's current location and spreads out to represent the *projected path* of the storm as determined by National Hurricane Center's modelling. The main problem is that the cone implies that the storm is growing as we move away from its current location, when in fact this is not the case. Instead there is *more uncertainty* in the areas that could be affected by the storm the further away those areas are from the storm's current location. The second problem is that the cone uses strong lines that imply precision. The temptation is to think that anything contained by the cone is unsafe and anything outside of it is safe. This is of course not what is suggested by the model; rather that areas beyond the cone fall outside some chosen threshold probability. You will notice that the graphic in @fig-nhc is annotated with a guidance note to discourage such false interpretation.
+
+In @van_goethem_stenomaps_2014's redesign, *colour value* is used to represent four binned categories of storm probability suggested by the model.  Administrative boundaries in maps tend to induce quite specific and binary judgements about response based on this context. For example, if the cone is *close to* but not overlapping a state boundary, a decision might be made not to mount a response/prepare for the hurricane. The approach to address this in @fig-nhc-redesign is to symbolise states using a single line,  generated via curve schematisation [@van_goethem_stenomaps_2014]. This provides context but in a way that may discourage binary thinking;  precise inferences of location are not possible as the area and state borders are very obviously not exact.
+
+::: {#fig-hurricane-vis layout-ncol=2}
+
+![National Hurricane Center cone design](figs/07/cone_uncertainty.png){#fig-nhc}
+
+![@van_goethem_stenomaps_2014 redesign](figs/07/cone_redesign.png){#fig-nhc-redesign}
+
+Cone of Uncertainty produced by National Hurricane Center [@nhc_cone_2023] and example re-design in @van_goethem_stenomaps_2014
+:::
+
+### Frequency framing
+
+The visual variables in @fig-uncertainty-variables could be used to represent different categories of uncertainty information, not just those associated with parameters -- for example, locational or temporal uncertainty at data collection. The rest of the chapter addresses techniques for quantifying, and chart idioms [@munzner_visualization_2014] for representing, parameter uncertainty: estimated injury severity rates for pedestrian-vehicle crashes in our STATS19 road crash dataset.
+
+Often parameters are represented as probabilities, or *relative frequencies* -- ratios or percentages describing the probability of some event happening. It is notoriously difficult to develop intuition around these sorts of relative frequencies. In the STATS19 dataset, we might wish to compare the injury severity rate  of pedestrain-vehicle road crashes -- the proportion of all crashes that resulted in a serious injury or fatality (KSI) -- taking place between two local authority areas, say Bristol and Sheffield. There is in fact quite a difference in the injury severity rate between these two local authority areas in 2019: 15% for Bristol (35 out of 228 reported crashes were KSI) versus 50% for Sheffield (124 out of 248 reported crashes were KSI).
+
+This feels like quite a large difference, but it is difficult to imagine or experience these differences in probabilities when written down or encoded visually using say bar length.  [Icon arrays](https://mucollective.github.io/visualization/icon-array/) are used extensively in health communication and have been demonstrated to be effective at communicating probabilities of event outcomes. They offload the thinking that happens when comparing ratios -- the internal weighing up of numerators and denominators. In the example in @fig-icon-arrays, icon arrays are used to compare the two injury severity rates for Bristol and Sheffield.  Each crash is a square and crashes are coloured according to whether they resulted in a serious injury or fatality (KSI, dark red) or slight injury (light red). In the bottom row, cells are given a non-standard ordering, to effect something similar ro a standard stacked bar chart. Whilst this layout better supports reading-off the two recorded proportions (15% and 50% KSI), the random arrangement of cells in the icon array perhaps more intuitively communicates the differences in *probabilities* of a pedestrian crash resulting in serious injury. 
+
+```{r}
+#| label: fig-icon-arrays
+#| out.width: 70%
+#| fig-cap: "Icon array displaying injury severity rates for Pedestrian-Vehicle crashes"
+#| echo: false
+#| eval: true
+
+include_graphics("figs/07/icon_arrays.png", error = FALSE)
+```
+
+
+There are compelling examples of icon arrays being used in data journalism, most obviously to support communication of probabilities in political polling. You might remember that at the time of 2016 US Presidential Election, there was much criticism levelled at pollsters, even the excellent [FiveThirtyEight](https://fivethirtyeight.com/features/why-fivethirtyeight-gave-trump-a-better-chance-than-almost-anyone-else/), for not correctly calling the result. Huffpost gave Trump a 2% chance of winning the election, The New York Times 15% and FiveThirtyEight 28%. Clearly, the Huffpost estimate was really quite off, but thinking about FiveThirtyEight's prediction, how surprised should we be if an outcome does in fact occur, which is predicted to happen with a probability of almost a third?
+
+The [risk theatre](https://mucollective.github.io/visualization/risk-theatre/) (@fig-risk-theatre) is a variant of an icon array. In this case it represents polling probabilities as seats of a theatre -- a dark seat represents a Trump victory. If you imagine buying a theatre ticket and being randomly allocated to a seat, how confident would you be about not sitting in a "Trump" seat in the FiveThirtyEight image? The distribution of dark seats suggests that the 28% risk of a Trump victory according to the model is not negligible.
+
+```{r}
+#| label: fig-risk-theatre
+#| out.width: 100%
+#| fig-cap: "Risk theatre of different election eve forecasts, reimplementedin ggplot2 but based on that appearing in [Washington Post](https://mucollective.github.io/visualization/risk-theatre/)"
+#| echo: false
+#| eval: true
+
+include_graphics("figs/07/risk_theatre.png", error = FALSE)
+```
+
+### Quantifying uncertainty in frequencies
+
+In the icon arrays above we made little of the fact that the sample size varies between the two recorded crash rates. Partly this was because the differences were reasonably small. When looking at injury severity rates across all local authorities in 2019, however, there is substantial variation in the rates and the sample size. Bromsgrove has a very low injury severity rate based on a small sample size (4%, or one out of 27 crashes resulting in KSI); Cotswold has a very high injury severity rate based on a small sample size (75%, or 14 out of 19 crashes resulting in KSI). With some prior knowledge of these areas, one might expect the difference in KSI rates to be in this direction, but would we expect the difference to be of this order of magnitude? Just eight more KSIs recorded in Bromsgrove makes its KSI rate equivalent to that of Bristol's.
+
+Although STATS19 is a population dataset to the extent that it contains data on every crash recorded by the Police, it makes sense that the more data on which our KSI rates are based, the more certainty we have in them being reliable estimates of injury severity -- ones that  might be used to predict injury severity in future years. So we can treat our observed injury rates as being derived from samples of an (*unobtainable*)  population. Our calculated injury severity rates are *parameters* that try to represent, or estimate, this population.
+
+Although this formulation might seem unnecessary, from here we can apply some statistical concepts to quantify uncertainty around our parameter estimates. We assume:
+
+1. The variable of interest, KSI rate, has an unobtainable population mean and standard deviation.
+2. That a *sample* will consist of a set of observations from this unobtainable population and that these samples could vary in size.
+3. From any *sample* we can calculate a mean and standard deviation, which will differ from the population mean and standard deviation.
+4. That we can derive a *sampling distribution* and generate an array of estimates that could be obtained from repeating the sampling process many, many times.
+5. This range of the *sampling distribution* could then be used to quantify how precise are the estimates. Generally the larger the sampling distribution, the more precise -- the less uncertain -- the estimate.
+
+In @sec-model we used Confidence Intervals to estimate uncertainty around regression coefficients. These described the range of the sampling distribution -- the range of values that coefficients estimated from a large number of resamples could take. From early stats courses, you might have learnt how these can be calculated using statistical theory. Better still, we can derive these empirically via [bootstrapping](https://en.wikipedia.org/wiki/Bootstrapping_(statistics)). A bootstrap resample involves taking a random sample with replacement from the original sample and of the same size as the original sample. From this resample, a parameter estimate can be derived, in this case the KSI rate. And this process can be repeated many times to generate an empirical *sampling distribution* for the parameter. The standard error can be calculated from the standard deviation of the sampling distribution. There are several reasons why bootstrapping is a really useful procedure: it can be applied to almost any sample statistic, makes no distributional assumptions and can work on quite complicated sampling designs.
+
+Presented in @fig-bootstrap-selected are KSI rates with error bars used to display 95% Confidence Intervals generated from a bootstrap procedure in which 1000 resamples were taken with replacement. Upper and lower limits were lifted from .025 and .975 percentile positions of the bootstrap sampling distribution. Assuming that the observed data are drawn from a wider (unobtainable) population, the 95% Confidence Intervals demonstrate that whilst Cotswold recorded a very large KSI rate, sampling variation means that this figure could be much lower (or higher), whereas for Bristol and Sheffield, where our KSI rate is derived from more data, the range of plausible values that the KSI rate might take due to sampling variation is much smaller -- there is less uncertainty associated with their KSI rates.
+
+```{r}
+#| label: fig-bootstrap-selected
+#| out.width: 65%
+#| fig-cap: "KSI rates for pedestrian-vehicle crashes in selected local authorities with 95% CIs (derived from 1000 resample bootstraps)"
+#| echo: false
+#| eval: true
+
+include_graphics("figs/07/bootstrap_selected.png", error = FALSE)
+```
+
+
+### Visualizing uncertainty in frequencies
+
+Error bars are a space-efficient way of conveying parameter uncertainty. However, remembering our maxim for uncertainty visualization -- that *things that are not precise should not be encoded with symbols that look precise* -- they do have problems. The hard borders can lead to binary or categorical thinking [see @correl_error_2014]. Certain values within a Confidence Interval are more probable than others and so we should endeavour to use a visual encoding that reflects this. Matt Kay's excellent [`ggdist`](https://mjskay.github.io/ggdist/) package extends `ggplot2` with a range of chart types for representing these sorts of intervals. In @fig-selected-uncertainty error bars are replaced with *half eye plots* and *interval bars*, which give greater visual saliency to parameter estimates that are more likely.
+
+
+```{r}
+#| label: fig-selected-uncertainty
+#| out.width: 100%
+#| fig-cap: "KSI rates for pedestrian-vehicle crashes in selected local authorities with uncertainty estimates"
+#| echo: false
+#| eval: true
+
+include_graphics("figs/07/selected_uncertainty.png", error = FALSE)
+```
+
+STATS19 road crash data are released annually, and given the wide uncertainty bands for certain local authorities it might be instructive to explore the stability of local authority KSI rates year-on-year. In @fig-bootstrap-selected these KSI rates are represented with the bold line and the faint lines are superimposed bootstrap resamples. The overall line probably most clearly demonstrates volatility in the KSI rates for Cotswold and Bromsgrove due to small sample sizes. The observed increase in KSI rates for Sheffield since 2015 does appear to be a genuine one, although may also be affected by uncertainty around data collection, changes to how police record injury severity.
+
+
+```{r}
+#| label: fig-temporal-uncertainty
+#| out.width: 90%
+#| fig-cap: "Year-on-yar KSI rates for pedestrian-vehicle crashes in selected local authorities with bootstrap resamples superimposed"
+#| echo: false
+#| eval: true
+
+include_graphics("figs/07/temporal_uncertainty.png", error = FALSE)
+```
+
+The superimposed lines in the figure above are a form of ensemble visualization. An alternative approach might have been to animate over the bootstrap resamples to generate a Hypoethetical Outcome Plot (HOP) [@hullman_hypothetical_2015]. HOPs convey a sense of uncertainty by animating over random draws of a distribution. As there is no single outcome to anchor to (although I have actually included one below), HOPs force viewers to account for uncertainty, recognising that less probable outcomes may be possible -- essentially to think distributionally. @fig-hop displays frames from a HOP 
+
+```{r}
+#| label: fig-hop
+#| out.width: 80%
+#| fig-cap: "Frames from hypothetical outcome plot of year-on-yar KSI rates for pedestrian-vehicle crashes"
+#| echo: false
+#| eval: true
+
+include_graphics("figs/07/hop.png", error = FALSE)
+```
+
+
 
 ## Techniques
