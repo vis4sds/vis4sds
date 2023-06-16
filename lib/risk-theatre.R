@@ -21,12 +21,86 @@ remotes::install_github("schochastics/roughsf")
 
 library(sf)
 pts  <- tibble(
-  pt = c(1:15), y = rep(1:3, each=4), x = rep(1:4, times=3))
+  pt = c(1:12), y = rep(1:3, each=4), x = rep(1:4, times=3))
 
-pts |> 
-  ggplot(aes(x,y)) + 
-  geom_point(size=20, pch=21) +
-  scale_x_continuous(limits=c(0,4), expand=c(0,0)) +
+
+devtools::install_github('thomasp85/ggfx')
+
+
+GeomBlurryPoint <- 
+  ggproto('GeomBlurryPoint', GeomPoint,
+          setup_params = function(data, params) {
+            params$max_range <- max(data$ymax - data$ymin)
+            params
+          },
+          draw_group = function (data, panel_params, coord, max_range, ...) {
+            # Create a raster object representing the width of the point
+            sigma <- ((data$ymax - data$ymin) / max_range)^1.5
+            sigma_raster <- as.raster(matrix(sigma, nrow = 1))
+            
+            # Use the annotate_raster geom to convert it to a raster that spans the x-range
+            # of the line
+            sigma_grob <- GeomRasterAnn$draw_panel(
+              data, panel_params, coord, 
+              raster = sigma_raster, 
+              xmin = min(data$x), 
+              xmax = max(data$x),
+              ymin = -Inf,
+              ymax = Inf
+            )
+            
+            # Convert it to a reference layer
+            ref_name <- paste0('GeomBlurryPoint_<', data$group[1], '>')
+            sigma_grob <- as_reference(sigma_grob, ref_name)
+            
+            # Figure out the maximum sigma relative to the y scale
+            max_sigma <- 0.5 * max_range / diff(panel_params$y$dimension())
+            
+            # Create a line grob using geom_line
+            point_grob <- GeomPoint$draw_panel(data, panel_params, coord)
+            
+            # Add variable blur. Turn off blur in the x-direction and use the calulated max sigma
+            # in the y direction
+            point_grob <- with_variable_blur(point_grob, ch_red(ref_name), x_scale = 0, y_scale = unit(max_sigma, 'npc'))
+            
+            # Return the two grobs combined, making sure that the reference grob comes first
+            grid::gList(
+              sigma_grob,
+              line_grob
+            )
+          }
+  )
+  
+  
+ggplot() + 
+  with_blend(
+    geom_point(aes(x = x, y = y), pts),
+    bg_layer = "text",
+    blend_type = "source",
+    alpha = "src",
+    id = "wave-checker"
+  ) + 
+  with_variable_blur(
+    geom_point(aes(x = x, y = y), pts, size=10),
+    x_sigma = ch_hue('wave-checker'),
+    y_sigma = ch_luminance('wave-checker'),
+    x_scale = unit(10, 'mm')
+  )
+
+
+
+ggplot(pts, aes(x, y)) +
+  with_blur(
+    geom_point(size=5, shape=21, fill="#000000"),
+    sigma = unit(.9, 'mm')
+  )  +
+  scale_x_continuous(limits=c(0,5), expand=c(0,0)) +
+  scale_y_continuous(limits=c(0,4), expand=c(0,0)) 
+
+  
+  
+  stat_smooth(geom=GeomBlurryPoint, size=20, pch=21) +
+  scale_x_continuous(limits=c(0,5), expand=c(0,0)) +
   scale_y_continuous(limits=c(0,4), expand=c(0,0)) 
                        
 
