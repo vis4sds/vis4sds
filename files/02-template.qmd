@@ -1,50 +1,55 @@
 ---
 title: "Chapter 02 Template"
-author: "Roger Beecham"
+author: "<insert-name>"
 format: html
 ---
 
 ## Introduction
 
-Reopen the project you created in Chapter 1 and save this `.qmd` file to the `reports` folder. When working through the materials from this chapter run each code chunk separately by clicking the small green arrow beside each code chunk. By default `eval : false` on most code chunks, so when you knit the code chunk will not execute. We are working with a reasonably large dataset so this is to avoid the tedium of waiting long periods for this document to render.
+Reopen the project you created in Chapter 1 and save this `.qmd` file to the `reports` folder. When working through the materials from this chapter run each code chunk separately by clicking the small green arrow beside each code chunk. By default `eval: false` on most code chunks, so when you knit the code chunk will not execute. We are working with a reasonably large dataset so this is to avoid the tedium of waiting long periods for this document to render.
 
 The technical element to this chapter works with data from a large bikeshare scheme -- New York's [Citibike](https://www.citibikenyc.com/) scheme.
 
 ## Setup
 
-The code block below points to the packages you need to do the work discussed in the chapter. If you have been following the instructions from the last chapter, you will have already installed the key packages -- `tidyverse` , `fst`, `lubridate`, `sf`, `here` -- and so simply need to make them available in session with `library(<package-name>)`. If you have not yet downloaded these packages you will need to make separate calls to `install.packages("<package-name>")` as described in the previous session.
+The code block below points to the packages you need to do the work discussed in the chapter. If you have been following the instructions from the last chapter, you will have already installed the key packages -- `tidyverse` , `fst`, `lubridate`, `sf`, `here` -- and so simply need to make them available in session with `library(<package-name>)`. If you have not yet downloaded these packages you will need to make separate calls to `install.packages("<package-name>")` as described in the previous chapter.
 
 ```{r setup-required}
 #| echo: true
 #| eval: false
-library(tidyverse) # Bundle of packages for doing modern data analysis
-library(fst) # Fast/efficient working with tbls
-library(sf) # Spatial operations
-library(lubridate) # Work with dates
-library(here) # For navigating project directory
-# install.packages("geosphere") # Uncomment to install
+# Bundle of packages containing functions for most data analysis.
+library(tidyverse) 
+# For fast/efficient working with tibbles.
+library(fst)
+# For spatial operations.
+library(sf)
+# For working with dates.
+library(lubridate) 
+# For navigating a project's directory.
+library(here) 
+# For performing trigonometry operations on spatial data.
+install.packages("geosphere") 
 ```
 
-Run the code block below to download the pre-processed and extracted data to your project's data folder. Note that you should only run the import code below once. When returning to this work in a new R session, you need only then read in the `ny_trips.fst` and `ny_stations.csv` file that is held locally on your machines. Unfortunately due to storage limitations I had to make `ny_trips.fst` just a 500k random sample of the c.2million records that appear in the chapter.
+Run the code block below to download the pre-processed and extracted data to your project's data folder. Note that you should only run the import code below once. When returning to this work in a new R session, you need only then read in the `ny_trips.fst` and `ny_stations.csv` file that is held locally on your machines. Unfortunately due to storage limitations I had to make `ny_trips.fst` just a 500k random sample of the larger dataset that appears in the chapter.
 
 ```{r import-collected}
 #| echo: true
 #| eval: false
-# Create subdirectory in data folder for storing bike data.
+# Create subdirectory 'data'. if none exists.
 if(!dir.exists(here("data"))) dir.create(here("data"))
 
-# Read in .csv file of stations data from url.
+# Download .csv file of stations data from book's data repo.
+# Save to the new data folder.
 url <- "https://vis4sds.github.io/data/ch2/ny_stations.csv"
 download.file(url, here("data", "ny_stations.csv"))
 ny_stations <- read_csv(here("data", "ny_stations.csv"))
 
-# Read in .fst file of trips data from url.
+# Read in .fst file of trips data from book's data repo.
+# Save to the new data folder.
 url <- "https://vis4sds.github.io/data/ch2/ny_trips.fst"
 download.file(url, here("data", "ny_trips.fst"))
 ny_trips <- read_fst(here("data", "ny_trips.fst"))
-
-# Two untidy datasets.
-
 ```
 
 ## Describe
@@ -54,8 +59,7 @@ The code block below performs some useful recoding operations: convert `chr` fie
 ```{r recode}
 #| echo: true
 #| eval: false
-ny_trips <- ny_trips |>
-  select(-c(city)) |>
+ny_trips <- ny_trips |> select(-city) |>
   mutate_at(vars(start_station_id, end_station_id), ~as.integer(str_remove(., "ny"))) |>
   mutate_at(vars(start_time, stop_time), ~as.POSIXct(., format="%Y-%m-%d %H:%M:%S")) |>
   mutate(
@@ -81,7 +85,7 @@ An example application of `dplyr` for counting:
 #| echo: true
 #| eval: false
 ny_trips |>
-  group_by(gender) |>
+  group_by(user_type) |>
   summarise(count=n()) |>
   arrange(desc(count))
 ```
@@ -104,7 +108,7 @@ ny_trips |>
   arrange(desc(count))
 ```
 
-Example code for generating a temporal summary by gender:
+Example code for generating a temporal summary by user type:
 
 ```{r dplyr-count-temporal}
 #| echo: true
@@ -113,27 +117,25 @@ ny_temporal <- ny_trips |>
   mutate(
     day=wday(start_time, label=TRUE),
     hour=hour(start_time)) |>
-  group_by(gender, day, hour) |>
+  group_by(user_type, day, hour) |>
   summarise(count=n()) |>
   ungroup()
 
 ny_temporal |>
-  filter(gender!="unknown") |>
-  group_by(gender) |>
-  mutate(gender_count=sum(count)) |>
-  group_by(gender, day) |>
-  summarise(count=sum(count), prop=count/first(gender_count)) |>
-  select(gender, day, prop) |>
-  pivot_wider(names_from=gender, values_from=prop)
+  group_by(user_type) |>
+  mutate(user_count=sum(count)) |>
+  group_by(user_type, day) |>
+  summarise(count=sum(count), prop=count/first(user_count)) |>
+  select(user_type, day, prop) |>
+  pivot_wider(names_from=user_type, values_from=prop)
 ```
 
-`dplyr` code with `ggplot2` for exploring temporal travel behaviours by gender visually:
+`dplyr` code with `ggplot2` for exploring temporal travel behaviours by user type visually:
 
 ```{r dplyr-temporal-plot}
 #| echo: true
 #| eval: false
 ny_temporal |>
-  filter(gender!="unknown") |>
   ggplot(aes(x=hour, y=count, group=gender)) +
   geom_line(aes(colour=gender), size=1.1) +
   scale_colour_manual(values=c("#e31a1c", "#1f78b4")) +
@@ -161,7 +163,7 @@ od_pairs <- ny_trips |> select(start_station_id, end_station_id) |> unique() |>
   ungroup()
 ```
 
-The `left_join` trips on distance in od_pairs data frame:
+Then `left_join()` `ny_trips` on this `od_pairs` dataset:
 
 ```{r join-dist}
 #| echo: true
@@ -185,9 +187,10 @@ get_age <- function(yob, yref) {
     return(period$year)
 }
 
-ny_trips <- ny_trips |> # Take the ny_trips data frame.
+# Derive a new age variable from birth_year.
+ny_trips <- ny_trips |> 
   mutate(
-    age=get_age(as.POSIXct(birth_year, format="%Y"), as.POSIXct("2020", format="%Y")) # Calculate age from birth_date.
+    age=get_age(as.POSIXct(birth_year, format="%Y"), as.POSIXct("2020", format="%Y")) .
     )
 ```
 
@@ -196,8 +199,7 @@ The code for plotting trip speeds (approximate) by age, gender and distance trav
 ```{r plot-speed}
 #| echo: true
 #| eval: false
-# Utility trips -- peak-time, rush hour, subscriber, <60 mins, filter very old.
-temp <- ny_trips |>
+temp_plot_data <- ny_trips |>
   mutate(day=wday(start_time, label=TRUE), is_weekday=as.numeric(!day %in% c("Sat", "Sun"))) |>
   filter(
     is_weekday==1,
@@ -218,9 +220,8 @@ temp <- ny_trips |>
   group_by(gender, age_band, dist_bands) |>
   summarise(speed=mean(speed), n=n())
 
-temp |>
+temp_plot_data |>
   ggplot(aes(x=age_band, y=speed))+
   geom_line(aes(colour=gender))+
   facet_wrap(~dist_bands, nrow=1)
-
 ```

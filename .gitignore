@@ -2,7 +2,8 @@
 .Rhistory
 .RData
 .Ruserdata
-
+.DS_Store
 /.quarto/
+figs/03/munzner/
 docs/
 *.html

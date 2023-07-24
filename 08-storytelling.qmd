@@ -1,5 +1,11 @@
 # Data Storytelling {#sec-storytelling}
 
+```{r}
+#| echo: false
+library(knitr)
+library(kableExtra)
+library(fontawesome)
+```
 
 By the end of this chapter you should gain the following knowledge and practical skills.
 
@@ -20,6 +26,147 @@ By the end of this chapter you should gain the following knowledge and practical
 - [x] Create `ggplot2` graphics with non-standard annotations.
 :::
 
+## Introduction
+
+It is now taken-for-granted that we live in an evidence-based society in which data are deeply embedded in most domains and in how we approach the world’s problems. This recognition has coincided with, amongst other things, the open source movement which has freed up access to, and technologies for working with, data. The response to Covid-19 is an excellent example. Enter [Covid19 github](https://www.google.com/search?q=covid19+github&rlz=1C5CHFA_enGB632GB632&oq=covid19+&aqs=chrome.0.69i59l2j69i57j0l2j69i61l3.3040j0j7&sourceid=chrome&ie=UTF-8) into a search and you’ll be confronted with hundreds of code repositories demonstrating how data related to the pandemic can be collected, processed and analysed.
+
+This is exciting and feels very democratic. But there is responsibility amongst those constructing and sharing evidence-based arguments to do so with integrity; navigating the difficult tension between communicating a clear message -- necessarily reducing some of the complexity -- at the same time as acknowledging uncertainty. In Information Visualization, and now Data Journalism, the role of narrative and storytelling when working and communicating with data is much discussed [e.g. @henryriche_data_2018]. Importantly, this work recognises that there is not a single, optimum visualization design that exposes the true structure or story in a dataset -- no such formulation could exist. But that careful design decisions must be made in light of data, audience and intended purpose.
+
+In this chapter we will review some of this literature with a special focus on approaches to communicating reported cases, hospitalisations and deaths numbers around the Covid-19 pandemic. 
+
+
 ## Concepts
 
+### Data-driven storytelling
+
+In earlier chapters of the book, @sec-visual especially, we identified and explored some common characteristics of effective data graphics. @roth_cartographic_2020 enumerates 10 such characteristics specialised to data storytelling.  Particularly important for visualization design is that data graphics are:
+
+<!-- Although  reasonably generalisable, those characteristics benefit from being re-interpreted when designing for *communication*.  -->
+
+
+<!-- we made the case that visual data analysis is about encoding data to visuals in a way that follows established guidelines known to work well for particular tasks. This might imply there is some optimal visualization design that can be achieved. Clearly, no such optimal solution exists, especially so when designing graphics for *communication* [@henryriche_data_2018]. However, we can consider some of the common characteristics of effective visual data stories. @roth_cartographic_2020 identifies 10 such characteristics, but particularly important are that visual design stories are: -->
+
+* *Designed*: The analyst makes very deliberate decisions in light of audience and purpose. The goal of visual storytelling is not just to *show* but also to *explain*.
+
+* *Partial*: Essential information is prioritised and made salient, with abstraction and brevity preferred over complexity and completeness.
+
+* *Intuitive*: Visual narratives take advantage of our natural tendency to communicate via metaphor and story, with a clear entry point and clear progression.
+
+* *Compelling*: Visual stories often capture attention through an array of graphical devices -- sequence, animation and interaction. They generate an aesthetic response.
+
+* *Relatable and situated*: Visual stories promote empathy, using devices that place the audience in the story setting. They are usually constructed from somewhere -- according to a particular position.
+
+* *Political*: Visual data stories promote with clarity particular voices, interpretations or positions.
+
+In the sections that follow, we review some key Covid-19 visualizations and reflect on how these storytelling devices have been variously deployed.
+
+### Designed and partial
+
+Perhaps the most high-profile examples of data storytelling throug the Covid-19 pandemic were those prodcued by the Financial Times, and John Burn Murdoch in particular [@ft_coronavirus_2020]. In @fig-ft-vis is an example of the Financial Times's trajectory tracker. We can evaluate the graphic using some of the principles introduced in @sec-visual. In mapping the two quantitive variables to *position on an aligned scale* and *colour hue* to distinguish countries, the graphic uses an encoding that exploits our cognitive abilities. By superimposing lines representing countries on the same coordinate space, it also nicely uses layout to support comparison [@gleicher_visual_2011].
+
+
+```{r}
+#| label: fig-ft-vis
+#| out.width: 95%
+#| fig-cap: "[John Burn-Murdoch](https://www.ft.com/john-burn-murdoch)'s international comparison of deaths, as it appeared on [twitter](https://twitter.com/jburnmurdoch/status/1241820210455285760). **TO DO: Update with own implementation (Copyright).**"
+#| echo: false
+#| eval: true
+
+include_graphics("figs/08/jbm-logchart.jpeg", error = FALSE)
+```
+
+
+
+Thinking about @roth_cartographic_2020's characteristics of visual storytelling, the graphic is *designed* with a very deliberate purpose:
+
+ 1. Between country comparison: *Are countries on the same course?*
+ 2. Comparison against milestone: *How many days does it take a certain county to reach a given number of cases/deaths?*
+
+
+It is possible to see each of these goals informing the configuration of the graphic and in the careful design decisions made to prioritise essential information -- the graphic is *partial*. Comparison between countries is most obviously supported by the use of a log-scale. This removes the dominant salient pattern in standard scales due to the exponential doubling and instead allows slopes (*growth rates*) to be compared directly. Log scales are, though, not so familiar to the average reader. In other versions of the graphic, useful annotations are provided identifying slope gradients that correspond to different growth rates, again narrowing on the essential goal of the graphic -- between country comparison of growth rates. There are also approaches to dealing with daily volatility in the data and that a decision was made to use a smoothing function based on [splines](https://en.wikipedia.org/wiki/Smoothing_spline) rather than the more widely understood 7-day rolling average. These sorts of design decisions introduce complexity that may be beyond the average reader, and so are incorporated discreetly (*partial*/*designed*).
+
+::: {.callout-note icon="true"}
+You might be interested to know that most [Financial Times graphics](https://www.ft.com/graphics) are built using `ggplot2`. A presentation in which John Burn-Mudoch makes the case for `ggplot2` for Data Journalism [from this link](https://johnburnmurdoch.github.io/slides/r-ggplot/#/).
+:::
+
+An interesting design alternative that supports between country comparison is [Aatish Bhatia](https://aatishb.com)'s [Covid Trends](https://aatishb.com/covidtrends/) chart (@rfig-covid-trends). A double log scale is used and growth rate in new cases is presented on the y-axis with total case numbers, rather than time elapsed, plotted along the x-axis. Whilst the introduction of a double log scale might be judged to increase visual complexity, actually this design narrows or simplifies the reader's visual judgement to looking at the thing that we are most interested in: comparison of country growth rates against the two day doubling (annotated with the diagonal). The chart is also accompanied with an excellent [explanatory video](https://www.hippocraticpost.com/covid-19-update/how-to-tell-if-were-beating-covid-19/), in which many of the characteristics of visual data stories enumerated by @roth_cartographic_2020 can be identified.
+
+
+```{r}
+#| label: fig-covid-trends
+#| out.width: 95%
+#| fig-cap: "[Aatish Bhatia](https://aatishb.com)'s [Covid Trends](https://aatishb.com/covidtrends/) chart. [Source](https://github.com/aatishb/covidtrends#credits). **TO DO: Update with own implementation (Copyright).**"
+#| echo: false
+#| eval: true
+
+include_graphics("figs/08/covid-trends.png", error = FALSE)
+```
+
+### Intuitive and compelling 
+
+According to @roth_cartographic_2020, visual data stories are often explanatory.  They make *compelling* use of graphical and rhetorical devices to support understanding. This is especially important in data-driven storytelling as it often involves concepts that are initially quite challenging. In @fig-lambrechts-connected is a static image from a [data story written by Flourish](https://flourish.studio/2021/04/06/masters-connected-scatter-maarten-lambrechts/) based on design work by [Marteen Lambrechts](https://twitter.com/maartenzam/status/1319622943526293505). The data story is essentially a design exposition [@beecham_design_2020; @wood_design_2018], guiding readers from the familiar to the unfamiliar. First a standard time series chart of hospitalisations and deaths is presented. Deficiencies in this layout are explained before progressively introducing the transformations involved to generate the preferred graphic, a [connected scatterplot](http://steveharoz.com/research/connected_scatterplot/). Ordering the story in this way explains design decisions and the trade-offs associated with visual design from a familiar starting point and helps justify new, sometimes unfamiliar encodings. Thinking about @roth_cartographic_2020's characteristics of visual storytelling, formulating a design story in this way helps build *intuition* -- there is a clear entry point and clear progression.
+
+```{r}
+#| label: fig-lambrechts-connected
+#| out.width: 95%
+#| fig-cap: "Static image from a data story written by [Flourish](https://flourish.studio/2021/04/06/masters-connected-scatter-maarten-lambrechts/) demonstrating how connected scatterplots can be used to analyse changes in hospitalisations and deaths. **TO DO: Update with own implementation (Copyright).**"
+#| echo: false
+#| eval: true
+
+include_graphics("figs/08/lambrechts-connected-flourish.png", error = FALSE)
+```
+
+::: {.callout-note icon="true"}
+For a more involved design exposition of connected scatterplots, see [Danny Dorling](http://www.dannydorling.org)'s work on [slowdown](https://twitter.com/dannydorling/status/1245010922592231424). Note that Danny also encodes time using line width. This is an important addition, along with colour as demonstrated with [timecurves](https://aviz.fr/~bbach/timecurves/).
+
+For an example of guided design exposition for explaining complex designs in [analysis of Covid-19 cases data](https://twitter.com/rJBeecham/status/1317019462453895168), also see @beecham_on_2021, which devlops ways of showing simultaneously absolute and relative change in cases, with geographic context.
+:::
+
+@fig-ft-anim, again by [John Burn-Murdoch](https://www.ft.com/john-burn-murdoch), is another example of how animation can be used to build *intuition*. The main objective is to demonstrate how different 2020 is in terms of admissions to intensive care compared to a normal year. This was in response to claims that Covid-19 behaves much like seasonal flu; to this extent the graphic is also quite *political*. Each year from 2013-14 is added to the chart and the y-axis rescaled to reflect the new numbers. This helps build expectation around normal variablitity in a similar way to the [hypothetical outcome plots](https://medium.com/hci-design-at-uw/hypothetical-outcomes-plots-experiencing-the-uncertain-b9ea60d7c740) [@hullman_hypothetical_2015] covered in the previous chapter.  The expectation is then roundly debunked by the introduction of the 2020-21 line in red, with animated rescaling of the y-axis used for further emphasis.
+
+
+```{r}
+#| label: fig-ft-anim
+#| out.width: 95%
+#| fig-cap: "[John Burn-Murdoch](https://www.ft.com/john-burn-murdoch)'s animated rescaling [via twitter](https://twitter.com/jburnmurdoch/status/1347200811303055364) demonstrating how different in terms of intensive care admissions 2020/21 is to a standard flu season.**TO DO: Update with own implementation (Copyright).**"
+#| echo: false
+#| eval: true
+
+include_graphics("figs/08/jbm-anim.gif", error = FALSE)
+```
+
+### Political
+
+@fig-ft-vaccine presents a final example of [visual narrative](https://twitter.com/jburnmurdoch/status/1382013080448724994) from [John Burn-Murdoch](https://www.ft.com/john-burn-murdoch)  with an obviously political purpose. The graphic was created in response to claims from the UK's Prime Minister that it is largely restrictions rather than vaccination that has reduced infection rates in the country. Interesting here is how annotation and *visual saliency* is used to direct how the graphic is perceived. If the graphic was only annotated  with points in time when lockdown and vaccination was initiated, it would *invite* us to make judgements about the effects of these two events on infectious rates. That John makes highly salient annotations labelling the (unmeasurable) effect of *lockdown* and *vaccine* is an interesting addition. There is little room for ambiguity.
+
+This sort of presentation, labelling the chart with an unmeasurable effect, may risk graphical integrity (see @tufte_visual_1983's [lie factor](https://infovis-wiki.net/wiki/Lie_Factor)). In a keynote given at IEEE VIS 2020, John reflected on his experiences generating data stories early in the pandemic --  that the way in which the FT's data graphics were intepreted, and misinterpreted, varied depending on the prior expectations and political beliefs of those consuming them. The chart labelling in this case might have been added to signal more directly the evidence-based argument that was being made, or alternatively perhaps spark debate. 
+
+Clearly all data analysis is heavily informed by the values, prejudices, motivations and incentives of those undertaking them. As demonstrated by @roth_cartographic_2020's charactersitics of data storytelling, these individual factors are most apparent, and necessary, in order communicate effectively. An interesting question, then, is around how integrity and trust is designed into a data anaysis. Perhaps in the case of the Financial Times data journalists, this trust is establisehd over time, through a portfolio of data analysis work that is considered, communicated transparently and with humility. 
+
+```{r}
+#| label: fig-ft-vaccine
+#| out.width: 95%
+#| fig-cap: "[John Burn-Murdoch](https://www.ft.com/john-burn-murdoch)'s analysis [via twitter](https://twitter.com/jburnmurdoch/status/1382013080448724994) evaluating the role of lockdown and the vaccine. **TO DO: Update with own implementation (Copyright).**"
+#| echo: false
+#| eval: true
+
+include_graphics("figs/08/jbm-vaccine.jpeg", error = FALSE)
+```
+
+
+::: {.callout-note icon="true"}
+The annotations in @fig-ft-vaccine have heavy saliency thanks to the parsimonious use of axis titles, marks and legends, and other non-data-ink [@tufte_visual_1983].
+:::
+
+
+
 ## Techniques
+
+
+## Conclusions
+
+Communicating effectively with data is not an easy undertaking. Difficult decisions must be made around how much important detail to sacrifice in favour of clarity and simplicity of message. Visual approaches can help here; giving cues that order and prioritise information and that build explanatory narratives using metaphor and other rhetorical devices. There are stellar examples of this from in-house Data Journalism teams, most obviously in recent evidence-based stories around the Covid-19 pandemic. We have considered some of these and the careful design decisions made when communicating data-driven stories in light of data, audience and intended purpose. Many leading data journalists use ggplot2 as their visulization toolkit of choice and in the technical session we demonstrated how more deliberatively designed graphics can be generated. This somewhat fiddly approach to creating graphics is different from the style of workflow envisaged in the Chapters -@sec-visual and -@sec-explore on exploratory visual analysis. However, as demonstrated through the examples in this chapter, and the book more generally, ggplot2 can be used for visualization design, making control over annotations, text labels, and embedded graphics important skills to develop.
+
+
+## Further Reading
+

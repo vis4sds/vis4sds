@@ -1,31 +1,40 @@
-###############################################################################
-# Figures for vis4sds 
-# Chapter 3
+# Filename: 03-figs.R 
+#
+# Figures for Chapter 3 of vis4sds 
+# 
 # Author: Roger Beecham
-###############################################################################
+#
+#
+#-----------------------------------------
+# Contents
+#-----------------------------------------
+# 
+# 1. Packages and data
+# 2. Concepts graphics
+# 3. Techniques graphics
+#
+#-----------------------------------------
 
+
+#-----------------------------------------
+# 1. Packages and Data
+#-----------------------------------------
+
+# 1.1 Packages ---------------------------
 library(parlitools)
 library(here)
 library(sf)
 library(tidyverse)
+library(magick)
 
-
-## ----------------------- D A T A ---------------------------------------------
-trump_data <- country_list |> 
-  mutate(geom_rot = st_geometry(.)*rot(pi/2)) |>
-  st_drop_geometry() |>
-  rename(geometry = geom_rot) |>
-  st_set_geometry("geometry")
-
+# 1.2 Data -----------------------------
 
 # Constituency boundaries, simplified using mapshapr. 
 # From -- https://geoportal.statistics.gov.uk/
 constituency_boundaries <-
-  st_read(here("../", "uk-general-election-vis-sandpit", "data", "constituency_boundaries.geojson"), crs=27700)
+  st_read(here("../", "data", "constituency_boundaries.geojson"), crs=27700)
 
-# Swing
-bes_2019
-
+# Swing.
 data <- bes_2019 |>
   filter(region != "Northern Ireland") |>
   mutate(
@@ -34,13 +43,13 @@ data <- bes_2019 |>
     swing_con_lab=if_else(constituency_name %in% c("Chorley", "Buckingham"),0,swing_con_lab)
   )
 
+# Party colours.
 # Con :
 con <- "#0575c9"
 # Lab :
 lab <- "#ed1e0e"
 # Other :
 other <- "#bdbdbd"
-
 # Lib dem :
 lib_dem <- "#fe8300"
 # SNP :
@@ -56,10 +65,123 @@ dup <- "#be1a40"
 # Other :
 other <- "#bdbdbd"
 
-# con_1719 against  estimated constituency-level leave vote
+# Store as vector.
 elected_parties <- c("Conservative", "Labour", "Other")
 
-# Store as vector and recode elected variable as factor for use in scale_colour_manual.
+
+## ----------------------- D A T A ---------------------------------------------
+
+
+# Assemble Munzner visual channels.
+position_common <- image_read(here("figs", "03", "munzner", "position_common.png"))
+position_common_image <- image_fill(position_common, 'none')
+position_common_raster <- as.raster(position_common_image)
+
+position_unaligned <- image_read(here("figs", "03", "munzner", "position_unaligned.png"))
+position_unaligned_image <- image_fill(position_unaligned, 'none')
+position_unaligned_raster <- as.raster(position_unaligned_image)
+
+position_unaligned <- image_read(here("figs", "03", "munzner", "position_unaligned.png"))
+position_unaligned_image <- image_fill(position_unaligned, 'none')
+position_unaligned_raster <- as.raster(position_unaligned_image)
+
+length <- image_read(here("figs", "03", "munzner", "length.png"))
+length_image <- image_fill(length, 'none')
+length_raster <- as.raster(length_image)
+
+tilt <- image_read(here("figs", "03", "munzner", "tilt.png"))
+tilt_image <- image_fill(tilt, 'none')
+tilt_raster <- as.raster(tilt_image)
+
+area <- image_read(here("figs", "03", "munzner", "area.png"))
+area_image <- image_fill(area, 'none')
+area_raster <- as.raster(area_image)
+
+depth <- image_read(here("figs", "03", "munzner", "depth.png"))
+depth_image <- image_fill(depth, 'none')
+depth_raster <- as.raster(depth_image)
+
+colour <- image_read(here("figs", "03", "munzner", "colour.png"))
+colour_image <- image_fill(colour, 'none')
+colour_raster <- as.raster(colour_image)
+
+curve <- image_read(here("figs", "03", "munzner", "curvature.png"))
+curve_image <- image_fill(curve, 'none')
+curve_raster <- as.raster(curve_image)
+
+spatial <- image_read(here("figs", "03", "munzner", "spatial_region.png"))
+spatial_image <- image_fill(spatial, 'none')
+spatial_raster <- as.raster(spatial_image)
+
+volume <- image_read(here("figs", "03", "munzner", "volume.png"))
+volume_image <- image_fill(volume, 'none')
+volume_raster <- as.raster(volume_image)
+
+hue <- image_read(here("figs", "03", "munzner", "hue.png"))
+hue_image <- image_fill(hue, 'none')
+hue_raster <- as.raster(hue_image)
+
+motion <- image_read(here("figs", "03", "munzner", "motion.png"))
+motion_image <- image_fill(motion, 'none')
+motion_raster <- as.raster(motion_image)
+
+shape <- image_read(here("figs", "03", "munzner", "shape.png"))
+shape_image <- image_fill(shape, 'none')
+shape_raster <- as.raster(shape_image)
+
+
+munzner_effect <- ggplot() + 
+  annotate("text", x=1.45, y=1.25, label="effectiveness", size=2.8, hjust="centre") +
+  annotate("text", x=0.15, y=1.13, label="magnitude: order", size=2.8, hjust="left") +
+  annotate("segment", x=.22, xend=2.9, y=1.22, yend=1.22, size=.2, 
+           arrow = arrow(ends="last", length = unit(.15,"cm"))) +
+  annotation_raster(position_common_raster, .19, .48, .895, .99) +
+  annotate("text", x=.32, y=1.04, label="position:\n common scale", size=2.5, hjust="centre") +
+  annotation_raster(position_unaligned_raster, .50, .78, .90, .985) +
+  annotate("text", x=.6, y=1.04, label="position:\n unaligned scale", size=2.5, hjust="centre") +
+  annotation_raster(length_raster, .81, 1.1, .89, .99) +
+  annotate("text", x=.91, y=1.04, label="length:\n 1D size", size=2.5, hjust="centre") +
+  annotation_raster(tilt_raster, 1.12, 1.42, .89, .99) +
+  annotate("text", x=1.25, y=1.04, label="tilt/angle", size=2.5, hjust="centre") +
+  annotation_raster(area_raster, 1.41, 1.71, .91, .99) +
+  annotate("text", x=1.53, y=1.04, label="area:\n 2D size", size=2.5, hjust="centre") +
+  annotation_raster(depth_raster, 1.72, 2.01, .91, .97) +
+  annotate("text", x=1.86, y=1.04, label="depth:\n 3D position", size=2.5, hjust="centre") +
+  annotation_raster(colour_raster, 2.05, 2.29, .91, .98) +
+  annotate("text", x=2.15, y=1.04, label="colour luminance\nsaturation", size=2.5, hjust="centre") +
+  annotation_raster(curve_raster, 2.31, 2.61, .91, .98) +
+  annotate("text", x=2.45, y=1.04, label="curvature", size=2.5, hjust="centre") +
+  annotation_raster(volume_raster, 2.62, 2.92, .9, .98) +
+  annotate("text", x=2.75, y=1.04, label="volume", size=2.5, hjust="centre") +
+  
+  annotate("text", x=0.15, y=.82, label="identity: category", size=2.8, hjust="left") +
+  #annotate("text", x=.15, y=.77, label="identity:\ncategory", size=3, hjust="right") +
+  annotate("text", x=.32, y=.75, label="spatial region", size=2.5, hjust="centre") +
+  annotation_raster(spatial_raster, .22, .51, .65, .715) +
+  
+  annotation_raster(hue_raster, .50, .765, .66, .72) +
+  annotate("text", x=.6, y=.75, label="hue", size=2.5, hjust="centre") +
+  
+  annotation_raster(motion_raster, .81, 1.08, .65, .73) +
+  annotate("text", x=.91, y=.75, label="motion", size=2.5, hjust="centre") +
+  
+  annotation_raster(shape_raster, 1.15, 1.4, .66, .72) +
+  annotate("text", x=1.25, y=.75, label="shape", size=2.5, hjust="centre") +
+  
+  scale_x_continuous(limits=c(0, 3)) +
+  scale_y_continuous(limits=c(0.65, 1.3)) +
+  
+  theme(
+    axis.text = element_blank(),
+    axis.line = element_blank(),
+    axis.title.x = element_blank(),
+    axis.title.y = element_blank()
+  )
+
+ggsave(here("figs", "03", "munzner_effect.png"), munzner_effect, dpi=700, width = 9, height=2.5)
+
+
+# And recode elected variable as factor for use in scale_colour_manual.
 t <- bes_2019 |>
   mutate(
     elected=if_else(!winner_19 %in% elected_parties, "Other", winner_19),
@@ -69,7 +191,6 @@ t <- bes_2019 |>
 colours <- c(con, lab, other)
 names(colours) <- levels(t$elected)
 
-## ----------------------- D A T A ---------------------------------------------
 
 plot <- bes_2019 |>
   filter(region != "Northern Ireland", constituency_name != "Chorley") |>

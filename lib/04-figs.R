@@ -1,176 +1,140 @@
-###############################################################################
-# Figures for vis4sds 
-# Chapter 4
+# Filename: 04-figs.R 
+#
+# Figures for Chapter 4 of vis4sds 
+# 
 # Author: Roger Beecham
-###############################################################################
+#
+#
+#-----------------------------------------
+# Contents
+#-----------------------------------------
+# 
+# 1. Packages and data
+# 2. Concepts graphics
+# 3. Techniques graphics
+#-----------------------------------------
 
+
+#-----------------------------------------
+# 1. Packages and Data
+#-----------------------------------------
+
+# 1.1 Packages ---------------------------
 library(tidyverse) 
 library(here) 
 library(patchwork)
 library(ggtext)
 
+library(sf)
+library(distributional)
+library(ggdist)
+library(ggmosaic)
 library(stats19)
 library(trafficalmr)
 library(lubridate)
 library(fst)
+library(gridmappr)
+library(magick)
 
-###############################################################################
-# D A T A
-###############################################################################
-
-url <- "https://vis4sds.github.io/data/ch4/ped_veh.fst"
-ped_veh <- 
-  read_fst(url)
+# 1.2 Data -----------------------------
 ped_veh <- 
   read_fst(here("../", "data", "ch4", "ped_veh.fst"))
-write_fst(ped_veh, here("../", "data", "ch4", "ped_veh.fst"))
-
-# IMD data.
-temp_url <- "https://services3.arcgis.com/ivmBBrHfQfDnDf8Q/arcgis/rest/services/Indices_of_Multiple_Deprivation_(IMD)_2019/FeatureServer"
-imd <- read_csv(temp_url)
-write_csv(imd, here("../","data", "ch4", "imd.csv"))
-imd <- read_csv(here("../","data", "ch4", "imd.csv"))
-
-
-# Pop data. https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/lowersuperoutputareamidyearpopulationestimates
-lsoa_pop <- read_csv(here("../","data", "ch4", "lsoa_pop.csv"))
-la_pop <- lsoa_pop |> group_by(la_name) |> summarise(pop=sum(pop)) |> ungroup()
-
-# Recode imd into quintiles.
-ped_veh <- ped_veh %>%
-  mutate(
-    driver_quintile=case_when(
-      driver_imd_decile == "Most deprived 10%" ~ "1 most deprived",
-      driver_imd_decile == "More deprived 10-20%" ~ "1 most deprived",
-      driver_imd_decile == "More deprived 20-30%" ~ "2 more deprived",
-      driver_imd_decile == "More deprived 30-40%" ~ "2 more deprived",
-      driver_imd_decile == "More deprived 40-50%" ~ "3 mid deprived",
-      driver_imd_decile == "Less deprived 40-50%" ~ "3 mid deprived",
-      driver_imd_decile == "Less deprived 30-40%" ~ "4 less deprived",
-      driver_imd_decile == "Less deprived 20-30%" ~ "4 less deprived",
-      driver_imd_decile == "Less deprived 10-20%" ~ "5 least deprived",
-      driver_imd_decile == "Least deprived 10%" ~ "5 least deprived",
-      TRUE ~ driver_imd_decile),
-    casualty_quintile=case_when(
-      casualty_imd_decile == "Most deprived 10%" ~ "1 most deprived",
-      casualty_imd_decile == "More deprived 10-20%" ~ "1 most deprived",
-      casualty_imd_decile == "More deprived 20-30%" ~ "2 more deprived",
-      casualty_imd_decile == "More deprived 30-40%" ~ "2 more deprived",
-      casualty_imd_decile == "More deprived 40-50%" ~ "3 mid deprived",
-      casualty_imd_decile == "Less deprived 40-50%" ~ "3 mid deprived",
-      casualty_imd_decile == "Less deprived 30-40%" ~ "4 less deprived",
-      casualty_imd_decile == "Less deprived 20-30%" ~ "4 less deprived",
-      casualty_imd_decile == "Less deprived 10-20%" ~ "5 least deprived",
-      casualty_imd_decile == "Least deprived 10%" ~ "5 least deprived",
-      TRUE ~ casualty_imd_decile)
-  )
-
-
-lsoa_boundaries <- lsoa_boundaries |> 
-  mutate(
-    quintile=ntile(IMDRank,5),
-    crash_quintile=case_when(
-      quintile == 1 ~ "1 most deprived",
-      quintile == 2 ~ "2 more deprived",
-      quintile == 3 ~ "3 mid deprived",
-      quintile == 4 ~ "4 less deprived",
-      quintile == 5 ~ "5 least deprived")
-  )
-
-# First join based on lsoa name.
-ped_veh <- ped_veh |> 
-  left_join(
-    lsoa_boundaries |> st_drop_geometry() |>  select(lsoa11cd, crash_quintile), 
-    by=c("lsoa_of_accident_location"="lsoa11cd"))
-
-
-# Some lsoas England failed to join -- 5533 crashes -- so do spatial join on easting and northing of crash location.
-ped_veh_spat <- st_as_sf(x=ped_veh |> mutate(x=location_easting_osgr, y=location_northing_osgr) |>  filter(!is.na(location_easting_osgr)), coords=c("x", "y"), crs=27700)
-
-ped_veh_spat <- ped_veh_spat |> select(accident_index) |>  st_join(lsoa_boundaries) 
-
-ped_veh_spat <- ped_veh_spat |>  st_drop_geometry() |> select(accident_index, crash_quintile_spat=crash_quintile) |> unique() 
-
-
-ped_veh <- ped_veh |> 
-  left_join(ped_veh_spat, by=c("accident_index"="accident_index")) |> mutate(crash_quintile=if_else(is.na(crash_quintile), crash_quintile_spat, crash_quintile)) 
 
 
 
+#-----------------------------------------
+# 2. Concept graphics
+#-----------------------------------------
 
 
-ped_veh_spat <- ped_veh_spat |> select(-c(lsoa11cd, c_quintile))
-
-
-16822
-# 
-# ped_veh <- ped_veh |> select(-crash_quintile) |> left_join(imd |> select(lsoa_code, crash_quintile), by=c("lsoa_of_accident_location"="lsoa_code"))
-
-
-ped_veh <- ped_veh_pop |> select(-pop)
-                                
-
-###############################################################################
-# F I G    4 . 1
-###############################################################################
+# 2.1 Plot distributions -----------------
 
 plot_data <- ped_veh |> 
-  filter(!is.na(age_of_casualty)) |>  sample_n(10000)
+  filter(!is.na(age_of_casualty), age_of_casualty>=0) |> sample_n(10000)
 
 dots <- plot_data |> 
   ggplot(aes(age_of_casualty, y="1")) +
   geom_jitter(colour=site_colours$primary, fill=site_colours$primary, alpha=.05) +
   scale_x_continuous(limits=c(0,100)) +
-  labs(x="casualty age") +
+  labs(x="casualty age", subtitle = "strip plot") +
   coord_flip() +
-  theme_v_gds() +
-  theme(axis.title.x = element_blank(),  axis.text.x= element_blank(),   panel.grid.major.y=element_blank(), panel.grid.minor = element_blank()) 
-  
+  theme(
+    axis.title.x = element_blank(),  
+    axis.text.x= element_blank(),   
+    panel.grid.major.y=element_blank(), 
+    panel.grid.minor = element_blank(),
+    plot.subtitle = element_text(family="Avenir Book")
+    ) 
 
 histogram <- plot_data |>   
   ggplot(aes(age_of_casualty)) +
   geom_histogram(colour=site_colours$primary, fill=site_colours$primary, alpha=.2, size=.3) +
   scale_x_continuous(limits=c(0,100)) +
   coord_flip() +
-  theme_v_gds() +
-  theme(axis.title.x = element_blank(),axis.title.y = element_blank(),  axis.text= element_blank(),   panel.grid.major.y=element_blank(), panel.grid.minor = element_blank()) 
-  
+  labs(subtitle = "histogram") +
+  theme(
+    axis.title.x = element_blank(),
+    axis.title.y = element_blank(),  
+    axis.text= element_blank(),   
+    panel.grid.major.y=element_blank(), 
+    panel.grid.minor = element_blank(),
+    plot.subtitle = element_text(family="Avenir Book")
+    ) 
 
+get_mode <- function(d) {
+  uniqd <- unique(d)
+  uniqd[which.max(tabulate(match(d, uniqd)))]
+}
+get_mode(plot_data$age_of_casualty)
+ 
 density <- plot_data |> 
   ggplot(aes(age_of_casualty)) +
   geom_density(colour=site_colours$primary, fill=site_colours$primary, alpha=.2, size=.3) +
   scale_x_continuous(limits=c(0,100)) +
+  annotate("text", label="mode : 11 years",
+           vjust="centre", hjust="left", family="Avenir Book",size=3.6,
+           x=10, y=.001)+
+  annotate("segment", x=13, xend=13, y=0.001, yend=.021, colour=site_colours$primary, size=.15) +
   coord_flip() +
-  theme_v_gds() +
-  theme(axis.title.x = element_blank(),axis.title.y = element_blank(),  axis.text= element_blank(),   panel.grid.major.y=element_blank(), panel.grid.minor = element_blank()) 
+  labs(subtitle = "density plot") +
+  theme(
+    plot.subtitle = element_text(family="Avenir Book"), 
+    axis.title.x = element_blank(),
+    axis.title.y = element_blank(),  
+    axis.text= element_blank(),   
+    panel.grid.major.y=element_blank(), 
+    panel.grid.minor = element_blank()
+    ) 
 
 box_plot <- plot_data |>  
   ggplot(aes(age_of_casualty)) +
-  geom_boxplot(colour=site_colours$primary, fill=site_colours$primary, alpha=.2, size=.3) +
+  geom_boxplot(colour=site_colours$primary, fill=site_colours$primary, alpha=.2, size=.3, width=.5) +
   scale_x_continuous(limits=c(0,100)) +
-  theme_v_gds() +
+  scale_y_discrete(c("1","2")) +
+  annotate("text", label="median :\n 30 years",
+           vjust="centre", hjust="left", family="Avenir Book",size=3.6,
+           x=30, y=-1.2)+
   coord_flip() +
   theme(axis.title.y = element_blank(), axis.text.y = element_blank(),axis.text.x = element_blank(),   panel.grid.major.y=element_blank(), panel.grid.minor = element_blank()) + 
-  labs(x="age of casualty") 
+  labs(subtitle = "boxplot") +
+  theme(
+    plot.subtitle = element_text(family="Avenir Book"), 
+    axis.title.x = element_blank(),
+    axis.title.y = element_blank(),  
+    axis.text= element_blank(),   
+    panel.grid.major.y=element_blank(), 
+    panel.grid.minor = element_blank()
+  ) 
 
-plot <-  #box_plot + density + histogram + dots +  plot_layout(heights=c(.6, 2,2.2, .9), nrow=4) +
-  dots + density + histogram + box_plot +  plot_layout(widths=c(1.2, 2,2.2, .65), nrow=1) 
-  #  +
-  # plot_annotation(
-  #   title="Plots of univariate distribution: age of casualty in Stats19 dataset,
-  #   subtitle="-- Strip-plot, density plot, histogram, boxplot  |  mean 36 years - median 33 years - mode 21 years",
-  #   caption="Stats19 data accessed via `stats19` package",
-  #   theme = theme_v_gds())
+plot <-  
+  dots + density + histogram + box_plot +  plot_layout(widths=c(1.2, 2,2.2, 2.2), nrow=1) 
 
 ggsave(here("figs", "04", "univariate-plots.png"), plot=plot,width=8, height=4.5, dpi=300)
-ggsave(here("figs", "04", "univariate-plots.svg"), plot=plot,width=8, height=4.5)
 
-###############################################################################
-# F I G    4 . 2
-###############################################################################
+# 2.2 Compare distributions -----------------
 
 plot_data <- ped_veh |> 
-  filter(!is.na(age_of_casualty)) |>  sample_n(100000)
+  filter(!is.na(age_of_casualty), age_of_casualty>=0) 
 
 order_type <- plot_data |> 
   group_by(vehicle_type) |>
@@ -185,20 +149,37 @@ plot2_density <- plot_data |> mutate(day=lubridate::wday(datetime, label=TRUE)) 
   pivot_longer(cols=-vehicle_type, names_to="individual_type", values_to="age") |> 
   filter(age>0) |> 
   ggplot(aes(x=age, y=vehicle_type)) +
-  ## distribution
+  
   stat_halfeye(
     aes(fill=individual_type, colour=individual_type),
-    slab_alpha=.35, point_alpha=1, .width=0, trim=TRUE, shape='|', size=6, scale=1.3
+    slab_alpha=.35, point_alpha=1, .width=0, trim=TRUE, shape='', size=6, scale=1.3
   ) +
+  
   scale_fill_manual(values=c("#e31a1c", "#1f78b4"))+
   scale_colour_manual(values=c("#e31a1c", "#1f78b4"))+
   scale_x_continuous(limits=c(0,100)) +
   guides(colour="none", fill="none")+
-  #facet_wrap(~casualty_class) +
-  labs(y="vehicle type", x="age")+
-  theme_v_gds() +
+  labs(y="vehicle type", x="casualty age")+
   theme(axis.title.y = element_blank(), axis.text.y= element_blank(),   panel.grid.major.y=element_blank(), panel.grid.minor = element_blank())
 
+
+plot2_density_annotations <- ggplot() +
+  annotate("rect", xmin=.5, xmax=15, ymin=8.4, ymax=8.8, fill="#1f78b4", colour="#1f78b4", alpha=.5, size=.15)+
+  annotate("rect", xmin=.5, xmax=15, ymin=7.9, ymax=8.3, fill="#e31a1c", colour="#e31a1c", alpha=.5, size=.15)+
+  annotate("segment", x=0, xend=40, y=3, yend=3, size=.15) +
+  annotate("text", label="car, taxi and bus drivers\noften older than pedestrians\nthey crash into and injur",
+           vjust="centre", hjust="left", family="Avenir Book",size=3.6,
+           x=0, y=2)+
+  annotate("text", label="pedestrian age",
+           vjust="centre", hjust="left", family="Avenir Book",size=3.6,
+           x=16.5, y=8.6)+
+  annotate("text", label="driver age",
+           vjust="centre", hjust="left", family="Avenir Book",size=3.6,
+           x=16.5, y=8.1)+
+  scale_x_continuous(limits=c(0,100)) +
+  scale_y_continuous(limits=c(0,9)) +
+  theme_void()
+  
   
 plot2_box <- plot_data |> mutate(day=lubridate::wday(datetime, label=TRUE)) |>
   mutate(
@@ -210,36 +191,28 @@ plot2_box <- plot_data |> mutate(day=lubridate::wday(datetime, label=TRUE)) |>
   filter(age>0) |> 
   ggplot(aes(x=age, y=vehicle_type)) +  
   geom_boxplot(aes(fill=individual_type, colour=individual_type), alpha=.2, size=.3) +
-  scale_fill_manual(values=c("#e31a1c", "#1f78b4"))+
-  scale_colour_manual(values=c("#e31a1c", "#1f78b4"))+
+  scale_fill_manual(values=c("#e31a1c", "#1f78b4"), guide="none")+
+  scale_colour_manual(values=c("#e31a1c", "#1f78b4"), guide="none")+
   scale_x_continuous(limits=c(0,100)) +
-  #facet_wrap(~casualty_class) +
-  labs(y="vehicle type", x="age")+
-  theme_v_gds() 
+  labs(y="vehicle type", x="age casualty age")
 
-plot <- plot2_box + plot2_density 
-# +  plot_annotation(
-#   title="Boxplots and density plots of casualty age by vehicle type: driver versus casualty",
-#   subtitle="-- Random sample of 100k Stats19 Pedestrian-Vehicle crashes",
-#   caption="Stats19 data accessed via `stats19` package",
-#   theme = theme_v_gds())
+plot <- plot2_box + plot2_density + plot2_density_annotations
 
-ggsave(filename=here("figs", "04", "boxplot-by-class.png"), plot=plot,width=8, height=5.5, dpi=300)
-ggsave(filename=here("figs", "04", "boxplot-by-class.svg"), plot=plot,width=8, height=5.5)
+ggsave(filename=here("figs", "04", "boxplot-by-class.png"), plot=plot,width=9, height=4.2, dpi=300)
 
 
-###############################################################################
-# F I G    4 . 3
-###############################################################################
+# 2.3 Plot bars -----------------
+
 bar1 <- plot_data |> 
   sample_n(50000) |> 
   group_by(vehicle_type) |> 
   summarise(count=n()) |> 
   ggplot() +
   geom_col(aes(x=vehicle_type, y=count), fill=site_colours$primary)+
-  theme_v_gds()+
-  scale_y_continuous(breaks=c(0,30000)) +
-  labs(x="vehicle type", y="crash count")+
+  scale_y_continuous(
+    breaks=c(0:4*10000), 
+    labels = scales::comma_format(scale = .001)) +
+  labs(x="vehicle type", y="crash count in thousands")+
   theme(panel.grid.major.x=element_blank(), panel.grid.minor = element_blank())
 
 bar2 <- plot_data |>
@@ -248,9 +221,10 @@ bar2 <- plot_data |>
   summarise(count=n()) |> 
   ggplot() +
   geom_col(aes(x=vehicle_type, y=count), fill=site_colours$primary)+
-  theme_v_gds()+
-  labs(x="vehicle type", y="crash count")+
-  scale_y_continuous(breaks=c(0,30000)) +
+  scale_y_continuous(
+    breaks=c(0:4*10000), 
+    labels = scales::comma_format(scale = .001)) +
+  labs(x="vehicle type", y="crash count in thousands")+
   theme(panel.grid.major.y=element_blank(), panel.grid.minor = element_blank()) +
   coord_flip()
 
@@ -260,26 +234,18 @@ bar3 <- plot_data |>
   summarise(count=n()) |> 
   ggplot() +
   geom_col(aes(x=reorder(vehicle_type, count), y=count), fill=site_colours$primary)+
-  theme_v_gds()+
-  labs(x="vehicle type", y="crash count")+
-  scale_y_continuous(breaks=c(0,30000)) +
+  scale_y_continuous(
+    breaks=c(0:4*10000), 
+    labels = scales::comma_format(scale = .001)) +
+  labs(x="vehicle type", y="crash count in thousands")+
   theme(panel.grid.major.y=element_blank(), panel.grid.minor = element_blank()) +
   coord_flip()
 
-
 plot <- bar1 + bar2 +  bar3 
-# + plot_annotation(
-#   title="Bars of crash frequencies by vehicle type",
-#   subtitle="-- Random sample of 50k Stats19 crashes",
-#   caption="Stats19 data accessed via `stats19` package",
-#   theme = theme_v_gds())
-
 ggsave(filename=here("figs", "04", "bars.png"), plot=plot,width=11, height=3.5, dpi=300)
-ggsave(filename=here("figs", "04", "bars.svg"), plot=plot,width=11, height=3.5)
 
-###############################################################################
-# F I G    4 . 4
-###############################################################################
+
+# 2.4 Plot borough freqs -----------------
 
 borough_counts <- ped_veh |> filter(police_force == "Metropolitan Police" | police_force == "City of London", local_authority_district!="London Airport (Heathrow)") |> 
   mutate(is_inner=if_else(local_authority_district %in% c("Camden",
@@ -299,7 +265,6 @@ borough_counts <- ped_veh |> filter(police_force == "Metropolitan Police" | poli
   ggplot(aes(x=count,y=reorder(local_authority_district, count)))+
   geom_segment(aes(x=0, y=reorder(local_authority_district, count), xend=count, yend=reorder(local_authority_district, count)), colour="#525252", linewidth=.2)+
   geom_point(colour=site_colours$primary, fill=site_colours$primary, shape=21)+
-  theme_v_gds()+
   theme(
     panel.grid.major.y=element_blank(), 
     strip.text = element_blank(), 
@@ -312,7 +277,8 @@ borough_counts <- ped_veh |> filter(police_force == "Metropolitan Police" | poli
   labs(x="", y="") 
 
 
-borough_counts_period <- ped_veh |>
+borough_counts_period <- 
+  ped_veh |>
   filter(police_force == "Metropolitan Police" | police_force == "City of London", local_authority_district!="London Airport (Heathrow)") |>
   mutate(
     year=lubridate::year(datetime),
@@ -336,23 +302,23 @@ borough_counts_period <- ped_veh |>
   filter(!is.na(hod)) |>
   group_by(local_authority_district) |>
   mutate(borough_count=n()) |> ungroup() |>
-  group_by(local_authority_district, is_night) |>
-  mutate(night_count=n()) |> ungroup() |>
   group_by(local_authority_district, is_weekend) |>
   mutate(weekend_count=n()) |> ungroup() |>
-  group_by(local_authority_district, is_night, is_weekend) |>
-  summarise(is_inner=first(is_inner), night_count=first(night_count), weekend_count=first(weekend_count), borough_count=first(borough_count)) |> ungroup() |>
-  left_join(la_pop, by=c("local_authority_district"="la_name")) |> ungroup() |>
-  pivot_wider(names_from=c(is_night), values_from=c("night_count")) |>
+  group_by(local_authority_district, is_weekend) |>
+  summarise(is_inner=first(is_inner), weekend_count=first(weekend_count), borough_count=first(borough_count)) |> ungroup() |>
   pivot_wider(names_from=c(is_weekend), values_from=c("weekend_count")) |>
-  pivot_longer(c(day,night, weekday, weekend), names_to="period", values_to="count") |>
+  mutate(prop_weekend=weekend/borough_count, exp_weekend=(sum(weekend)/sum(borough_count))*borough_count) |>
+  pivot_longer(c(weekday, weekend), names_to="period", values_to="count") |>
   filter(period %in% c("weekday", "weekend")) |>
+  ungroup() |> 
 
   mutate(
     period_type=if_else(period %in% c("day", "night"),
-                        "<span style = 'color: #252525;'>night </span> | <span style = 'color: #2171b5;'> day </span>",
-                        "<span style = 'color: #08306b;'>weekend </span> | <span style = 'color: #6baed6;'> weekday </span>"),
+                        "<span style = 'color: #252525;'>night </span> -- <span style = 'color: #2171b5;'> day </span>",
+                        "<span style = 'color: #08306b;'>weekend </span> -- <span style = 'color: #6baed6;'> weekday </span>"),
   ) |>
+  
+  
   ggplot(
     aes(x=count,y=reorder(local_authority_district, borough_count))
   ) +
@@ -361,23 +327,35 @@ borough_counts_period <- ped_veh |>
                            is_inner=first(is_inner)),
                aes(x=min_x, y=reorder(local_authority_district, borough_count), xend=max_x,
                    yend=reorder(local_authority_district, borough_count)), colour="#252525", linewidth=.2)+
+  
   geom_point(aes(fill=period), shape=21,colour="#252525") +
+  
   facet_grid(is_inner~period_type, scales="free_y", space="free_y") +
-  #values=c("#e31a1c", "#1f78b4")
   scale_fill_manual(values=c("#6baed6", "#08306b", "#6baed6",  "#08306b")) +
   guides(fill="none")+
-  labs(y="", x="") +
-  theme_v_gds() +
+  #labs(y="", x="pedestrain crash counts in thousands") +
+  scale_x_continuous(
+    breaks=c(0:4*1000), 
+    labels = scales::comma_format(scale = .001)) +
   theme(
-    #axis.text.x = element_text(angle=270, hjust=0, size=8), panel.spacing.x = unit(-.1, "lines"),
     axis.text.x = element_blank(),
     legend.position = "right", panel.grid.major.y=element_blank(),
-    axis.text.y=element_blank(),
     strip.text.x = ggtext::element_markdown(),
-    axis.title.x = element_blank(),
-    strip.text.y = element_blank()
+    axis.title.x = element_blank(), axis.title.y = element_blank()
   )
 
+borough_counts_period <- borough_counts_period +
+  geom_text(data = . %>% filter(local_authority_district == "Hackney", period == "weekday"),
+          aes(x=count+600, y=local_authority_district),
+          label=str_wrap("28% of Hackney's pedestrian crashes are on weekends", 18),
+          size=3.5, hjust="left") +
+  
+  geom_text(data = . %>% filter(local_authority_district == "Bromley", period == "weekday"),
+            aes(x=count+550, y=local_authority_district),
+            label=str_wrap("18%-20% weekends for Hilingdon, Havering, Bromley", 18),
+            size=3.5, hjust="left") 
+  
+  
 vehicle_order <- ped_veh |>
   group_by(vehicle_type) |> 
   summarise(count=n()) |> arrange(desc(count)) |> pull(vehicle_type)
@@ -414,31 +392,44 @@ borough_counts_vehicle <- ped_veh |> filter(police_force == "Metropolitan Police
   scale_fill_distiller(palette="Blues", direction=1) +
   guides(fill="none")+
   labs(y="") +
-  theme_v_gds() +
   theme(
+    axis.text.y = element_blank(),
     axis.text.x = element_text(angle=270, hjust=0, size=8), panel.spacing.x = unit(.5, "lines"),
-    legend.position = "right", panel.grid.major.y=element_blank(),
-    axis.text.y=element_blank(), axis.title.x = element_blank(), axis.line = element_blank()
+    legend.position = "right", panel.grid.major.y=element_blank(), strip.text.y=element_blank(), axis.title.x = element_blank(), axis.line = element_blank(),
   )
 
+annotate_text <- "Dominance of cars makes patterns in other vehicle types difficult to see. \n\n 
+Inner London boroughs, especially Westminster, contain crashes involving taxis, buses, bikes. \n\n
+But this is quite imperceptible when mapping raw frequencies to colour value."
 
-plot <-  borough_counts + borough_counts_period + borough_counts_vehicle + 
-  plot_layout(widths = c(1,1, 1.4)) 
-# + 
-#   plot_annotation(
-#     #title="Pedestrian crash frequencies by London borough, time period and vehicle involved",
-#     #subtitle="-- Stats19 crashes 2010-2019",
-#     #caption="Stats19 data accessed via `stats19` package",
-#     theme = theme_v_gds())
+borough_counts_vehicle_annotate <- ggplot() +
+  annotate("text", 0,1, label=
+             str_wrap(annotate_text, 15),
+           hjust="left", vjust="top", size=4) + 
+  scale_x_continuous(limits=c(0,1)) +
+  scale_y_continuous(limits=c(0,1)) +
+  theme_void()
+
+# plot <-  borough_counts + borough_counts_period + borough_counts_vehicle + 
+#   plot_layout(widths = c(1,1, 1.4)) 
+# 
+# plot <-  borough_counts + borough_counts_period + borough_counts_vehicle + 
+#   plot_layout(widths = c(1,1, 1.4)) 
+
+plot <- borough_counts_period + borough_counts_vehicle + borough_counts_vehicle_annotate +
+  plot_layout(widths = c(1, 1, .8)) 
 
 
-ggsave(filename=here("figs", "04", "borough-freqs.png"), plot=plot,width=9.8, height=6.2, dpi=300)
-ggsave(filename=here("figs", "04", "borough-freqs.svg"), plot=plot,width=9.8, height=6.2)
+ggsave(filename=here("figs", "04", "borough-freqs.png"), plot=plot,width=11, height=6.5, dpi=300)
 
-###############################################################################
-# T A B    4 . 5
-###############################################################################
 
+
+
+
+
+# 2.5 Plot mosaics etc. -----------------
+
+# Data for plots
 vehicle_order <- ped_veh |>
   group_by(vehicle_type) |> 
   summarise(count=n()) |> arrange(desc(count)) |> pull(vehicle_type)
@@ -448,8 +439,8 @@ vehicle_period_cross <- #vehicle_pedestrians |>
   mutate(
     day=lubridate::wday(datetime,label=TRUE),
     is_weekend=factor(if_else(day %in% c("Sat", "Sun"), "weekend", "weekday"),
-    levels=c("weekend", "weekday"))
-    ) |> 
+                      levels=c("weekend", "weekday"))
+  ) |> 
   group_by(vehicle_type, is_weekend) |> 
   summarise(count=n()) |> ungroup() |> 
   mutate(`Vehicle type`=factor(vehicle_type, levels=vehicle_order)) |>  arrange(`Vehicle type`) |> 
@@ -467,11 +458,6 @@ vehicle_period_cross <- vehicle_period_cross |>
 write_csv(vehicle_period_cross, here::here("files","csv","vehicle_period_cross.csv"))
 vehicle_period_cross <- read_csv( here::here("files","csv","vehicle_period_cross.csv"))
 
-###############################################################################
-# F I G    4 . 5
-###############################################################################
-
-devtools::install_github("haleyjeppson/ggmosaic")
 
 bar_freq <- vehicle_period_cross |> select(-`Row Total`) |> 
   pivot_longer(cols=c(weekday:weekend), names_to="period", values_to="count") |> 
@@ -481,13 +467,18 @@ bar_freq <- vehicle_period_cross |> select(-`Row Total`) |>
     period=factor(period, levels=c("weekday", "weekend"))) |>
   ggplot(aes(x=count, y=fct_rev(vehicle_type))) +
   geom_col(aes(fill=period))+
-  theme_v_gds()+
   scale_fill_manual(values=c("#c6dbef", "#08519c"))+
-  scale_x_continuous(breaks=c(0,30000)) +
-  labs(y="", x="crash count")+
+  scale_x_continuous(
+    breaks=c(0:2*100000), 
+    labels = scales::comma_format(scale = .001)) +
+  labs(y="", x="crash count in thousands")+
   guides(fill=FALSE)+
-  theme(panel.grid.major.y=element_blank(), panel.grid.minor = element_blank())+
-  labs(subtitle="stacked bar")
+  labs(subtitle="stacked bar") +
+  theme(
+    plot.subtitle = element_text(family="Avenir Book", size=14),
+    panel.grid.major.y=element_blank(), panel.grid.minor = element_blank()
+    )
+  
 
 bar_prop <- vehicle_period_cross |> select(-`Row Total`) |> 
   pivot_longer(cols=c(weekday:weekend), names_to="period", values_to="count") |> 
@@ -499,15 +490,16 @@ bar_prop <- vehicle_period_cross |> select(-`Row Total`) |>
   geom_col(aes(fill=period), position="fill")+
   annotate("segment", x=.22, xend=.22, y=0.4, yend=8.6, colour="#08306b")+
   scale_x_continuous(breaks=c(0,0.5, 1)) +
-  #geom_vline(xintercept=.245, colour="#de2d26")+
-  #geom_label(aes(y=8.9, x=.245), label="expectation", hjust=0.5,vjust=1, family="Roboto Condensed Light", fill="#eeeeee", label.size = 0, size=3)+
-  annotate("text", y=9, x=.24, label="expected weekend", hjust=0.5,vjust=1, family="Avenir Book", size=3.5, colour="#08306b")+
-  theme_v_gds()+
+  #annotate("text", y=9, x=.24, label="expected weekend", hjust=0.5,vjust=1, family="Avenir Book", size=3.5, colour="#08306b")+
   scale_fill_manual(values=c("#c6dbef", "#08519c"))+
   labs(y="", x="prop weekend")+
   guides(fill=FALSE)+
-  theme(panel.grid.major.y=element_blank(), panel.grid.minor = element_blank())+
-  labs(subtitle="standardised bar")
+  labs(subtitle="standardised bar")+
+  theme(
+    plot.subtitle = element_text(family="Avenir Book", size=14),
+    panel.grid.major.y=element_blank(), panel.grid.minor = element_blank(), axis.text.y=element_blank()
+  )
+
 
 mosaic <-  ped_veh |> 
   mutate(
@@ -524,7 +516,6 @@ mosaic <-  ped_veh |>
   ggplot() +
   geom_mosaic(aes(x=product(vehicle_type), fill=is_weekend, colour=is_weekend, divider = "vspine"), offset = 0.008, alpha=1)+
   scale_fill_manual(values=c("#08519c", "#c6dbef"))+
-  theme_v_gds() +
   theme(panel.grid.major.y=element_blank(), panel.grid.minor = element_blank(), axis.text.x = element_blank(), axis.text.y = element_blank()) +
   coord_flip()
 
@@ -542,643 +533,18 @@ mosaic_plot <- mosaic +
   annotate("segment", y=.22, yend=.22, x=0, xend=1, colour="#08306b")+
   scale_size(range = c(1.5, 9))+
   guides(size=FALSE)+
-  theme_v_gds()+
-  theme(legend.position = "right", axis.text=element_blank(), legend.title = element_blank())+
-  labs(y="prop weekend", x="crash count", subtitle="mosaic plot")
+  theme(plot.subtitle = element_text(family="Avenir Book", size=14), legend.position = "right", axis.text=element_blank(), legend.title = element_blank())+
+  labs(y="prop weekend", x="crash count", subtitle="mosaic plot") 
 
 
-plot<- bar_freq + bar_prop + mosaic_plot + plot_layout(widths=c(1,1,1.1)) +
-  plot_annotation(title="Pedestrian casualties in London vehicle type and time period",
-                  subtitle="-- Stats19 crashes 2010-2019",
-                  caption="Stats19 data accessed via `stats19` package",
-                  theme = theme_v_gds())
+plot<- bar_freq + bar_prop + mosaic_plot + plot_layout(widths=c(1,1,1.1)) 
 
 
-ggsave(filename=here("figs", "04", "bars-assoc.png"), plot=plot,width=12, height=4, dpi=300)
+ggsave(filename=here("figs", "04", "bars-assoc.png"), plot=plot,width=10.5, height=3.2, dpi=700)
 ggsave(filename=here("figs", "04", "bars-assoc.svg"), plot=plot,width=12, height=4)
 
+# 2.5 Residuals plot -----------------
 
-###############################################################################
-# S E M I - S P A T I A L :  R E D E S I G N
-###############################
-
-library(gridmappr)
-n_row <- 8
-n_col <- 8
-pts <- london_boroughs |>
-  st_drop_geometry() |>
-  select(area_name, x = easting, y = northing)
-solution <- points_to_grid(pts, n_row, n_col, compactness = .65)
-grid_all <- make_grid(london_boroughs, n_row, n_col) 
-grid <- grid_all |>
-  inner_join(solution)
-
-exp <- ped_veh |>
-  filter(
-    vehicle_type %in% c("Car", "Motorcycle","Taxi", "Bicycle"),
-    police_force == "Metropolitan Police" | police_force == "City of London", local_authority_district!="London Airport (Heathrow)" 
-    ) |> 
-  mutate(
-    day=lubridate::wday(datetime, label=TRUE),
-    is_weekend=day %in% c("Sat", "Sun"), 
-    glob_exp=mean(is_weekend)
-  ) |> 
-  group_by(local_authority_district, vehicle_type) |> 
-  summarise(
-    glob_exp=first(glob_exp), 
-    freq=n(), 
-    obs=mean(is_weekend),
-    exp=glob_exp,
-    diff=obs-exp,
-    resid=(obs-exp)/sqrt(exp)
-  ) |> ungroup() |> 
-  group_by(vehicle_type) |> 
-  mutate(freq_global=max(freq)) 
-
-plot_data <- exp |> ungroup() |> 
-  left_join(grid, by=c("local_authority_district"="area_name")) |> 
-  filter(!is.na(col)) |> 
-  st_as_sf()
-
-cell_width <- abs((grid |> filter(col==5, row==2) |> pull(x)) - (grid |> filter(col==6, row==2) |> pull(x)))
-cell_height <- abs((grid |> filter(col==5, row==2) |> pull(y)) - (grid |> filter(col==5, row==3) |> pull(y)))
-
-cell_width = cell_width * .95
-cell_height = cell_height * .95
-
-grids_vehicle <- plot_data |> 
-  mutate(vehicle_type=factor(vehicle_type, levels=c("Car", "Motorcycle", "Bicycle", "Taxi"))) |> 
-  ggplot() +
-  geom_sf(fill="#d9d9d9", colour="#ffffff") +
-  # prop weekend
-  geom_rect(aes(ymin=y-.5*cell_height, ymax=y+(freq/freq_global-.5)*cell_height,
-    xmin=x-.5*cell_width, xmax=x+(obs-.5)*cell_width), fill=site_colours$primary,
-    alpha=.5
-    ) +
-  # frequency 
-  geom_rect(aes(ymin=y-.5*cell_height, ymax=y+(freq/freq_global-.5)*cell_height,
-                xmin=x-.5*cell_width, xmax=x+.5*cell_width), fill=site_colours$primary,
-            alpha=.5
-   ) +
-  geom_text(aes(x = x, y = y, label = str_extract(local_authority_district, "^.{3}")), size = 3, alpha=.8) +
-  coord_sf() +
-  facet_wrap(~vehicle_type) +
-  labs(caption= "<span style = 'color: #4A679D;'> weekend </span> | <span style = 'color: #3B7EBA;'>weekday </span>") +
-  theme(
-    panel.grid.major=element_blank(), panel.grid.minor = element_blank(), axis.title.y=element_blank(), 
-    axis.text.x = element_blank(), axis.text.y = element_blank(), axis.title.x = element_blank(), axis.line = element_blank(),
-    plot.caption=ggtext::element_markdown(family = "Avenir Medium", size=13)
-)
-
-labels <- grid |> 
-  ggplot() +
-  geom_sf(fill="#bdbdbd", colour="#ffffff") +
-  geom_text(aes(x = x, y = y, label = word(area_name, 1)), size = 2) +
-  theme(
-    panel.grid.major=element_blank(), panel.grid.minor = element_blank(), axis.title.y=element_blank(), 
-    axis.text.x = element_blank(), axis.text.y = element_blank(), axis.title.x = element_blank()
-  )
-  
-plot <- grids_vehicle +  plot_layout(width=c(1)) + plot_annotation(
-                  #subtitle="-- Stats19 crashes 2010-2019",
-                  #caption="Stats19 data accessed via `stats19` package"
-  ,
-                  theme=theme_v_gds() + theme(plot.caption=ggtext::element_markdown(family = "Avenir Next", size=13))) 
-
-
-
-ggsave(filename= here("figs", "04", "grids_vehicle.svg"), plot=grids_vehicle,width=7, height=6.5)
-
-ggsave(filename= here("figs", "04", "grids_vehicle.png"), plot=grids_vehicle,width=7, height=6.5)
-
-
-###############################################################################
-# F I G    4 . 8
-###############################################################################
-
-# Upload london_squared layout: https://aftertheflood.com/projects/future-cities-catapult/
-london_squared <- read_csv(here("files", "csv","london_squared.csv")) |> select(-panel)
-
-london_squared <- ped_veh |> select(local_authority_district) |> 
-  inner_join(london_squared, by=c("local_authority_district"="authority")) |>
-  filter(!is.na(fX)) |>
-  group_by(BOR, fX, fY, local_authority_district) |>
-  summarise(bor_total=n()) |>
-  ungroup()
-
-temp <- ped_veh |>
-  left_join(london_squared) |> 
-  filter(
-    !is.na(BOR), 
-    vehicle_type %in% c("Car", "Motorcycle","Taxi", "Bicycle")
-  ) |> 
-  group_by(local_authority_district) |> 
-  summarise(bor_total_filtered=n())
-
-london_squared <- london_squared |> left_join(temp)
-
-exp <- ped_veh |>
-  filter(vehicle_type %in% c("Car", "Motorcycle","Taxi", "Bicycle")) |> 
-  inner_join(london_squared) |>
-  mutate(
-    is_weekend=day_of_week %in% c("Saturday", "Sunday"), 
-    glob_exp=mean(is_weekend)
-    ) |> 
-  group_by(local_authority_district, vehicle_type) |> 
-  summarise(
-    glob_exp=first(glob_exp), 
-    freq=n(), 
-    obs=mean(is_weekend),
-    exp=glob_exp,
-    diff=obs-exp,
-    resid=(obs-exp)/sqrt(exp)
-  )
-mosaic <- ped_veh |>
-  left_join(london_squared) |>
-  filter(!is.na(BOR), vehicle_type %in% c("Car", "Motorcycle","Taxi", "Bicycle")) |> 
-  mutate(
-    is_weekend=if_else(day_of_week %in% c("Saturday", "Sunday"), "weekend", "weekday"),
-    vehicle_type=fct_rev(factor(vehicle_type, levels=c("Car", "Motorcycle","Taxi", "Bicycle"))),
-    is_inner=local_authority_district %in% c("Camden",
-                                             "Greenwich",
-                                             "Hackney",
-                                             "Hammersmith and Fulham",
-                                             "Islington",
-                                             "Kensington and Chelsea",
-                                             "Lambeth",
-                                             "Lewisham",
-                                             "Southwark",
-                                             "Tower Hamlets",
-                                             "Wandsworth",
-                                             "Westminster", "City of London")
-    
-  ) |> 
-  filter(is_inner) |> 
-  ggplot() +
-  geom_mosaic(aes(x=product(vehicle_type), fill=vehicle_type), alpha=.3, offset = 0.008)+
-  guides(fill="none", alpha="none") +
-  theme_v_gds() +
-  coord_flip() +
-  facet_wrap(~BOR, ncol=7)+
-  scale_x_productlist(position="top", name="inner London")+
-  scale_alpha_discrete(range=c(.3,.9))+
-  scale_fill_manual(values=c("#4daf4a", "#984ea3", "#377eb8", "#e41a1c"))+
-  theme(
-    panel.grid.major.y=element_blank(), panel.grid.minor = element_blank(), 
-    axis.text.x = element_blank(), axis.text.y = element_blank(), axis.title.x = element_blank(),
-    aspect.ratio = 1
-  ) 
-
-plot_data <- ggplot_build(mosaic)$data |> as.data.frame() |> 
-  group_by(PANEL) |>
-  mutate(bor_total=sum(.wt)) |> ungroup() |>
-  group_by(PANEL, x__fill__vehicle_type) |>
-  summarise(xmin=min(xmin),xmax=max(xmax), ymin=min(ymin),ymax=max(ymax),
-            vehicle_prop_bor=sum(.wt)/sum(bor_total), bor_total=min(bor_total)) |> ungroup() |> 
-  left_join(london_squared, by=c("bor_total"="bor_total_filtered")) 
-
-inner_fill_model <- mosaic + 
-  geom_rect(
-      data=plot_data %>% inner_join(exp, by=c("x__fill__vehicle_type"="vehicle_type","local_authority_district"="local_authority_district")) |> 
-      mutate(max_diff=max(abs(diff)), diff_rescaled=map_scale(diff, -max_diff, max_diff, 0,1)),
-    aes(xmin=xmin, xmax=xmax, ymin=.5, ymax=diff_rescaled, fill=x__fill__vehicle_type)
-  ) +
-  geom_segment(
-    data=plot_data,
-    aes(x=xmin, xend=xmax, y=.5, yend=.5),  size=.3
-  ) +
-  scale_size(range=c(0, 10))+
-  scale_alpha_discrete(range=c(0.3,0.9))+
-  guides(size=FALSE, alpha=FALSE, fill=FALSE)+
-  labs(subtitle="juxtaposed with grouping <br> inner | outer",
-       caption=" <p>
-       <span style = 'color: #e41a1c;'>car</span>
-       <span style = 'color: #377eb8;'>mbike</span>
-       <span style = 'color: #984ea3;'>taxi</span>
-       <span style = 'color: #4daf4a;'>bike</span>
-       </p>"
-  ) +
-  theme(
-    panel.grid.major.y=element_blank(), panel.grid.minor = element_blank(), 
-    axis.text.x = element_blank(), axis.text.y = element_blank(), axis.title.x = element_blank(), 
-    #legend.position = "right",
-    panel.spacing=unit(-0.1, "lines"),
-    plot.margin = margin(r=25),
-    plot.subtitle = ggtext::element_markdown(size=10, hjust=0),
-    plot.caption=ggtext::element_markdown(size=12, hjust=.5), plot.caption.position = "panel",
-    legend.key.size = unit(.4, 'cm'), legend.title = element_text(size=7)
-  )
-
-borough_alpha_outer <- mosaic + 
-  scale_size(range=c(0, 7))+
-  scale_alpha_discrete(range=c(0.3,0.9))+
-  guides(size=FALSE, alpha=FALSE)+
-  theme(
-    panel.grid.major.y=element_blank(), panel.grid.minor = element_blank(), 
-    axis.text.x = element_blank(), axis.text.y = element_blank(), axis.title.x = element_blank(), 
-    plot.subtitle = ggtext::element_markdown(size=10, hjust=0),
-    panel.spacing=unit(-0.1, "lines"),
-    plot.margin = margin(r=25),
-    plot.caption=ggtext::element_markdown(size=9, hjust=.5), plot.caption.position = "panel",
-    legend.text=element_text(size=6), legend.key.size = unit(.4, 'cm'), legend.title = element_text(size=7)
-  ) 
-
-layout <- "
-A
-A
-A
-A
-#
-B
-B
-B
-B
-B
-B
-"
-
-plot <- inner_fill_model + outer_fill_model + plot_layout(design=layout) +
-  plot_annotation(title="Pedestrian casualties by vehicle type and borough",
-                  subtitle="-- Stats19 crashes 2010-2019",
-                  caption="Stats19 data accessed via `stats19` package",
-                  theme=theme_v_gds() + theme(plot.title=ggtext::element_markdown())) 
-
-ggsave(filename= here("figs", "04", "mosaic_boroughs_model_alpha.svg"), plot=plot,width=7, height=7)
-
-
-###############################################################################
-# F I G    4 . 7
-###############################################################################
-
-mosaic <- ped_veh |>
-  left_join(london_squared) |>
-  filter(
-    !is.na(BOR), 
-    local_authority_district %in% c("Westminster", "Harrow"),
-    vehicle_type %in% c("Car", "Motorcycle","Taxi", "Bicycle")
-  ) |> 
-  mutate(
-    is_weekend=if_else(day_of_week %in% c("Saturday", "Sunday"), "weekend", "weekday"),
-    #vehicle_type=fct_rev(vehicle_type),
-    vehicle_type=fct_rev(factor(vehicle_type, levels=c("Car", "Motorcycle","Taxi", "Bicycle"))), 
-    local_authority_districtx=factor(local_authority_district, levels=c("Westminster", "Harrow"))
-  ) |> 
-  ggplot() +
-  geom_mosaic(aes(x=product(vehicle_type), fill=vehicle_type), alpha=.3, offset = 0.008)+
-  #geom_mosaic(aes(x=product(vehicle_type)), fill="#2171b5", alpha=.3, offset = 0.008)+
-  scale_fill_manual(values=c("#4daf4a", "#984ea3", "#377eb8", "#e41a1c"))+
-  theme_v_gds() +
-  coord_flip() +
-  facet_wrap(~local_authority_district, nrow=2)+
-  scale_x_productlist(position="top", name="")+
-  theme(
-    aspect.ratio = 1,
-    panel.grid.major.y=element_blank(), panel.grid.minor = element_blank(), 
-    axis.text.x = element_blank(), axis.text.y = element_blank(), axis.title.x = element_blank()
-  ) 
-
-plot_data <- ggplot_build(mosaic)$data |> as.data.frame() |> 
-  group_by(PANEL) |>
-  mutate(bor_total=sum(.wt)) |> ungroup() |>
-  group_by(PANEL, x__fill__vehicle_type) |>
-  summarise(xmin=min(xmin),xmax=max(xmax), ymin=min(ymin),ymax=max(ymax),
-            vehicle_prop_bor=sum(.wt)/sum(bor_total), bor_total=min(bor_total)) |> ungroup() |> 
-  left_join(london_squared, by=c("bor_total"="bor_total_filtered")) |> 
-  mutate(
-    local_authority_district=factor(local_authority_district, levels=c("Westminster", "Harrow"))
-  )
-
-
-exp <- ped_veh |>
-  inner_join(london_squared) |>
-  mutate(is_weekend=day_of_week %in% c("Saturday", "Sunday")) |> 
-  filter(vehicle_type %in% c("Car", "Motorcycle","Taxi", "Bicycle")) |> 
-  #group_by(vehicle_type) |> 
-  mutate(glob_exp=mean(is_weekend)) |> 
-  group_by(local_authority_district, vehicle_type) |> 
-  summarise(
-    glob_exp=first(glob_exp), 
-    freq=n(), 
-    #obs=mean(is_weekend)*freq, 
-    #exp=glob_exp*freq,
-    obs=mean(is_weekend),
-    exp=glob_exp,
-    diff=obs-exp,
-    resid=(obs-exp)/sqrt(exp)
-  )
-
-borough_select_model_fill <- mosaic + 
-  geom_rect(
-    data=plot_data %>% inner_join(exp, by=c("x__fill__vehicle_type"="vehicle_type","local_authority_district"="local_authority_district")) |> 
-      #data=plot_data %>% inner_join(exp, by=c("x__vehicle_type"="vehicle_type","local_authority_district"="local_authority_district")), 
-      mutate(max_diff=max(abs(diff)), diff_rescaled=map_scale(diff, -max_diff, max_diff, 0,1), local_authority_district=factor(local_authority_district, levels=c("Westminster", "Harrow"))),
-    aes(xmin=xmin, xmax=xmax, ymin=.5, ymax=diff_rescaled, fill=x__fill__vehicle_type)
-  ) +
-  geom_segment(
-    data=plot_data, #%>% left_join(exp, by=c("x__vehicle_type"="vehicle_type")),
-    aes(x=xmin, xend=xmax, y=.5, yend=.5),  size=.3
-  ) +
-  geom_text(
-    data=plot_data, 
-    aes(
-      x=xmin+0.5*(xmax-xmin), y=ymin+0.5*(ymax-ymin),label=x__fill__vehicle_type, size=vehicle_prop_bor
-    ), 
-    alpha=.7,family="Avenir Book")+
-  geom_text(
-    data=plot_data %>%
-      filter(x__fill__vehicle_type=="Car", BOR=="HRW"),
-    aes(x=xmax-.05, y=1), hjust=1,
-    label="more wknd",family="Avenir Book", size=2.5, alpha=.8
-  )+
-  geom_text(
-    data=plot_data %>%
-      filter(x__fill__vehicle_type=="Car", BOR=="HRW"),
-    aes(x=xmax-.05, y=0), hjust=0,
-    label="more wkdy",family="Avenir Book", size=2.5, alpha=.8
-  )+
-  scale_size(range=c(0, 10))+
-  scale_alpha_discrete(range=c(0.3,0.9))+
-  guides(size=FALSE, alpha=FALSE, fill=FALSE)+
-  labs(subtitle="hue (associative) <br> direct encoded exp", 
-       # caption=" <p>
-       # <span style = 'color: #e41a1c;'>car</span>
-       # <span style = 'color: #377eb8;'>mbike</span>
-       # <span style = 'color: #984ea3;'>taxi</span>
-       # <span style = 'color: #4daf4a;'>bike</span>
-       # </p>"
-  ) +
-  # scale_fill_manual(values=c("#4daf4a", "#984ea3", "#377eb8", "#e41a1c"))+
-  #theme_v_gds()+
-  theme(
-    panel.grid.major.y=element_blank(), panel.grid.minor = element_blank(), 
-    axis.text.x = element_blank(), axis.text.y = element_blank(), axis.title.x = element_blank(), 
-    #legend.position = "right",
-    panel.spacing=unit(-0.1, "lines"),
-    plot.margin = margin(r=25),
-    plot.subtitle = ggtext::element_markdown(size=10, hjust=0),
-    plot.caption=ggtext::element_markdown(size=9, hjust=.5), plot.caption.position = "panel",
-    legend.key.size = unit(.4, 'cm'), legend.title = element_text(size=7)
-  )
-
-mosaic <- ped_veh |>
-  left_join(london_squared) |>
-  filter(
-    !is.na(BOR), 
-    local_authority_district %in% c("Westminster", "Harrow")#,
-    #vehicle_type %in% c("Car", "Motorcycle","Taxi", "Bicycle")
-  ) |> 
-  mutate(
-    is_weekend=if_else(day_of_week %in% c("Saturday", "Sunday"), "weekend", "weekday"),
-    vehicle_type=fct_rev(vehicle_type),
-    #vehicle_type=fct_rev(factor(vehicle_type, levels=c("Car", "Motorcycle","Taxi", "Bicycle"))), 
-    local_authority_district=factor(local_authority_district, levels=c("Westminster", "Harrow"))
-  ) |> 
-  ggplot() +
-  #geom_mosaic(aes(x=product(vehicle_type), fill=vehicle_type), alpha=.3, offset = 0.008)+
-  geom_mosaic(aes(x=product(vehicle_type)), fill="#2171b5", alpha=.3, offset = 0.008)+
-  #scale_fill_manual(values=c("#4daf4a", "#984ea3", "#377eb8", "#e41a1c"))+
-  theme_v_gds() +
-  coord_flip() +
-  facet_wrap(~local_authority_district, nrow=2)+
-  scale_x_productlist(position="top", name="")+
-  theme(
-    aspect.ratio = 1,
-    panel.grid.major.y=element_blank(), panel.grid.minor = element_blank(), 
-    axis.text.x = element_blank(), axis.text.y = element_blank(), axis.title.x = element_blank()
-  ) 
-plot_data <- ggplot_build(mosaic)$data |> as.data.frame() |> 
-  group_by(PANEL) |>
-  mutate(bor_total=sum(.wt)) |> ungroup() |>
-  group_by(PANEL, x__vehicle_type) |>
-  summarise(xmin=min(xmin),xmax=max(xmax), ymin=min(ymin),ymax=max(ymax),
-            vehicle_prop_bor=sum(.wt)/sum(bor_total), bor_total=min(bor_total)) |> ungroup() |> 
-  left_join(london_squared) |> 
-  mutate(
-    local_authority_district=factor(local_authority_district, levels=c("Westminster", "Harrow"))
-  )
-
-borough_select <- mosaic + 
-  geom_rect(
-    data=plot_data %>% inner_join(exp, by=c("x__vehicle_type"="vehicle_type","local_authority_district"="local_authority_district")) |> 
-      mutate(max_diff=max(abs(diff)), diff_rescaled=map_scale(diff, -max_diff, max_diff, 0,1)),
-    aes(xmin=xmin, xmax=xmax, ymin=.5, ymax=diff_rescaled), fill="#2171b5"
-  ) +
-  geom_text(
-    data=plot_data, 
-    aes(
-      x=xmin+0.5*(xmax-xmin), y=ymin+0.5*(ymax-ymin),label=x__vehicle_type, size=vehicle_prop_bor
-    ), 
-    alpha=.7,family="Avenir Book")+
-  scale_size(range=c(0, 10))+
-  guides(size=FALSE, alpha=FALSE)+
-  labs(subtitle="direct encoded <br> <span style = 'color: #08306b;'>expectation</span>") +
-  #theme_v_gds()+
-  theme(
-    panel.grid.major.y=element_blank(), panel.grid.minor = element_blank(), 
-    axis.text.x = element_blank(), axis.text.y = element_blank(), axis.title.x = element_blank(), 
-    #legend.position = "right",
-    panel.spacing=unit(-0.1, "lines"),
-    plot.margin = margin(r=25),
-    plot.subtitle = ggtext::element_markdown(size=10, hjust=1),
-    legend.text=element_text(size=6), legend.key.size = unit(.4, 'cm'), legend.title = element_text(size=7)
-  ) 
-
-
-mosaic <- ped_veh |>
-  left_join(london_squared) |>
-  filter(!is.na(BOR), local_authority_district %in% c("Westminster", "Harrow")) |> 
-  mutate(
-    is_weekend=if_else(day_of_week %in% c("Saturday", "Sunday"), "weekend", "weekday"),
-    vehicle_type=fct_rev(vehicle_type),
-    local_authority_district=factor(local_authority_district, levels=c("Westminster", "Harrow"))
-    ) |> 
-  ggplot() +
-  geom_mosaic(aes(x=product(is_weekend, vehicle_type), alpha=is_weekend), fill="#2171b5", offset = 0.008)+
-  guides(fill="none") +
-  theme_v_gds() +
-  coord_flip() +
-  facet_wrap(~local_authority_district, nrow=2)+
-  scale_x_productlist(position="top", name="")+
-  scale_alpha_discrete(range=c(.3,.9))+
-  theme(
-    aspect.ratio = 1,
-    panel.grid.major.y=element_blank(), panel.grid.minor = element_blank(), 
-    axis.text.x = element_blank(), axis.text.y = element_blank(), axis.title.x = element_blank()
-  ) 
-plot_data <- ggplot_build(mosaic)$data |> as.data.frame() |> 
-  group_by(PANEL) |>
-  mutate(bor_total=sum(.wt)) |> ungroup() |>
-  group_by(PANEL, x__vehicle_type) |>
-  summarise(xmin=min(xmin),xmax=max(xmax), ymin=min(ymin),ymax=max(ymax),
-            vehicle_prop_bor=sum(.wt)/sum(bor_total), bor_total=min(bor_total)) |> ungroup() |> 
-  left_join(london_squared) |> 
-  mutate(
-    local_authority_district=factor(local_authority_district, levels=c("Westminster", "Harrow"))
-  )
-
-exp <- ped_veh |>
-  inner_join(london_squared) |>
-  mutate(is_weekend=day_of_week %in% c("Saturday", "Sunday")) |> 
-  summarise(exp=mean(is_weekend))
-
-borough_select <- mosaic + 
-  geom_segment(
-    data=plot_data, # %>% left_join(exp, by=c("x__vehicle_type"="vehicle_type")),
-    aes(x=xmin, xend=xmax, y=1-exp$exp, yend=1-exp$exp),  size=.3
-  ) +
-  geom_text(
-    data=plot_data, 
-    aes(
-      x=xmin+0.5*(xmax-xmin), y=ymin+0.5*(ymax-ymin),label=x__vehicle_type, size=vehicle_prop_bor
-    ), 
-    alpha=.7,family="Avenir Book")+
-  scale_size(range=c(0, 10))+
-  scale_alpha_discrete(range=c(0.3,0.9))+
-  guides(size=FALSE, alpha=FALSE)+
-  labs(subtitle="superposed <br> <span style = 'color: #08306b;'>expectation</span>") +
-  #theme_v_gds()+
-  theme(
-    panel.grid.major.y=element_blank(), panel.grid.minor = element_blank(), 
-    axis.text.x = element_blank(), axis.text.y = element_blank(), axis.title.x = element_blank(), 
-    #legend.position = "right",
-    panel.spacing=unit(-0.1, "lines"),
-    plot.margin = margin(r=25),
-    plot.subtitle = ggtext::element_markdown(size=10, hjust=0),
-    legend.text=element_text(size=6), legend.key.size = unit(.4, 'cm'), legend.title = element_text(size=7)
-  ) 
-
-plot <- borough_select + borough_select_model +  borough_select_model_fill + 
-  plot_annotation(title="Pedestrian casualties by vehicle type and borough <span style = 'color: #BACBDD;'>weekday </span> | <span style = 'color: #3B7EBA;'> weekend </span>",
-                  subtitle="-- Stats19 crashes 2010-2019",
-                  caption="Stats19 data accessed via `stats19` package",
-                  theme=theme_v_gds() + theme(plot.title=ggtext::element_markdown())) 
-
-ggsave(filename= here("figs", "04", "mosaic_boroughs_model.svg"), plot=plot,width=7, height=4.5)
-
-plot <- inner_fill_model + outer_fill_model + borough_select + borough_select_model_fill + borough_select_model + plot_layout(design=layout) +
-  plot_annotation(title="Pedestrian casualties by vehicle type and borough <span style = 'color: #BACBDD;'>weekday </span> | <span style = 'color: #3B7EBA;'> weekend </span>",
-                  subtitle="-- Stats19 crashes 2010-2019",
-                  caption="Stats19 data accessed via `stats19` package",
-                  theme=theme_v_gds() + theme(plot.title=ggtext::element_markdown())) 
-
-ggsave(filename= here("figs", "04", "mosaic_boroughs.png"), plot=plot,width=8, height=8, dpi=300)
-ggsave(filename= here("figs", "04", "mosaic_boroughs_model.svg"), plot=plot,width=8.5, height=12)
-
-
-ggsave(filename= here("figs", "04", "mosaic_boroughs.png"), plot=plot,width=11, height=7, dpi=300)
-ggsave(filename= here("figs", "04", "mosaic_boroughs.svg"), plot=plot,width=11, height=7)
-
-plot <- borough_alpha + borough_alpha_colour + plot_layout(nrow=2) +
-  plot_annotation(title="Pedestrian casualties by vehicle type and period in week by London Borough",
-                  subtitle="--Stats19 crashes 2010-2019",
-                  caption="Stats19 data accessed via `stats19` package",
-                  theme = theme_v_gds())
-
-ggsave(filename= here("figs", "04", "mosaic_boroughs.png"), plot=plot,width=8.2, height=12, dpi=300)
-ggsave(filename= here("figs", "04", "mosaic_boroughs.svg"), plot=plot,width=8.2, height=12)
-
-###############################################################################
-# S E M I - S P A T I A L
-###############################################################################
-library(ggtext)
-# Animate between two states.
-displacement <- grid_real_sf |> 
-  ggplot()+
-  geom_sf(fill="#cfcfcf", colour="#9e9e9e", size=0.1)+
-  coord_sf(crs=27700, datum=NA)+
-  geom_text(aes(x=east, y=north, label=BOR), size=2, alpha=.7, show.legend=FALSE, family="Avenir Book")+
-  annotate("text", x=558297.5+.8*38642.8, y=197713.7, label="")+
-  transition_states(type, 1, 2)+
-  labs(title="Demonsrating relaxed spatial layout of London Boroughs",
-       subtitle="--LondonSquared's After the Flood layout",
- caption="See: github.com/aftertheflood/londonsquared")+
-  theme(axis.title.x = element_blank(), axis.title.y = element_blank(),
-        plot.title = element_text(size=7), plot.subtitle = element_text(size=5),
-        plot.caption = element_text(size=4)
-  )
-
-animate(
-  displacement, duration=5, fps=10, width=886, height=640, res=300, 
-  renderer=gifski_renderer(here("figs", "04", "anim_real_grid.gif"))
-  )
-
-# max(east) min(east) max(north) min(north)                       
-# 1  558297.5  507258.2   197713.7   159070.9 
-# 38642.8
-
-##############################
-# S I G N E D    C H I - S C O R E
-##############################
-
-grand_total <- vehicle_severity_cross |> 
-  select(-c(`Row Total`)) |> 
-  filter(`Vehicle type`!="Column Total") |> 
-  pivot_longer(cols=c(KSI, Slight)) |> 
-  summarise(grand_total=sum(value)) |> pull()
-
-vehicle_severity_cross_resids <- 
-  vehicle_severity_cross |> mutate(row_total=`Row Total`) |> rowwise() |> 
-  mutate(
-    `KSI Exp`=(row_total*57918)/grand_total, 
-    `Slight Exp`=(row_total*183742)/grand_total,
-    `KSI Resid`=round((KSI-`KSI Exp`) / sqrt(`KSI Exp`),2), 
-    `Slight Resid`=round((Slight-`Slight Exp`) / sqrt(`Slight Exp`),2),
-    `KSI Exp`=round(`KSI Exp`,0), 
-    `Slight Exp`=round(`Slight Exp`)
-  ) |> select(-row_total) |> ungroup()
-
-write_csv(vehicle_severity_cross_resids, here::here("static","csv","vehicle_severity_cross_resids.csv"))
-
-readr::read_csv(here::here("static","csv","vehicle_severity_cross_resids.csv")) |> 
-  kbl(caption = "Pedestrian casualties by vehicle involved and injury severity: contingency table with signed chi-scores.") |>
-  row_spec(9, bold=T) |> column_spec(4,bold = T) |>
-  add_header_above(c(" ", "Observed" = 3, "Expected" = 2, "Signed chi-scores"=2))
-
-vehicle_period_cross <- #vehicle_pedestrians |>
-  ped_veh |> 
-  mutate(
-    day=lubridate::wday(datetime,label=TRUE),
-    is_weekend=factor(if_else(day %in% c("Sat", "Sun"), "weekend", "weekday"),
-                      levels=c("weekend", "weekday"))
-  ) |> 
-  filter(police_force == "Metropolitan Police" | police_force == "City of London", local_authority_district!="London Airport (Heathrow)") |> 
-  group_by(vehicle_type, is_weekend) |> 
-  summarise(count=n()) |> ungroup() |> 
-  mutate(`Vehicle type`=factor(vehicle_type, levels=vehicle_order)) |>  arrange(`Vehicle type`) |> 
-  pivot_wider(names_from =  is_weekend, values_from = count) |> select(-vehicle_type) |> rowwise() |> 
-  mutate(`Row Total` = sum(weekday, weekend)) |> 
-  ungroup()
-
-col_totals <- vehicle_period_cross |> summarise_at(vars(weekday:weekend), sum)
-
-vehicle_period_cross <- vehicle_period_cross |> 
-  add_row(`Vehicle type`= "Column Total", 
-          weekday=col_totals |> pull(weekday), 
-          weekend=col_totals |> pull(weekend))
-
-
-grand_total <- vehicle_period_cross |> 
-  select(-c(`Row Total`)) |> 
-  filter(`Vehicle type`!="Column Total") |> 
-  pivot_longer(cols=c(weekend, weekday)) |> 
-  summarise(grand_total=sum(value)) |> pull()
-
-vehicle_period_cross_resids <- 
-  vehicle_period_cross |> mutate(row_total=`Row Total`) |> rowwise() |> 
-  mutate(
-    `weekend exp`=(row_total*13172)/grand_total, 
-    `weekday exp`=(row_total*45553)/grand_total,
-    `weekend resid`=round((weekend-`weekend exp`) / sqrt(`weekend exp`),2), 
-    `weekday resid`=round((weekday-`weekday exp`) / sqrt(`weekday exp`),2),
-    `weekend exp`=round(`weekend exp`,0), 
-    `weekday exp`=round(`weekday exp`)
-  ) |> select(-row_total) |> ungroup()
-
-write_csv(vehicle_period_cross_resids, here::here("files","csv","vehicle_period_cross_resids.csv"))
-
-###############################################################################
-# F I G    4 . 6
-###############################################################################
 observed_vehicle <- ped_veh |> filter(police_force == "Metropolitan Police" | police_force == "City of London", local_authority_district!="London Airport (Heathrow)") |> 
   mutate(
     is_inner=if_else(local_authority_district %in% c("Camden",
@@ -1224,12 +590,10 @@ observed_vehicle <- ped_veh |> filter(police_force == "Metropolitan Police" | po
   scale_fill_distiller(palette="Blues", direction=1) +
   guides(fill="none")+
   labs(y="", subtitle="", fill="resids") +
-  theme_v_gds() +
   theme(
     axis.text.x = element_text(angle=270, hjust=0, size=8), panel.spacing.x = unit(-.1, "lines"),
     axis.title.x=element_blank(),
     panel.grid.major.y=element_blank(),
-    #axis.text.y=element_blank(),
     strip.text = element_blank(),
     plot.margin = unit(c(0,0,0,0), "cm"),
     legend.key.size = unit(.4, 'cm'),
@@ -1274,24 +638,19 @@ resids_vehicle <- ped_veh |> filter(police_force == "Metropolitan Police" | poli
   mutate(
     resid=pmax(pmin(resid, 25),-25)
   ) |> 
-
+  
   ggplot(aes(x=vehicle_type,y=reorder(local_authority_district, row_total), fill=resid)) +
   geom_tile(colour="#707070", size=.2) +
   facet_grid(is_inner~., scales="free_y", space="free_y") +
   scale_fill_distiller(palette="RdBu", direction=-1, limits=c(-25,25)) +
-  labs(y="", subtitle="Vehicle type 
-       <span style = 'color: #b2182b;'>over-</span> | 
-       <span style = 'color: #2166ac;'>under-</span><br>
-       represented in borough", fill="resids") +
+  #labs(y="", subtitle="Colour: crash counts by borough <br>  independent of vehicle type") +
   guides(fill="none")+
-  theme_v_gds() +
+ 
   theme(
     axis.text.x = element_text(angle=270, hjust=0), panel.spacing.x = unit(-.1, "lines"),
-    axis.title.x=element_blank(),
+    axis.title.x=element_blank(), axis.title.y = element_blank(),
     panel.grid.major.y=element_blank(),
-    #axis.text.y=element_blank(),
-    #strip.text = element_blank(),
-    plot.subtitle = ggtext::element_markdown(size=11, hjust=0, family="Avenir Next"),
+    plot.subtitle = ggtext::element_markdown(size=10.5, hjust=0, family="Avenir Book", halign=0),
     plot.margin = unit(c(0,0,0,0), "cm"),
     legend.key.size = unit(.4, 'cm'),
     legend.text=element_text(size=4),
@@ -1338,135 +697,327 @@ resids_period <- ped_veh |>
     resid=(observed-expected)/sqrt(expected),
     is_inner=first(is_inner)
   ) |> ungroup() |> 
-
+  
   ggplot(
     aes(x=vehicle_type,y=reorder(local_authority_district, row_total), fill=resid)
   ) +
   geom_tile(colour="#707070", size=.2) +
   facet_grid(is_inner~., scales="free_y", space="free_y") +
-   scale_fill_distiller(palette="RdBu", direction=1, limits=c(-5.43,5.43)) +
+  scale_fill_distiller(palette="RdBu", direction=1, limits=c(-5.43,5.43)) +
   guides(fill="none")+
-  labs(y="", x="",
-  subtitle="Weekdays 
-       <span style = 'color: #b2182b;'>over-</span> | 
-       <span style = 'color: #2166ac;'>under-</span><br>
-       represented in vehicle type") +
-  theme_v_gds() +
+  #labs(y="", x="",
+    #   subtitle="Colour: crash counts by vehicle type<br>
+     #  independent of period in week") +
   theme(
     axis.text.x = element_text(angle=270, hjust=0), panel.spacing.x = unit(-.1, "lines"),
     axis.text.y=element_blank(),
     strip.text.x = ggtext::element_markdown(),
-    plot.subtitle = ggtext::element_markdown(size=11, hjust=0, family="Avenir Next"),
-    axis.title.x = element_blank(),
+    plot.subtitle = ggtext::element_markdown(size=10.5, hjust=0, family="Avenir Book", halign=.0),
+    axis.title.x = element_blank(), axis.title.y=element_blank(),
     plot.margin = unit(c(0,0,0,0), "cm"),
     legend.key.size = unit(.4, 'cm'),
     legend.text=element_text(size=4),
-    axis.line = element_blank() 
+    axis.line = element_blank(), 
   )
-
-
-observed_period <- ped_veh |> 
-  filter(police_force == "Metropolitan Police" | police_force == "City of London", local_authority_district!="London Airport (Heathrow)") |> 
-  mutate(
-    day=lubridate::wday(datetime,label=TRUE),
-    hod=lubridate::hour(datetime), 
-    is_night=if_else((hod < 6 | hod > 20), "night", "day"),
-    is_weekend=if_else(day %in% c("Sat", "Sun"), "weekend", "weekday"),
-    is_inner=if_else(local_authority_district %in% c("Camden",
-                                                     "Greenwich",
-                                                     "Hackney",
-                                                     "Hammersmith and Fulham",
-                                                     "Islington",
-                                                     "Kensington and Chelsea",
-                                                     "Lambeth",
-                                                     "Lewisham",
-                                                     "Southwark",
-                                                     "Tower Hamlets",
-                                                     "Wandsworth",
-                                                     "Westminster", "City of London"), "inner", "outer")
-  ) |> 
-  filter(!is.na(hod)) |> 
-  group_by(local_authority_district) |> 
-  mutate(row_total=n()) |> ungroup() |> 
-  group_by(is_weekend) |> 
-  mutate(col_total=n()) |>  ungroup() |> 
-  mutate(grand_total=n()) |> 
-  group_by(local_authority_district, is_weekend) |> 
-  summarise(
-    observed=n(), 
-    row_total=first(row_total), 
-    col_total=first(col_total),
-    grand_total=first(grand_total),
-    expected=(row_total*col_total)/grand_total,
-    prop=observed/row_total,
-    resid=(observed-expected)/sqrt(expected),
-    is_inner=first(is_inner)
-  ) |> ungroup() |> 
-  
-  # mutate(
-  #   period_type=if_else(period %in% c("day", "night"), 
-  #                       "<span style = 'color: #252525;'>night </span> | <span style = 'color: #2171b5;'> day </span>", 
-  #                       "<span style = 'color: #252525;'>weekend </span> | <span style = 'color: #2171b5;'> weekday </span>"),
-  # ) |> 
-  
-  ggplot(
-    aes(x=is_weekend,y=reorder(local_authority_district, row_total), fill=observed)
-  ) +
-  
-  # ggplot(aes(x=vehicle_type,y=reorder(local_authority_district, row_total), fill=resid)) +
-  geom_tile(colour="#707070", size=.2) +
-  # geom_segment(data=. %>%  group_by(local_authority_district) %>%
-  #                summarise(min_x=min(observed), max_x=max(observed), row_total=first(row_total),
-  #                          is_inner=first(is_inner)),
-  #              aes(x=min_x, y=reorder(local_authority_district, row_total), xend=max_x,
-  #                  yend=reorder(local_authority_district, row_total)), colour="#252525", size=.2)+
-  # geom_point(aes(fill=resid), shape=21,colour="#252525") +
-  facet_grid(is_inner~., scales="free_y", space="free_y") +
-  scale_fill_distiller(palette="Blues", direction=1) +
-  guides(fill="none")+
-  labs(y="", x="") +
-  theme_v_gds() +
-  theme(
-    axis.text.x = element_text(angle=270, hjust=0, size=8), panel.spacing.x = unit(-.1, "lines"),
-    #legend.position = "right", panel.grid.major.y=element_blank(),
-    #axis.text.y=element_blank(),
-    strip.text.x = ggtext::element_markdown(),
-    axis.title.x = element_blank(),
-    strip.text.y = element_blank(),
-    plot.margin = unit(c(0,0,0,0), "cm"),
-    legend.key.size = unit(.4, 'cm'),
-    legend.text=element_text(size=4)
-  )
-
-
-
-plot <- counts_day + resids_day + counts_period + resids_period +
-  plot_layout(widths = c(1.7,1.7,1,1), nrow=1) +
-  plot_annotation(
-    title="Crash frequencies by London borough and day of week | period of day",
-    subtitle="-- Stats19 crashes 2010-2019",
-    caption="Stats19 data accessed via `stats19` package",
-    theme = theme_v_gds()
-  )
-
 
 plot <- resids_vehicle + resids_period +
-  plot_layout(widths = c(1, 1), nrow=1) +
-  plot_annotation(
-    title="Crash frequencies by London borough, vehicle type and time period",
-    subtitle="-- Stats19 crashes 2010-2019",
-    caption="Stats19 data accessed via `stats19` package",
-    theme = theme_v_gds()
+  plot_layout(widths = c(1, 1), nrow=1) 
+
+ggsave(filename="figs/04/borough-freqs-resids-raw.png", plot=plot,width=7, height=6, dpi=500)
+
+
+# Load in as image to annotate.
+img <- image_read(here("figs", "04", "borough-freqs-resids-raw.png")) |> 
+  image_fill('none') |> 
+  as.raster()
+
+aspect <- 30/35
+
+plot <- ggplot() +
+  annotation_raster(img, 0, 1, 0, 1*aspect) +
+  annotate("richtext",
+           label= "Vehicle types other than cars <br> <span style = 'color: #b2182b;'>over-represented</span> in inner London<br> crashes",
+           x=-.02, y=.9, fill = NA, label.color = NA, size=2.8, hjust="left", family="Avenir Book"
+  ) +
+  
+  
+  annotate("richtext", 
+           label="Colour: crash counts by borough <br>  independent of vehicle type",
+           x=.62, y=.87, fill = NA, label.color = NA, size=2.5, hjust="right", family="Avenir Book"
+           
+    )+
+  annotate("richtext", 
+           label="Colour: crash counts by vehicle type <br>  independent of period in week",
+           x=.95, y=.87, fill = NA, label.color = NA, size=2.5, hjust="right", family="Avenir Book"
+           
+  )+
+  annotate(
+    geom = "curve",
+    x = .25, xend = .31,
+    y = .89, yend = .85,
+    curvature = -.5,
+    angle = 35, size=.2
+  ) +
+  
+  annotate("richtext",
+           label= "Cars very <span style = 'color: #2166ac;'>under-<br>represented</span> in <br>weekday crashes, <br> especially in <br> inner London",
+           x=.96, y=.55, fill = NA, label.color = NA, size=2.8, hjust="left", family="Avenir Book"
+  ) +
+  
+  annotate(
+    geom = "curve",
+    x = .96, xend = .7,
+    y = .6, yend = .6,
+    curvature = .3,
+    angle = 135, size=.2
+  ) +
+  
+  
+  scale_x_continuous(limits=c(-0.05, 1.2)) +
+  scale_y_continuous(limits=c(0, 1)) +
+  theme(
+    axis.text = element_blank(),
+    axis.line = element_blank(),
+    axis.title.x = element_blank(),
+    axis.title.y = element_blank()
+  )
+  
+ggsave(here("figs", "04", "borough-freqs-resids.png"), plot, dpi=700, width = 8, height=6.5)
+
+
+# 2.6 Gridmap plot boroughs -----------------
+
+n_row <- 8
+n_col <- 8
+pts <- london_boroughs |>
+  st_drop_geometry() |>
+  select(area_name, x = easting, y = northing)
+solution <- points_to_grid(pts, n_row, n_col, compactness = .65)
+grid_all <- make_grid(london_boroughs, n_row, n_col) 
+grid <- grid_all |>
+  inner_join(solution)
+
+exp <- ped_veh |>
+  filter(
+    vehicle_type %in% c("Car", "Motorcycle","Taxi", "Bicycle"),
+    police_force == "Metropolitan Police" | police_force == "City of London", local_authority_district!="London Airport (Heathrow)" 
+    ) |> 
+  mutate(
+    day=lubridate::wday(datetime, label=TRUE),
+    is_weekend=day %in% c("Sat", "Sun"), 
+    glob_exp=mean(is_weekend)
+  ) |> 
+  group_by(local_authority_district, vehicle_type) |> 
+  summarise(
+    glob_exp=first(glob_exp), 
+    freq=n(), 
+    obs=mean(is_weekend),
+    exp=glob_exp,
+    diff=obs-exp,
+    resid=(obs-exp)/sqrt(exp)
+  ) |> ungroup() |> 
+  group_by(vehicle_type) |> 
+  mutate(freq_global=max(freq)) 
+
+plot_data <- exp |> ungroup() |> 
+  left_join(grid, by=c("local_authority_district"="area_name")) |> 
+  filter(!is.na(col)) |> 
+  st_as_sf()
+
+cell_width <- abs((grid |> filter(col==5, row==2) |> pull(x)) - (grid |> filter(col==6, row==2) |> pull(x)))
+cell_height <- abs((grid |> filter(col==5, row==2) |> pull(y)) - (grid |> filter(col==5, row==3) |> pull(y)))
+
+cell_width = cell_width * .95
+cell_height = cell_height * .95
+
+max_x <- max(plot_data$x)
+max_y <- max(plot_data$y)
+
+grids_car <- plot_data |> 
+  mutate(vehicle_type=factor(vehicle_type, levels=c("Car", "Motorcycle", "Bicycle", "Taxi"))) |> 
+  filter(vehicle_type %in% c("Car")) |> 
+  ggplot() +
+  geom_sf(fill="#d9d9d9", colour="#ffffff") +
+  # prop weekend
+  geom_rect(aes(ymin=y-.5*cell_height, ymax=y+(freq/freq_global-.5)*cell_height,
+    xmin=x-.5*cell_width, xmax=x+(obs-.5)*cell_width), fill=site_colours$primary,
+    alpha=.5
+    ) +
+  # frequency 
+  geom_rect(aes(ymin=y-.5*cell_height, ymax=y+(freq/freq_global-.5)*cell_height,
+                xmin=x-.5*cell_width, xmax=x+.5*cell_width), fill=site_colours$primary,
+            alpha=.5
+   ) +
+ geom_text(aes(x = x, y = y, label = str_extract(local_authority_district, "^.{3}")), size = 3, alpha=.8) +
+ annotate("text", x=max_x -2.5 *cell_width, y=max_y+1.5*cell_height, vjust="bottom", hjust="right", label="Car", size=4) +
+ annotate("text", x=min_x-1.25*cell_width, y=max_y, vjust="bottom", hjust="left", label="", size=4) +
+  coord_sf() +
+  facet_wrap(~vehicle_type, nrow=1) +
+  #labs(caption= "<span style = 'color: #4A679D;'> weekend </span> | <span style = 'color: #3B7EBA;'>weekday </span>") +
+  theme(
+    strip.text.x = element_blank(),
+    panel.grid.major=element_blank(), panel.grid.minor = element_blank(), axis.title.y=element_blank(), 
+    axis.text.x = element_blank(), axis.text.y = element_blank(), axis.title.x = element_blank(), axis.line = element_blank(),
+    plot.caption=ggtext::element_markdown(family = "Avenir Medium", size=13), plot.margin = unit(c(0,0,0,0), "cm")
+)
+
+
+grids_bike <- plot_data |> 
+  mutate(vehicle_type=factor(vehicle_type, levels=c("Car", "Motorcycle", "Bicycle", "Taxi"))) |> 
+  filter(vehicle_type %in% c("Bicycle")) |> 
+  ggplot() +
+  geom_sf(fill="#d9d9d9", colour="#ffffff") +
+  # prop weekend
+  geom_rect(aes(ymin=y-.5*cell_height, ymax=y+(freq/freq_global-.5)*cell_height,
+                xmin=x-.5*cell_width, xmax=x+(obs-.5)*cell_width), fill=site_colours$primary,
+            alpha=.5
+  ) +
+  # frequency 
+  geom_rect(aes(ymin=y-.5*cell_height, ymax=y+(freq/freq_global-.5)*cell_height,
+                xmin=x-.5*cell_width, xmax=x+.5*cell_width), fill=site_colours$primary,
+            alpha=.5
+  ) +
+  geom_text(aes(x = x, y = y, label = str_extract(local_authority_district, "^.{3}")), size = 3, alpha=.8) +
+  annotate("text", x=max_x -2.5 *cell_width, y=max_y+1.5*cell_height, vjust="bottom", hjust="right", label="Bicycle", size=4) +
+  coord_sf() +
+  facet_wrap(~vehicle_type, nrow=1) +
+  #labs(caption= "<span style = 'color: #4A679D;'> weekend </span> | <span style = 'color: #3B7EBA;'>weekday </span>") +
+  theme(
+    strip.text.x = element_blank(),
+    panel.grid.major=element_blank(), panel.grid.minor = element_blank(), axis.title.y=element_blank(), 
+    axis.text.x = element_blank(), axis.text.y = element_blank(), axis.title.x = element_blank(), axis.line = element_blank(),
+    plot.caption=ggtext::element_markdown(family = "Avenir Medium", size=13),plot.margin = unit(c(0,0,0,0), "cm")
   )
 
 
-ggsave(filename="figs/04/borough-freqs-resids.svg", plot=plot,width=7.5, height=7)
-ggsave(filename="figs/04/borough-freqs-resids.png", plot=plot,width=7, height=6, dpi=300)
+grids_motobike <- plot_data |> 
+  mutate(vehicle_type=factor(vehicle_type, levels=c("Car", "Motorcycle", "Bicycle", "Taxi"))) |> 
+  filter(vehicle_type %in% c("Motorcycle")) |> 
+  ggplot() +
+  geom_sf(fill="#d9d9d9", colour="#ffffff") +
+  # prop weekend
+  geom_rect(aes(ymin=y-.5*cell_height, ymax=y+(freq/freq_global-.5)*cell_height,
+                xmin=x-.5*cell_width, xmax=x+(obs-.5)*cell_width), fill=site_colours$primary,
+            alpha=.5
+  ) +
+  # frequency 
+  geom_rect(aes(ymin=y-.5*cell_height, ymax=y+(freq/freq_global-.5)*cell_height,
+                xmin=x-.5*cell_width, xmax=x+.5*cell_width), fill=site_colours$primary,
+            alpha=.5
+  ) +
+  geom_text(aes(x = x, y = y, label = str_extract(local_authority_district, "^.{3}")), size = 3, alpha=.8) +
+  annotate("text", x=max_x -2.5 *cell_width, y=max_y+1.5*cell_height, vjust="bottom", hjust="right", label="Motorcycle", size=4) +
+  coord_sf() +
+  facet_wrap(~vehicle_type, nrow=1) +
+  #labs(caption= "<span style = 'color: #4A679D;'> weekend </span> | <span style = 'color: #3B7EBA;'>weekday </span>") +
+  theme(
+    strip.text.x = element_blank(),
+    panel.grid.major=element_blank(), panel.grid.minor = element_blank(), axis.title.y=element_blank(), 
+    axis.text.x = element_blank(), axis.text.y = element_blank(), axis.title.x = element_blank(), axis.line = element_blank(),
+    plot.caption=ggtext::element_markdown(family = "Avenir Medium", size=13),plot.margin = unit(c(0,0,0,0), "cm")
+  )
+
+labels <- grid |> 
+  ggplot() +
+  geom_sf(fill="#d9d9d9",colour="#ffffff") +
+  geom_text(aes(x = x, y = y-.15*cell_height, label = word(area_name, 1)), size = 2.1) +
+  geom_text(aes(x = x, y = y+.15*cell_height, label = str_extract(area_name, "^.{3}")), size = 3) +
+  annotate("text", x=max_x -2.5 *cell_width, y=max_y+1.5*cell_height, vjust="bottom", hjust="right", label="Gridmap layout", size=4) +
+  theme(
+    panel.grid.major=element_blank(), panel.grid.minor = element_blank(), axis.title.y=element_blank(), 
+    axis.text.x = element_blank(), axis.text.y = element_blank(), axis.title.x = element_blank(), axis.line = element_blank()
+  )
 
 
-###############################################################################
-# E X A M P L E     A N A L Y S I S
-###############################################################################
+grids_cam <- plot_data |> 
+  filter(local_authority_district=="Camden", vehicle_type=="Car") |> 
+  ggplot() +
+  geom_sf(fill="#d9d9d9", colour="#ffffff") +
+  # prop weekend
+  geom_rect(aes(ymin=y-.5*cell_height, ymax=y+(freq/freq_global-.5)*cell_height,
+                xmin=x-.5*cell_width, xmax=x+(obs-.5)*cell_width), fill=site_colours$primary,
+            alpha=.5
+  ) +
+  # frequency 
+  geom_rect(aes(ymin=y-.5*cell_height, ymax=y+(freq/freq_global-.5)*cell_height,
+                xmin=x-.5*cell_width, xmax=x+.5*cell_width), fill=site_colours$primary,
+            alpha=.5
+  ) +
+  
+  annotate("segment", 
+           x=521840.9-.49*cell_width, xend=521840.9+.5*cell_width,
+           y=181198-.58*cell_height, yend=181198-.58*cell_height, size=.2
+           ) +
+  annotate("segment", 
+           x=521840.9-.49*cell_width, xend=521840.9-.22*cell_width,
+           y=181198-.58*cell_height, yend=181198-.58*cell_height, size=.7
+  ) +
+  
+  annotate("segment", 
+           x=521840.9-.58*cell_width, xend=521840.9-.58*cell_width,
+           y=181198-.5*cell_height, yend=181198+.5*cell_height, size=.2
+  ) +
+  annotate("segment", 
+           x=521840.9-.58*cell_width, xend=521840.9-.58*cell_width,
+           y=181198-.5*cell_height, yend=181198+.12*cell_height, size=.7
+  ) +
+  
+  annotate("text", x=521840.9-.65*cell_width, y=181198+.1*cell_height, 
+           label="num\ncrashes", hjust="right", size=5.5) +
+  annotate("text", x=521840.9-.01*cell_width, y=181198-.9*cell_height, 
+           label="proportion\nweekend", hjust="centre", size=5.5) +
+  
+  # annotate(
+  #   geom = "curve",
+  #   xend = 521840.9-.42*cell_width, x = 521840.9-.25*cell_width,
+  #   y = 181198-.7*cell_height, yend = 181198-.6*cell_height,
+  #   curvature = -.3,
+  #   angle = 60, size=.2
+  # ) +
+  # 
+  # annotate(
+  #   geom = "curve",
+  #   xend = 521840.9-.85*cell_width, x = 521840.9-.62*cell_width,
+  #   yend = 181198-0*cell_height, y = 181198-.15*cell_height,
+  #   curvature = -.3,
+  #   angle = 60, size=.2
+  # ) +
+  # 
+  coord_sf(xlim=c(521840.9-2*cell_width, 521840.9+.49*cell_width), 
+           ylim= c(181198-1.5*cell_height, 181198+.5*cell_height), default_crs = sf::st_crs(27700)) +
+  theme(
+    panel.grid.major=element_blank(), panel.grid.minor = element_blank(), axis.title.y=element_blank(), 
+    axis.text.x = element_blank(), axis.text.y = element_blank(), axis.title.x = element_blank(), axis.line = element_blank(),
+    plot.caption=ggtext::element_markdown(family = "Avenir Medium", size=13)
+  )
+
+ggsave(filename= here("figs", "04", "grids_camx.png"), plot=grids_cam, width=3.2, height=2.8, dpi=800)
+
+# remotes::install_github("wilkelab/cowplot")
+# library(cowplot)
+
+img <- image_read(here("figs", "04", "grids_camx.png")) |> 
+  image_fill('none') |> 
+  as.raster()
+
+
+min_x <- 507258.2
+min_y <- 198096.9
+
+p1 <- grids_car +
+  annotation_raster(img, min_x-1.2*cell_width, min_x + 1.1*cell_width, max_y-.5*cell_height, max_y+1.8*cell_height)
+plot <- (p1 +  grids_bike) / 
+  (labels  + grids_motobike)         
+ggsave(filename= here("figs", "04", "grids_vehicle.png"), plot=plot,
+       width=9.5, height=8, dpi=900)
+
+
+#-----------------------------------------
+# 3. Techniques graphics
+#-----------------------------------------
+
+
+# 3.1 Data -----------------
 
 ped_veh_complete <- ped_veh |> 
   filter(
@@ -1479,19 +1030,13 @@ ped_veh_complete <- ped_veh |>
 ped_veh_missing <- ped_veh |> 
   anti_join(ped_veh_complete |> select(accident_index)) 
 
-
+# 3.2 Study missing -----------------
 ped_veh |> 
   mutate(
     is_complete=accident_index %in% (ped_veh_complete |> pull(accident_index))
     ) |> 
   group_by(accident_severity) |> 
   summarise(prop_complete=mean(is_complete))
-# A tibble: 3 × 2
-accident_severity prop_complete
-<chr>                     <dbl>
-  1 Fatal                     0.260
-2 Serious                   0.261
-3 Slight                    0.196
 
 ped_veh |> 
   mutate(
@@ -1515,9 +1060,10 @@ plot <- ped_veh |>
   labs(x="proportion complete", y="IMD crash location") +
   theme(legend.title = element_blank())
 
-ggsave(filename= here("figs", "04", "completeness.svg"), plot=plot,width=5, height=3.5)  
-
 ggsave(filename= here("figs", "04", "completeness.png"), plot=plot,width=5, height=3.5, dpi=300)  
+
+
+# 3.3 Plot freqs -----------------
 
 plot_data <- ped_veh_complete |> 
   # inner_join(imd |> select(lsoa_code, total_pop), by=c("lsoa_of_accident_location"="lsoa_code"))  |>
@@ -1532,30 +1078,7 @@ plot_data <- ped_veh_complete |>
       type=="crash" ~ "location",
       TRUE ~ type)
   ) 
-  
-# imd_pop <- imd |> 
-#   inner_join(ped_veh |> select(lsoa_code=lsoa_of_accident_location) |> unique()) |> 
-#   rename(imd=crash_quintile) |> 
-#   group_by(imd) |> 
-#   summarise(pop=sum(total_pop)) |> ungroup() |> 
-#   mutate(prop=pop/sum(pop), type="location") |> 
-#   left_join(plot_data) |> 
-#   mutate(exp=sum(count)*prop) 
-# 
-# plot <- plot_data |>
-#     left_join(imd_pop) |> 
-#     mutate(
-#       type=factor(type, levels=c("location", "pedestrian", "driver"))
-#     ) |> 
-#     ggplot() + 
-#     geom_col(aes(x=imd, y=count), fill="#003c8f", alpha=.9) +
-#     geom_col(aes(x=imd, y=exp), fill="#003c8f", colour="#003c8f", linetype="dashed", alpha=.3, linewidth=.2) +
-#     scale_x_discrete(labels=c("most","", "mid", "", "least")) +
-#   facet_wrap(~type)
-
-
-
-plot <- ped_veh_complete |> 
+freqs <- ped_veh_complete |> 
   # inner_join(imd |> select(lsoa_code, total_pop), by=c("lsoa_of_accident_location"="lsoa_code"))  |>
   select(driver_quintile, casualty_quintile, crash_quintile) |> 
   pivot_longer(cols=everything(), names_to="location_type", values_to="imd") |>
@@ -1572,11 +1095,50 @@ plot <- ped_veh_complete |>
   ggplot() + 
   geom_col(aes(x=imd, y=count), fill="#003c8f") +
   scale_x_discrete(labels=c("most","", "mid", "", "least")) +
+  labs(y="crash count in thousands", x="IMD") +
+  scale_y_continuous(
+    breaks=c(0:3*5000), 
+    labels = scales::comma_format(scale = .001)) +
   facet_wrap(~type)
 
-ggsave(filename= here("figs", "04", "freqs_imd.svg"), plot=plot,width=6, height=3) 
 
-ggsave(filename= here("figs", "04", "freqs_imd.png"), plot=plot,width=6, height=3, dpi=300) 
+plot_imd_driver <- plot_data |> 
+  ggplot(aes(x=casualty_quintile, y=driver_quintile)) +
+  geom_tile(aes(fill=observed), fill="transparent", colour="#707070", size=.1) +
+  annotate("text", x=5,y=0.2, label="least", hjust=.5, size=3) +
+  annotate("segment", x=.5, y = 5.7, xend = 5.2, yend = 5.7,
+           arrow = arrow(type = "closed", length = unit(0.02, "npc")), linewidth=.15) +
+  annotate("segment", x=5.7, y = 0.5, xend = 5.7, yend = 5.2,
+           arrow = arrow(type = "closed", length = unit(0.02, "npc")), linewidth=.15) +
+  annotate("text", x=1,y=0.2, label="most", hjust=0.5, size=3) +
+  annotate("text", x=3,y=0.2, label="mid", hjust=0.5, size=3) +
+  annotate("text", y=5,x=0.2, label="least", hjust=.5, size=3, angle=90) +
+  annotate("text", y=1,x=0.2, label="most", hjust=0.5, size=3, angle=90) +
+  annotate("text", y=3,x=0.2, label="mid", hjust=0.5, size=3, angle=90) +
+  annotate("text", y=5,x=0, label="", hjust=.5, size=2) +
+  annotate("text", x=6.5,y=0, label="", hjust=1, size=2) +
+  annotate("text", y=3,x=5.9, label="IMD of driver", hjust=.5, vjust=0, size=3, angle=270) +
+  annotate("text", y=6.3,x=3, label="IMD of pedestrian", hjust=.5, vjust=1, size=3) +
+  scale_fill_distiller(palette="Blues", direction=1, guide="none") +
+  coord_equal() +
+  theme(
+    plot.margin = unit(c(0,0,0,0), "cm"),
+    plot.subtitle=element_text(family = "Avenir Book", size=12),
+    axis.text.x=element_blank(), 
+    axis.text.y = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.title.y = element_blank(),
+    axis.line.y = element_blank(),
+    legend.position="right",
+    axis.line.x = element_blank()
+  )
+
+
+plot <- freqs + plot_spacer() + plot_imd_driver + plot_layout(widths=c(1,.05, .4))
+ggsave(filename= here("figs", "04", "freqs_imd.png"), plot=plot,width=7, height=3.5, dpi=300) 
+
+
+# 3.4 Plot freqs -----------------
 
 model_ped_veh <- ped_veh_complete |> 
   # Record the grand_total: total pedestrian crashes.
@@ -1604,23 +1166,8 @@ model_ped_veh <- ped_veh_complete |>
     resid=(observed-expected)/sqrt(expected),
   ) %>% ungroup()
 
-plot_imd_driver <- ped_veh_complete |> 
-  filter(
-    !is.na(casualty_imd_decile), !is.na(driver_imd_decile),
-    casualty_imd_decile!="Data missing or out of range", 
-    driver_imd_decile!="Data missing or out of range") |>   
-  mutate(grand_total=n()) |> 
-  # Crashes in Wales are excluded as English IMD
-  group_by(casualty_quintile, driver_quintile) |> 
-  summarise(
-    count=n(), 
-  ) 
 
-plot_data <- ped_veh_complete |> 
-  # filter(
-  #   !is.na(casualty_imd_decile), !is.na(driver_imd_decile),
-  #   casualty_imd_decile!="Data missing or out of range", 
-  #   driver_imd_decile!="Data missing or out of range", !is.na(crash_quintile)) |>   
+plot_data <- ped_veh_complete |>  
   mutate(grand_total=n()) |> 
   group_by(driver_quintile) |> 
   mutate(row_total=n()) |> ungroup() |> 
@@ -1640,7 +1187,6 @@ plot_data <- ped_veh_complete |>
     resid=(observed-expected)/sqrt(expected),
     max_resid=max(abs(resid))
   ) |> ungroup()
-
 
 
 model_data <- ped_veh_complete |> 
@@ -1668,64 +1214,77 @@ model_data |>
     palette="RdBu", direction=-1, limits=c(- max(model_data$resid), max(model_data$resid))) +
   coord_equal()
 
+
 plot_imd_driver <- plot_data |> 
   ggplot(aes(x=casualty_quintile, y=driver_quintile)) +
   geom_point()+
   geom_tile(aes(fill=observed), colour="#707070", size=.2) +
-  annotate("text", x=5.5,y=0.2, label="least deprived", hjust=1, size=3) +
-  annotate("text", x=0.5,y=0.2, label="most deprived", hjust=0, size=3) +
-  annotate("text", y=5.5,x=0.2, label="least deprived", hjust=1, size=3, angle=90) +
-  annotate("text", y=0.5,x=0.2, label="most deprived", hjust=0, size=3, angle=90) +
-  annotate("text", y=5.5,x=0, label="", hjust=1, size=2) +
+  
+  # annotate("segment", x=.5, y = 5.7, xend = 5.2, yend = 5.7,
+  #          arrow = arrow(type = "closed", length = unit(0.02, "npc")), linewidth=.15) +
+  # annotate("segment", x=5.7, y = 0.5, xend = 5.7, yend = 5.2,
+  #          arrow = arrow(type = "closed", length = unit(0.02, "npc")), linewidth=.15) +
+  
+  annotate("text", x=1,y=0.2, label="most", hjust=0.5, size=3) +
+  annotate("text", x=3,y=0.2, label="mid", hjust=0.5, size=3) +
+  annotate("text", y=5,x=0.2, label="least", hjust=.5, size=3, angle=90) +
+  annotate("text", y=1,x=0.2, label="most", hjust=0.5, size=3, angle=90) +
+  annotate("text", y=3,x=0.2, label="mid", hjust=0.5, size=3, angle=90) +
+  annotate("text", x=5,y=0.2, label="least", hjust=.5, size=3) +
+  
   annotate("text", x=6.5,y=0, label="", hjust=1, size=2) +
-  annotate("text", y=3,x=5.8, label="IMD of driver", hjust=.5, vjust=0, size=3.5, angle=270) +
-  annotate("text", y=6,x=3, label="IMD of pedestrian", hjust=.5, vjust=1, size=3.5) +
-  scale_fill_distiller(palette="Blues", direction=1) +
+  annotate("text", y=5,x=0, label="", hjust=.5, size=2) +
+  
+  annotate("text", y=3,x=5.8, label="IMD of driver", hjust=.5, vjust=0, size=3.2, angle=270) +
+  annotate("text", y=6.15,x=3, label="IMD of pedestrian", hjust=.5, vjust=1, size=3.2) +
+  scale_fill_distiller(
+    palette="Blues", direction=1, name="count\nthousands",
+    labels = scales::comma_format(scale = .001)
+    ) +
+  labs(subtitle="Observed") +
   coord_equal() +
-  labs(subtitle="Obs") +
   theme(
     plot.margin = unit(c(0,0,0,0), "cm"),
-    plot.subtitle=element_text(family = "Avenir Next", size=13),
+    plot.subtitle=element_text(family = "Avenir Book", size=10),
     axis.text.x=element_blank(), 
     axis.text.y = element_blank(), 
     axis.title.x = element_blank(),
     axis.title.y = element_blank(),
     axis.line.y = element_blank(),
-    legend.position="right",
+    legend.position="bottom",
+    legend.key.height = unit(.4, "cm"),
+    legend.key.width = unit(.5, "cm"),
+    legend.text = element_text(size=8),
+    legend.title = element_text(size=8),
     axis.line.x = element_blank()
-    )
-
-# plot_data |> 
-#   ggplot(aes(x=casualty_quintile, y=driver_quintile)) +
-#   geom_point()+
-#   geom_tile(aes(fill=observed), colour="#707070", size=.2) +
-#   scale_fill_distiller(palette="Blues", direction=1)
-# 
-# plot_data |> 
-#   ggplot(aes(x=casualty_quintile, y=driver_quintile)) +
-#   geom_point()+
-#   geom_tile(aes(fill=resid), colour="#707070", size=.2) +
-#   scale_fill_distiller(
-#     palette="PRGn", direction=1, limits=c(-max(plot_data$max_resid), max(plot_data$max_resid)))
+  )
 
 plot_imd_expected <- plot_data |> 
   ggplot(aes(x=casualty_quintile, y=driver_quintile)) +
   geom_point()+
-  geom_tile(aes(fill=expected), colour="#707070", size=.2) +
-  annotate("text", x=5.5,y=0.2, label="least", hjust=1, size=3) +
-  annotate("text", x=0.5,y=0.2, label="most", hjust=0, size=3) +
-  annotate("text", y=5.5,x=0.2, label="least", hjust=1, size=3, angle=90) +
-  annotate("text", y=0.5,x=0.2, label="most", hjust=0, size=3, angle=90) +
-  annotate("text", y=5.5,x=0, label="", hjust=1, size=2) +
+  geom_tile(aes(fill=expected), colour="#707070", size=.1) +
+  
+  # annotate("text", x=1,y=0.2, label="most", hjust=0.5, size=3) +
+  # annotate("text", x=3,y=0.2, label="mid", hjust=0.5, size=3) +
+  # annotate("text", y=5,x=0.2, label="least", hjust=.5, size=3, angle=90) +
+  # annotate("text", y=1,x=0.2, label="most", hjust=0.5, size=3, angle=90) +
+  # annotate("text", y=3,x=0.2, label="mid", hjust=0.5, size=3, angle=90) +
+  # annotate("text", x=5,y=0.2, label="least", hjust=.5, size=3) +
+  
   annotate("text", x=6.5,y=0, label="", hjust=1, size=2) +
+  annotate("text", y=5,x=0, label="", hjust=.5, size=2) +
+  
+  annotate("text", y=3,x=-.1, label="expected", hjust=0.5, size=2.5, angle=90) +
+
   # annotate("text", y=3,x=5.8, label="IMD of driver", hjust=.5, vjust=0, size=3.5, angle=270) +
   # annotate("text", y=6,x=3, label="IMD of pedestrian", hjust=.5, vjust=1, size=3.5) +
   scale_fill_distiller(palette="Blues", direction=1, guide ="none") +
+  
   coord_equal() +
-  labs(subtitle="Expected") +
+
   theme(
     plot.margin = unit(c(0,0,0,0), "cm"),
-    plot.subtitle=element_text(family = "Avenir Next", size=12),
+    plot.subtitle=element_text(family = "Avenir Book", size=8),
     axis.text.x=element_blank(), 
     axis.text.y = element_blank(), 
     axis.title.x = element_blank(),
@@ -1736,73 +1295,101 @@ plot_imd_expected <- plot_data |>
 plot_imd_marginal_row <- plot_data |> 
   ggplot(aes(x=casualty_quintile, y=driver_quintile)) +
   geom_point()+
-  geom_tile(aes(fill=row_marginal), colour="#707070", size=.2) +
-  annotate("text", x=5.5,y=0.2, label="least", hjust=1, size=3) +
-  annotate("text", x=0.5,y=0.2, label="most", hjust=0, size=3) +
-  annotate("text", y=5.5,x=0.2, label="least", hjust=1, size=3, angle=90) +
-  annotate("text", y=0.5,x=0.2, label="most", hjust=0, size=3, angle=90) +
-  annotate("text", y=5.5,x=0, label="", hjust=1, size=2) +
+  geom_tile(aes(fill=row_marginal), colour="#707070", size=.1) +
+  
+  # annotate("text", x=1,y=0.2, label="most", hjust=0.5, size=3) +
+  # annotate("text", x=3,y=0.2, label="mid", hjust=0.5, size=3) +
+  # annotate("text", y=5,x=0.2, label="least", hjust=.5, size=3, angle=90) +
+  # annotate("text", y=1,x=0.2, label="most", hjust=0.5, size=3, angle=90) +
+  # annotate("text", y=3,x=0.2, label="mid", hjust=0.5, size=3, angle=90) +
+  # annotate("text", x=5,y=0.2, label="least", hjust=.5, size=3) +
+  
+  annotate("text", y=3,x=-0.1, label="row marginals", hjust=0.5, size=2.5, angle=90) +
+  
   annotate("text", x=6.5,y=0, label="", hjust=1, size=2) +
+  annotate("text", y=5,x=0, label="", hjust=.5, size=2) +
+  
+  annotate("text", y=3,x=-.5, label="", hjust=0.5, size=4, angle=90) +
+  
   # annotate("text", y=3,x=5.8, label="IMD of driver", hjust=.5, vjust=0, size=3.5, angle=270) +
   # annotate("text", y=6,x=3, label="IMD of pedestrian", hjust=.5, vjust=1, size=3.5) +
   scale_fill_distiller(palette="Blues", direction=1, guide="none") +
+  
   coord_equal() +
-  labs(subtitle="Row marginals") +
+
   theme(
     plot.margin = unit(c(0,0,0,0), "cm"),
-    plot.subtitle=element_text(family = "Avenir Next", size=12),
+    plot.subtitle=element_text(family = "Avenir Book", size=8),
     axis.text.x=element_blank(), 
     axis.text.y = element_blank(), 
     axis.title.x = element_blank(),
     axis.title.y = element_blank(),
     axis.line = element_blank(),
     legend.position="right")
+
+
 
 
 plot_imd_expected <- plot_data |> 
   ggplot(aes(x=casualty_quintile, y=driver_quintile)) +
   geom_point()+
-  geom_tile(aes(fill=expected), colour="#707070", size=.2) +
-  annotate("text", x=5.5,y=0.2, label="least", hjust=1, size=3) +
-  annotate("text", x=0.5,y=0.2, label="most", hjust=0, size=3) +
-  annotate("text", y=5.5,x=0.2, label="least", hjust=1, size=3, angle=90) +
-  annotate("text", y=0.5,x=0.2, label="most", hjust=0, size=3, angle=90) +
-  annotate("text", y=5.5,x=0, label="", hjust=1, size=2) +
+  geom_tile(aes(fill=expected), colour="#707070", size=.1) +
+  
+  # annotate("text", x=1,y=0.2, label="most", hjust=0.5, size=3) +
+  # annotate("text", x=3,y=0.2, label="mid", hjust=0.5, size=3) +
+  # annotate("text", y=5,x=0.2, label="least", hjust=.5, size=3, angle=90) +
+  # annotate("text", y=1,x=0.2, label="most", hjust=0.5, size=3, angle=90) +
+  annotate("text", y=3,x=-.1, label="expected", hjust=0.5, size=2.5, angle=90) +
+  # annotate("text", x=5,y=0.2, label="least", hjust=.5, size=3) +
+  annotate("text", y=3,x=-.5, label="", hjust=0.5, size=4, angle=90) +
+  
   annotate("text", x=6.5,y=0, label="", hjust=1, size=2) +
+  annotate("text", y=5,x=0, label="", hjust=.5, size=2) +
+  
   # annotate("text", y=3,x=5.8, label="IMD of driver", hjust=.5, vjust=0, size=3.5, angle=270) +
   # annotate("text", y=6,x=3, label="IMD of pedestrian", hjust=.5, vjust=1, size=3.5) +
   scale_fill_distiller(palette="Blues", direction=1, guide="none") +
+  
   coord_equal() +
-  labs(subtitle="Expected") +
+  #labs(subtitle="Col marginals") +
   theme(
     plot.margin = unit(c(0,0,0,0), "cm"),
-    plot.subtitle=element_text(family = "Avenir Next", size=12),
+    plot.subtitle=element_text(family = "Avenir Book", size=8),
     axis.text.x=element_blank(), 
     axis.text.y = element_blank(), 
     axis.title.x = element_blank(),
     axis.title.y = element_blank(),
-    axis.line = element_blank(),
+    axis.line= element_blank(),
     legend.position="right")
+
+
 
 
 plot_imd_marginal_col <- plot_data |> 
   ggplot(aes(x=casualty_quintile, y=driver_quintile)) +
   geom_point()+
-  geom_tile(aes(fill=col_marginal), colour="#707070", size=.2) +
-  annotate("text", x=5.5,y=0.2, label="least", hjust=1, size=3) +
-  annotate("text", x=0.5,y=0.2, label="most", hjust=0, size=3) +
-  annotate("text", y=5.5,x=0.2, label="least", hjust=1, size=3, angle=90) +
-  annotate("text", y=0.5,x=0.2, label="most", hjust=0, size=3, angle=90) +
-  annotate("text", y=5.5,x=0, label="", hjust=1, size=2) +
+  geom_tile(aes(fill=col_marginal), colour="#707070", size=.1) +
+  
+  # annotate("text", x=1,y=0.2, label="most", hjust=0.5, size=3) +
+  # annotate("text", x=3,y=0.2, label="mid", hjust=0.5, size=3) +
+  # annotate("text", y=5,x=0.2, label="least", hjust=.5, size=3, angle=90) +
+  # annotate("text", y=1,x=0.2, label="most", hjust=0.5, size=3, angle=90) +
+  annotate("text", y=3,x=-.1, label="col marginals", hjust=0.5, size=2.5, angle=90) +
+  # annotate("text", x=5,y=0.2, label="least", hjust=.5, size=3) +
+  annotate("text", y=3,x=-.5, label="", hjust=0.5, size=4, angle=90) +
+  
   annotate("text", x=6.5,y=0, label="", hjust=1, size=2) +
+  annotate("text", y=5,x=0, label="", hjust=.5, size=2) +
+  
   # annotate("text", y=3,x=5.8, label="IMD of driver", hjust=.5, vjust=0, size=3.5, angle=270) +
   # annotate("text", y=6,x=3, label="IMD of pedestrian", hjust=.5, vjust=1, size=3.5) +
   scale_fill_distiller(palette="Blues", direction=1, guide="none") +
-  coord_equal() +
-  labs(subtitle="Col marginals") +
+
+ coord_equal() +
+  #labs(subtitle="Col marginals") +
   theme(
     plot.margin = unit(c(0,0,0,0), "cm"),
-    plot.subtitle=element_text(family = "Avenir Next", size=12),
+    plot.subtitle=element_text(family = "Avenir Book", size=8),
     axis.text.x=element_blank(), 
     axis.text.y = element_blank(), 
     axis.title.x = element_blank(),
@@ -1817,29 +1404,55 @@ plot_imd_driver_resid <- plot_data |>
   #mutate(resid=if_else(resid>0, pmin(resid, 40), pmax(resid, -40))) |> 
   ggplot(aes(x=casualty_quintile, y=driver_quintile)) +
   geom_tile(aes(fill=resid), colour="#707070", size=.2) +
+  
+  annotate("text", x=1,y=0.2, label="most", hjust=0.5, size=3) +
+  annotate("text", x=3,y=0.2, label="mid", hjust=0.5, size=3) +
+  annotate("text", y=5,x=0.2, label="least", hjust=.5, size=3, angle=90) +
+  annotate("text", y=1,x=0.2, label="most", hjust=0.5, size=3, angle=90) +
+  annotate("text", y=3,x=0.2, label="mid", hjust=0.5, size=3, angle=90) +
+  annotate("text", x=5,y=0.2, label="least", hjust=.5, size=3) +
+  
+  annotate("text", x=6.5,y=0, label="", hjust=1, size=2) +
+  annotate("text", y=5,x=0, label="", hjust=.5, size=2) +
+  
   scale_fill_distiller(
-    palette="RdBu", direction=-1, limits=c(- max(plot_data$max_resid), max(plot_data$max_resid))) +
+    palette="RdBu", direction=-1, 
+    limits=c(- max(plot_data$max_resid), max(plot_data$max_resid)),
+    name="residuals"
+    ) +
   annotate("text", y=5.5,x=0, label="", hjust=1, size=2) +
   annotate("text", x=6.5,y=0, label="", hjust=1, size=2) +
-  annotate("text", y=3,x=5.8, label="IMD of driver", hjust=.5, vjust=0, size=3.5, angle=270) +
-  annotate("text", y=6,x=3, label="IMD of pedestrian", hjust=.5, vjust=1, size=3.5) +
+  # annotate("text", y=3,x=5.8, label="IMD of driver", hjust=.5, vjust=0, size=3.5, angle=270) +
+  # annotate("text", y=6,x=3, label="IMD of pedestrian", hjust=.5, vjust=1, size=3.5) +
+  annotate("text", y=3,x=5.8, label="", hjust=.5, vjust=0, size=3.5, angle=270) +
+  annotate("text", y=6,x=3, label="", hjust=.5, vjust=1, size=3.5) +
   labs(x="", subtitle="Obs vs Exp") +
   theme(
-    plot.subtitle=element_text(family = "Avenir Next", size=13),
-    axis.text.x=element_blank(), axis.text.y = element_blank(),  axis.title.y = element_blank(), legend.position="right", axis.line = element_blank(),
+    legend.text = element_text(size=8),
+    legend.title = element_text(size=8),
+    legend.position="bottom",
+    legend.key.height = unit(.4, "cm"),
+    legend.key.width = unit(.5, "cm"),
+    plot.subtitle=element_text(family = "Avenir Book", size=10),
+    axis.text.x=element_blank(), axis.text.y = element_blank(),  axis.title.y = element_blank(), axis.line = element_blank(),
         axis.title.x=element_blank(), plot.margin = unit(c(0,0,0,0), "cm")
-    )+
+    ) +
   coord_equal()
 
-plot <- (plot_imd_driver |  plot_imd_driver_resid) / 
-  (plot_spacer()) / 
-  (plot_imd_marginal_row | plot_imd_marginal_col | plot_imd_expected) +
-  plot_layout(heights=c(1,.05,.8))
+plot_cols <- plot_grid(plot_imd_expected / plot_imd_marginal_row / plot_imd_marginal_col) 
 
-ggsave(here("figs", "04", "imd_driver_cas.svg"), plot=plot,width=8, height=5)
+plot <- 
+  plot_grid(plot_imd_driver,  
+            plot_imd_driver_resid, plot_cols,  
+            rel_widths = c(1, 1, .75), 
+            rel_heights = c(1,1,1),
+            nrow=1)
 
-ggsave(here("figs", "04", "imd_driver_cas.png"), plot=plot,width=8, height=5, dpi=300)
 
+ggsave(here("figs", "04", "imd_driver_cas.png"), plot=plot,width=4.5, height=3.8, dpi=600)
+
+
+# 3.6 Plot model 2 -----------------
 
 plot_data <- ped_veh_complete |> 
   mutate(
@@ -1877,12 +1490,11 @@ plot_imd_driver_area_obs <- ped_veh_complete |>
   geom_tile(aes(fill=observed), colour="#707070", size=.2) +
   scale_fill_distiller(palette="Blues", direction=1) +
   facet_wrap(~crash_quintile, nrow=1) +
-#  theme_v_gds() +
   labs(x="IMD quintile of casualty", y="IMD quintile of driver", subtitle="Observed") +
   theme(axis.text.x=element_blank(), axis.text.y = element_blank(), 
         axis.title.x = element_blank(), axis.title.y = element_blank(),
         axis.line = element_blank(), legend.title=element_blank(), legend.position = "right",
-        plot.subtitle=element_text(family = "Avenir Next", size=13)) +
+        plot.subtitle=element_text(family = "Avenir Book", size=13)) +
   coord_equal()
 
 
@@ -1933,7 +1545,7 @@ plot_imd_driver_area_model <- demog_distances |>
   theme(axis.text.x=element_blank(), axis.text.y = element_blank(), 
         axis.title.x = element_blank(), axis.title.y = element_blank(),
         axis.line = element_blank(), legend.title=element_blank(), legend.position = "right",
-        plot.subtitle=element_text(family = "Avenir Next", size=13)) +
+        plot.subtitle=element_text(family = "Avenir Book", size=13)) +
   coord_equal()
 
 
@@ -1946,15 +1558,14 @@ plot_demog_dists <- demog_distances |>
   theme(axis.text.x=element_blank(), axis.text.y = element_blank(), 
         axis.title.x = element_blank(), axis.title.y = element_blank(),
         axis.line = element_blank(), legend.title=element_blank(), legend.position = "right",
-        plot.subtitle=element_text(family = "Avenir Next", size=13)) +
+        plot.subtitle=element_text(family = "Avenir Book", size=13)) +
   coord_equal()
 
 
 plot <- plot_imd_driver_area_obs / plot_demog_dists / plot_imd_driver_area_model
 
-ggsave(filename= here("figs", "04", "model_imd_location.svg"), plot=plot,width=9, height=7) 
 
-ggsave(filename= here("figs", "04", "model_imd_location.png"), plot=plot,width=9, height=7, dpi=300) 
+ggsave(filename= here("figs", "04", "model_imd_location.png"), plot=plot,width=8.5, height=6.8, dpi=500) 
 
 
 # plot_imd_driver_area_obs_local <- ped_veh |> 

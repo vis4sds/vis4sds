@@ -1,33 +1,33 @@
 ---
 title: "Chapter 01 Template"
-author: "Roger Beecham"
+author: "<insert-name>"
 format: html
 ---
 
 ## Introduction
 
-For each chapter of *vis4sds* there is an accompanying `.qmd` template, which provides scaffolding for completing the technical elements of each chapter and the accompanying additional *Tasks*.
+For each chapter of *vis4sds* there is an accompanying `.qmd` template, which provides scaffolding for completing the technical elements and any accompanying  tasks.
 
 ## Setup
 
-The code block below points to *the* core package you will use throughout the book. You may have already installed the `tidyverse`, with `install.packages("tidyverse")` and so simply need to make it available in session with `library(<package-name>)`.
+The code block below points to *the* core package you will use throughout the book. You may have already installed the `tidyverse`, with `install.packages("tidyverse")` and so simply need to make it available in session with `library(<package-name>)`. Notice that we have set `eval: true` and  `echo: true` -- the code will be executed and presented within the document when it is rendered.
 
 ```{r}
-#| echo: true
-#| eval: false
+#| echo: false
+#| eval: true
 # Bundle of packages for doing modern data analysis
 library(tidyverse)
 ```
 
 ## Plotting Anscombe's Quartet
 
-There was reasonably little in the way of data analysis in this first chapter. However, to demonstrate how code and analysis can be executed in `.qmd` files, we can plot the famous [Anscombe's Quartet](https://en.wikipedia.org/wiki/Anscombe%27s_quartet) datasets. When pointing to the `tidyverse` package, you actually automatically loaded these data. Should you wish to inspect them, type `View(anscombe)` in the R Console.
+There was reasonably little in the way of data analysis in this first chapter. However, to demonstrate how code and analysis can be executed in `.qmd` files, we can plot the famous [Anscombe's Quartet](https://en.wikipedia.org/wiki/Anscombe%27s_quartet) datasets. When pointing to the `tidyverse` package, you automatically loaded these data. Should you wish to inspect them, type `View(anscombe)` in the R Console.
 
 Below is some code for generating scatterplots of the Anscombe datasets. No need to worry about the code for the time being, but it consists of a bit of data reshaping using [`tidyr`](https://tidyr.tidyverse.org/), combined with a [`ggplot2`](https://ggplot2.tidyverse.org/) specification for generating the scatterplots.
 
 ```{r}
-#| echo: true
-#| eval: false
+#| echo: false
+#| eval: true
 anscombe |> 
   pivot_longer(
     everything(),

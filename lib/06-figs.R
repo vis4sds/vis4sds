@@ -104,7 +104,7 @@ hex_map |> ggplot() + geom_sf()
 
 cons_hex <- hex_map |> inner_join(cons_data |> st_drop_geometry() |> select(pcon19cd, region), by=c("cons_code"="pcon19cd"))
 st_write(cons_hex, here("../", "data", "ch6", "cons_hex.geojson"))
-
+cons_hex <- st_read(here("../", "data", "ch6", "cons_hex.geojson"))
 
 
 
@@ -136,7 +136,7 @@ cons_data <- cons_data |>
 
 write_csv(cons_data, here("../", "data", "ch6", "cons_data.csv"))
 
-
+cons_data <- read_csv(here("../", "data", "ch6", "cons_data.csv"))
 
 cons_data <- cons_data |> mutate(resid_uniform = leave-gb_leave)
 
@@ -765,7 +765,8 @@ plot <- #cons_data |> filter(constituency_name!="Orkney and Shetland") |>
   cons_hex |>   
   select(cons_code, region) |> 
   inner_join(permuted_data, by=c("cons_code"="pcon19cd")) |> 
-  mutate(id=factor(id, sample(ids)), id=paste0("p",as.numeric(id))) |> 
+  mutate(id=factor(id, sample(ids)), id=paste0("p",as.numeric(id)),
+         .resid=pmax(.resid,-.14)) |> 
   ggplot() +
   geom_sf(aes(fill=.resid), colour="#636363", linewidth=0.05)+
   geom_sf(data=. %>% group_by(region) %>% summarise(), colour="#636363", linewidth=0.2, fill="transparent")+
