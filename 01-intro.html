@@ -339,7 +339,6 @@ Laying out the data in a meaningful way, horizontally according to *weight* ($x$
  ![Plots of Anscombe's quartet](figs/01/anscombe_plot.svg){#fig-anscombe-plot width=100% fig-align="center"}
 
 
-
 Anscombe's is a deliberate example[^01-intro-2], but one can imagine many cases where important structure is missed or incorrect assumptions are made without data being subject to visual examination. The consequences are poorly specified models and potentially faulty claims. This is not to undermine the importance of numerical analysis. Numeric summaries that simplify patterns are extremely useful and Statistics has at its disposal an array of tools for helping to guard against making false claims from datasets -- a theme that we will return to in chapters [-@sec-model] and [-@sec-uncertainty] when we think critically about the use of visual approaches for building and evaluating model outputs. There remain, though, certain classes of relation and context that cannot be easily captured through statistics alone.
 
 [^01-intro-2]: Checkout @matejka_same_2017's Same Stats, Different Graphs paper for a fun take on this.
@@ -382,7 +381,7 @@ Watch [Jo Wood's TEDx](https://www.youtube.com/embed/FaRBUnO5PZI) talk demonstra
 <li>can be justified and explained through proper documentation</li>
 </ul>
 <p>If these goals are met, then it may be possible for others to use the code on new and different data to study whether the findings reported in one project might be consistent with another. Or alternatively to use the same data, but update the code to extend the original analysis. This model – generate findings, explore replicability in new contexts and re-analysis – is how knowledge development has always worked. However, to achieve this the data and procedures on which findings are generated must be made open and transparent.</p>
-<p>In this setting proprietary data analysis software that support point-and-click interaction, previously used widely in the social sciences, are problematic. First, point-and-click software are usually underpinned by code that is closed. It is not possible, and therefore less common, for the researcher to fully interrogate into the underlying procedures that are being implemented and the results need to be taken more or less on faith. Second, replicating and updating anayses in light of new data is chellenging. It would be tedious to make notes describing all interactions performed when working with a dataset via a point-and-click- interface.</p>
+<p>In this setting proprietary data analysis software that support point-and-click interaction, previously used widely in the social sciences, are problematic. First, point-and-click software are usually underpinned by code that is closed. It is not possible, and therefore less common, for the researcher to fully interrogate into the underlying procedures that are being implemented and the results need to be taken more or less on faith. Second, replicating and updating analyses in light of new data is challenging. It would be tedious to make notes describing all interactions performed when working with a dataset via a point-and-click- interface.</p>
 <p>As a declarative programming environment, it is very easy to provide such a provenance trail in R since this necessarily exists in the analysis scripts. But also, the <a href="https://en.wikipedia.org/wiki/Integrated_development_environment">Integrated Development Environments</a> (IDEs) through which R is accessed provide notebook environments that allow users to curate reproducible computational documents that blend <em>input code</em>, <em>explanatory prose</em> and <em>outputs</em>. Through the technical elements of this book, we will prepare these sorts of notebooks using <a href="https://quarto.org/">Quarto</a>.</p>
 </section></section></section><section id="techniques" class="level2" data-number="1.3"><h2 data-number="1.3" class="anchored" data-anchor-id="techniques">
 <span class="header-section-number">1.3</span> Techniques</h2>
@@ -530,8 +529,8 @@ format: html
 #| echo: true
 #| eval: false
 
-# The seetings above mean that any R code below
-# is not run (eval-uated),but printed (echo-ed)
+# The settings above mean that any R code below
+# is not run (eval-uated), but printed (echo-ed)
 # in this position when the .qmd doc is rendered.
 ```</code></pre>
 <p>A quick overview of the parameters:</p>
@@ -598,7 +597,7 @@ format: html
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Unlike <code>.qmd</code> everything within a script file is treated as code to be executed, unless it is commented with a <code>#</code>. Comments should be informative but paried back. As demonstrated above, it becomes somewhat tedious to read comments when they tend towards prose. For social science use cases, where code is largely written for analysis rather than software development, computational notebooks such as <code>.qmd</code> are preferred over R scripts.</p>
+<p>Unlike <code>.qmd</code> everything within a script file is treated as code to be executed, unless it is commented with a <code>#</code>. Comments should be informative but paired back. As demonstrated above, it becomes somewhat tedious to read comments when they tend towards prose. For social science use cases, where code is largely written for analysis rather than software development, computational notebooks such as <code>.qmd</code> are preferred over R scripts.</p>
 </div>
 </div>
 </section><section id="create-an-rstudio-project" class="level3" data-number="1.3.6"><h3 data-number="1.3.6" class="anchored" data-anchor-id="create-an-rstudio-project">

@@ -777,7 +777,7 @@ Imagine that the `gapminder` dataset reported values of `cases` separately by ge
 </ul>
 <section id="import" class="level3" data-number="2.3.1"><h3 data-number="2.3.1" class="anchored" data-anchor-id="import">
 <span class="header-section-number">2.3.1</span> Import</h3>
-<p>In the template file there is documentation on how to setup your R session with key packages – <code>tidyverse</code> , <code>fst</code>, <code>lubridate</code>, <code>sf</code>. The data were collected using the <a href="https://github.com/ropensci/bikedata"><code>bikedata</code></a> package. A subset of data from New York’s bikeshare scheme, <a href="https://www.citibikenyc.com/">Citibike</a>, were collected for this chapter and can be downloaded from the book’s acccompanying <a href="https://github.com/vis4sds/data">data repository</a>. Instructions for doing so are in the <a href="./files/02-template.qmd"><code>02-template.qmd</code></a> file.</p>
+<p>In the template file there is documentation on how to setup your R session with key packages – <code>tidyverse</code> , <code>fst</code>, <code>lubridate</code>, <code>sf</code>. The data were collected using the <a href="https://github.com/ropensci/bikedata"><code>bikedata</code></a> package. A subset of data from New York’s bikeshare scheme, <a href="https://www.citibikenyc.com/">Citibike</a>, were collected for this chapter and can be downloaded from the book’s accompanying <a href="https://github.com/vis4sds/data">data repository</a>. Instructions for doing so are in the <a href="./files/02-template.qmd"><code>02-template.qmd</code></a> file.</p>
 <!-- -- and also the [`bikedata`](https://github.com/ropensci/bikedata) package for accessing bikeshare data. -->
 <!-- Available via the `bikedata` package are trip and occupancy data for a number of bikeshare schemes (as below). We will work with data from New York's [Citibike](https://www.citibikenyc.com/) scheme for June 2020. A list of all cities covered by the `bikedata` package is below: -->
 <p>The code for reading in these data may be familiar to most readers. The <a href="https://here.r-lib.org/"><code>here</code></a> package, which reliably creates paths relative to a project’s root, is used to pass as a parameter to <code>read_csv()</code> and <code>read_fst()</code> – the locations at which the New York trips and stations data are stored. Notice that we use <em>assignment</em> (<code>&lt;-</code>), so data are loaded as objects and appear in the Environment pane of your RStudio window.</p>
@@ -903,7 +903,7 @@ Note
 </div>
 </div>
 </div>
-<p><code>dplyr</code> is most effective when its functions are chained together – you will see this shortly as we explore the New York bikeshare data. This chaining of functions can be achieved using the <em>pipe</em> operator (<code>|&gt;</code>). Pipes are used for passing information in a program. They take the output of a set of code (a <code>dplyr</code> specification) and make it the input of the next set (another <code>dplyr</code> specification). Pipes can be easily applied to <code>dplyr</code> functions and the functions of all packages that form the <code>tidyverse</code>. We mentioned in Chapter <a href="01-intro.html"><span>1</span></a> that <code>ggplot2</code> provides a framework for specifying a <em>layered grammar of graphics</em> (more on this in Chapter <a href="03-visual.html"><span>3</span></a>). Together with the pipe operator (<code>|&gt;</code>), <code>dplyr</code> supports a <em>layered grammar of data manipulation</em>. You will see this throughout the book as we develop and re-use code templates for performing some data manipulation that is then piped to a <code>ggplot2</code> specification for visual analysis.</p>
+<p><code>dplyr</code> is most effective when its functions are chained together – you will see this shortly as we explore the New York bikeshare data. This chaining of functions can be achieved using the <em>pipe</em> operator (<code>|&gt;</code>). Pipes are used for passing information in a program. They take the output of a set of code (a <code>dplyr</code> specification) and make it the input of the next set (another <code>dplyr</code> specification). Pipes can be easily applied to <code>dplyr</code> functions and the functions of all packages that form the <code>tidyverse</code>. We mentioned in Chapter <a href="01-intro.html"><span>1</span></a> that ggplot2 provides a framework for specifying a <em>layered grammar of graphics</em> (more on this in Chapter <a href="03-visual.html"><span>3</span></a>). Together with the pipe operator (<code>|&gt;</code>), <code>dplyr</code> supports a <em>layered grammar of data manipulation</em>. You will see this throughout the book as we develop and re-use code templates for performing some data manipulation that is then piped to a ggplot2 specification for visual analysis.</p>
 </section><section id="count-and-summarise-over-rows" class="level4 unnumbered"><h4 class="unnumbered anchored" data-anchor-id="count-and-summarise-over-rows">
 <code>count()</code> and <code>summarise()</code> over rows</h4>
 <p>Let’s use and combine some <code>dplyr</code> functions to generate statistical summaries of the New York bikeshare data. First we’ll count the number of trips made in June 2020 by gender. <code>dplyr</code> has a convenience function for counting, so we could run the code below, also in the <a href="./files/02-template.qmd"><code>02-template.qmd</code></a> for this chapter.</p>
@@ -1013,7 +1013,7 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Remembering that pipes (<code>|&gt;</code>) take the output of a set of code and make it the input of the next set, you will notice separate lines for each call to the pipe operator. This is good practice for supporting readability of your code, and for debugging and learning how your data is affected by each line of code. Especially if <code>dplyr</code> is new to you, we recommend you run each line of code, separated by a pipie (<code>|&gt;</code>) in the Console and observe how the dataset is changed.</p>
+<p>Remembering that pipes (<code>|&gt;</code>) take the output of a set of code and make it the input of the next set, you will notice separate lines for each call to the pipe operator. This is good practice for supporting readability of your code, and for debugging and learning how your data is affected by each line of code. Especially if <code>dplyr</code> is new to you, we recommend you run each line of code, separated by a pipe (<code>|&gt;</code>) in the Console and observe how the dataset is changed.</p>
 </div>
 </div>
 </section><section id="manipulate-dates-with-lubridate" class="level4 unnumbered"><h4 class="unnumbered anchored" data-anchor-id="manipulate-dates-with-lubridate">Manipulate dates with <a href="https://lubridate.tidyverse.org/"><code>lubridate</code></a>
@@ -1021,7 +1021,7 @@ Note
 <p>Let’s continue this investigation of trips by user-type by profiling how usage varies over time. To do this we will need to work with <code>date-time</code> variables. The <a href="https://lubridate.tidyverse.org/"><code>lubridate</code></a> package provides various convenience functions for this.</p>
 <p>In the code block below we extract the <em>day of week</em> and <em>hour of day</em> from the <code>start_time</code> variable using <code>lubridate</code>’s <a href="https://lubridate.tidyverse.org/reference/day.html">day accessor</a> functions. Documentation on these can be accessed in the usual way (<code>?&lt;function-name&gt;</code>). Next we count the number of trips made by hour of day, day of week and user-type. The summarised data frame will be re-used several times in our analysis, so we store it as an object with a suitable name (<code>ny_temporal</code>) using the assignment operator.</p>
 <div class="cell">
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Create an hour of day and day of week summary by gender </span></span>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Create an hour of day and day of week summary by gender</span></span>
 <span><span class="co"># and assign it the name "ny_temporal".</span></span>
 <span><span class="va">ny_temporal</span> <span class="op">&lt;-</span> <span class="va">ny_trips</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">mutate</span><span class="op">(</span></span>
@@ -1045,7 +1045,7 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Whether or not to store derived data tables, like the newly assigned <code>ny_temporal</code>, in a session is not an easy decision. You should avoid cluttering the Environment pane with many data objects. Often when generating charts it is necessary to create these sorts of derived tables as input data to <code>ggplot2</code>. Assigning derived data tables to the RStudio Environment pane each time an exploratory plot is created risks an unhelpfully large number of such tables. A general rule: if the derived table is to be used more than three times in a data analysis or is computationally intensive, create and assign it (<code>&lt;-</code>) as a named object.</p>
+<p>Whether or not to store derived data tables, like the newly assigned <code>ny_temporal</code>, in a session is not an easy decision. You should avoid cluttering the Environment pane with many data objects. Often when generating charts it is necessary to create these sorts of derived tables as input data to ggplot2. Assigning derived data tables to the RStudio Environment pane each time an exploratory plot is created risks an unhelpfully large number of such tables. A general rule: if the derived table is to be used more than three times in a data analysis or is computationally intensive, create and assign it (<code>&lt;-</code>) as a named object.</p>
 </div>
 </div>
 <p>In <a href="#fig-plot-temporal">Figure&nbsp;<span>2.2</span></a> these derived data are plotted. Code for creating this data graphic is in the template file. The plot demonstrates a familiar weekday-weekend pattern of usage. Trip frequencies peak in the morning and evening rush hours during weekdays and mid/late-morning and afternoon during weekends, with the weekday afternoon peak much larger than the morning peak. There are obvious differences in the type of trips made by <code>subscribers</code> versus <code>customers</code> – the temporal signature for <code>subscribers</code> appears to match more closely what one would expect of commuting behaviour.</p>
@@ -1053,7 +1053,7 @@ Note
 <div class="cell-output-display">
 <div id="fig-plot-temporal" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="figs/02/hod_dow.png" class="img-fluid figure-img" width="2250"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 2.2: Line charts generated with <code>ggplot2</code>. Plot data computed using <code>dplyr</code> and <code>lubridate</code>.</figcaption><p></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 2.2: Line charts generated with ggplot2. Plot data computed using <code>dplyr</code> and <code>lubridate</code>.</figcaption><p></p>
 </figure>
 </div>
 </div>
@@ -1150,7 +1150,7 @@ Note
 </div>
 </div>
 </div>
-<!-- ![Histograms generated with `ggplot2`. Plot data computed using `dplyr` and `lubridate`](figs/02/dist.svg){#fig-plot-dist width=100% fig-align="center"} -->
+<!-- ![Histograms generated with ggplot2. Plot data computed using `dplyr` and `lubridate`](figs/02/dist.svg){#fig-plot-dist width=100% fig-align="center"} -->
 <p>From the newly created distance variable, we can calculate the average (mean) trip distance for the 500,000 trips – 1.6km. This might seem very short, but remember that these are straight-line distances between pairs of docking stations. Ideally we would calculate network distances derived from cycle trajectories. A separate reason, discovered when generating a histogram on the <code>dist</code> variable, is that there are a large number of trips that start and end at the same docking station. Initially these might seem to be unsuccessful hires – people failing to undock a bike for example. We could investigate this further by paying attention to the docking stations at which same origin-destination trips occur, as in the code block below.</p>
 <div class="cell">
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ny_trips</span> <span class="op">|&gt;</span></span>
@@ -1180,7 +1180,7 @@ Note
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-plot-dist" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figs/02/dist.png" class="img-fluid figure-img" width="2000"></p>
+<figure class="figure"><p><img src="figs/02/dist.png" class="img-fluid figure-img" style="width:95.0%"></p>
 <p></p><figcaption aria-hidden="true" class="figure-caption">Figure 2.3: Citibike trip distances (straight-line km) for Subscriber and Customer cyclists.</figcaption><p></p>
 </figure>
 </div>
@@ -1200,7 +1200,7 @@ Note
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># get_age() depends on lubridate.</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://lubridate.tidyverse.org">lubridate</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Calulate time elapsed between two dates in years (age).</span></span>
+<span><span class="co"># Calculate time elapsed between two dates in years (age).</span></span>
 <span><span class="co"># yob : datetime object recording birth year.</span></span>
 <span><span class="co"># yref : datetime object recording reference year.</span></span>
 <span><span class="va">get_age</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">yob</span>, <span class="va">yref</span><span class="op">)</span> <span class="op">{</span></span>
@@ -1222,13 +1222,13 @@ Note
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-plot-speeds" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figs/02/speeds.png" class="img-fluid figure-img" width="2000"></p>
+<figure class="figure"><p><img src="figs/02/speeds.png" class="img-fluid figure-img" style="width:100.0%"></p>
 <p></p><figcaption aria-hidden="true" class="figure-caption">Figure 2.4: Citibike average trip speeds (approximate) by age, customer type and straight-line trip distance.</figcaption><p></p>
 </figure>
 </div>
 </div>
 </div>
-<!-- ![Line charts generated with `ggplot2`. Plot data computed using `dplyr` and `lubridate`.](figs/02/speeds.svg){#fig-plot-speeds width=100% fig-align="center"} -->
+<!-- ![Line charts generated with ggplot2. Plot data computed using `dplyr` and `lubridate`.](figs/02/speeds.svg){#fig-plot-speeds width=100% fig-align="center"} -->
 </section></section><section id="tidy" class="level3" data-number="2.3.3"><h3 data-number="2.3.3" class="anchored" data-anchor-id="tidy">
 <span class="header-section-number">2.3.3</span> Tidy</h3>
 
@@ -1283,7 +1283,7 @@ Note
 <li>
 <code>duration</code>: total duration in minutes (cumulative) of trips for observation type</li>
 </ul>
-<p>There are two functions for reshaping untidy data, from the <a href="https://tidyr.tidyverse.org/"><code>tidyr</code></a> package: <a href="https://tidyr.tidyverse.org/reference/pivot_longer.html"><code>pivot_longer()</code></a> and <a href="https://tidyr.tidyverse.org/reference/pivot_wider.html"><code>pivot_wider()</code></a>. <code>pivot_longer()</code> is used to tidy data in which observations are spread across columns; <code>pivot_wider()</code> to tidy data in which variables are spread across rows. The functions are especially useful in visual data analysis to fix messy data, but also to flexibly reshape data supplied to <code>ggplot2</code> specifications (more on this in Chapters <a href="03-visual.html"><span>3</span></a> and <a href="04-explore.html"><span>4</span></a>).</p>
+<p>There are two functions for reshaping untidy data, from the <a href="https://tidyr.tidyverse.org/"><code>tidyr</code></a> package: <a href="https://tidyr.tidyverse.org/reference/pivot_longer.html"><code>pivot_longer()</code></a> and <a href="https://tidyr.tidyverse.org/reference/pivot_wider.html"><code>pivot_wider()</code></a>. <code>pivot_longer()</code> is used to tidy data in which observations are spread across columns; <code>pivot_wider()</code> to tidy data in which variables are spread across rows. The functions are especially useful in visual data analysis to fix messy data, but also to flexibly reshape data supplied to ggplot2 specifications (more on this in Chapters <a href="03-visual.html"><span>3</span></a> and <a href="04-explore.html"><span>4</span></a>).</p>
 <p>To fix <code>ny_spread_rows</code>, we use <code>pivot_wider()</code> and pass to the function’s arguments the name of the problematic column and the column containing values used to populate the newly created columns.</p>
 <div class="cell">
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ny_spread_rows</span> <span class="op">|&gt;</span></span>
@@ -1304,7 +1304,7 @@ Note
 <span><span class="co">## 10        72       229 weekend     1  1.22     39.2</span></span>
 <span><span class="co">## # … with 205,506 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>To fix <code>ny_spread_columns</code> requires a little more thought. First we <code>pivot_longer()</code> on columns that are muddled with multiple variables. This results in a long and thin dataset similar to <code>ny_spread_rows</code> – each row is the origin-destination pair of trip with either a count, distance or duration recorded for trips occuring at weekdays or weekdays. The muddled variables, for example <code>dist_weekend</code> <code>duration_weekday</code>, now appear in the rows of a new column with the default title <code>name</code>. This column is separated on the <code>_</code> mark to create two new columns, <code>summary_type</code> and <code>wkday</code>, used in <code>pivot_wider()</code>.</p>
+<p>To fix <code>ny_spread_columns</code> requires a little more thought. First we <code>pivot_longer()</code> on columns that are muddled with multiple variables. This results in a long and thin dataset similar to <code>ny_spread_rows</code> – each row is the origin-destination pair of trip with either a count, distance or duration recorded for trips occurring at weekdays or weekdays. The muddled variables, for example <code>dist_weekend</code> <code>duration_weekday</code>, now appear in the rows of a new column with the default title <code>name</code>. This column is separated on the <code>_</code> mark to create two new columns, <code>summary_type</code> and <code>wkday</code>, used in <code>pivot_wider()</code>.</p>
 <div class="cell">
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ny_spread_columns</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">pivot_longer</span><span class="op">(</span>cols <span class="op">=</span> <span class="va">count_weekend</span><span class="op">:</span><span class="va">duration_weekday</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -1476,12 +1476,12 @@ Task
 </div>
 </section></section><section id="conclusions" class="level2" data-number="2.4"><h2 data-number="2.4" class="anchored" data-anchor-id="conclusions">
 <span class="header-section-number">2.4</span> Conclusions</h2>
-<p>Developing the vocabulary and technical skills to systematically describe and organise data is crucial to modern data analysis. This chapter has covered the fundamentals: that data consist of <em>observations</em> and <em>variables</em> of different types <span class="citation" data-cites="stevens_on_1946">(<a href="references.html#ref-stevens_on_1946" role="doc-biblioref">Stevens 1946</a>)</span> and that in order to work effectively with datasets, these data must be organised according to the rules of <em>tidy</em> data <span class="citation" data-cites="wickham_tidy_2014">(<a href="references.html#ref-wickham_tidy_2014" role="doc-biblioref">Wickham 2014</a>)</span>. Most of the content was dedicated to the techniques that enable these concepts to be operationalised. We covered how to download, transform and reshape a reasonably large dataset from New York’s <a href="">Citibike</a> scheme. In doing so, we generated insights that might inform further data collection and analysis activity. In the next chapter we will extend this conceptual and technical knowledge as we introduce the fundamentals of visual data analysis and <code>ggplot2</code>’s <em>grammar of graphics</em>.</p>
+<p>Developing the vocabulary and technical skills to systematically describe and organise data is crucial to modern data analysis. This chapter has covered the fundamentals: that data consist of <em>observations</em> and <em>variables</em> of different types <span class="citation" data-cites="stevens_on_1946">(<a href="references.html#ref-stevens_on_1946" role="doc-biblioref">Stevens 1946</a>)</span> and that in order to work effectively with datasets, these data must be organised according to the rules of <em>tidy</em> data <span class="citation" data-cites="wickham_tidy_2014">(<a href="references.html#ref-wickham_tidy_2014" role="doc-biblioref">Wickham 2014</a>)</span>. Most of the content was dedicated to the techniques that enable these concepts to be operationalised. We covered how to download, transform and reshape a reasonably large dataset from New York’s Citibike scheme. In doing so, we generated insights that might inform further data collection and analysis activity. In the next chapter we will extend this conceptual and technical knowledge as we introduce the fundamentals of visual data analysis and ggplot2’s <em>grammar of graphics</em>.</p>
 </section><section id="further-reading" class="level2" data-number="2.5"><h2 data-number="2.5" class="anchored" data-anchor-id="further-reading">
 <span class="header-section-number">2.5</span> Further Reading</h2>
 <p>There are many accessible introductions to the <code>tidyverse</code> for modern data analysis. Two excellent resources:</p>
 <ul>
-<li>Wickham, H., Çetinkaya-Rundel, M., Grolemund, G. 2023, “R for Data Science, 2nd Edition”, <em>Orielly</em>.
+<li>Wickham, H., Çetinkaya-Rundel, M., Grolemund, G. 2023, “R for Data Science, 2nd Edition”, <em>O’rielly</em>.
 <ul>
 <li>Chapter 4.</li>
 </ul>

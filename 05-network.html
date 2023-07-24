@@ -265,7 +265,7 @@ Knowledge
 <ul class="task-list">
 <li>
 <input type="checkbox" disabled="" checked="">
-Undestand the special structure and vocabulary used to represent network data.</li>
+Understand the special structure and vocabulary used to represent network data.</li>
 <li>
 <input type="checkbox" disabled="" checked="">
 Appreciate the strengths, weaknesses and trade-offs of network visualizations and of incorporating geographic context.</li>
@@ -311,7 +311,7 @@ Write <code>ggplot2</code> specifications to analyse spatial network origin-dest
 </section><section id="node-link-representations" class="level3" data-number="5.2.2"><h3 data-number="5.2.2" class="anchored" data-anchor-id="node-link-representations">
 <span class="header-section-number">5.2.2</span> Node-link representations</h3>
 <p>The most common class of network visualization used to represent network data are node-link diagrams. These depict graphs in two dimensions as a force-directed layout. Nodes are positioned such that those sharing greater connection – edges with greater frequencies – are closer than those that are less well-connected – that do not share edges with such large frequencies. Edges are drawn as lines connecting nodes, and so <em>node-link</em> diagrams.</p>
-<p>The left graphic in <a href="#fig-lines-geog">Figure&nbsp;<span>5.2</span></a> uses a force-directed layout to represent the travel-to-work data. Nodes, London boroughs, are sized according to the number of jobs and workers they contain and edges, commutes between boroughs, are represented as lines sized by commute frequency. As is often the case with node-link diagrams, the graphic looks complex. Job-rich borouhgs, Westminster and City of London, are labelled and have many connecting lines – most likely workers commuting-in from other London boroughs. Other more ‘residential’ boroughs (Lambeth and Wandsworth) are labelled. These two contain many connecting lines – likely residents commuting-out to other London boroughs most likely workers commuting-in from other London borough for work. That those labelled boroughs in force-directed space are also close to one-another in geographic space suggests that, as expected, between-borough commuting has a spatially dependent element.</p>
+<p>The left graphic in <a href="#fig-lines-geog">Figure&nbsp;<span>5.2</span></a> uses a force-directed layout to represent the travel-to-work data. Nodes, London boroughs, are sized according to the number of jobs and workers they contain and edges, commutes between boroughs, are represented as lines sized by commute frequency. As is often the case with node-link diagrams, the graphic looks complex. Job-rich boroughs, Westminster and City of London, are labelled and have many connecting lines – most likely workers commuting-in from other London boroughs. Other more ‘residential’ boroughs (Lambeth and Wandsworth) are labelled. These two contain many connecting lines – likely residents commuting-out to other London boroughs most likely workers commuting-in from other London borough for work. That those labelled boroughs in force-directed space are also close to one-another in geographic space suggests that, as expected, between-borough commuting has a spatially dependent element.</p>
 <p>To investigate this more directly it makes sense to <em>position</em> nodes with a geographic arrangement. In the right column of <a href="#fig-lines-geog">Figure&nbsp;<span>5.2</span></a>, nodes (boroughs) are placed in their exact geographic position (geometric centroid of boroughs) and line width and colour is used to encode edge frequency. Nodes are again represented with circles sized according to frequency (the total number of jobs and workers contained in the borough) and flow <em>direction</em> is encoded by making flow lines asymmetric <span class="citation" data-cites="wood_visualizing_2011">(following <a href="references.html#ref-wood_visualizing_2011" role="doc-biblioref">Wood, Slingsby, and Dykes 2011</a>)</span>: the straight ends are origins, the curved ends destinations.</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -322,7 +322,7 @@ Write <code>ggplot2</code> specifications to analyse spatial network origin-dest
 </div>
 </div>
 </div>
-<p>The geopraphic positioning of nodes adds context and the encoding of direction provides further detail. For example, the pattern of commuting into central London boroughs versus more peripheral boroughs – asymmetric flows into Westminster can just about be detected, more symmetric pattern between outer London boroughs. However, there are problems that affect the usefulness of the graphic. Self-contained flows – those living and working in the same borough – are not shown; the graphic is cluttered with a ‘hairball’ effect due to multiple overlapping lines; longer flows appear more visually dominant than are shorter flows, an unhelful artefact of the encoding; and aggregating to the somewhat arbitrary geometric centre of boroughs and drawing lines between these locations implies an undue level of spatial precision – the geographic pattern of commuting would likely look very different were individual flows encoded with precise OD locations of home and workplace.</p>
+<p>The geographic positioning of nodes adds context and the encoding of direction provides further detail. For example, the pattern of commuting into central London boroughs versus more peripheral boroughs – asymmetric flows into Westminster can just about be detected, more symmetric pattern between outer London boroughs. However, there are problems that affect the usefulness of the graphic. Self-contained flows – those living and working in the same borough – are not shown; the graphic is cluttered with a ‘hairball’ effect due to multiple overlapping lines; longer flows appear more visually dominant than are shorter flows, an unhelpful artefact of the encoding; and aggregating to the somewhat arbitrary geometric centre of boroughs and drawing lines between these locations implies an undue level of spatial precision – the geographic pattern of commuting would likely look very different were individual flows encoded with precise OD locations of home and workplace.</p>
 </section><section id="origin-destination-matrices" class="level3" data-number="5.2.3"><h3 data-number="5.2.3" class="anchored" data-anchor-id="origin-destination-matrices">
 <span class="header-section-number">5.2.3</span> Origin-Destination matrices</h3>
 <p>An alternative way to represent these edge frequencies is origin-destination matrices, as in <a href="#fig-reordered-matrix">Figure&nbsp;<span>5.4</span></a>. The columns are destinations, London boroughs into which residents commute for work; the rows are origins, London boroughs from which residents commute out for work. Edge frequencies are encoded using colour value – the darker the colour, the larger the number of commutes between those boroughs. Boroughs are ordered left-to-right and top-to-bottom according to the total number of jobs accessed in each borough.</p>
@@ -390,7 +390,7 @@ Task
 </ul>
 </div>
 </div>
-<!-- 
+<!--
 ::: {.callout-note}
 ## OD maps versus node-link diagrams
 The analysis above might give the impression that OD maps should be used in preference to node-link diagrams. As always, this depends on dataset and analysis task. In @fig-flowline-bike is a map displaying bikeshare flow data for the London Cycle Hire Scheme (LCHS), collected via the bikedata package. The LCHS consists of c.700 docking stations in London – so c. $700^2$ grid cells if the grid-within-grid layout of an OD map were to be used, which would certainly present a design challenge. If a synoptic overview of spatial patterns is necessary, the more intuitive node-link representation is perhaps more successful than the OD map in any case. Additionally, different from Census commutes, there is geographic precision in the spatial coordinates representing origins and destinations in the bikeshare dataset, and distance judgements seem important when exploring cycling trips -- an argument against the spatial distortion required by OD maps.
@@ -676,7 +676,7 @@ The analysis above might give the impression that OD maps should be used in pref
 <span><span class="co"># Plot displacement vectors.</span></span>
 <span><span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_sf</span><span class="op">(</span></span>
-<span>    data <span class="op">=</span> </span>
+<span>    data <span class="op">=</span></span>
 <span>    <span class="va">lon_geogs</span> <span class="op">|&gt;</span> <span class="fu">mutate</span><span class="op">(</span>type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">type</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"real"</span>, <span class="st">"grid"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>    <span class="fu">aes</span><span class="op">(</span>fill <span class="op">=</span> <span class="va">type</span>, colour <span class="op">=</span> <span class="va">type</span><span class="op">)</span>, linewidth <span class="op">=</span> <span class="fl">.2</span></span>
 <span>    <span class="op">)</span> <span class="op">+</span></span>
@@ -778,7 +778,7 @@ The analysis above might give the impression that OD maps should be used in pref
 <span>  <span class="fu">scale_fill_manual</span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"#08306b"</span>, <span class="st">"#67000d"</span><span class="op">)</span>, guide <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">coord_flip</span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The <code>ggplot2</code> spec:</p>
+<p>The ggplot2 spec:</p>
 <ol type="1">
 <li>
 <em>Data</em>: We create a staged dataset for plotting (<code>plot_data</code>). The different bar directions for workers/jobs is achieved by a slight hack – changing the polarity of counts by occupation depending on the summary <code>type</code>. Additionally in this staged dataset counts are further locally (borough-level) scaled. Note that we <code><a href="https://rdrr.io/r/stats/filter.html">filter()</a></code> on some selected boroughs.</li>
@@ -858,7 +858,7 @@ The analysis above might give the impression that OD maps should be used in pref
 <span>  <span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_sf</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>fill<span class="op">=</span><span class="va">resid</span><span class="op">)</span>, colour <span class="op">=</span> <span class="st">"#616161"</span>, size <span class="op">=</span> <span class="fl">0.15</span>, alpha <span class="op">=</span> <span class="fl">0.9</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_sf</span><span class="op">(</span></span>
-<span>    data <span class="op">=</span> <span class="va">.</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">bor_focus</span><span class="op">)</span>, </span>
+<span>    data <span class="op">=</span> <span class="va">.</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">bor_focus</span><span class="op">)</span>,</span>
 <span>    fill <span class="op">=</span> <span class="st">"transparent"</span>, colour <span class="op">=</span> <span class="st">"#373737"</span>, size <span class="op">=</span> <span class="fl">0.3</span></span>
 <span>    <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_text</span><span class="op">(</span></span>
@@ -894,7 +894,7 @@ The analysis above might give the impression that OD maps should be used in pref
 <li>Text labels for focus (workplace) boroughs are drawn in the bottom-right corner of larger cells. Note that the coordinate space here is that from the gridmap dataset and so the <em>x,y</em> location of borough labels are derived from the bounding box object (<code>bbox_grid</code>), calculated during data staging. Single letter annotations are also positioned where small origin cells match the focus borough. These additional labels are positioned using the grid centroids <code>o_x</code>, <code>o_y</code> from plot_data.</li>
 </ul>
 </li>
-<li>Marks: <code>geom_sf()</code> for drawing the small gridcell maps; <code>geom_text()</code> for drawing the labels.</li>
+<li>Marks: <code>geom_sf()</code> for drawing the small grid-cell maps; <code>geom_text()</code> for drawing the labels.</li>
 <li>Scale: <code>scale_fill_distiller()</code> for a diverging colour scheme using the ColorBrewer <code>RdBu</code> palette and made symmetrical on 0 by manually setting <code>limits()</code>.</li>
 <li>Facets: <code>facet_grid()</code> for effecting the map-within-map layout.</li>
 </ul>
@@ -903,7 +903,7 @@ The analysis above might give the impression that OD maps should be used in pref
 <div class="cell-output-display">
 <div id="fig-edges-odmap-borough" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="figs/05/edges_odmap_within.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 5.12: Commutes between London boroughs: difference maps by occupation type assuming <em>professional</em> and <em>non-professional</em> distribute uniformly within boroughs. <strong>TODO: annotate with key onbservations</strong></figcaption><p></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 5.12: Commutes between London boroughs: difference maps by occupation type assuming <em>professional</em> and <em>non-professional</em> distribute uniformly within boroughs. <strong>TODO: annotate with key observations</strong></figcaption><p></p>
 </figure>
 </div>
 </div>
