@@ -61,7 +61,7 @@ The Washington Post graphic is clearly *data rich*, encoding many more data item
 #| label: fig-wp-map
 #| echo: false
 #| out.width: 100%
-#| fig-cap: "Map of 2016 US presidential election results. Note that for copyright reasons this is a re-implementation of the original [Washington Post piece](https://www.washingtonpost.com/graphics/politics/2016-election/election-results-from-coast-to-coast/) in `ggplot2`. **TODO: reduce font size in annotations slighly**"
+#| fig-cap: "Map of 2016 US presidential election results. Note that for copyright reasons this is a re-implementation of the original [Washington Post piece](https://www.washingtonpost.com/graphics/politics/2016-election/election-results-from-coast-to-coast/) in ggplot2. **TODO: reduce font size in annotations slightly**"
 knitr::include_graphics("figs/03/wp_long.png", error = FALSE)
 ```
 <!-- ![Map of 2016 US presidential election results. Note that for copyright reasons this is a re-implementation of the original [Washington Post piece](https://www.washingtonpost.com/graphics/politics/2016-election/election-results-from-coast-to-coast/) in `ggplot2`.](figs/03/wp_long.png){#fig-wp-map width=100% fig-align="center"} -->
@@ -171,7 +171,7 @@ In @fig-gog-demo are three plots, accompanied by ggplot2 specifications used to 
 
 1. Start with a data frame, in this case 2019 General Election results for UK Parliamentary Constituencies. The data are passed to ggplot2 (`ggplot()`) using the pipe operator (`|>`). Also at this stage, we consider the variables to encode and their measurement <span style="color:#5A91CA;font-weight:bold">type</span> -- both `con_1719` and `leave_hanretty` are `ratio` scale variables.
 2. Next is the encoding (`mapping=aes()`), which determines how the data are to be mapped to visual <span style="color:#62B743;font-weight:bold">channels</span>. A scatterplot is a 2D representation in which horizontal and vertical position varies in a meaningful way, in response to the values of a dataset. Here the values of `leave_hanretty` are mapped along the x-axis and the values of `con_1719` are mapped along the y-axis.
-3. Finally, we represent individual data items with <span style="color:#E17637;font-weight:bold">marks</span> using the `geom_point` geometry.
+3. Finally, we represent individual data items with <span style="color:#E17637;font-weight:bold">marks</span> using the `geom_point()` geometry.
 
 In the middle plot, the grammar is updated such that the points are coloured according to `winning_party`, a variable of type categorical `nominal`. In the bottom plot constituencies that flipped from Labour-to-Conservative between 2017-19 are emphasised by varying the  `shape` (filled and not filled) and transparency (`alpha`) of points. `flipped` is labelled an `ordinal` variable, but strictly it is a `nominal` (binary) variable. In the plot, constituencies that flipped are given greater visual emphasis and so it is appropriate to call `flipped` an ordinal variable.
 
@@ -261,14 +261,14 @@ Implicit in the discussion above, and when making design decisions, is the impor
 
 ```{r}
 #| label: fig-wp-swing
-#| fig-cap: "Map of swing in 2016 US presidential election results. Note that for copyright reasons this is a re-implementation of the original [Washington Post piece](https://www.washingtonpost.com/graphics/politics/2016-election/election-results-from-coast-to-coast/) in `ggplot2`."
+#| fig-cap: "Map of swing in 2016 US presidential election results. Note that for copyright reasons this is a re-implementation of the original [Washington Post piece](https://www.washingtonpost.com/graphics/politics/2016-election/election-results-from-coast-to-coast/) in ggplot2."
 #| echo: false
 #| out.width: 100%
 
 include_graphics("figs/03/wp_spoke.png", error = FALSE)
 ```
 
-<!-- ![Map of swing in 2016 US presidential election results. Note that for copyright reasons this is a re-implementation of the original [Washington Post piece](https://www.washingtonpost.com/graphics/politics/2016-election/election-results-from-coast-to-coast/) in `ggplot2`.](figs/03/wp_spoke.png){#fig-wp-swing width=100% fig-align="center"} -->
+<!-- ![Map of swing in 2016 US presidential election results. Note that for copyright reasons this is a re-implementation of the original [Washington Post piece](https://www.washingtonpost.com/graphics/politics/2016-election/election-results-from-coast-to-coast/) in ggplot2.](figs/03/wp_spoke.png){#fig-wp-swing width=100% fig-align="center"} -->
 
 ::: {.callout-tip icon="false"}
 ## Task
@@ -423,7 +423,7 @@ Experimental work that tries to understand how encoded quantities are perceived 
 * *Saturation* : how much  of a colour there is.
 * *Luminance/Brightness* : how dark or light a colour is. -->
 
-The ultimate rule when using colour in data graphics is to use properties of colour that match the properties of the data. Categorical `nominal` data -- data that cannot be easily ordered -- should be encoded using discrete colours with no obvious order; so colour hue. Categorical `ordinal` data -- data whose categories can be ordered -- should be encoded with colours that contain an intrinsic order; saturation or brightness, usually allocated into gradients. `Quantitative` data -- data that can be ordered and contain values on a continuous scale -- should also be encoded with saturation or brightness, expressed on a continuous scale. As we will discover shortly, these principles are applied by default in `ggplot2`, along with access to perceptually uniform schemes.
+The ultimate rule when using colour in data graphics is to use properties of colour that match the properties of the data. Categorical `nominal` data -- data that cannot be easily ordered -- should be encoded using discrete colours with no obvious order; so colour hue. Categorical `ordinal` data -- data whose categories can be ordered -- should be encoded with colours that contain an intrinsic order; saturation or brightness, usually allocated into gradients. `Quantitative` data -- data that can be ordered and contain values on a continuous scale -- should also be encoded with saturation or brightness, expressed on a continuous scale. As we will discover shortly, these principles are applied by default in ggplot2, along with access to perceptually uniform schemes.
 
 ::: {.callout-note}
 ## On colour
@@ -498,9 +498,9 @@ bes_2019 |>
     ) |>
   # Use some regex to pull out party name.
   mutate(party=str_extract(party, "[^_]+")) |>
-  # Summerise over parties.
+  # Summarise over parties.
   group_by(party) |>
-  # Calculate vore share for each party.
+  # Calculate vote share for each party.
   summarise(vote_share=sum(votes, na.rm=TRUE)/sum(total_vote_19)) |>
   # Arrange parties descending on vote share.
   arrange(desc(vote_share))
@@ -532,8 +532,8 @@ data_gb <- bes_2019 |>
   filter(region != "Northern Ireland") |>
   mutate(
     # Recode to 0 Chorley incoming speaker, Buckingham outgoing speaker.
-    swing_con_lab=if_else(constituency_name %in% c("Chorley", "Buckingham"), 
-    0, 
+    swing_con_lab=if_else(constituency_name %in% c("Chorley", "Buckingham"),
+    0,
     0.5*((con_19-con_17)-(lab_19-lab_17))
     )
   )
@@ -604,8 +604,6 @@ This design exposition by [Lunzner and McNamara, 2020](http://tinlizzie.org/hist
 ::: -->
 
 
-
-
 ```{r}
 #| label: fig-hist-region
 #| fig-cap: "Histograms of Swing variable, grouped by region."
@@ -635,7 +633,7 @@ include_graphics("figs/03/bars.png", error = FALSE)
 
 Previously we calculated overall vote share by political party. We could continue the exploration of votes by region, re-using this code to generate plots displaying quantities but also comparing by region, using marks and encoding channels that are suitable for magnitudes.
 
-To generate a bar chart similar to the left of @fig-bars the `ggplot2` specification would be:
+To generate a bar chart similar to the left of @fig-bars the ggplot2 specification would be:
 
 ```{r}
 #| echo: true
@@ -693,7 +691,7 @@ data_gb |>
   facet_wrap(~region)
 ```
 
-Trying this for yourself, you will observe that the `ggplot2` internals do some thinking for us. Since `party` is a categorical variable, a categorical hue-based colour scheme is automatically applied. Try passing a quantitative variable (`fill=vote_share`) and see what happens; a quantitative colour gradient scheme is applied.
+Trying this for yourself, you will observe that the ggplot2 internals do some thinking for us. Since `party` is a categorical variable, a categorical hue-based colour scheme is automatically applied. Try passing a quantitative variable (`fill=vote_share`) and see what happens; a quantitative colour gradient scheme is applied.
 
 Clever as this is, when encoding political parties with colour, *symbolisation* is important. It makes sense to represent political parties using colours with which they are most commonly associated. We can override ggplot2's default colour by adding a `scale_fill_manual()` layer into which a vector of hex codes describing the colour of each political party is passed (`party_colours`). We also need to tell ggplot2 which element of `party_colours` to apply to which value of the `party` variable. In the code below, a derived table is generated summarising `vote_share` by political party and region. In the final line the `party` variable is recoded as a [`factor`](https://r4ds.had.co.nz/factors.html). You might recall from the last chapter that factors are categorical variables of fixed and orderable values -- `levels`. The call to `mutate()` recodes `party` as a factor variable and orders the levels according to overall vote share.
 
@@ -714,8 +712,8 @@ temp_party_shares_region <- data_gb |>
   summarise(vote_share=sum(votes, na.rm=TRUE)/sum(total_vote_19)) |>
   filter(party %in% c("con", "lab", "ld", "snp", "green", "brexit", "pc")) |>
   mutate(
-    party=factor(party, 
-        levels=c("con", "lab", "ld", "snp", "green", "brexit" "pc")
+    party=factor(party,
+        levels=c("con", "lab", "ld", "snp", "green", "brexit", "pc")
         )
     )
 ```
@@ -757,7 +755,7 @@ temp_party_shares_region |>
 
 ::: {.callout-note}
 ## Grammar of Graphics-backed visualization toolkits
-The idea behind visualization toolkits such as ggplot2 is to insert visual data analysis approaches into the Data Scientist's workflow. Rather than being overly concerned with low-level aspects of drawing, mapping to screen coordinates and scaling factors, the analyst instead focuses on aspects relevant to the analysis -- the variables in a dataset and how they will be variously encoded and conditioned using visuals to expose structure and effect comparison. Hadley Wickham talks about the type of workflow used throughout this book -- bits of `dplyr`  to prepare data for charting before being piped (`|>`) to a `ggplot2` specification -- as equivalent to a [grammar of interactive graphics](https://channel9.msdn.com/Events/useR-international-R-User-conference/useR2016/Towards-a-grammar-of-interactive-graphics).
+The idea behind visualization toolkits such as ggplot2 is to insert visual data analysis approaches into the Data Scientist's workflow. Rather than being overly concerned with low-level aspects of drawing, mapping to screen coordinates and scaling factors, the analyst instead focuses on aspects relevant to the analysis -- the variables in a dataset and how they will be variously encoded and conditioned using visuals to expose structure and effect comparison. Hadley Wickham talks about the type of workflow used throughout this book -- bits of `dplyr`  to prepare data for charting before being piped (`|>`) to a ggplot2 specification -- as equivalent to a [grammar of interactive graphics](https://channel9.msdn.com/Events/useR-international-R-User-conference/useR2016/Towards-a-grammar-of-interactive-graphics).
 
 The process of searching for, defining and inserting manual colour schemes for creating @fig-bars-region might seem inimical to this. Indeed we were reluctant to include this code so early -- there is some reasonably advanced `dplyr` and a little [regular expression](https://stat.ethz.ch/R-manual/R-devel/library/base/html/regex.html) in the data preparation code that you should not be overly concerned with. Having control of these slightly more low-level properties is sometimes necessary even for exploratory analysis, in this case for enabling appropriate and sensible *symbolisation*.
 :::
@@ -774,7 +772,7 @@ include_graphics("figs/03/scatters-con.png", error = FALSE)
 ```
 <!-- ![Plots of 2019 versus 2017 vote shares.](figs/03/scatters-con.svg){#fig-scatters-con width=100% fig-align="center"} -->
 
-<!-- In @sec-grammar we demonstrated how scatterplots are specified in `ggplot2`. Scatterplots are useful examples for introducing `ggplot2` specifications as they involve working with genuine  mark primitives (`geom_point()`) and can be built up using a wide range of encoding channels. -->
+<!-- In @sec-grammar we demonstrated how scatterplots are specified in ggplot2. Scatterplots are useful examples for introducing ggplot2 specifications as they involve working with genuine  mark primitives (`geom_point()`) and can be built up using a wide range of encoding channels. -->
 
 To continue the investigation of change in vote shares for the major parties between 2017 and 2019, @fig-scatters-con contains a scatterplot of Conservative vote share in 2019 (y-axis) against vote share in 2017 (x-axis). The graphic is annotated with a diagonal line. If constituencies voted in 2019 in exactly the same way as 2017, the points would converge on the diagonal, points above the diagonal indicate a larger Conservative vote share than 2017, those below the diagonal represent a smaller Conservative vote share than 2017. Points are coloured according to the winning party in 2019 and constituencies that flipped from Labour to Conservative are emphasised using transparency and shape.
 
@@ -819,7 +817,7 @@ data_gb |>
   )
 ```
 
-A general point from the code blocks in this chapter is of the importance of proficiency in `dplyr`. Throughout the book you will find yourself needing to calculate new variables, recode variables, and reorganise data frames before passing through to `ggplot2`.
+A general point from the code blocks in this chapter is of the importance of proficiency in `dplyr`. Throughout the book you will find yourself needing to calculate new variables, recode variables, and reorganise data frames before passing through to ggplot2.
 :::
 
 ### Plot geography
@@ -833,9 +831,9 @@ include_graphics("figs/03/map-winners.png", error = FALSE)
 ```
 <!-- ![Choropleth of elected parties in 2019 General Election.](figs/03/map-winners.png){#fig-map-winners width=100% fig-align="center"} -->
 
-Implicit in the data graphics above is that the composition of Conservative and Labour voting may be shisting. If so, then paying attention to the geography to voting, certainly to observed *changes* in voting between 2017 and 2019 elections (e.g. @fig-hist-region), may be instructive. We end the chapter by generating thematic maps of the results data.
+Implicit in the data graphics above is that the composition of Conservative and Labour voting may be shifting. If so, then paying attention to the geography to voting, certainly to observed *changes* in voting between 2017 and 2019 elections (e.g. @fig-hist-region), may be instructive. We end the chapter by generating thematic maps of the results data.
 
-To do this we need to genetae a join on the boundary dataset loaded at the start of this technical section (`cons_outline`):
+To do this we need to generate a join on the boundary dataset loaded at the start of this technical section (`cons_outline`):
 
 ```{r}
 #| echo: true
@@ -849,7 +847,7 @@ data_gb <- cons_outline |>
 ```
 
 
-The code for generating the [Choropleth maps](https://en.wikipedia.org/wiki/Choropleth_map) of winning party by constituency in @fig-map-winners:
+The code for generating the [choropleth maps](https://en.wikipedia.org/wiki/Choropleth_map) of winning party by constituency in @fig-map-winners:
 ```{r}
 #| echo: true
 #| eval: false
@@ -877,13 +875,13 @@ data_gb |>
   scale_fill_manual(values=party_colours)
 ```
 
-A breakdown of the `ggplot2` spec:
+A breakdown of the ggplot2 spec:
 
 1. *Data*: The `dplyr` code updates `data_gb` by recoding `winner_19` as a factor and defining a named vector of colours to supply to `scale_fill_manual()`.
 2. *Encoding*: No surprises here -- `fill` according to `winner_19`.
 3. *Marks*: `geom_sf()` is a special class of geometry. It draws objects using the contents of the `geometry` column. In this case `MULTIPOLYGON`, so read this as a *polygon* geometric primitive.
 4. *Coordinates*: `coord_sf` -- we set the coordinate system (CRS) explicitly. In this case [OS British National Grid](https://spatialreference.org/ref/epsg/osgb-1936-british-national-grid/).
-5. *Setting*: Constituency boundaries are subtly introduced by setting the `geom_sf()` mark to light grey (`colour="#eeeeee"`) with a thin (`size=0.01`) outline. On the map to the right outlines for regions are added as another `geom_sf` layer.
+5. *Setting*: Constituency boundaries are subtly introduced by setting the `geom_sf()` mark to light grey (`colour="#eeeeee"`) with a thin (`size=0.01`) outline. On the map to the right outlines for regions are added as another `geom_sf()` layer.
 
 In the third map of @fig-map-winners the transparency (`alpha`) of filled constituencies is varied according to the Swing variable. This does demonstrate that constituencies swinging most dramatically for Conservative (darker colours) are in the midlands and North of England and not in London and the South East. The pattern is nevertheless a subtle one; transparency (colour luminance / saturation) is not a highly effective visual channel. It may be worth applying the same encoding to Butler two-party swing as that used in the Washington Post graphic when characterising Republican-Democrat swing in 2016 US Elections (e.g. @beecham_using_2020).
 
@@ -917,10 +915,10 @@ names(party_colours) <- c("Conservative", "Labour", "Other")
 # Plot Swing map.
 data_gb |>
   mutate(
-    is_flipped=seat_change_1719 %in% 
+    is_flipped=seat_change_1719 %in%
        c("Conservative gain from Labour","Labour gain from Conservative"),
     elected=
-       if_else(!winner_19 %in% c("Conservative", "Labour"), "Other", 
+       if_else(!winner_19 %in% c("Conservative", "Labour"), "Other",
        as.character(winner_19)),
     swing_angle=get_radians(map_scale(swing_con_lab,min_shift,max_shift,135,45)
       )
@@ -940,15 +938,15 @@ data_gb |>
 A breakdown:
 
 1. *Data*: `data_gb` is updated with a boolean (`TRUE`/`FALSE`) variable identifying whether or not the Constituency flipped Con-Lab/Lab-Con between successive elections (`is_flipped`), and a variable simplifying the party elected to either Conservative, Labour or Other. `swing_angle` contains the angles used to orient the line marks. A convenience function (`map_scale()`)  pins the maximum Swing values in either direction to 45 degrees (max Swing to the right, Conservative) and 135 degrees (max Swing to the left, Labour).
-2. *Encoding*: `geom_sf()` is again filled by elected party. This encoding is made more subtle by adding transparency (`alpha=.2`). [`geom_spoke()`](https://ggplot2.tidyverse.org/reference/geom_spoke.html) is mapped to the geographic centroid of each Constituency (`bng_e` - easting, `bng_n` - northing), coloured according to elected party, sized according to whether the constituency flipped its vote and tilted or angled according to the `swing_angle` variable. 
+2. *Encoding*: `geom_sf()` is again filled by elected party. This encoding is made more subtle by adding transparency (`alpha=.2`). [`geom_spoke()`](https://ggplot2.tidyverse.org/reference/geom_spoke.html) is mapped to the geographic centroid of each Constituency (`bng_e` - easting, `bng_n` - northing), coloured according to elected party, sized according to whether the constituency flipped its vote and tilted or angled according to the `swing_angle` variable.
 3. *Marks*: `geom_sf()` for the constituency boundaries,  `geom_spoke()` for the angled line primitives.
 4. *Scale*: `geom_spoke()` primitives are sized to emphasise whether constituencies have flipped. The size encoding is censored to two values with `scale_size_ordinal()`. Passed to `scale_colour_manual()` and  `scale_fill_manual()` is the vector of `party_colours`.
 5. *Coordinates*: `coord_sf` -- the CRS is [OS British National Grid](https://spatialreference.org/ref/epsg/osgb-1936-british-national-grid/).
 6. *Setting*: The `radius` of `geom_spoke()` lines is a sensible default arrived at through trial and error, its `position` set using a newly created `centre_spoke` class.
 
-There are helper functions that must also be run to execute the ggplot2 spec above correctly. In order to position lines using `geom_spoke()` centred on their x,y location, we need to create a custom ggplot2 subclass. Details of how to use this are in the [03-template.qmd](./files/03-template.qmd) file. Again, this is somwhat involved for a chapter introducing ggplot2 for analysis. Nevertheless, hopefully you can see from the plot specification above that the principles of mapping data to visuals can be implemented straightforwardly in ggplot2 (via `aes()`):  lines marks for constituencies (`geom_spoke()`), positioned in `x`and `y` according to British National Grid easting and northings and oriented (`angle`) according to two-party Swing. 
+There are helper functions that must also be run to execute the ggplot2 spec above correctly. In order to position lines using `geom_spoke()` centred on their x,y location, we need to create a custom ggplot2 subclass. Details of how to use this are in the [03-template.qmd](./files/03-template.qmd) file. Again, this is somewhat involved for a chapter introducing ggplot2 for analysis. Nevertheless, hopefully you can see from the plot specification above that the principles of mapping data to visuals can be implemented straightforwardly in ggplot2 (via `aes()`):  lines marks for constituencies (`geom_spoke()`), positioned in `x`and `y` according to British National Grid easting and northings and oriented (`angle`) according to two-party Swing.
 
-<!-- 
+<!--
 ```{r}
 #| echo: true
 #| eval: false
@@ -961,7 +959,7 @@ get_radians <- function(degrees) {
 map_scale <- function(value, min1, max1, min2, max2) {
   return  (min2+(max2-min2)*((value-min1)/(max1-min1)))
 }
-# Position subclass for centred geom_spoke.
+# Position subclass for centred geom_spoke().
 # As per https://bit.ly/3yfXdKJ.
 position_centre_spoke <- function() PositionCentreSpoke
 PositionCenterSpoke <-
@@ -983,12 +981,12 @@ PositionCenterSpoke <-
 Visualization design is ultimately a process of decision-making. Data must be filtered and prioritised before being encoded with  marks, visual channels and symbolisation. The most successful data graphics are those that expose structure, connections and comparisons that could not be achieved easily via other, non-visual means. This chapter has introduced concepts -- a vocabulary, framework and empirically-informed guidelines -- that help support this decision-making process and that underpin modern visualization toolkits, ggplot2 especially. Through an analysis of UK 2019 General Election data, we have demonstrated how these concepts can be applied in a real data analysis.
 
 ## Further Reading
- 
+
 For a primer on visualization design principles:
 
-* Munzner, T. 2014. "Visualization Analysis and Design", *CRC Press*. 
+* Munzner, T. 2014. "Visualization Analysis and Design", *CRC Press*.
 
 For an introduction to ggplot2 and its relationship with @wilkinson_grammar_1999's *grammar of graphics*:
 
 * Wickham, H., Çetinkaya-Rundel, M., Grolemund, G. 2023, "R for Data Science, 2nd Edition", *Orielly*.
-  - Chapter 2.
+  - Chapters 2, 10.

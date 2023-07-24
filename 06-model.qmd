@@ -129,7 +129,7 @@ It is of course possible, and likely, that there is some some autocorrelation in
 ```{r}
 #| label: fig-pcps
 #| out.width: 70%
-#| fig-cap: "Parallel coordinate plot of constituency Leave vote and candidate explanatory variables. **TODO: Annotate with obsrvations. Leave and Remain constituencies do appear separable on selected expl variables.**"
+#| fig-cap: "Parallel coordinate plot of constituency Leave vote and candidate explanatory variables. **TODO: Annotate with observations. Leave and Remain constituencies do appear separable on selected expl variables.**"
 #| echo: false
 #| eval: true
 #| warning: false
@@ -215,7 +215,7 @@ For area-level regression models such as ours, it is usual for residuals to exhi
 * *Spatial dependence* in *variable values* over space. We know that the geography of GB is quite socially distinctive, so it is reasonable to expect, for example, the range in variables like *heavy industry* and *white* to be bounded to economic regions and metropolitan-versus-peripheral regional contexts.
 * *Spatial nonstationarity* in *processes* over space. It is possible that associations between variables might be grouped over space -- that the associations vary for different parts of the country. For example, high levels of *EU-born* migration might affect political attitudes, and thus area-level voting, differently in different parts of a country.
 
-We can test for and characterise [spatial autocorrelation](https://rspatial.org/raster/analysis/3-spauto.html) by performing a graphical inference test, a map line-up [@beecham_map_2017; @wickham_graphical_2010] against a null hypothesis of *complete spatial randomness* (CSR) in residuals. Here a plot of real data, the true map of residuals, is hidden amongst a set of decoys, in this case maps with the residual values randomly permuted around constitutencies. If the real map can be correctly identified from the decoys, then this lends statistical credibility to the claim that the observed data are not consistent with the null of CSR. Graphical line-up tests have been used in various domains, also to test regression assumptions [@loy_model_2017]. The map line-up in @fig-lineup demonstrates that there *is* very obviously spatial (and *regional*) autocorrelation in residuals, and therefore structure that our regression model misses.
+We can test for and characterise [spatial autocorrelation](https://rspatial.org/raster/analysis/3-spauto.html) by performing a graphical inference test, a map line-up [@beecham_map_2017; @wickham_graphical_2010] against a null hypothesis of *complete spatial randomness* (CSR) in residuals. Here a plot of real data, the true map of residuals, is hidden amongst a set of decoys, in this case maps with the residual values randomly permuted around constituencies. If the real map can be correctly identified from the decoys, then this lends statistical credibility to the claim that the observed data are not consistent with the null of CSR. Graphical line-up tests have been used in various domains, also to test regression assumptions [@loy_model_2017]. The map line-up in @fig-lineup demonstrates that there *is* very obviously spatial (and *regional*) autocorrelation in residuals, and therefore structure that our regression model misses.
 
 ```{r}
 #| label: fig-lineup
@@ -327,7 +327,7 @@ Explanatory variables describing the demographic composition of constituencies a
 #| echo: true
 #| eval: false
 # z-score transform explanatory variables before model specification.
-cons_data |> st_drop_geometry() |> 
+cons_data |> st_drop_geometry() |>
   mutate(
     across(.cols=c(younger:heavy_industry), .fns=~(.x-mean(.x))/sd(.x))
   )
@@ -339,9 +339,9 @@ In @fig-scatters and @fig-pcps associations between candidate explanatory variab
 
 ::: {.callout-tip icon="false"}
 ## Task
-Whilst the template provides code for reproducing the faceted scatterplots and parallel coordinate plots, there are some ommissions. You will notice that in @fig-pcps, two very high Leave and Remain constiuencies are highlighted -- presented in thicker red and blue and labbeled. 
+Whilst the template provides code for reproducing the faceted scatterplots and parallel coordinate plots, there are some omissions. You will notice that in @fig-pcps, two very high Leave and Remain constituencies are highlighted -- presented in thicker red and blue and labelled.
 
-Can you update the ggplot2 spec to create a similar effect. There are different ways of doing this, ut you may want to add a separate `geom_segment()` layer `filter()`-ed on these selected boroughs. The text annotations may be generated mannualy using `annotate()` or, derived from data using `geom_text()`. 
+Can you update the ggplot2 spec to create a similar effect. There are different ways of doing this, but you may want to add a separate `geom_segment()` layer `filter()`-ed on these selected boroughs. The text annotations may be generated manually using `annotate()` or, derived from data using `geom_text()`.
 
 :::
 
@@ -349,35 +349,35 @@ Can you update the ggplot2 spec to create a similar effect. There are different 
 
 ### Model tidily
 
-The most straightforward way of specifying a linear regression model is with the `lm()` function and `summary()` to extract regression coefficients. 
+The most straightforward way of specifying a linear regression model is with the `lm()` function and `summary()` to extract regression coefficients.
 
 ```{r}
 #| echo: true
 #| eval: false
 # z-score transform explanatory variables before model specification.
-model <- cons_data |> st_drop_geometry() |> 
+model <- cons_data |> st_drop_geometry() |>
   mutate(
     across(.cols=c(younger:heavy_industry), .fns=~(.x-mean(.x))/sd(.x))
-  ) %>% 
+  ) %>%
   lm(leave ~ degree, data=.)
 
 summary(model)
 # Call:
 # lm(formula = leave ~ degree, data = .)
-# 
+#
 # Residuals:
-#      Min       1Q   Median       3Q      Max 
-# -0.25521 -0.02548  0.01957  0.05143  0.11237 
-# 
+#      Min       1Q   Median       3Q      Max
+# -0.25521 -0.02548  0.01957  0.05143  0.11237
+#
 # Coefficients:
-#             Estimate Std. Error t value Pr(>|t|)    
+#             Estimate Std. Error t value Pr(>|t|)
 # (Intercept)  0.520583   0.002896  179.78   <2e-16 ***
 # degree      -0.088276   0.002898  -30.46   <2e-16 ***
 # ---
 # Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
-# 
+#
 # Residual standard error: 0.07279 on 630 degrees of freedom
-# Multiple R-squared:  0.5956,	Adjusted R-squared:  0.595 
+# Multiple R-squared:  0.5956,	Adjusted R-squared:  0.595
 # F-statistic: 927.9 on 1 and 630 DF,  p-value: < 2.2e-16
 ```
 
@@ -392,7 +392,7 @@ tidy(model)
 # # A tibble: 2 × 5
 # term        estimate std.error statistic   p.value
 # <chr>          <dbl>     <dbl>     <dbl>     <dbl>
-#   1 (Intercept)   0.521    0.00290     180.  0        
+#   1 (Intercept)   0.521    0.00290     180.  0
 # 2 degree       -0.0883   0.00290     -30.5 5.67e-126
 
 # glance() returns a single row containing summaries of model fit.
@@ -403,14 +403,14 @@ glance(model)
 #   1     0.596         0.595 0.0728      928. 5.67e-126     1   760. -1514. -1501.
 # # ℹ 3 more variables: deviance <dbl>, df.residual <int>, nobs <int>
 
-# augment() returns a data frame of residuals and predictions (fitted values) 
+# augment() returns a data frame of residuals and predictions (fitted values)
 # for the model realisation.
 augment(model)
 # # A tibble: 632 × 8
 # leave  degree .fitted   .resid    .hat .sigma   .cooksd .std.resid
 # <dbl>   <dbl>   <dbl>    <dbl>   <dbl>  <dbl>     <dbl>      <dbl>
 #   1 0.579 -0.211    0.539  0.0398  0.00165 0.0728 0.000247       0.547
-# 2 0.678 -0.748    0.587  0.0914  0.00247 0.0728 0.00195        1.26 
+# 2 0.678 -0.748    0.587  0.0914  0.00247 0.0728 0.00195        1.26
 # 3 0.386  1.63     0.376  0.00957 0.00582 0.0729 0.0000509      0.132
 # 4 0.653 -0.964    0.606  0.0473  0.00306 0.0728 0.000648       0.650
 # ...
@@ -423,13 +423,13 @@ Example code:
 ```{r}
 #| echo: true
 #| eval: false
-single_model_fits <-  cons_data |> st_drop_geometry() |> 
+single_model_fits <-  cons_data |> st_drop_geometry() |>
   mutate(
     across(c(younger:heavy_industry), ~(.x-mean(.x))/sd(.x))
-  ) |> 
+  ) |>
   pivot_longer(
     cols=younger:heavy_industry, names_to="expl_var", values_to="z_score"
-    ) |> 
+    ) |>
   nest(data=-expl_var) |> # Nest to generate list-column by expl_var.
   mutate(
     # Use map() to iterate over the list of datasets.
@@ -442,7 +442,7 @@ single_model_fits <-  cons_data |> st_drop_geometry() |>
     values=map(model, augment),
   )
 
-single_model_fits |> 
+single_model_fits |>
   unnest(cols = fits) |>  # unnest output from glance.
   select(-c(data, model)) # remove other list-columns.
 
@@ -469,28 +469,28 @@ Code description:
 1. *Setup*: In order to generate separate models for separate explanatory variables, we need to generate [nested data frames](https://cran.r-project.org/web/packages/tidyr/vignettes/nest.html). These are data frames stored in a special type of column (a `list-column`) in which the values of the column is a list of data frames -- in this case one for each explanatory variable that we would like to compute a model over. You can think of parameterising `nest()` in a similar way to `group_by()`. We first `pivot_longer()` to generate a data frame where each observation contains the recorded Leave vote for a constituency and its corresponding `z_score` value for each explanatory variable.  There are 10 explanatory variables and so `nest()` returns a data frame with the dimensions `10x2` -- a variable identifying the explanatory variable on which the model is to be built (`expl_var`) and a `list-column`, each element containing a data frame  with the dimensions `632x13`.
 2. *Build model*: In `mutate()`, `purrr`'s [`map()`](https://purrr.tidyverse.org/reference/map.html) function is used to iterate over the list of datasets and fit a model to each nested dataset. The new column `model` is a `list-column` this time containing a list of model objects.
 3. *Generate outputs*: Next, the different model outputs can be generated using `glance(), tidy(), augment()`, with `map()` to iterate over the list of model objects. The new columns are now `list-columns` of data frames containing model outputs.
-4. *Extract outputs*: Finally, we want to variously extract the values from these nested data. This can be achieved using `unnest()` and supplying to the `cols` argument the names of the `list-columns` that we want to flatten over. 
+4. *Extract outputs*: Finally, we want to variously extract the values from these nested data. This can be achieved using `unnest()` and supplying to the `cols` argument the names of the `list-columns` that we want to flatten over.
 
 ### Plot models tidily
 
-In @fig-outputs estimated regression coefficient models are plotted from a multivariate model, annoted with 95% Confidernce Intervals. The ggplot specification is reasonably straightforward.
+In @fig-outputs estimated regression coefficient models are plotted from a multivariate model, annotated with 95% Confidence Intervals. The ggplot specification is reasonably straightforward.
 
-The code for @fig-outputs: 
+The code for @fig-outputs:
 
 ```{r}
 #| echo: true
 #| eval: false
-model <- cons_data |> st_drop_geometry() |> 
+model <- cons_data |> st_drop_geometry() |>
   mutate(across(c(younger:heavy_industry), ~(.x-mean(.x))/sd(.x))) %>%
   lm(
-    leave ~ degree + eu_born + white  + no_car + not_good_health + heavy_industry, 
+    leave ~ degree + eu_born + white  + no_car + not_good_health + heavy_industry,
      data=.)
 
-tidy(model) |> 
-  filter(term != "(Intercept)") |> 
+tidy(model) |>
+  filter(term != "(Intercept)") |>
   ggplot(
     aes(x=reorder(term, -estimate),
-        y=estimate,ymin=estimate-1.96*std.error, 
+        y=estimate,ymin=estimate-1.96*std.error,
         ymax=estimate+1.96*std.error)
         ) +
   geom_pointrange() +
@@ -507,25 +507,25 @@ The plot specification:
 
 ### Extended model terms
 
-To inclide a fixed effect (FE) term on region, the `region` variable is simply added as a variable to `lm()`. However, we must convert it to a factor variable (this has the effect of creating dummies on each value of `region`). Default behaviour within `lm()` is to hold back a reference value (of region) with FE regression coefficients describing the effect on the outcome of a constituency located in a given region relative to the refence region.  So the reference region (intercept) in the model below is East Midlands -- the first in the factor to appear alphabetically. The signed coefficient estimates for regions identifies whether, after controlling for variation in demographics, the Leave vote for a particular region is expected to be higher or lower than this. 
+To include a fixed effect (FE) term on region, the `region` variable is simply added as a variable to `lm()`. However, we must convert it to a factor variable (this has the effect of creating dummies on each value of `region`). Default behaviour within `lm()` is to hold back a reference value (of region) with FE regression coefficients describing the effect on the outcome of a constituency located in a given region relative to the reference region.  So the reference region (intercept) in the model below is East Midlands -- the first in the factor to appear alphabetically. The signed coefficient estimates for regions identifies whether, after controlling for variation in demographics, the Leave vote for a particular region is expected to be higher or lower than this.
 
 ```{r}
 #| echo: true
 #| eval: false
-cons_data |> st_drop_geometry() |> 
+cons_data |> st_drop_geometry() |>
   mutate(
-    across(c(younger:heavy_industry), ~(.x-mean(.x))/sd(.x)), 
+    across(c(younger:heavy_industry), ~(.x-mean(.x))/sd(.x)),
     region=factor(region)) %>%
   lm(
-    leave ~ 
-       region + degree + eu_born + white  + no_car + not_good_health + heavy_industry, 
-     data=.) |> 
+    leave ~
+       region + degree + eu_born + white  + no_car + not_good_health + heavy_industry,
+     data=.) |>
   tidy()
 
 # # A tibble: 17 × 5
 # term                           estimate std.error statistic  p.value
 # <chr>                             <dbl>     <dbl>     <dbl>    <dbl>
-#   1 (Intercept)                     0.530     0.00581    91.3   0       
+#   1 (Intercept)                     0.530     0.00581    91.3   0
 # 2 regionEast of England           0.00363   0.00787     0.462 6.45e- 1
 # 3 regionLondon                    0.0654    0.00948     6.90  1.30e-11
 # 4 regionNorth East                0.00482   0.00945     0.510 6.10e- 1
@@ -541,22 +541,21 @@ cons_data |> st_drop_geometry() |>
 # 14 white                           0.0303    0.00314     9.66  1.18e-20
 # 15 no_car                         -0.0336    0.00292   -11.5   6.50e-28
 # 16 not_good_health                 0.0102    0.00331     3.07  2.24e- 3
-# 17 heavy_industry                  0.0132    0.00266     4.96  9.23e- 7   
+# 17 heavy_industry                  0.0132    0.00266     4.96  9.23e- 7
 ```
-
 
 We want our model to represent a dummy for every area and so we add `-1` to the specification. Doing this removes the intercept (reference region), and this is why $R^2$ is no longer meaningful.
 
 ```{r}
 #| echo: true
 #| eval: false
-cons_data |> st_drop_geometry() |> 
+cons_data |> st_drop_geometry() |>
   mutate(
-    across(c(younger:heavy_industry), ~(.x-mean(.x))/sd(.x)), 
+    across(c(younger:heavy_industry), ~(.x-mean(.x))/sd(.x)),
     region=factor(region)) %>%
-  lm(leave ~ 
-       region + degree + eu_born + white  + no_car + not_good_health + heavy_industry -1, 
-     data=.) |> 
+  lm(leave ~
+       region + degree + eu_born + white  + no_car + not_good_health + heavy_industry -1,
+     data=.) |>
  glance()
 
 # # A tibble: 1 × 12
@@ -566,32 +565,32 @@ cons_data |> st_drop_geometry() |>
 # # ℹ 3 more variables: deviance <dbl>, df.residual <int>, nobs <int>
 ```
 
-To include an Interaction on region, we need to set a variable that will be used to represent these regional constants (`cons`), and the Interaction is added with the notation `:`. 
+To include an Interaction on region, we need to set a variable that will be used to represent these regional constants (`cons`), and the Interaction is added with the notation `:`.
 
 ```{r}
 #| echo: true
 #| eval: false
-model <- cons_data |> st_drop_geometry() |> 
+model <- cons_data |> st_drop_geometry() |>
   mutate(
     across(c(younger:heavy_industry), ~(.x-mean(.x))/sd(.x)),
     region=as.factor(region), cons=1) %>%
-  lm(leave ~ 0 +  
-       (cons + degree  + eu_born + white  + no_car + not_good_health + 
-       heavy_industry):(region), 
+  lm(leave ~ 0 +
+       (cons + degree  + eu_born + white  + no_car + not_good_health +
+       heavy_industry):(region),
      data=.
      )
 ```
 
-The model updated with the regional Interaction results in many more coefficients that are, as discussed, somewhat unstable. To plot them as in @fig-outputs-interact we minimally update the code used to generate the previous model outputs. 
+The model updated with the regional Interaction results in many more coefficients that are, as discussed, somewhat unstable. To plot them as in @fig-outputs-interact we minimally update the code used to generate the previous model outputs.
 
 ```{r}
 #| echo: true
 #| eval: false
 
-tidy(model) |> 
-  separate(term, into= c("term", "region"), sep=":") |> 
-  mutate(region=str_remove(region,"region")) |> 
-  filter(term!="cons") |> 
+tidy(model) |>
+  separate(term, into= c("term", "region"), sep=":") |>
+  mutate(region=str_remove(region,"region")) |>
+  filter(term!="cons") |>
   ggplot() +
   geom_col(aes(x=reorder(term, -estimate), y=estimate), alpha=.3)+
   geom_pointrange(aes(
@@ -613,7 +612,7 @@ The plot specification:
 
 ### Evaluate models with lineup plots
 
-In @fig-lineup-fe is a map line-up of the residuals from the model updated with a fixed effect on region. Using functional-style programming, and `tidymodels`, plot lineups can be generated with surprisingly paired-back code. 
+In @fig-lineup-fe is a map line-up of the residuals from the model updated with a fixed effect on region. Using functional-style programming, and `tidymodels`, plot lineups can be generated with surprisingly paired-back code.
 
 ```{r}
 #| label: fig-lineup-fe
@@ -631,42 +630,42 @@ First generate a model object and extract residuals from it, again making use of
 ```{r}
 #| echo: true
 #| eval: false
-model <- cons_data |> st_drop_geometry() |> 
-  select(-c(population, population_density)) |> 
+model <- cons_data |> st_drop_geometry() |>
+  select(-c(population, population_density)) |>
   mutate(
-    across(c(younger:heavy_industry), ~(.x-mean(.x))/sd(.x)),  
+    across(c(younger:heavy_industry), ~(.x-mean(.x))/sd(.x)),
     type="full_dataset", region=as.factor(region)
-    ) |> 
+    ) |>
   nest(data=-type) %>%
   mutate(
     # Include `-1` to eliminate the constant term and include a dummy for every area
-    model=map(data, 
+    model=map(data,
       ~lm(leave ~ region +  degree  + eu_born + white  + no_car + not_good_health + heavy_industry -1, data=.x)
       ),
-    # augment() for predictions/residuals
+    # augment() for predictions / residuals
     values=map(model, augment)
   )
 ```
 
-Next, generate permuted data by randomly shuffling residual values around constituencies. To do this requires some knowledge of the `rsample` package and its functions. We extact residuals from the `list-column` named `values`, remove redundant `list-columns` (with `select()`) and then `unnest()` on the original data and the new `resids` field to return to a dataet where each row is a constituency, but now containing residual values for the multivariate model. From here, we use the `permutations()` function from `rsample`  to shuffle the constituency IDs column randomly around, generating eight permuted datasets and appending the real data (`apparent=TRUE`). This results in a new data frame where each row contains a permuted dataset, stored in a `list-column` named `splits` and labelled via an `id` column. We need to `map()` over `splits` to convert each split object into a data frame, using `rsample`'s `analysis()` function. From here, we `unnest()` to generate a dataset where each row is constituency and its corresponding residual value (real or shuffled) for a given permutation `id`.
+Next, generate permuted data by randomly shuffling residual values around constituencies. To do this requires some knowledge of the `rsample` package and its functions. We extract residuals from the `list-column` named `values`, remove redundant `list-columns` (with `select()`) and then `unnest()` on the original data and the new `resids` field to return to a dataset where each row is a constituency, but now containing residual values for the multivariate model. From here, we use the `permutations()` function from `rsample`  to shuffle the constituency IDs column randomly around, generating eight permuted datasets and appending the real data (`apparent=TRUE`). This results in a new data frame where each row contains a permuted dataset, stored in a `list-column` named `splits` and labelled via an `id` column. We need to `map()` over `splits` to convert each split object into a data frame, using `rsample`'s `analysis()` function. From here, we `unnest()` to generate a dataset where each row is constituency and its corresponding residual value (real or shuffled) for a given permutation `id`.
 
 ```{r}
 #| echo: true
 #| eval: false
-permuted_data <- model |>  
+permuted_data <- model |>
   mutate(
     resids=map(values, ~.x |>  select(.resid))
-  ) |> 
-  select(-c(model, values)) |>  
-  unnest(cols=c(data,resids)) |>  
-  select(pcon19cd, .resid) |>  
-  permutations(permute=c(pcon19cd), times=8, apparent=TRUE) |> 
-  mutate(data=map(splits, ~rsample::analysis(.))) |> 
-  select(id, data) |> 
+  ) |>
+  select(-c(model, values)) |>
+  unnest(cols=c(data,resids)) |>
+  select(pcon19cd, .resid) |>
+  permutations(permute=c(pcon19cd), times=8, apparent=TRUE) |>
+  mutate(data=map(splits, ~rsample::analysis(.))) |>
+  select(id, data) |>
   unnest(cols=data)
 ```
 
-Now we have the permutated dataset, the lineup can be generated straightforwardly with standard ggplot2 code:
+Now we have the permuted dataset, the lineup can be generated straightforwardly with standard ggplot2 code:
 
 ```{r}
 #| echo: true
@@ -676,14 +675,14 @@ max_resid <- max(abs(permuted_data$.resid))
 # Store vector of permutation IDs for shuffling facets in the plots.
 ids <- permuted_data %>% pull(id) %>% unique()
 
-cons_hex |>   
-  select(cons_code, region) |> 
-  inner_join(permuted_data, by=c("cons_code"="pcon19cd")) |> 
-  mutate(id=factor(id, levels=sample(ids))) |> 
+cons_hex |>
+  select(cons_code, region) |>
+  inner_join(permuted_data, by=c("cons_code"="pcon19cd")) |>
+  mutate(id=factor(id, levels=sample(ids))) |>
   ggplot() +
   geom_sf(aes(fill=.resid), colour="#636363", linewidth=0.05)+
   geom_sf(
-    data=. %>% group_by(region) %>% summarise(), 
+    data=. %>% group_by(region) %>% summarise(),
     colour="#636363", linewidth=0.2, fill="transparent"
     )+
   facet_wrap(~id, ncol=3) +
@@ -693,7 +692,7 @@ cons_hex |>
 
 The plot specification:
 
-1. *Data*: `inner_join` the permuted data on the simple features file containing the hexagon cartogram boundaries (`cons_hex`). To generate the lineup we `facet_wrap()` on the permutation `id`. By default ggplot2 will draw facets according to a consistent order -- determined either by the numeric or alphabetical order of the facet variable's values, or by an order determined by a factor variable. Each time we plot the lineups, we want the order in which the real and decoy plots are to be drawn to vary. Therefore we convert `id` to a factor variable and shuffle the levels (the ordering) around, using the `sample()` function on a recorded vector of permuation IDs (`ids`) before piping to `ggplot()`. Note that we also record the maximum absolute value of the residuals to ensure that they are coloured symetrically on $0$ (`max_resid`). Finally, you may notice there are two `geom_sf()` calls in the plot specification. The second draws regional boundary outlines across each plot. This is achieved by collapsing the hex data on region (using `group_by()` and `summarise()`).
+1. *Data*: `inner_join` the permuted data on the simple features file containing the hexagon cartogram boundaries (`cons_hex`). To generate the lineup we `facet_wrap()` on the permutation `id`. By default ggplot2 will draw facets according to a consistent order -- determined either by the numeric or alphabetical order of the facet variable's values, or by an order determined by a factor variable. Each time we plot the lineups, we want the order in which the real and decoy plots are to be drawn to vary. Therefore we convert `id` to a factor variable and shuffle the levels (the ordering) around, using the `sample()` function on a recorded vector of permutation IDs (`ids`) before piping to `ggplot()`. Note that we also record the maximum absolute value of the residuals to ensure that they are coloured symmetrically on $0$ (`max_resid`). Finally, you may notice there are two `geom_sf()` calls in the plot specification. The second draws regional boundary outlines across each plot. This is achieved by collapsing the hex data on region (using `group_by()` and `summarise()`).
 2. *Encoding*: hexagons are filled according to the residual values (`fill=.resid`).
 3. *Marks*: `geom_sf()` for drawing the hexagon outlines. The first `geom_sf` colours each constituency on its residual value. The second does not encode any data values -- notice there is no `aes()` -- and is for drawing the regional outlines.   
 4. *Facets*: `facet_wrap()` on `region` in order to display coefficients estimated separately for each region.
@@ -725,7 +724,7 @@ On model building in the tidyverse:
 
 * Ismay, C. and Kim, A. 2020. "Statistical Inference via Data Science: A ModernDive into r and the Tidyverse" *CRC Press*. doi: [10.1201/9780367409913](https://doi.org/10.1201/9780367409913).
 
-* Kuhn, M. and Silge, J. 2023. "Tidy Modelling with R." *O'Reilly*. 
+* Kuhn, M. and Silge, J. 2023. "Tidy Modelling with R." *O'Reilly*.
 
 On functional programming in R and tidyverse:
 
