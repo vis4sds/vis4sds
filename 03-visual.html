@@ -221,6 +221,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </ul>
 </li>
   <li><a href="#conclusions" id="toc-conclusions" class="nav-link" data-scroll-target="#conclusions"> <span class="header-section-number">3.4</span> Conclusions</a></li>
+  <li><a href="#further-reading" id="toc-further-reading" class="nav-link" data-scroll-target="#further-reading"> <span class="header-section-number">3.5</span> Further Reading</a></li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/vis4sds/vis4sds/edit/master/03-visual.qmd" class="toc-action">Edit this page</a></p></div></div></nav>
     </div>
 <!-- main -->
@@ -263,7 +264,7 @@ Understand that there is a <em>grammar</em> of graphics, and that this grammar u
 Be aware of the vocabulary used by these toolkits – that of encoding data through visual channels.</li>
 <li>
 <input type="checkbox" disabled="" checked="">
-Be able to <em>select</em> appropriate visual channels given a data item’s measurement type.</li>
+Be able to select appropriate visual channels given a data item’s measurement type.</li>
 <li>
 <input type="checkbox" disabled="" checked="">
 Appreciate how visual channels and evidence of their encoding effectiveness can be used to evaluate data graphics.</li>
@@ -303,7 +304,7 @@ Watch [Miriah Meyer's](https://www.cs.utah.edu/~miriah/) TEDx talk, *Information
 <li>Represent complex datasets, exposing structure, connections and comparisons that could not be achieved easily via other means.</li>
 <li>Are data rich, presenting many numbers in a small space.</li>
 <li>Reveal patterns at several levels of detail, from broad overview to fine structure.</li>
-<li>Have elegance, emphasising dimensions of a dataset without extraneous details.</li>
+<li>Are concise, emphasising dimensions of a dataset without extraneous details.</li>
 <li>Generate an aesthetic response, encouraging people to engage with the data or question.</li>
 </ul>
 <p>Given these characteristics, consider the data graphic below (<a href="#fig-wp-map">Figure&nbsp;<span>3.1</span></a>), which presents an analysis of the 2016 US Presidential Election, or the <em>Peaks and Valleys of Trump and Clinton’s Support</em>. The map is reproduced from an article in the <a href="https://www.washingtonpost.com/graphics/politics/2016-election/election-results-from-coast-to-coast/">The Washington Post</a>. Included in the bottom margin is a choropleth map coloured according to party majority, more standard practice for reporting county-level voting.</p>
@@ -312,7 +313,7 @@ Watch [Miriah Meyer's](https://www.cs.utah.edu/~miriah/) TEDx talk, *Information
 <div class="cell-output-display">
 <div id="fig-wp-map" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="figs/03/wp_long.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 3.1: Map of 2016 US presidential election results. Note that for copyright reasons this is a re-implementation of the original <a href="https://www.washingtonpost.com/graphics/politics/2016-election/election-results-from-coast-to-coast/">Washington Post piece</a> in <code>ggplot2</code>.</figcaption><p></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 3.1: Map of 2016 US presidential election results. Note that for copyright reasons this is a re-implementation of the original <a href="https://www.washingtonpost.com/graphics/politics/2016-election/election-results-from-coast-to-coast/">Washington Post piece</a> in <code>ggplot2</code>. <strong>TODO: reduce font size in annotations slighly</strong></figcaption><p></p>
 </figure>
 </div>
 </div>
@@ -414,16 +415,16 @@ kbl(data) |> kable_minimal() |> column_spec(2, extra_css = "font-family:  Monosp
 <p>To demonstrate this, let’s generate some scatterplots based on the 2019 General Election data. Two variables worth exploring for association here are: <code>con_1719</code>, the change in Conservative vote share by constituency between 2017-2019, and <code>leave_hanretty</code>, the size of the Leave vote in the 2016 EU referendum, estimated at Parliamentary Constituency level <span class="citation" data-cites="hanretty_areal_2017">(see <a href="references.html#ref-hanretty_areal_2017" role="doc-biblioref">Hanretty 2017</a>)</span>.</p>
 <p>In <a href="#fig-gog-demo">Figure&nbsp;<span>3.3</span></a> are three plots, accompanied by ggplot2 specifications used to generated them. Reading-off the graphics and the associated code, you should get a feel for how ggplot2 specifications are constructed:</p>
 <ol type="1">
-<li>Start with a data frame, in this case 2019 General Election results for UK Parliamentary Constituencies. The data are passed to the ggplot2 spec using the pipe operator (<code>|&gt;</code>). Also at this stage, we consider the variables to encode and their measurement <span style="color:#5A91CA;font-weight:bold">type</span> – both <code>con_1719</code> and <code>leave_hanretty</code> are <code>ratio</code> scale variables.</li>
+<li>Start with a data frame, in this case 2019 General Election results for UK Parliamentary Constituencies. The data are passed to ggplot2 (<code>ggplot()</code>) using the pipe operator (<code>|&gt;</code>). Also at this stage, we consider the variables to encode and their measurement <span style="color:#5A91CA;font-weight:bold">type</span> – both <code>con_1719</code> and <code>leave_hanretty</code> are <code>ratio</code> scale variables.</li>
 <li>Next is the encoding (<code>mapping=aes()</code>), which determines how the data are to be mapped to visual <span style="color:#62B743;font-weight:bold">channels</span>. A scatterplot is a 2D representation in which horizontal and vertical position varies in a meaningful way, in response to the values of a dataset. Here the values of <code>leave_hanretty</code> are mapped along the x-axis and the values of <code>con_1719</code> are mapped along the y-axis.</li>
 <li>Finally, we represent individual data items with <span style="color:#E17637;font-weight:bold">marks</span> using the <code>geom_point</code> geometry.</li>
 </ol>
-<p>In the middle plot, the grammar is updated such that the points are coloured according to <code>winning_party</code>, a variable of type categorical <code>nominal</code>. In the bottom plot constituencies that flipped from Labour-to-Conservative between 2017-19 are emphasised by varying the transparency (<code>alpha</code>) of points. <code>flipped</code> is labelled an <code>ordinal</code> variable, but strictly it is a <code>nominal</code> (binary) variable. In the plot, constituencies that flipped are given greater visual emphasis and so it is appropriate to call <code>flipped</code> an ordinal variable.</p>
+<p>In the middle plot, the grammar is updated such that the points are coloured according to <code>winning_party</code>, a variable of type categorical <code>nominal</code>. In the bottom plot constituencies that flipped from Labour-to-Conservative between 2017-19 are emphasised by varying the <code>shape</code> (filled and not filled) and transparency (<code>alpha</code>) of points. <code>flipped</code> is labelled an <code>ordinal</code> variable, but strictly it is a <code>nominal</code> (binary) variable. In the plot, constituencies that flipped are given greater visual emphasis and so it is appropriate to call <code>flipped</code> an ordinal variable.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-gog-demo" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="figs/03/gog_demo_redesign.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 3.3: Plots, grammars and underlying ggplot2 specifications for the scatterplot.</figcaption><p></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 3.3: Plots, grammars and underlying ggplot2 specifications for the scatterplot. <strong>TODO: fix plot specs – plot 3 is using alpha as well as shape</strong></figcaption><p></p>
 </figure>
 </div>
 </div>
@@ -438,13 +439,13 @@ It is understandable if at this stage the specifications in @fig-gog-demo still 
 <!-- >  Effective data visualization design is concerned with representing data through marks and visual channels in a way that best conveys the properties of the data that are to be depicted.
 >
 > via [Jo Wood](https://www.gicentre.net/jwo/index) -->
-<p>You might have noticed that in our descriptions we introduced <span style="color:#E17637;font-weight:bold">marks</span> as another term for <em>geometry</em> and visual encoding <span style="color:#62B743;font-weight:bold">channels</span> as another term for <em>aesthetics</em>. We also paid special attention to the <span style="color:#5A91CA;font-weight:bold">data types</span> that are being encoded. <em>Marks</em> are graphical elements such as <em>bars</em>, <em>lines</em>, <em>points</em>, <em>ellipses</em> that can be used to represent data items. In ggplot2, these are accessed through the functions prefaced with <a href="https://ggplot2.tidyverse.org/reference/#section-geoms"><code>geom_*</code></a>. Visual <em>channels</em> are attributes such as <em>colour</em>, <em>size</em>, <em>position</em> that, when mapped to data, control the appearance of marks in response to the values of a dataset.</p>
-<p><em>Marks</em> and <em>channels</em> are terms used widely in Information Visualization, an academic discipline devoted to the study of data graphics, and most notably by Tamara <span class="citation" data-cites="munzner_visualization_2014">Munzner (<a href="references.html#ref-munzner_visualization_2014" role="doc-biblioref">2014</a>)</span> in her textbook <a href="https://www.routledge.com/Visualization-Analysis-and-Design/Munzner/p/book/9781466508910"><em>Visualization Analysis and Design</em></a>. <span class="citation" data-cites="munzner_visualization_2014">Munzner (<a href="references.html#ref-munzner_visualization_2014" role="doc-biblioref">2014</a>)</span>’s work synthesises over foundational research in Information Visualization and Cognitive Science testing how effective different visual channels are at supporting different tasks. <a href="#fig-munzner">Figure&nbsp;<span>3.4</span></a> is taken from <span class="citation" data-cites="munzner_visualization_2014">Munzner (<a href="references.html#ref-munzner_visualization_2014" role="doc-biblioref">2014</a>)</span> and lists the main visual channels with which data might be encoded. The grouping and order of the figure is meaningful. Channels are grouped according to the tasks to which they are best suited and then ordered according to their effectiveness at supporting those tasks. To the left are <em>magnitude:order</em> channels – those that are best suited to tasks aimed at quantifying data items. To the right are <em>identity:category</em> channels – those that are most suited to supporting tasks that involve isolating, grouping and associating data items.</p>
+<p>You might have noticed that in our descriptions we introduced <span style="color:#E17637;font-weight:bold">marks</span> as another term for <em>geometry</em> and visual encoding <span style="color:#62B743;font-weight:bold">channels</span> as another term for <em>aesthetics</em>. We also paid special attention to the <span style="color:#5A91CA;font-weight:bold">data types</span> that are being encoded. <em>Marks</em> are graphical elements such as <em>bars</em>, <em>lines</em>, <em>points</em>, <em>ellipses</em> that can be used to represent data items. In ggplot2, these are accessed through the function layers prefaced with <a href="https://ggplot2.tidyverse.org/reference/#section-geoms"><code>geom_*</code></a>. Visual <em>channels</em> are attributes such as <em>colour</em>, <em>size</em>, <em>position</em> that, when mapped to data, control the appearance of marks in response to the values of a dataset.</p>
+<p><em>Marks</em> and <em>channels</em> are terms used widely in Information Visualization, an academic discipline devoted to the study of data graphics, and most notably by Tamara <span class="citation" data-cites="munzner_visualization_2014">Munzner (<a href="references.html#ref-munzner_visualization_2014" role="doc-biblioref">2014</a>)</span> in her textbook <a href="https://www.routledge.com/Visualization-Analysis-and-Design/Munzner/p/book/9781466508910"><em>Visualization Analysis and Design</em></a>. <span class="citation" data-cites="munzner_visualization_2014">Munzner (<a href="references.html#ref-munzner_visualization_2014" role="doc-biblioref">2014</a>)</span>’s work synthesises over foundational research in Information Visualization and Cognitive Science testing how effective different visual channels are at supporting different tasks. <a href="#fig-munzner">Figure&nbsp;<span>3.4</span></a> is taken from <span class="citation" data-cites="munzner_visualization_2014">Munzner (<a href="references.html#ref-munzner_visualization_2014" role="doc-biblioref">2014</a>)</span> and lists the main visual channels with which data might be encoded. The grouping and order of the figure is meaningful. Channels are grouped according to the tasks to which they are best suited and then ordered according to their effectiveness at supporting those tasks. The top row displays <em>magnitude:order</em> channels – those that are best suited to tasks aimed at quantifying data items. The bottom row displays <em>identity:category</em> channels – those that are most suited to supporting tasks that involve isolating, grouping and associating data items.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-munzner" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figs/03/munzner.png" class="img-fluid figure-img" style="width:90.0%"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 3.4: Visual channels to which data items can be encoded, as they appear in <span class="citation" data-cites="munzner_visualization_2014">Munzner (<a href="references.html#ref-munzner_visualization_2014" role="doc-biblioref">2014</a>)</span>.</figcaption><p></p>
+<figure class="figure"><p><img src="figs/03/munzner_effect.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 3.4: Visual channels to which data items can be encoded, as they appear in <span class="citation" data-cites="munzner_visualization_2014">Munzner (<a href="references.html#ref-munzner_visualization_2014" role="doc-biblioref">2014</a>)</span>. <strong>TODO: Increase text size</strong></figcaption><p></p>
 </figure>
 </div>
 </div>
@@ -453,7 +454,7 @@ It is understandable if at this stage the specifications in @fig-gog-demo still 
 <!-- We can use this organisation of visual channels to make decisions on appropriate encodings given a variable's measurement level. If we wished to convey the magnitude of something, for example a quantitative (`ratio`) variable like the size of the Conservative vote share in a constituency, we might select a channel that has good quantitative effectiveness -- *position on a common scale* or *length*.  If we wished to also effectively identify and associate constituencies according to the political party that was elected, a categorical `nominal` variable, we might select a channel that has good associative properties such as *colour hue*. -->
 </section><section id="evaluating-designs" class="level3" data-number="3.2.4"><h3 data-number="3.2.4" class="anchored" data-anchor-id="evaluating-designs">
 <span class="header-section-number">3.2.4</span> Evaluating designs</h3>
-<p>The effectiveness rankings of visual channels in Figure <a href="#fig-munzner">Figure&nbsp;<span>3.4</span></a> are not simply based on Munzner’s preference. They are informed by detailed experimental work, <span class="citation" data-cites="cleveland_graphical_1984">Cleveland and McGill (<a href="references.html#ref-cleveland_graphical_1984" role="doc-biblioref">1984</a>)</span> and later replicated by <span class="citation" data-cites="heer_crowdsourcing_2010">Heer and Bostock (<a href="references.html#ref-heer_crowdsourcing_2010" role="doc-biblioref">2010</a>)</span>, which involved conducting controlled experiments testing people’s ability to make judgements from graphical elements. We can use <a href="#fig-munzner">Figure&nbsp;<span>3.4</span></a> to help make decisions around which data item to encode with which visual channel. This is particularly useful when designing data-rich graphics, where several data items are to be encoded simultaneously <span class="citation" data-cites="beecham_on_2021">(e.g. <a href="references.html#ref-beecham_on_2021" role="doc-biblioref">Beecham et al. 2021</a>)</span>. <a href="#fig-munzner">Figure&nbsp;<span>3.4</span></a> also offers a low cost way of <em>evaluating</em> different designs against their encoding effectiveness.</p>
+<p>The effectiveness rankings of visual channels in Figure <a href="#fig-munzner">Figure&nbsp;<span>3.4</span></a> are not simply based on Munzner’s preference. They are informed by detailed experimental work by <span class="citation" data-cites="cleveland_graphical_1984">Cleveland and McGill (<a href="references.html#ref-cleveland_graphical_1984" role="doc-biblioref">1984</a>)</span>, later replicated by <span class="citation" data-cites="heer_crowdsourcing_2010">Heer and Bostock (<a href="references.html#ref-heer_crowdsourcing_2010" role="doc-biblioref">2010</a>)</span>, which involved conducting controlled experiments testing people’s ability to make judgements from graphical elements. We can use <a href="#fig-munzner">Figure&nbsp;<span>3.4</span></a> to help make decisions around which data item to encode with which visual channel. This is particularly useful when designing data-rich graphics, where several data items are to be encoded simultaneously <span class="citation" data-cites="beecham_on_2021">(e.g. <a href="references.html#ref-beecham_on_2021" role="doc-biblioref">Beecham et al. 2021</a>)</span>. <a href="#fig-munzner">Figure&nbsp;<span>3.4</span></a> also offers a low cost way of <em>evaluating</em> different designs against their encoding effectiveness.</p>
 <p>To illustrate this, we can use Munzner’s ranking of channels to evaluate the Washington Post graphic discussed in <a href="#fig-wp-map">Figure&nbsp;<span>3.1</span></a>. <a href="#tab:wp-eval-size">Table 3.2</a> provides a summary of the encodings used in the graphic. US counties are represented using a peak-shaped <em>mark</em>. The key purpose of the graphic is to depict the geography of voting outcomes, and the most effective quantitative channel – position on an aligned scale – is used to order the county marks with a 2D geographic arrangement. With the positional channels taken, the two quantitive measures are encoded with the next highest ranked channel, 1D length: height varies according to number of <em>total votes cast</em> and width according to <em>margin size</em>. The marks are additionally encoded with two categorical variables: whether the county-level result was a <em>landslide</em> and also the <em>winning party</em>. Since the intention is to give greater visual saliency to counties that resulted in a <em>landslide</em>, this as an <code>ordinal</code> variable, encoded with a quantitative channel: 2D area. The <em>winning party</em>, a categorical <code>nominal</code> variable, is encoded using colour hue.</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -524,7 +525,7 @@ Visualization design trade-offs
 <p><span class="citation" data-cites="white_symbolization_2017">White (<a href="references.html#ref-white_symbolization_2017" role="doc-biblioref">2017</a>)</span></p>
 </blockquote>
 <p>Implicit in the discussion above, and when making design decisions, is the importance of <a href="https://gistbok.ucgis.org/bok-topics/symbolization-and-visual-variables"><em>symbolisation</em></a>. From the original Washington Post article, the overall pattern that can be discerned is of population-dense coastal and metropolitan counties voting Democrat – densely-packed, tall, wide and blue <i style="color:#3879A1;font-weight:bold" class="fas fa-lg fa-angle-up"></i> marks – contrasted against population-sparse rural and small town areas voting Republican – short, wide and red <i style="color:#DB534D;font-weight:bold" class="fas fa-angle-up"></i> marks. The graphic evokes a distinctive landscape of voting behaviour, emphasised by its caption: “<em>The peaks and valleys of Trump and Clinton’s support</em>”.</p>
-<p><em>Symbolisation</em> is used equally well in a variant of the graphic emphasising two-party <em>Swing</em> between the 2012 and 2016 elections (<a href="#fig-wp-swing">Figure&nbsp;<span>3.5</span></a>). Each county is represented as a <span style="font-weight:bolder">|</span> mark. The <em>Swing</em> variable is then encoded by continuously varying mark angles: counties swinging Republican are angled to the right <span style="color:#DB534D;font-weight:bold">/</span>; counties swinging Democrat are angled to the left <span style="color:#3879A1;font-weight:bolder">\</span>. Although <em>angle</em> is a less effective channel at encoding quantities than is <em>length</em>, there are obvious links to the political phenomena in the symbolisation – angled right for counties that moved to the right politically. There are further useful properties in this example. Since county voting is spatially auotocorrelated, we quickly assemble from the graphic dominant patterns of Swing to the Republicans (Great Lakes, rural East Coast), predictable Republican stasis (the mid west) and to detect more isolated, locally exceptional Swings to the Democrats (rapidly urbanising counties in the deep south).</p>
+<p><em>Symbolisation</em> is used equally well in a variant of the graphic emphasising two-party <em>Swing</em> between the 2012 and 2016 elections (<a href="#fig-wp-swing">Figure&nbsp;<span>3.5</span></a>). Each county is represented as a <span style="font-weight:bolder">|</span> mark. The <em>Swing</em> variable is then encoded by continuously varying mark angles: counties swinging <span style="color:#DB534D;font-weight:bold">Republican</span> are angled to the right <span style="color:#DB534D;font-weight:bolder">/</span>; counties swinging <span style="color:#3879A1;font-weight:bold">Democrat</span> are angled to the left <span style="color:#3879A1;font-weight:bolder">\</span>. Although <em>angle</em> is a less effective channel at encoding quantities than is <em>length</em>, there are obvious links to the political phenomena in the symbolisation – angled right for counties that moved to the right politically. There are further useful properties in this example. Since county voting is spatially auotocorrelated, we quickly assemble from the graphic dominant patterns of Swing to the Republicans (Great Lakes, rural East Coast), predictable Republican stasis (the mid west) and to detect more isolated, locally exceptional Swings to the Democrats (rapidly urbanising counties in the deep south).</p>
 <!-- Additionally, the variable itself might be regarded as cyclic -- or at least it has a ceiling with an important mid-point that requires emphasis. It is worth taking a second look at the full graphic here.  -->
 <div class="cell">
 <div class="cell-output-display">
@@ -720,7 +721,7 @@ Experimental work that tries to understand how encoded quantities are perceived 
 * *Saturation* : how much  of a colour there is.
 * *Luminance/Brightness* : how dark or light a colour is. -->
 <p>The ultimate rule when using colour in data graphics is to use properties of colour that match the properties of the data. Categorical <code>nominal</code> data – data that cannot be easily ordered – should be encoded using discrete colours with no obvious order; so colour hue. Categorical <code>ordinal</code> data – data whose categories can be ordered – should be encoded with colours that contain an intrinsic order; saturation or brightness, usually allocated into gradients. <code>Quantitative</code> data – data that can be ordered and contain values on a continuous scale – should also be encoded with saturation or brightness, expressed on a continuous scale. As we will discover shortly, these principles are applied by default in <code>ggplot2</code>, along with access to perceptually uniform schemes.</p>
-<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-note callout callout-style-default callout-captioned">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
@@ -737,14 +738,14 @@ On colour
 <span class="header-section-number">3.3</span> Techniques</h2>
 <p>The technical component of this chapter analyses data from the 2019 UK General Election, reported at Parliamentary Constituency level. After importing and describing the dataset, we will generate data graphics that expose patterns in voting behaviour by writing ggplot2 specifications.</p>
 <ul>
-<li>Download the <a href="">03-template.qmd</a> file for this chapter and save it to the <code>reports</code> folder of your <code>vis4sds</code> project.</li>
+<li>Download the <a href="./files/03-template.qmd">03-template.qmd</a> file for this chapter and save it to the <code>reports</code> folder of your <code>vis4sds</code> project.</li>
 <li>Open your <code>vis4sds</code> project in RStudio and load the template file by clicking <code>File</code> &gt; <code>Open File ...</code> &gt; <code>reports/03-template.qmd</code>.</li>
 </ul>
 <section id="import" class="level3" data-number="3.3.1"><h3 data-number="3.3.1" class="anchored" data-anchor-id="import">
 <span class="header-section-number">3.3.1</span> Import</h3>
 <p>The template file lists the required packages – <code>tidyverse</code>, <code>sf</code> and also <a href="https://cran.r-project.org/web/packages/parlitools/index.html"><code>parlitools</code></a>. Installing <code>parlitools</code> brings down the 2019 UK General Election dataset, along with other constituency-level datasets. Loading it with <code><a href="https://docs.evanodell.com/parlitools">library(parlitools)</a></code> makes these data available to your R session.</p>
 <p>The data frame containing 2019 UK General Election data is called <code>bes_2019</code>. This stores results data released by <a href="https://commonslibrary.parliament.uk/research-briefings/cbp-8749/">House of Commons Library</a>. We can get a quick overview with a call to <code>glimpse(&lt;dataset-name&gt;)</code>. <code>bes_2019</code> contains 650 rows, one for each parliamentary constituency, and 118 columns. Contained in the columns are variables reporting vote numbers and shares for the main political parties for 2019 and 2017 General Elections, as well as names and codes (<code>ID</code>s) for each constituency and the county, region and country in which they are contained.</p>
-<p>The technical component replicates some of the visual data analysis in <span class="citation" data-cites="beecham_using_2020">Beecham (<a href="references.html#ref-beecham_using_2020" role="doc-biblioref">2020</a>)</span>. For this we need to calculate an additional variable, Butler Swing <span class="citation" data-cites="butler_why_1990">(<a href="references.html#ref-butler_why_1990" role="doc-biblioref">Butler and Van Beek 1990</a>)</span>; the average change in share of the vote won by two parties contesting successive elections. Code for calculating this variable (named <code>swing_con_lab</code>) is in the <a href="./homework/03-homework_files/03-template.qmd">03-template.qmd</a>. The only other dataset to load is a <code>.geojson</code> file containing simplified geometries of constituencies, collected originally from <a href="https://geoportal.statistics.gov.uk/">ONS Open Geography Portal</a>. This is a special class of data frame containing a <a href="https://r-spatial.github.io/sf/articles/sf1.html">Simple Features</a> <code>geometry</code> column.</p>
+<p>The technical component replicates some of the visual data analysis in <span class="citation" data-cites="beecham_using_2020">Beecham (<a href="references.html#ref-beecham_using_2020" role="doc-biblioref">2020</a>)</span>. For this we need to calculate an additional variable, Butler Swing <span class="citation" data-cites="butler_why_1990">(<a href="references.html#ref-butler_why_1990" role="doc-biblioref">Butler and Van Beek 1990</a>)</span>; the average change in share of the vote won by two parties contesting successive elections. Code for calculating this variable (named <code>swing_con_lab</code>) is in the <a href="./files/03-template.qmd">03-template.qmd</a>. The only other dataset to load is a <code>.geojson</code> file containing simplified geometries of constituencies, collected originally from <a href="https://geoportal.statistics.gov.uk/">ONS Open Geography Portal</a>. This is a special class of data frame containing a <a href="https://r-spatial.github.io/sf/articles/sf1.html">Simple Features</a> <code>geometry</code> column.</p>
 <!-- Although initially intuitive, the measure takes a little interpretation. A Swing to the Conservatives, which we observe most often in this dataset, could happen in three ways:
 
 1. An increase in Conservative vote share and a decrease in Labour vote share.
@@ -780,9 +781,13 @@ Different from the US where "third parties" play a negligible role, scenarios 2 
 <span><span class="co"># Share of vote by party.</span></span>
 <span><span class="va">bes_2019</span> <span class="op">|&gt;</span></span>
 <span>  <span class="co"># Select cols containing vote counts by party.</span></span>
-<span>  <span class="fu">select</span><span class="op">(</span><span class="va">constituency_name</span>, <span class="va">total_vote_19</span>, <span class="va">con_vote_19</span><span class="op">:</span><span class="va">alliance_vote_19</span>, <span class="va">region</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">select</span><span class="op">(</span></span>
+<span>    <span class="va">constituency_name</span>, <span class="va">total_vote_19</span>, <span class="va">con_vote_19</span><span class="op">:</span><span class="va">alliance_vote_19</span>, <span class="va">region</span></span>
+<span>    <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="co"># Pivot to make each row a vote for a party in a constituency.</span></span>
-<span>  <span class="fu">pivot_longer</span><span class="op">(</span>cols<span class="op">=</span><span class="va">con_vote_19</span><span class="op">:</span><span class="va">alliance_vote_19</span>, names_to<span class="op">=</span><span class="st">"party"</span>, values_to<span class="op">=</span><span class="st">"votes"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">pivot_longer</span><span class="op">(</span></span>
+<span>    cols<span class="op">=</span><span class="va">con_vote_19</span><span class="op">:</span><span class="va">alliance_vote_19</span>, names_to<span class="op">=</span><span class="st">"party"</span>, values_to<span class="op">=</span><span class="st">"votes"</span></span>
+<span>    <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="co"># Use some regex to pull out party name.</span></span>
 <span>  <span class="fu">mutate</span><span class="op">(</span>party<span class="op">=</span><span class="fu">str_extract</span><span class="op">(</span><span class="va">party</span>, <span class="st">"[^_]+"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="co"># Summerise over parties.</span></span>
@@ -813,10 +818,11 @@ Different from the US where "third parties" play a negligible role, scenarios 2 
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_gb</span> <span class="op">&lt;-</span> <span class="va">bes_2019</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">region</span> <span class="op">!=</span> <span class="st">"Northern Ireland"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">mutate</span><span class="op">(</span></span>
-<span>    swing_con_lab<span class="op">=</span><span class="fl">0.5</span><span class="op">*</span><span class="op">(</span><span class="op">(</span><span class="va">con_19</span><span class="op">-</span><span class="va">con_17</span><span class="op">)</span><span class="op">-</span><span class="op">(</span><span class="va">lab_19</span><span class="op">-</span><span class="va">lab_17</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>    <span class="co"># Recode to 0 Chorley (incoming speaker),</span></span>
-<span>    <span class="co"># Buckingham (outgoing speaker) as uncontested seat.</span></span>
-<span>    swing_con_lab<span class="op">=</span><span class="fu">if_else</span><span class="op">(</span><span class="va">constituency_name</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Chorley"</span>, <span class="st">"Buckingham"</span><span class="op">)</span>,<span class="fl">0</span>,<span class="va">swing_con_lab</span><span class="op">)</span></span>
+<span>    <span class="co"># Recode to 0 Chorley incoming speaker, Buckingham outgoing speaker.</span></span>
+<span>    swing_con_lab<span class="op">=</span><span class="fu">if_else</span><span class="op">(</span><span class="va">constituency_name</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Chorley"</span>, <span class="st">"Buckingham"</span><span class="op">)</span>, </span>
+<span>    <span class="fl">0</span>, </span>
+<span>    <span class="fl">0.5</span><span class="op">*</span><span class="op">(</span><span class="op">(</span><span class="va">con_19</span><span class="op">-</span><span class="va">con_17</span><span class="op">)</span><span class="op">-</span><span class="op">(</span><span class="va">lab_19</span><span class="op">-</span><span class="va">lab_17</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="va">data_gb</span> <span class="op">|&gt;</span></span>
@@ -858,17 +864,12 @@ Different from the US where "third parties" play a negligible role, scenarios 2 
 <li>Specify the <em>marks</em> to be used: <code>geom_histogram()</code> in this case.</li>
 </ol>
 <p>Different from the scatterplot example, there is more happening in the internals of ggplot2 when creating a histogram. The Swing variable is partitioned into bins and observations in each bin are counted. The x-axis (bins) and y-axis (counts by bin) is therefore derived from the supplied <code>swing_con_lab</code> variable.</p>
-<p>By default the histogram’s bars are given a grey colour. To <em>set</em> them to a different colour, add a <code>fill=</code> argument to <code>geom_histogram()</code>. In the code block below, colour is set using <a href="https://en.wikipedia.org/wiki/Web_colors">hex codes</a> – <code>"#003c8f"</code>, based on the theme for this book. The term <em>set</em> and not <em>map</em> or <em>encode</em> is used for principled reasons. Any part of a ggplot2 specification that involves encoding data – mapping a data item to a visual channel – should be specified through the <code>mapping=aes()</code> argument. Anything else, for example changing the default colour, thickness and transparency of marks, needs to be <em>set</em> outside of this argument.</p>
+<p>By default the histogram’s bars are given a grey colour. To <em>set</em> them to a different colour, add a <code>fill=</code> argument to <code>geom_histogram()</code>. In the code block below, colour is set using <a href="https://en.wikipedia.org/wiki/Web_colors">hex codes</a> – <code>"#003c8f"</code>, based on the theme for this book. The term <em>set</em>, not <em>map</em> or <em>encode</em>, is used for principled reasons. Any part of a ggplot2 specification that involves encoding data – mapping a data item to a visual channel – should be specified through the <code>mapping=aes()</code> argument. Anything else, for example changing the default colour, thickness and transparency of marks, needs to be <em>set</em> outside of this argument.</p>
 <div class="cell">
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_gb</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">ggplot</span><span class="op">(</span>mapping<span class="op">=</span><span class="fu">aes</span><span class="op">(</span><span class="va">swing_con_lab</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_histogram</span><span class="op">(</span>fill<span class="op">=</span><span class="st">"#003c8f"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">labs</span><span class="op">(</span></span>
-<span>    title<span class="op">=</span><span class="st">"Butler two-party Labour-Conservative Swing"</span>,</span>
-<span>    subtitle<span class="op">=</span><span class="st">"-- GB Constituencies 2019 versus 2017 election"</span>,</span>
-<span>    caption<span class="op">=</span><span class="st">"Data published by House of Commons Library, accessed via `parlitools`"</span>,</span>
-<span>    x<span class="op">=</span><span class="st">"Swing"</span>, y<span class="op">=</span><span class="st">"count"</span></span>
-<span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="fu">labs</span><span class="op">(</span>x<span class="op">=</span><span class="st">"Swing"</span>, y<span class="op">=</span><span class="st">"count"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>You will notice that different elements of a ggplot2 specification are added (<code>+</code>) as layers. In the example above, the additional layer of labels (<code>labs()</code>) is not intrinsic to the graphic. However, often you will add layers that do affect the graphic itself. For example, the scaling of encoded values (e.g.&nbsp;<code>scale_*_continuous()</code>) or whether the graphic is to be conditioned on another variable to generate <a href="https://flowingdata.com/tag/small-multiples/">small multiples</a> for comparison (e.g.&nbsp;<code>facet_*()</code>). Adding a call to <code>facet_*()</code>, we can compare how Swing varies by region (<a href="#fig-hist-region">Figure&nbsp;<span>3.7</span></a>). The plot is annotated with the <em>median</em> value for Swing (4.4) by adding a vertical line layer (<code>geom_vline()</code>) set with an x-intercept at this median value. From this, there is some evidence of a regional geography to the 2019 vote: London and Scotland are particularly distinctive in containing relatively few constituencies swinging greater than the expected midpoint; North East, Yorkshire &amp; The Humber, and to a lesser extent West and East Midlands, appear to show the largest relative number of constituencies swinging greater than the midpoint.</p>
 <!-- It was this graphic, especially the fact that London and Scotland look different from the rest of the country, that prompted the scatterplots in @fig-gog-demo comparing gain in Conservative vote shares against the Brexit vote. -->
@@ -904,26 +905,24 @@ Task
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-bars" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figs/03/bars.png" class="img-fluid figure-img" width="1050"></p>
+<figure class="figure"><p><img src="figs/03/bars.png" class="img-fluid figure-img" style="width:85.0%"></p>
 <p></p><figcaption aria-hidden="true" class="figure-caption">Figure 3.8: Plots of vote shares by party.</figcaption><p></p>
 </figure>
 </div>
 </div>
 </div>
 <!-- ![Plots of vote shares by party.](figs/03/bars.png){#fig-bars width=100% fig-align="center"} -->
-<p>Previously we calculated overall vote share by Political Party. We could continue the exploration of votes by region, re-using this code to generate plots displaying quantities but also comparing by region, using marks and encoding channels that are suitable for magnitudes.</p>
+<p>Previously we calculated overall vote share by political party. We could continue the exploration of votes by region, re-using this code to generate plots displaying quantities but also comparing by region, using marks and encoding channels that are suitable for magnitudes.</p>
 <p>To generate a bar chart similar to the left of <a href="04-explore.html#fig-bars">Figure&nbsp;<span>4.3</span></a> the <code>ggplot2</code> specification would be:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>data_gb <span class="sc">|&gt;</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># The code block summarising vote by party.</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="er">&lt;</span>some dplyr code<span class="sc">&gt;</span> <span class="er">|&gt;</span></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># To be piped to ggplot2.</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="er">&lt;</span>...<span class="sc">&gt;</span>  <span class="er">|&gt;</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Ordinal x-axis (party, reordered), Ratio y-axis (vote_share).</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span><span class="fu">reorder</span>(party, <span class="sc">-</span>vote_share), <span class="at">y=</span>vote_share)) <span class="sc">+</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Set bar colour to the book theme.</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">fill=</span><span class="st">"#003c8f"</span>) <span class="sc">+</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Ordinal x-axis (party, reordered), Ratio y-axis (vote_share).</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span><span class="fu">reorder</span>(party, <span class="sc">-</span>vote_share), <span class="at">y=</span>vote_share)) <span class="sc">+</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">fill=</span><span class="st">"#003c8f"</span>) <span class="sc">+</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>A quick breakdown of the specification:</p>
 <ol type="1">
@@ -934,7 +933,7 @@ Task
 <li>
 <em>Marks</em>: <code>geom_col()</code> for generating the bars.</li>
 <li>
-<em>Setting</em>: Again, we’ve set bar colour according to the book theme and included titles and captions. Optionally we add a <code>coord_flip()</code> layer in order to display the bars horizontally. This makes the category axis labels easier to read and also seems more appropriate for the visual “ranking” of bars.</li>
+<em>Setting</em>: Again, we’ve set bar colour according to the book theme. Optionally we add a <code>coord_flip()</code> layer in order to display the bars horizontally. This makes the category axis labels easier to read and also seems more appropriate for the visual “ranking” of bars.</li>
 </ol>
 <!-- ::: {.callout-note}
 ## ggplot2 themes
@@ -956,24 +955,31 @@ ggplot2 themes control the appearance of all non-data items -- font sizes and ty
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># The code block summarising vote by party and region.</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="er">&lt;</span>some dplyr code<span class="sc">&gt;</span> <span class="er">|&gt;</span></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># To be piped to ggplot2.</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="er">&lt;</span>...<span class="sc">&gt;</span>  <span class="er">|&gt;</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span><span class="fu">reorder</span>(party, vote_share), <span class="at">y=</span>vote_share)) <span class="sc">+</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="at">fill=</span>party)) <span class="sc">+</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>region)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span><span class="fu">reorder</span>(party, vote_share), <span class="at">y=</span>vote_share)) <span class="sc">+</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="at">fill=</span>party)) <span class="sc">+</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>region)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Trying this for yourself, you will observe that the <code>ggplot2</code> internals do some thinking for us. Since <code>party</code> is a categorical variable, a categorical hue-based colour scheme is automatically applied. Try passing a quantitative variable (<code>fill=vote_share</code>) and see what happens; a quantitative colour gradient scheme is applied.</p>
 <p>Clever as this is, when encoding political parties with colour, <em>symbolisation</em> is important. It makes sense to represent political parties using colours with which they are most commonly associated. We can override ggplot2’s default colour by adding a <code>scale_fill_manual()</code> layer into which a vector of hex codes describing the colour of each political party is passed (<code>party_colours</code>). We also need to tell ggplot2 which element of <code>party_colours</code> to apply to which value of the <code>party</code> variable. In the code below, a derived table is generated summarising <code>vote_share</code> by political party and region. In the final line the <code>party</code> variable is recoded as a <a href="https://r4ds.had.co.nz/factors.html"><code>factor</code></a>. You might recall from the last chapter that factors are categorical variables of fixed and orderable values – <code>levels</code>. The call to <code>mutate()</code> recodes <code>party</code> as a factor variable and orders the levels according to overall vote share.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate derived data.</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>temp_party_shares_region <span class="ot">&lt;-</span> data_gb <span class="sc">|&gt;</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(constituency_name, region, total_vote_19, con_vote_19<span class="sc">:</span>alliance_vote_19) <span class="sc">|&gt;</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols=</span>con_vote_19<span class="sc">:</span>alliance_vote_19, <span class="at">names_to=</span><span class="st">"party"</span>, <span class="at">values_to=</span><span class="st">"votes"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">party=</span><span class="fu">str_extract</span>(party, <span class="st">"[^_]+"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(party, region) <span class="sc">|&gt;</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">vote_share=</span><span class="fu">sum</span>(votes, <span class="at">na.rm=</span><span class="cn">TRUE</span>)<span class="sc">/</span><span class="fu">sum</span>(total_vote_19)) <span class="sc">|&gt;</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(party <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"con"</span>, <span class="st">"lab"</span>, <span class="st">"ld"</span>, <span class="st">"snp"</span>, <span class="st">"green"</span>, <span class="st">"brexit"</span>, <span class="st">"pc"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">party=</span><span class="fu">factor</span>(party, <span class="at">levels=</span><span class="fu">c</span>(<span class="st">"con"</span>, <span class="st">"lab"</span>, <span class="st">"ld"</span>, <span class="st">"snp"</span>, <span class="st">"green"</span>, <span class="st">"brexit"</span> <span class="st">"pc"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    constituency_name, region, total_vote_19, con_vote_19<span class="sc">:</span>alliance_vote_19</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols=</span>con_vote_19<span class="sc">:</span>alliance_vote_19, <span class="at">names_to=</span><span class="st">"party"</span>, <span class="at">values_to=</span><span class="st">"votes"</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">party=</span><span class="fu">str_extract</span>(party, <span class="st">"[^_]+"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(party, region) <span class="sc">|&gt;</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">vote_share=</span><span class="fu">sum</span>(votes, <span class="at">na.rm=</span><span class="cn">TRUE</span>)<span class="sc">/</span><span class="fu">sum</span>(total_vote_19)) <span class="sc">|&gt;</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(party <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"con"</span>, <span class="st">"lab"</span>, <span class="st">"ld"</span>, <span class="st">"snp"</span>, <span class="st">"green"</span>, <span class="st">"brexit"</span>, <span class="st">"pc"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">party=</span><span class="fu">factor</span>(party, </span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">levels=</span><span class="fu">c</span>(<span class="st">"con"</span>, <span class="st">"lab"</span>, <span class="st">"ld"</span>, <span class="st">"snp"</span>, <span class="st">"green"</span>, <span class="st">"brexit"</span> <span class="st">"pc"</span>)</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Next, a vector of objects is created containing the hex codes for the colours of political parties (<code>party_colours</code>). This is a named vector, with names assigned from the <code>levels</code> of the <code>party</code> variable that was just created.</p>
 <div class="cell">
@@ -1026,7 +1032,7 @@ Grammar of Graphics-backed visualization toolkits
 </div>
 <!-- ![Plots of 2019 versus 2017 vote shares.](figs/03/scatters-con.svg){#fig-scatters-con width=100% fig-align="center"} -->
 <!-- In @sec-grammar we demonstrated how scatterplots are specified in `ggplot2`. Scatterplots are useful examples for introducing `ggplot2` specifications as they involve working with genuine  mark primitives (`geom_point()`) and can be built up using a wide range of encoding channels. -->
-<p>To continue the investigation of change in vote shares for the major parties between 2017 and 2019, <a href="#fig-scatters-con">Figure&nbsp;<span>3.10</span></a> contains a scatterplot of Conservative vote share in 2019 (y-axis) against vote share in 2017 (x-axis). The graphic is annotated with a diagonal line. If constituencies voted in 2019 in exactly the same way as 2017, the points would all converge on the diagonal, points above the diagonal indicate a larger Conservative vote share than 2017, those below the diagonal represent a smaller Conservative vote share than 2017. Points are coloured according to the winning party in 2019 and constituencies that flipped from Labour to Conservative are emphasised using transparency and shape.</p>
+<p>To continue the investigation of change in vote shares for the major parties between 2017 and 2019, <a href="#fig-scatters-con">Figure&nbsp;<span>3.10</span></a> contains a scatterplot of Conservative vote share in 2019 (y-axis) against vote share in 2017 (x-axis). The graphic is annotated with a diagonal line. If constituencies voted in 2019 in exactly the same way as 2017, the points would converge on the diagonal, points above the diagonal indicate a larger Conservative vote share than 2017, those below the diagonal represent a smaller Conservative vote share than 2017. Points are coloured according to the winning party in 2019 and constituencies that flipped from Labour to Conservative are emphasised using transparency and shape.</p>
 <p>The code for generating most of the scatterplot comparing Conservative vote shares is below.</p>
 <div class="cell">
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_gb</span> <span class="op">|&gt;</span></span>
@@ -1094,8 +1100,8 @@ On conditionals
 </div>
 </div>
 <!-- ![Choropleth of elected parties in 2019 General Election.](figs/03/map-winners.png){#fig-map-winners width=100% fig-align="center"} -->
-<p>Implied in the data graphics above is a geography to voting; certainly to observed <em>changes</em> in voting comparing the 2017 and 2019 elections (e.g. <a href="#fig-hist-region">Figure&nbsp;<span>3.7</span></a>). We end the chapter by generating thematic maps of the results data.</p>
-<p>To do this we need to define a join on the boundary data (<code>cons_outline</code>):</p>
+<p>Implicit in the data graphics above is that the composition of Conservative and Labour voting may be shisting. If so, then paying attention to the geography to voting, certainly to observed <em>changes</em> in voting between 2017 and 2019 elections (e.g. <a href="#fig-hist-region">Figure&nbsp;<span>3.7</span></a>), may be instructive. We end the chapter by generating thematic maps of the results data.</p>
+<p>To do this we need to genetae a join on the boundary dataset loaded at the start of this technical section (<code>cons_outline</code>):</p>
 <div class="cell">
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Join constituency boundaries.</span></span>
 <span><span class="va">data_gb</span> <span class="op">&lt;-</span> <span class="va">cons_outline</span> <span class="op">|&gt;</span></span>
@@ -1134,14 +1140,14 @@ On conditionals
 <li>
 <em>Encoding</em>: No surprises here – <code>fill</code> according to <code>winner_19</code>.</li>
 <li>
-<em>Marks</em>: <code>geom_sf()</code> is a special class of geometry. It draws objects depending on the contents of the <code>geometry</code> column. In this case <code>MULTIPOLYGON</code>, so read this as a <em>polygon</em> geometric primitive.</li>
+<em>Marks</em>: <code>geom_sf()</code> is a special class of geometry. It draws objects using the contents of the <code>geometry</code> column. In this case <code>MULTIPOLYGON</code>, so read this as a <em>polygon</em> geometric primitive.</li>
 <li>
 <em>Coordinates</em>: <code>coord_sf</code> – we set the coordinate system (CRS) explicitly. In this case <a href="https://spatialreference.org/ref/epsg/osgb-1936-british-national-grid/">OS British National Grid</a>.</li>
 <li>
 <em>Setting</em>: Constituency boundaries are subtly introduced by setting the <code>geom_sf()</code> mark to light grey (<code>colour="#eeeeee"</code>) with a thin (<code>size=0.01</code>) outline. On the map to the right outlines for regions are added as another <code>geom_sf</code> layer.</li>
 </ol>
 <p>In the third map of <a href="#fig-map-winners">Figure&nbsp;<span>3.11</span></a> the transparency (<code>alpha</code>) of filled constituencies is varied according to the Swing variable. This does demonstrate that constituencies swinging most dramatically for Conservative (darker colours) are in the midlands and North of England and not in London and the South East. The pattern is nevertheless a subtle one; transparency (colour luminance / saturation) is not a highly effective visual channel. It may be worth applying the same encoding to Butler two-party swing as that used in the Washington Post graphic when characterising Republican-Democrat swing in 2016 US Elections (e.g. <span class="citation" data-cites="beecham_using_2020">Beecham (<a href="references.html#ref-beecham_using_2020" role="doc-biblioref">2020</a>)</span>).</p>
-<p>This can be achieved by simply adding another ggplot2 layer, though the code is a little more involved. ggplot2’s <code>geom_spoke()</code> primitive draws line segments parameterised by a location (x,y position) and angle. With this we can encode constituencies with <span style="font-weight:bolder">|</span> marks that angle to the right <span style="font-weight:bold">/</span> where the constituency swings towards Conservative and to the left where it swings towards Labour <span style="font-weight:bolder">\</span>. This encoding better exposes the pattern of constituencies forming Labour’s “red wall” in the north of England, as well as parts of Wales and the Midlands, flipping to Conservative.</p>
+<p>This can be achieved by simply adding another ggplot2 layer, though the code is a little more involved. ggplot2’s <code>geom_spoke()</code> primitive draws line segments parameterised by a location (x,y position) and angle. With this we can encode constituencies with <span style="font-weight:bolder">|</span> marks that angle to the right <span style="color:#3879A1;font-weight:bold">/</span> where the constituency swings towards Conservative and to the left where it swings towards Labour <span style="color:#DB534D;font-weight:bolder">\</span>. This encoding better exposes the pattern of constituencies forming Labour’s “red wall” in the north of England, as well as parts of Wales and the Midlands, flipping to Conservative.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-spoke-map" class="quarto-figure quarto-figure-center anchored">
@@ -1158,7 +1164,7 @@ On conditionals
 <span><span class="va">max_shift</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span><span class="op">(</span><span class="va">data_gb</span> <span class="op">|&gt;</span> <span class="fu">pull</span><span class="op">(</span><span class="va">swing_con_lab</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">min_shift</span> <span class="op">&lt;-</span> <span class="op">-</span><span class="va">max_shift</span></span>
 <span></span>
-<span><span class="co"># Re-define `party_colours`  to contain just three values: hex codes for</span></span>
+<span><span class="co"># Re-define party_colours to contain just three values: hex codes for</span></span>
 <span><span class="co"># Conservative, Labour and Other.</span></span>
 <span><span class="va">party_colours</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">con</span>, <span class="va">lab</span>, <span class="va">other</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">party_colours</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Conservative"</span>, <span class="st">"Labour"</span>, <span class="st">"Other"</span><span class="op">)</span></span>
@@ -1166,15 +1172,19 @@ On conditionals
 <span><span class="co"># Plot Swing map.</span></span>
 <span><span class="va">data_gb</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">mutate</span><span class="op">(</span></span>
-<span>    is_flipped<span class="op">=</span><span class="va">seat_change_1719</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Conservative gain from Labour"</span>,<span class="st">"Labour gain from Conservative"</span><span class="op">)</span>,</span>
-<span>    elected<span class="op">=</span><span class="fu">if_else</span><span class="op">(</span><span class="op">!</span><span class="va">winner_19</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Conservative"</span>, <span class="st">"Labour"</span><span class="op">)</span>, <span class="st">"Other"</span>, <span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span><span class="op">(</span><span class="va">winner_19</span><span class="op">)</span><span class="op">)</span></span>
-<span>    <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    is_flipped<span class="op">=</span><span class="va">seat_change_1719</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> </span>
+<span>       <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Conservative gain from Labour"</span>,<span class="st">"Labour gain from Conservative"</span><span class="op">)</span>,</span>
+<span>    elected<span class="op">=</span></span>
+<span>       <span class="fu">if_else</span><span class="op">(</span><span class="op">!</span><span class="va">winner_19</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Conservative"</span>, <span class="st">"Labour"</span><span class="op">)</span>, <span class="st">"Other"</span>, </span>
+<span>       <span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span><span class="op">(</span><span class="va">winner_19</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    swing_angle<span class="op">=</span><span class="fu">get_radians</span><span class="op">(</span><span class="fu">map_scale</span><span class="op">(</span><span class="va">swing_con_lab</span>,<span class="va">min_shift</span>,<span class="va">max_shift</span>,<span class="fl">135</span>,<span class="fl">45</span><span class="op">)</span></span>
+<span>      <span class="op">)</span></span>
+<span>   <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu">geom_sf</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>fill<span class="op">=</span><span class="va">elected</span><span class="op">)</span>, colour<span class="op">=</span><span class="st">"#636363"</span>, alpha<span class="op">=</span><span class="fl">.2</span>, linewidth<span class="op">=</span><span class="fl">.01</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu">geom_spoke</span><span class="op">(</span></span>
-<span>    <span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">bng_e</span>, y<span class="op">=</span><span class="va">bng_n</span>, angle<span class="op">=</span><span class="fu">get_radians</span><span class="op">(</span><span class="fu">map_scale</span><span class="op">(</span><span class="va">swing_con_lab</span>,<span class="va">min_shift</span>,<span class="va">max_shift</span>,<span class="fl">135</span>,<span class="fl">45</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>    colour<span class="op">=</span><span class="va">elected</span>, size<span class="op">=</span><span class="va">is_flipped</span><span class="op">)</span>,</span>
-<span>    radius<span class="op">=</span><span class="fl">7000</span>, position<span class="op">=</span><span class="st">"center_spoke"</span></span>
+<span>    <span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">bng_e</span>, y<span class="op">=</span><span class="va">bng_n</span>, angle<span class="op">=</span><span class="va">swing_angle</span>, colour<span class="op">=</span><span class="va">elected</span>, size<span class="op">=</span><span class="va">is_flipped</span><span class="op">)</span>,</span>
+<span>      radius<span class="op">=</span><span class="fl">7000</span>, position<span class="op">=</span><span class="st">"center_spoke"</span></span>
 <span>    <span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu">coord_sf</span><span class="op">(</span>crs<span class="op">=</span><span class="fl">27700</span>, datum<span class="op">=</span><span class="cn">NA</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu">scale_size_ordinal</span><span class="op">(</span>range<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">.3</span>,<span class="fl">.9</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
@@ -1184,11 +1194,11 @@ On conditionals
 <p>A breakdown:</p>
 <ol type="1">
 <li>
-<em>Data</em>: <code>data_gb</code> is updated with a boolean identifying whether or not the Constituency flipped Con-Lab/Lab-Con between successive elections (<code>is_flipped</code>), and a variable simplifying the party elected to either Conservative, Labour or Other.</li>
+<em>Data</em>: <code>data_gb</code> is updated with a boolean (<code>TRUE</code>/<code>FALSE</code>) variable identifying whether or not the Constituency flipped Con-Lab/Lab-Con between successive elections (<code>is_flipped</code>), and a variable simplifying the party elected to either Conservative, Labour or Other. <code>swing_angle</code> contains the angles used to orient the line marks. A convenience function (<code>map_scale()</code>) pins the maximum Swing values in either direction to 45 degrees (max Swing to the right, Conservative) and 135 degrees (max Swing to the left, Labour).</li>
 <li>
-<em>Encoding</em>: <code>geom_sf()</code> is again filled by elected party. This encoding is made more subtle by adding transparency (<code>alpha=.2</code>). <a href="https://ggplot2.tidyverse.org/reference/geom_spoke.html"><code>geom_spoke()</code></a> is mapped to the geographic centroid of each Constituency (<code>bng_e</code> - easting, <code>bng_n</code> - northing), coloured according to elected party, sized according to whether the Constituency flipped its vote and tilted or angled according to the Swing variable. A convenience function (<code>map_scale()</code>) pins the maximum Swing values in either direction to 45 degrees (max Swing to the right, Conservative) and 135 degrees (max Swing to the left, Labour).</li>
+<em>Encoding</em>: <code>geom_sf()</code> is again filled by elected party. This encoding is made more subtle by adding transparency (<code>alpha=.2</code>). <a href="https://ggplot2.tidyverse.org/reference/geom_spoke.html"><code>geom_spoke()</code></a> is mapped to the geographic centroid of each Constituency (<code>bng_e</code> - easting, <code>bng_n</code> - northing), coloured according to elected party, sized according to whether the constituency flipped its vote and tilted or angled according to the <code>swing_angle</code> variable.</li>
 <li>
-<em>Marks</em>: <code>geom_sf()</code> for the Constituency boundaries, <code>geom_spoke()</code> for the angled line primitives.</li>
+<em>Marks</em>: <code>geom_sf()</code> for the constituency boundaries, <code>geom_spoke()</code> for the angled line primitives.</li>
 <li>
 <em>Scale</em>: <code>geom_spoke()</code> primitives are sized to emphasise whether constituencies have flipped. The size encoding is censored to two values with <code>scale_size_ordinal()</code>. Passed to <code>scale_colour_manual()</code> and <code>scale_fill_manual()</code> is the vector of <code>party_colours</code>.</li>
 <li>
@@ -1196,33 +1206,54 @@ On conditionals
 <li>
 <em>Setting</em>: The <code>radius</code> of <code>geom_spoke()</code> lines is a sensible default arrived at through trial and error, its <code>position</code> set using a newly created <code>centre_spoke</code> class.</li>
 </ol>
-<p>Note that there are helper functions that must be run to execute the ggplot2 spec above correctly. In order to position lines using <code>geom_spoke()</code> centred on their x,y location, we need to create a position subclass, as below. Once created, this can be easily used: <code>geom_spoke(position = centre_spoke)</code>’</p>
-<div class="cell">
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Convert degrees to radians.</span></span>
-<span><span class="va">get_radians</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">degrees</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="op">(</span><span class="va">degrees</span> <span class="op">*</span> <span class="va">pi</span><span class="op">)</span> <span class="op">/</span> <span class="op">(</span><span class="fl">180</span><span class="op">)</span></span>
-<span><span class="op">}</span></span>
-<span><span class="co"># Rescaling function.</span></span>
-<span><span class="va">map_scale</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">value</span>, <span class="va">min1</span>, <span class="va">max1</span>, <span class="va">min2</span>, <span class="va">max2</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>  <span class="op">(</span><span class="va">min2</span><span class="op">+</span><span class="op">(</span><span class="va">max2</span><span class="op">-</span><span class="va">min2</span><span class="op">)</span><span class="op">*</span><span class="op">(</span><span class="op">(</span><span class="va">value</span><span class="op">-</span><span class="va">min1</span><span class="op">)</span><span class="op">/</span><span class="op">(</span><span class="va">max1</span><span class="op">-</span><span class="va">min1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="op">}</span></span>
-<span><span class="co"># Position subclass for centred geom_spoke.</span></span>
-<span><span class="co"># As per https://bit.ly/3yfXdKJ.</span></span>
-<span><span class="va">position_centre_spoke</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="va">PositionCentreSpoke</span></span>
-<span><span class="va">PositionCenterSpoke</span> <span class="op">&lt;-</span></span>
-<span>    <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggproto.html">ggproto</a></span><span class="op">(</span><span class="st">'PositionCentreSpoke'</span>, <span class="fu">ggplot2</span><span class="fu">::</span><span class="va"><a href="https://ggplot2.tidyverse.org/reference/ggplot2-ggproto.html">Position</a></span>,</span>
-<span>        compute_panel <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">self</span>, <span class="va">data</span>, <span class="va">params</span>, <span class="va">scales</span><span class="op">)</span></span>
-<span>            <span class="op">{</span></span>
-<span>                <span class="va">data</span><span class="op">$</span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">2</span><span class="op">*</span><span class="va">data</span><span class="op">$</span><span class="va">x</span> <span class="op">-</span> <span class="va">data</span><span class="op">$</span><span class="va">xend</span></span>
-<span>                <span class="va">data</span><span class="op">$</span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fl">2</span><span class="op">*</span><span class="va">data</span><span class="op">$</span><span class="va">y</span> <span class="op">-</span> <span class="va">data</span><span class="op">$</span><span class="va">yend</span></span>
-<span>                <span class="va">data</span><span class="op">$</span><span class="va">radius</span> <span class="op">&lt;-</span> <span class="fl">2</span><span class="op">*</span><span class="va">data</span><span class="op">$</span><span class="va">radius</span></span>
-<span>                <span class="va">data</span></span>
-<span>            <span class="op">}</span></span>
-<span>    <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
+<p>There are helper functions that must also be run to execute the ggplot2 spec above correctly. In order to position lines using <code>geom_spoke()</code> centred on their x,y location, we need to create a custom ggplot2 subclass. Details of how to use this are in the <a href="./files/03-template.qmd">03-template.qmd</a> file. Again, this is somwhat involved for a chapter introducing ggplot2 for analysis. Nevertheless, hopefully you can see from the plot specification above that the principles of mapping data to visuals can be implemented straightforwardly in ggplot2 (via <code>aes()</code>): lines marks for constituencies (<code>geom_spoke()</code>), positioned in <code>x</code>and <code>y</code> according to British National Grid easting and northings and oriented (<code>angle</code>) according to two-party Swing.</p>
+<!-- 
+
+::: {.cell}
+
+```{.r .cell-code}
+# Convert degrees to radians.
+get_radians <- function(degrees) {
+  (degrees * pi) / (180)
+}
+# Rescaling function.
+map_scale <- function(value, min1, max1, min2, max2) {
+  return  (min2+(max2-min2)*((value-min1)/(max1-min1)))
+}
+# Position subclass for centred geom_spoke.
+# As per https://bit.ly/3yfXdKJ.
+position_centre_spoke <- function() PositionCentreSpoke
+PositionCenterSpoke <-
+    ggplot2::ggproto('PositionCentreSpoke', ggplot2::Position,
+        compute_panel = function(self, data, params, scales)
+            {
+                data$x <- 2*data$x - data$xend
+                data$y <- 2*data$y - data$yend
+                data$radius <- 2*data$radius
+                data
+            }
+    )
+```
+:::
+
+ -->
 </section></section><section id="conclusions" class="level2" data-number="3.4"><h2 data-number="3.4" class="anchored" data-anchor-id="conclusions">
 <span class="header-section-number">3.4</span> Conclusions</h2>
-<p>Visualization design is ultimately a process of decision-making. Data must be filtered and prioritised before being encoded with marks, visual channels and symbolisation. The most successful data graphics are those that expose structure, connections and comparisons that could not be achieved easily via other, non-visual means. This chapter has introduced concepts – a vocabulary, framework and empirically-informed guidelines – that help support this decision-making process and that underpin modern visualization toolkits (ggplot2 included). Through an analysis of UK 2019 General Election data, we have demonstrated how these concepts can be applied in a real data analysis.</p>
+<p>Visualization design is ultimately a process of decision-making. Data must be filtered and prioritised before being encoded with marks, visual channels and symbolisation. The most successful data graphics are those that expose structure, connections and comparisons that could not be achieved easily via other, non-visual means. This chapter has introduced concepts – a vocabulary, framework and empirically-informed guidelines – that help support this decision-making process and that underpin modern visualization toolkits, ggplot2 especially. Through an analysis of UK 2019 General Election data, we have demonstrated how these concepts can be applied in a real data analysis.</p>
+</section><section id="further-reading" class="level2" data-number="3.5"><h2 data-number="3.5" class="anchored" data-anchor-id="further-reading">
+<span class="header-section-number">3.5</span> Further Reading</h2>
+<p>For a primer on visualization design principles:</p>
+<ul>
+<li>Munzner, T. 2014. “Visualization Analysis and Design”, <em>CRC Press</em>.</li>
+</ul>
+<p>For an introduction to ggplot2 and its relationship with <span class="citation" data-cites="wilkinson_grammar_1999">Wilkinson (<a href="references.html#ref-wilkinson_grammar_1999" role="doc-biblioref">1999</a>)</span>’s <em>grammar of graphics</em>:</p>
+<ul>
+<li>Wickham, H., Çetinkaya-Rundel, M., Grolemund, G. 2023, “R for Data Science, 2nd Edition”, <em>Orielly</em>.
+<ul>
+<li>Chapter 2.</li>
+</ul>
+</li>
+</ul>
 
 
 </section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">

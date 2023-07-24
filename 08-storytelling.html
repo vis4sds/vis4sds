@@ -1,12 +1,9 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="generator" content="quarto-0.9.637">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-
-
 <title>Visualization for Social Data Science - 8&nbsp; Data Storytelling</title>
 <style>
 code{white-space: pre-wrap;}
@@ -16,7 +13,6 @@ div.column{display: inline-block; vertical-align: top; width: 50%;}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 </style>
-
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/quarto-nav/headroom.min.js"></script>
@@ -35,8 +31,7 @@ ul.task-list{list-style: none;}
 <link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
-<script id="quarto-search-options" type="application/json">{
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet"><script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
@@ -55,33 +50,24 @@ ul.task-list{list-style: none;}
     "search-submit-button-title": "Submit"
   }
 }</script>
-
-
 </head>
-
 <body class="nav-sidebar floating">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-    <div class="container-fluid d-flex justify-content-between">
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }"><div class="container-fluid d-flex justify-content-between">
       <h1 class="quarto-secondary-nav-title"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Data Storytelling</span></h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
     </div>
-  </nav>
-</header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Visualization for Social Data Science</a> 
         <div class="sidebar-tools-main">
     <a href="https://github.com/vis4sds/vis4sds/" title="Source Code" class="sidebar-tool px-1"><i class="bi bi-github"></i></a>
-    <a href="https://twitter.com/intent/tweet?url=|url|" title="Twitter" class="sidebar-tool px-1"><i class="bi bi-twitter"></i></a>
+    <a href="https://twitter.com/intent/tweet?url=%7Curl%7C" title="Twitter" class="sidebar-tool px-1"><i class="bi bi-twitter"></i></a>
 </div>
     </div>
       </div>
@@ -92,7 +78,7 @@ ul.task-list{list-style: none;}
       </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">Preface</a>
   </div>
@@ -143,24 +129,28 @@ ul.task-list{list-style: none;}
   </div>
 </li>
     </ul>
-    </div>
-</nav>
-<!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc">
-    <h2 id="toc-title">Table of contents</h2>
+</div>
+</nav><!-- margin-sidebar --><div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#concepts" id="toc-concepts" class="nav-link active" data-scroll-target="#concepts"> <span class="header-section-number">8.1</span> Concepts</a></li>
-  <li><a href="#techniques" id="toc-techniques" class="nav-link" data-scroll-target="#techniques"> <span class="header-section-number">8.2</span> Techniques</a></li>
+<li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"> <span class="header-section-number">8.1</span> Introduction</a></li>
+  <li>
+<a href="#concepts" id="toc-concepts" class="nav-link" data-scroll-target="#concepts"> <span class="header-section-number">8.2</span> Concepts</a>
+  <ul class="collapse">
+<li><a href="#data-driven-storytelling" id="toc-data-driven-storytelling" class="nav-link" data-scroll-target="#data-driven-storytelling"> <span class="header-section-number">8.2.1</span> Data-driven storytelling</a></li>
+  <li><a href="#designed-and-partial" id="toc-designed-and-partial" class="nav-link" data-scroll-target="#designed-and-partial"> <span class="header-section-number">8.2.2</span> Designed and partial</a></li>
+  <li><a href="#intuitive-and-compelling" id="toc-intuitive-and-compelling" class="nav-link" data-scroll-target="#intuitive-and-compelling"> <span class="header-section-number">8.2.3</span> Intuitive and compelling</a></li>
+  <li><a href="#political" id="toc-political" class="nav-link" data-scroll-target="#political"> <span class="header-section-number">8.2.4</span> Political</a></li>
   </ul>
-<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/vis4sds/vis4sds/edit/master/08-storytelling.qmd" class="toc-action">Edit this page</a></p></div></div></nav>
+</li>
+  <li><a href="#techniques" id="toc-techniques" class="nav-link" data-scroll-target="#techniques"> <span class="header-section-number">8.3</span> Techniques</a></li>
+  <li><a href="#conclusions" id="toc-conclusions" class="nav-link" data-scroll-target="#conclusions"> <span class="header-section-number">8.4</span> Conclusions</a></li>
+  <li><a href="#further-reading" id="toc-further-reading" class="nav-link" data-scroll-target="#further-reading"> <span class="header-section-number">8.5</span> Further Reading</a></li>
+  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/vis4sds/vis4sds/edit/master/08-storytelling.qmd" class="toc-action">Edit this page</a></p></div></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
 <h1 class="title"><span id="sec-storytelling" class="quarto-section-identifier d-none d-lg-block"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Data Storytelling</span></span></h1>
 </div>
 
@@ -173,8 +163,9 @@ ul.task-list{list-style: none;}
   </div>
   
 
-</header>
+</header><div class="cell">
 
+</div>
 <p>By the end of this chapter you should gain the following knowledge and practical skills.</p>
 <div class="callout-note callout callout-style-default callout-captioned">
 <div class="callout-header d-flex align-content-center">
@@ -187,9 +178,11 @@ Knowledge
 </div>
 <div class="callout-body-container callout-body">
 <ul class="task-list">
-<li><input type="checkbox" disabled="" checked="">
+<li>
+<input type="checkbox" disabled="" checked="">
 Appreciate the main characteristics of data-driven stories.</li>
-<li><input type="checkbox" disabled="" checked="">
+<li>
+<input type="checkbox" disabled="" checked="">
 Identify how visual and rhetorical devices are used to communicate with data.</li>
 </ul>
 </div>
@@ -205,22 +198,149 @@ Practical skills
 </div>
 <div class="callout-body-container callout-body">
 <ul class="task-list">
-<li><input type="checkbox" disabled="" checked="">
+<li>
+<input type="checkbox" disabled="" checked="">
 Create <code>ggplot2</code> graphics with non-standard annotations.</li>
 </ul>
 </div>
 </div>
-<section id="concepts" class="level2" data-number="8.1">
-<h2 data-number="8.1" class="anchored" data-anchor-id="concepts"><span class="header-section-number">8.1</span> Concepts</h2>
-</section>
-<section id="techniques" class="level2" data-number="8.2">
-<h2 data-number="8.2" class="anchored" data-anchor-id="techniques"><span class="header-section-number">8.2</span> Techniques</h2>
+<section id="introduction" class="level2" data-number="8.1"><h2 data-number="8.1" class="anchored" data-anchor-id="introduction">
+<span class="header-section-number">8.1</span> Introduction</h2>
+<p>It is now taken-for-granted that we live in an evidence-based society in which data are deeply embedded in most domains and in how we approach the world’s problems. This recognition has coincided with, amongst other things, the open source movement which has freed up access to, and technologies for working with, data. The response to Covid-19 is an excellent example. Enter <a href="https://www.google.com/search?q=covid19+github&amp;rlz=1C5CHFA_enGB632GB632&amp;oq=covid19+&amp;aqs=chrome.0.69i59l2j69i57j0l2j69i61l3.3040j0j7&amp;sourceid=chrome&amp;ie=UTF-8">Covid19 github</a> into a search and you’ll be confronted with hundreds of code repositories demonstrating how data related to the pandemic can be collected, processed and analysed.</p>
+<p>This is exciting and feels very democratic. But there is responsibility amongst those constructing and sharing evidence-based arguments to do so with integrity; navigating the difficult tension between communicating a clear message – necessarily reducing some of the complexity – at the same time as acknowledging uncertainty. In Information Visualization, and now Data Journalism, the role of narrative and storytelling when working and communicating with data is much discussed <span class="citation" data-cites="henryriche_data_2018">(e.g. <a href="references.html#ref-henryriche_data_2018" role="doc-biblioref">Henry-Riche et al. 2018</a>)</span>. Importantly, this work recognises that there is not a single, optimum visualization design that exposes the true structure or story in a dataset – no such formulation could exist. But that careful design decisions must be made in light of data, audience and intended purpose.</p>
+<p>In this chapter we will review some of this literature with a special focus on approaches to communicating reported cases, hospitalisations and deaths numbers around the Covid-19 pandemic.</p>
+</section><section id="concepts" class="level2" data-number="8.2"><h2 data-number="8.2" class="anchored" data-anchor-id="concepts">
+<span class="header-section-number">8.2</span> Concepts</h2>
+<section id="data-driven-storytelling" class="level3" data-number="8.2.1"><h3 data-number="8.2.1" class="anchored" data-anchor-id="data-driven-storytelling">
+<span class="header-section-number">8.2.1</span> Data-driven storytelling</h3>
+<p>In earlier chapters of the book, <a href="03-visual.html"><span>Chapter&nbsp;3</span></a> especially, we identified and explored some common characteristics of effective data graphics. <span class="citation" data-cites="roth_cartographic_2020">Roth (<a href="references.html#ref-roth_cartographic_2020" role="doc-biblioref">2021</a>)</span> enumerates 10 such characteristics specialised to data storytelling. Particularly important for visualization design is that data graphics are:</p>
+<!-- Although  reasonably generalisable, those characteristics benefit from being re-interpreted when designing for *communication*.  -->
+<!-- we made the case that visual data analysis is about encoding data to visuals in a way that follows established guidelines known to work well for particular tasks. This might imply there is some optimal visualization design that can be achieved. Clearly, no such optimal solution exists, especially so when designing graphics for *communication* [@henryriche_data_2018]. However, we can consider some of the common characteristics of effective visual data stories. @roth_cartographic_2020 identifies 10 such characteristics, but particularly important are that visual design stories are: -->
+<ul>
+<li><p><em>Designed</em>: The analyst makes very deliberate decisions in light of audience and purpose. The goal of visual storytelling is not just to <em>show</em> but also to <em>explain</em>.</p></li>
+<li><p><em>Partial</em>: Essential information is prioritised and made salient, with abstraction and brevity preferred over complexity and completeness.</p></li>
+<li><p><em>Intuitive</em>: Visual narratives take advantage of our natural tendency to communicate via metaphor and story, with a clear entry point and clear progression.</p></li>
+<li><p><em>Compelling</em>: Visual stories often capture attention through an array of graphical devices – sequence, animation and interaction. They generate an aesthetic response.</p></li>
+<li><p><em>Relatable and situated</em>: Visual stories promote empathy, using devices that place the audience in the story setting. They are usually constructed from somewhere – according to a particular position.</p></li>
+<li><p><em>Political</em>: Visual data stories promote with clarity particular voices, interpretations or positions.</p></li>
+</ul>
+<p>In the sections that follow, we review some key Covid-19 visualizations and reflect on how these storytelling devices have been variously deployed.</p>
+</section><section id="designed-and-partial" class="level3" data-number="8.2.2"><h3 data-number="8.2.2" class="anchored" data-anchor-id="designed-and-partial">
+<span class="header-section-number">8.2.2</span> Designed and partial</h3>
+<p>Perhaps the most high-profile examples of data storytelling throug the Covid-19 pandemic were those prodcued by the Financial Times, and John Burn Murdoch in particular <span class="citation" data-cites="ft_coronavirus_2020">(<a href="references.html#ref-ft_coronavirus_2020" role="doc-biblioref">Times 2020</a>)</span>. In <a href="#fig-ft-vis">Figure&nbsp;<span>8.1</span></a> is an example of the Financial Times’s trajectory tracker. We can evaluate the graphic using some of the principles introduced in <a href="03-visual.html"><span>Chapter&nbsp;3</span></a>. In mapping the two quantitive variables to <em>position on an aligned scale</em> and <em>colour hue</em> to distinguish countries, the graphic uses an encoding that exploits our cognitive abilities. By superimposing lines representing countries on the same coordinate space, it also nicely uses layout to support comparison <span class="citation" data-cites="gleicher_visual_2011">(<a href="references.html#ref-gleicher_visual_2011" role="doc-biblioref">Gleicher and Roberts 2011</a>)</span>.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-ft-vis" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="figs/08/jbm-logchart.jpeg" class="img-fluid figure-img" style="width:95.0%"></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 8.1: <a href="https://www.ft.com/john-burn-murdoch">John Burn-Murdoch</a>’s international comparison of deaths, as it appeared on <a href="https://twitter.com/jburnmurdoch/status/1241820210455285760">twitter</a>. <strong>TO DO: Update with own implementation (Copyright).</strong></figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Thinking about <span class="citation" data-cites="roth_cartographic_2020">Roth (<a href="references.html#ref-roth_cartographic_2020" role="doc-biblioref">2021</a>)</span>’s characteristics of visual storytelling, the graphic is <em>designed</em> with a very deliberate purpose:</p>
+<ol type="1">
+<li>Between country comparison: <em>Are countries on the same course?</em>
+</li>
+<li>Comparison against milestone: <em>How many days does it take a certain county to reach a given number of cases/deaths?</em>
+</li>
+</ol>
+<p>It is possible to see each of these goals informing the configuration of the graphic and in the careful design decisions made to prioritise essential information – the graphic is <em>partial</em>. Comparison between countries is most obviously supported by the use of a log-scale. This removes the dominant salient pattern in standard scales due to the exponential doubling and instead allows slopes (<em>growth rates</em>) to be compared directly. Log scales are, though, not so familiar to the average reader. In other versions of the graphic, useful annotations are provided identifying slope gradients that correspond to different growth rates, again narrowing on the essential goal of the graphic – between country comparison of growth rates. There are also approaches to dealing with daily volatility in the data and that a decision was made to use a smoothing function based on <a href="https://en.wikipedia.org/wiki/Smoothing_spline">splines</a> rather than the more widely understood 7-day rolling average. These sorts of design decisions introduce complexity that may be beyond the average reader, and so are incorporated discreetly (<em>partial</em>/<em>designed</em>).</p>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>You might be interested to know that most <a href="https://www.ft.com/graphics">Financial Times graphics</a> are built using <code>ggplot2</code>. A presentation in which John Burn-Mudoch makes the case for <code>ggplot2</code> for Data Journalism <a href="https://johnburnmurdoch.github.io/slides/r-ggplot/#/">from this link</a>.</p>
+</div>
+</div>
+<p>An interesting design alternative that supports between country comparison is <a href="https://aatishb.com">Aatish Bhatia</a>’s <a href="https://aatishb.com/covidtrends/">Covid Trends</a> chart (<span class="citation" data-cites="rfig-covid-trends">(<a href="references.html#ref-rfig-covid-trends" role="doc-biblioref"><strong>rfig-covid-trends?</strong></a>)</span>). A double log scale is used and growth rate in new cases is presented on the y-axis with total case numbers, rather than time elapsed, plotted along the x-axis. Whilst the introduction of a double log scale might be judged to increase visual complexity, actually this design narrows or simplifies the reader’s visual judgement to looking at the thing that we are most interested in: comparison of country growth rates against the two day doubling (annotated with the diagonal). The chart is also accompanied with an excellent <a href="https://www.hippocraticpost.com/covid-19-update/how-to-tell-if-were-beating-covid-19/">explanatory video</a>, in which many of the characteristics of visual data stories enumerated by <span class="citation" data-cites="roth_cartographic_2020">Roth (<a href="references.html#ref-roth_cartographic_2020" role="doc-biblioref">2021</a>)</span> can be identified.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-covid-trends" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="figs/08/covid-trends.png" class="img-fluid figure-img" style="width:95.0%"></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 8.2: <a href="https://aatishb.com">Aatish Bhatia</a>’s <a href="https://aatishb.com/covidtrends/">Covid Trends</a> chart. <a href="https://github.com/aatishb/covidtrends#credits">Source</a>. <strong>TO DO: Update with own implementation (Copyright).</strong></figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="intuitive-and-compelling" class="level3" data-number="8.2.3"><h3 data-number="8.2.3" class="anchored" data-anchor-id="intuitive-and-compelling">
+<span class="header-section-number">8.2.3</span> Intuitive and compelling</h3>
+<p>According to <span class="citation" data-cites="roth_cartographic_2020">Roth (<a href="references.html#ref-roth_cartographic_2020" role="doc-biblioref">2021</a>)</span>, visual data stories are often explanatory. They make <em>compelling</em> use of graphical and rhetorical devices to support understanding. This is especially important in data-driven storytelling as it often involves concepts that are initially quite challenging. In <a href="#fig-lambrechts-connected">Figure&nbsp;<span>8.3</span></a> is a static image from a <a href="https://flourish.studio/2021/04/06/masters-connected-scatter-maarten-lambrechts/">data story written by Flourish</a> based on design work by <a href="https://twitter.com/maartenzam/status/1319622943526293505">Marteen Lambrechts</a>. The data story is essentially a design exposition <span class="citation" data-cites="beecham_design_2020 wood_design_2018">(<a href="references.html#ref-beecham_design_2020" role="doc-biblioref">Beecham et al. 2020</a>; <a href="references.html#ref-wood_design_2018" role="doc-biblioref">Wood, Kachkaev, and Dykes 2018</a>)</span>, guiding readers from the familiar to the unfamiliar. First a standard time series chart of hospitalisations and deaths is presented. Deficiencies in this layout are explained before progressively introducing the transformations involved to generate the preferred graphic, a <a href="http://steveharoz.com/research/connected_scatterplot/">connected scatterplot</a>. Ordering the story in this way explains design decisions and the trade-offs associated with visual design from a familiar starting point and helps justify new, sometimes unfamiliar encodings. Thinking about <span class="citation" data-cites="roth_cartographic_2020">Roth (<a href="references.html#ref-roth_cartographic_2020" role="doc-biblioref">2021</a>)</span>’s characteristics of visual storytelling, formulating a design story in this way helps build <em>intuition</em> – there is a clear entry point and clear progression.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-lambrechts-connected" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="figs/08/lambrechts-connected-flourish.png" class="img-fluid figure-img" style="width:95.0%"></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 8.3: Static image from a data story written by <a href="https://flourish.studio/2021/04/06/masters-connected-scatter-maarten-lambrechts/">Flourish</a> demonstrating how connected scatterplots can be used to analyse changes in hospitalisations and deaths. <strong>TO DO: Update with own implementation (Copyright).</strong></figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>For a more involved design exposition of connected scatterplots, see <a href="http://www.dannydorling.org">Danny Dorling</a>’s work on <a href="https://twitter.com/dannydorling/status/1245010922592231424">slowdown</a>. Note that Danny also encodes time using line width. This is an important addition, along with colour as demonstrated with <a href="https://aviz.fr/~bbach/timecurves/">timecurves</a>.</p>
+<p>For an example of guided design exposition for explaining complex designs in <a href="https://twitter.com/rJBeecham/status/1317019462453895168">analysis of Covid-19 cases data</a>, also see <span class="citation" data-cites="beecham_on_2021">Beecham et al. (<a href="references.html#ref-beecham_on_2021" role="doc-biblioref">2021</a>)</span>, which devlops ways of showing simultaneously absolute and relative change in cases, with geographic context.</p>
+</div>
+</div>
+<p><a href="#fig-ft-anim">Figure&nbsp;<span>8.4</span></a>, again by <a href="https://www.ft.com/john-burn-murdoch">John Burn-Murdoch</a>, is another example of how animation can be used to build <em>intuition</em>. The main objective is to demonstrate how different 2020 is in terms of admissions to intensive care compared to a normal year. This was in response to claims that Covid-19 behaves much like seasonal flu; to this extent the graphic is also quite <em>political</em>. Each year from 2013-14 is added to the chart and the y-axis rescaled to reflect the new numbers. This helps build expectation around normal variablitity in a similar way to the <a href="https://medium.com/hci-design-at-uw/hypothetical-outcomes-plots-experiencing-the-uncertain-b9ea60d7c740">hypothetical outcome plots</a> <span class="citation" data-cites="hullman_hypothetical_2015">(<a href="references.html#ref-hullman_hypothetical_2015" role="doc-biblioref">Hullman, Resnick, and Adar 2015</a>)</span> covered in the previous chapter. The expectation is then roundly debunked by the introduction of the 2020-21 line in red, with animated rescaling of the y-axis used for further emphasis.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-ft-anim" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="figs/08/jbm-anim.gif" class="img-fluid figure-img" style="width:95.0%"></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 8.4: <a href="https://www.ft.com/john-burn-murdoch">John Burn-Murdoch</a>’s animated rescaling <a href="https://twitter.com/jburnmurdoch/status/1347200811303055364">via twitter</a> demonstrating how different in terms of intensive care admissions 2020/21 is to a standard flu season.<strong>TO DO: Update with own implementation (Copyright).</strong></figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="political" class="level3" data-number="8.2.4"><h3 data-number="8.2.4" class="anchored" data-anchor-id="political">
+<span class="header-section-number">8.2.4</span> Political</h3>
+<p><a href="#fig-ft-vaccine">Figure&nbsp;<span>8.5</span></a> presents a final example of <a href="https://twitter.com/jburnmurdoch/status/1382013080448724994">visual narrative</a> from <a href="https://www.ft.com/john-burn-murdoch">John Burn-Murdoch</a> with an obviously political purpose. The graphic was created in response to claims from the UK’s Prime Minister that it is largely restrictions rather than vaccination that has reduced infection rates in the country. Interesting here is how annotation and <em>visual saliency</em> is used to direct how the graphic is perceived. If the graphic was only annotated with points in time when lockdown and vaccination was initiated, it would <em>invite</em> us to make judgements about the effects of these two events on infectious rates. That John makes highly salient annotations labelling the (unmeasurable) effect of <em>lockdown</em> and <em>vaccine</em> is an interesting addition. There is little room for ambiguity.</p>
+<p>This sort of presentation, labelling the chart with an unmeasurable effect, may risk graphical integrity (see <span class="citation" data-cites="tufte_visual_1983">Tufte (<a href="references.html#ref-tufte_visual_1983" role="doc-biblioref">1983</a>)</span>’s <a href="https://infovis-wiki.net/wiki/Lie_Factor">lie factor</a>). In a keynote given at IEEE VIS 2020, John reflected on his experiences generating data stories early in the pandemic – that the way in which the FT’s data graphics were intepreted, and misinterpreted, varied depending on the prior expectations and political beliefs of those consuming them. The chart labelling in this case might have been added to signal more directly the evidence-based argument that was being made, or alternatively perhaps spark debate.</p>
+<p>Clearly all data analysis is heavily informed by the values, prejudices, motivations and incentives of those undertaking them. As demonstrated by <span class="citation" data-cites="roth_cartographic_2020">Roth (<a href="references.html#ref-roth_cartographic_2020" role="doc-biblioref">2021</a>)</span>’s charactersitics of data storytelling, these individual factors are most apparent, and necessary, in order communicate effectively. An interesting question, then, is around how integrity and trust is designed into a data anaysis. Perhaps in the case of the Financial Times data journalists, this trust is establisehd over time, through a portfolio of data analysis work that is considered, communicated transparently and with humility.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-ft-vaccine" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="figs/08/jbm-vaccine.jpeg" class="img-fluid figure-img" style="width:95.0%"></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 8.5: <a href="https://www.ft.com/john-burn-murdoch">John Burn-Murdoch</a>’s analysis <a href="https://twitter.com/jburnmurdoch/status/1382013080448724994">via twitter</a> evaluating the role of lockdown and the vaccine. <strong>TO DO: Update with own implementation (Copyright).</strong></figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The annotations in <a href="#fig-ft-vaccine">Figure&nbsp;<span>8.5</span></a> have heavy saliency thanks to the parsimonious use of axis titles, marks and legends, and other non-data-ink <span class="citation" data-cites="tufte_visual_1983">(<a href="references.html#ref-tufte_visual_1983" role="doc-biblioref">Tufte 1983</a>)</span>.</p>
+</div>
+</div>
+</section></section><section id="techniques" class="level2" data-number="8.3"><h2 data-number="8.3" class="anchored" data-anchor-id="techniques">
+<span class="header-section-number">8.3</span> Techniques</h2>
+</section><section id="conclusions" class="level2" data-number="8.4"><h2 data-number="8.4" class="anchored" data-anchor-id="conclusions">
+<span class="header-section-number">8.4</span> Conclusions</h2>
+<p>Communicating effectively with data is not an easy undertaking. Difficult decisions must be made around how much important detail to sacrifice in favour of clarity and simplicity of message. Visual approaches can help here; giving cues that order and prioritise information and that build explanatory narratives using metaphor and other rhetorical devices. There are stellar examples of this from in-house Data Journalism teams, most obviously in recent evidence-based stories around the Covid-19 pandemic. We have considered some of these and the careful design decisions made when communicating data-driven stories in light of data, audience and intended purpose. Many leading data journalists use ggplot2 as their visulization toolkit of choice and in the technical session we demonstrated how more deliberatively designed graphics can be generated. This somewhat fiddly approach to creating graphics is different from the style of workflow envisaged in the Chapters -<a href="03-visual.html"><span>Chapter&nbsp;3</span></a> and -<a href="04-explore.html"><span>Chapter&nbsp;4</span></a> on exploratory visual analysis. However, as demonstrated through the examples in this chapter, and the book more generally, ggplot2 can be used for visualization design, making control over annotations, text labels, and embedded graphics important skills to develop.</p>
+</section><section id="further-reading" class="level2" data-number="8.5"><h2 data-number="8.5" class="anchored" data-anchor-id="further-reading">
+<span class="header-section-number">8.5</span> Further Reading</h2>
 
 
-</section>
-
-</main> <!-- /main -->
-<script id="quarto-html-after-body" type="application/javascript">
+</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const icon = "";
   const anchorJS = new window.AnchorJS();
@@ -298,9 +418,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     });
   }
 });
-</script>
-<nav class="page-navigation">
-  <div class="nav-page nav-page-previous">
+</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="./07-uncertainty.html" class="pagination-link">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Uncertainty</span></span>
       </a>          
