@@ -6,7 +6,7 @@ format: html
 
 ## Introduction
 
-Reopen your project and save this `.qmd` to the `reports` folder. When working through the materials from this chapter run each code chunk separately by clicking the small green arrow beside each code chunk. By default we have set `eval : false` on most code chunks, so when you knit the code chunk will not execute.
+Reopen your project and save this `.qmd` to the `reports` folder. When working through the materials from this chapter run each code chunk separately by clicking the small green arrow beside each code chunk. By default I have set `eval: false` on most code chunks, so when you knit the code chunk will not execute.
 
 The technical element involves analysing data from the 2019 UK General Election. You will work with results data recorded by Parliamentary Constituency. After importing and describing the dataset, you will generate data graphics that expose patterns in voting behaviour by writing `ggplot2` specifications.
 
@@ -14,14 +14,15 @@ The technical element involves analysing data from the 2019 UK General Election.
 
 The code block below points to the required packages. If you have been following the chapters sequentially, the only new package to install is [`parlitools`](https://cran.r-project.org/web/packages/parlitools/index.html).
 
-```{r setup}
+```{r}
 #| echo: true
 #| eval: false
-library(tidyverse) # Bundle of packages for doing modern data analysis
-library(sf) # Spatial operations
-library(here) # For navigating project directory
+library(tidyverse) 
+library(sf) 
+library(here) 
 
-# install.packages("parlitools") # Uncomment to install
+# Uncomment to install
+# install.packages("parlitools") 
 library(parlitools)
 ```
 
@@ -31,24 +32,99 @@ Installing `parlitools` brings down the 2019 UK General Election dataset, along 
 
 We also need to import geographic boundary data for Parliamentary Constituencies. This can be collected from [ONS Open Geography Portal](https://geoportal.statistics.gov.uk/). I have generated a simplified version of these geometries using [mapshaper](https://github.com/mbloch/mapshaper) and posted to the data repository. Run the code below to import into your R session.
 
-```{r import-geometries}
+```{r}
 #| echo: true
 #| eval: false
 url <- "https://vis4sds.github.io/data/ch3/cons_outline.geojson"
-download.file(url, here("data", "cons_outline.geojson"))
-cons_outline <- st_read(here("data", "cons_outline.geojson"), crs=27700)
+download.file(url, here("data", "constituency_boundaries.geojson"))
+cons_outline <- st_read(here("data", "constituency_boundaries.geojson"), crs=27700)
 ```
 
 To generate a version of the 2019 data limited to GB, and with the Swing variable (`swing_con_lab`) run the code below.
 
-```{r gb-swing}
+```{r}
 #| echo: true
 #| eval: false
 data_gb <- bes_2019 |>
   filter(region != "Northern Ireland") |>
   mutate(
-    swing_con_lab=0.5*((con_19-con_17)-(lab_19-lab_17)),
-    # Recode to 0 Chorley incoming speaker,Buckingham outgoing speaker --  uncontested seat.
-    swing_con_lab=if_else(constituency_name %in% c("Chorley", "Buckingham"),0,swing_con_lab)
+    # Recode to 0 Chorley incoming speaker, Buckingham outgoing speaker.
+    swing_con_lab=if_else(constituency_name %in% c("Chorley", "Buckingham"), 0, 0.5*((con_19-con_17)-(lab_19-lab_17))
+      )
   )
+```
+
+## Plot Con-Lab Swing graphic
+
+Towards the end of the technical section, code for generating a map of Conservative-Labour Swing is described. Although the plot grammar is reasonably straightforward, the plot depends on a couple of helper functions (below). These can be loaded into your environment by executing the code below.
+
+```{r}
+#| echo: true
+#| eval: false
+
+# Convert degrees to radians.
+get_radians <- function(degrees) {
+  (degrees * pi) / (180)
+}
+# Rescaling function.
+map_scale <- function(value, min1, max1, min2, max2) {
+  return  (min2+(max2-min2)*((value-min1)/(max1-min1)))
+}
+# Position subclass for centred geom_spoke.
+# As per https://bit.ly/3yfXdKJ.
+position_centre_spoke <- function() PositionCentreSpoke
+PositionCenterSpoke <-
+    ggplot2::ggproto('PositionCentreSpoke', ggplot2::Position,
+        compute_panel = function(self, data, params, scales)
+            {
+                data$x <- 2*data$x - data$xend
+                data$y <- 2*data$y - data$yend
+                data$radius <- 2*data$radius
+                data
+            }
+    )
+```
+
+The ggplot2 specification:
+
+```{r}
+#| echo: true
+#| eval: false
+
+# Find the maximum Swing values, to pin the min and max angles to.
+max_shift <- max(abs(data_gb |> pull(swing_con_lab)))
+min_shift <- -max_shift
+
+# Define party_colours to contain just three values: hex codes for
+# Conservative, Labour and Other.
+# Define colours.
+con <- "#0575c9"
+lab <- "#ed1e0e"
+other <- "#bdbdbd"
+party_colours <- c(con, lab, other)
+names(party_colours) <- c("Conservative", "Labour", "Other")
+
+
+# Plot Swing map.
+cons_outline |> 
+  inner_join(data_gb, by=c("pcon17cd"="ons_const_id")) |> 
+  mutate(
+    is_flipped=seat_change_1719 %in% 
+       c("Conservative gain from Labour","Labour gain from Conservative"),
+    elected=
+       if_else(!winner_19 %in% c("Conservative", "Labour"), "Other", 
+       as.character(winner_19)),
+    swing_angle=get_radians(map_scale(swing_con_lab,min_shift,max_shift,135,45)
+      )
+   ) |>
+  ggplot()+
+  geom_sf(aes(fill=elected), colour="#636363", alpha=.2, linewidth=.01)+
+  geom_spoke(
+    aes(x=bng_e, y=bng_n, angle=swing_angle, colour=elected, size=is_flipped),
+      radius=7000, position="center_spoke"
+    )+
+  coord_sf(crs=27700, datum=NA)+
+  scale_size_ordinal(range=c(.3,.9))+
+  scale_colour_manual(values=party_colours)+
+  scale_fill_manual(values=party_colours)
 ```

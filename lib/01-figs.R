@@ -45,6 +45,44 @@ plot <- anscombe |>
 
 ggsave(filename=here("figs", "01", "anscombe_plot.svg"), plot=plot,width=7, height=5.5)
 
+plot <- anscombe %>%
+  gather(var, value) %>%
+  add_column(var_type=c(rep("x",44),rep("y",44)), row_index=rep(1:44,2)) %>%
+  mutate(dataset=paste("dataset",str_sub(var,2,2))) %>%
+  select(-var) %>%
+  spread(key=var_type, value=value) %>%
+  ggplot(aes(x, y))+
+  geom_point(colour="#003c8f", fill="#003c8f", pch=21) +
+  stat_smooth(method=lm, se=FALSE, size=0.6, colour="#636363")+
+  annotate("segment", x=9, xend=9, y=2.5, yend=7.5, colour="#003c8f", alpha=.5, size=.5)+
+  annotate("segment", x=4.2, xend=9, y=7.5, yend=7.5, colour="#003c8f", alpha=.5, size=.5)+
+  annotate("text", label="mean - 9.00 ",
+           vjust="centre", hjust="centre", family="Avenir Book",size=2.5,
+           x=9, y=2, colour="#d03231")+
+  annotate("text", label="variance  - 11.00 ",
+           vjust="centre", hjust="centre", family="Avenir Book",size=2.5,
+           x=9, y=1)+
+  annotate("text", label="correlation r.0.82",
+           vjust="top", hjust="right", family="Avenir Book",size=2.5,
+           x=18, y=4)+
+  annotate("text", label="mean - 7.50 ",
+           vjust="centre", hjust="right", family="Avenir Book",size=2.5,
+           x=4, y=8, colour="#d03231")+
+  annotate("text", label="variance  - 4.12 ",
+           vjust="centre", hjust="right", family="Avenir Book",size=2.5,
+           x=4, y=7)+
+  facet_wrap(~dataset, nrow=2)+
+  coord_equal(xlim = c(5, 20), ylim=c(3,13), # This focuses the x-axis on the range of interest
+              clip = 'off') +
+  theme(plot.margin = unit(c(1,1,1.5,2), "lines"),
+        axis.text = element_blank(),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        strip.text = element_text(size=10),
+        panel.spacing = unit(3, "lines"))
+
+ggsave(filename=here("figs", "01", "ancombe_plot.png"), plot=plot,width=7, height=4, dpi=500)
+
 
 # Plot Anscombe's quartet data.
 plot <- anscombe |> 
@@ -64,7 +102,7 @@ plot <- anscombe |>
     ) |> 
   ungroup() |> 
   ggplot(aes(1, ypos))+
-  geom_point(colour=site_colours$primary, fill=site_colours$primary, pch=21, size=3) +
+  geom_point(colour="#003c8f", fill="#003c8f", pch=21, size=3) +
   
   geom_text(data=. %>% filter(row_index %in% c(1,12,23,34)), aes(x=1-.5,y=12, label=paste0("x",xpos)), vjust=0, size=3) +
   geom_text(data=. %>% filter(row_index %in% c(1,12,23,34)), aes(x=1+.5,y=12, label=paste0("y",xpos)), vjust=0, size=3) +
@@ -88,10 +126,11 @@ plot <- anscombe |>
     axis.text.x = element_blank(),
     axis.text.y = element_text(size=10),
     axis.title.y = element_blank(),
+    strip.text = element_text(size=11),
     axis.title.x = element_blank(), axis.line = element_blank()
   )
   
-ggsave(filename=here("figs", "01", "anscombe_data.svg"), plot=plot,width=7, height=5.5)
+ggsave(filename=here("figs", "01", "anscombe_data.png"), plot=plot,width=5.5, height=4.5, dpi=300)
 
 
 rstudio <- image_read(here("figs", "01", "rstudio.png"))

@@ -1,9 +1,25 @@
-###############################################################################
-# Figures for vis4sds
-# Chapter 7
+# Filename: 07-figs.R 
+#
+# Figures for Chapter 7 of vis4sds 
+# 
 # Author: Roger Beecham
-###############################################################################
+#
+#
+#-----------------------------------------
+# Contents
+#-----------------------------------------
+# 
+# 1. Packages and data
+# 2. Concepts graphics
+# 3. Techniques graphics
+#-----------------------------------------
 
+
+#-----------------------------------------
+# 1. Packages and Data
+#-----------------------------------------
+
+# 1.1 Packages ---------------------------
 
 library(tidyverse)
 library(tidymodels) # For bootstrapping
@@ -17,8 +33,16 @@ library(ggdist)
 library(distributional)
 library(patchwork)
 
+
+# 1.2 Data ---------------------------
 ped_veh <- fst::read_fst(here("../", "data", "ch4", "ped_veh.fst"))
 
+
+#-----------------------------------------
+# 2. Concepts graphics
+#-----------------------------------------
+
+# 2.1 Icon array  ------------------------
 
 array_data <- tibble(
   row=rep(1:10, times=1, each=10),
@@ -97,6 +121,8 @@ plot <- icon /waffle + plot_layout(heights=c(1,.4))
 
 ggsave(filename=here("figs", "07", "icon_arrays.png"), plot=plot,width=7, height=5, dpi=300)
 
+# 2.2 Risk theatre  ------------------------
+
 n_row <- 43
 n_col <- 46
 grid_index <- map2_df(
@@ -115,10 +141,6 @@ grid <-
 # Add centroid locations to hex_grid object.
 grid <- grid |>
   left_join(grid_index |> st_drop_geometry() )
-
-# grid |>  ggplot() + geom_sf() +
-#   geom_text(aes(x=col+.5, y=row+.7, label=paste("c",col)), size=2) +
-#   geom_text( aes(x=col+.5, y=row+.3, label=paste("r", row_lookup)), size=2)
 
 theatre_cells <- read_csv(here("lib", "theatre_cells.csv"))
 
@@ -167,6 +189,9 @@ plot <- poll_theatres |>
 
 ggsave(filename=here("figs", "07", "risk_theatre.png"), plot=plot,width=7.5, height=3.1, dpi=300)
 
+
+# 2.3 Ensemble plot  -----------------------
+
 rate_boots_selected <- ped_veh |> 
   mutate(
     is_ksi=accident_severity!="Slight",
@@ -201,6 +226,8 @@ plot <- rate_boots_selected %>%
 
 ggsave(filename=here("figs", "07", "bootstrap_selected.png"), plot=plot,width=5.5, height=3, dpi=300)
 
+# 2.4 Distributional plot  -----------------------
+
 half_eye <- rate_boots_selected %>%
   group_by(local_authority_district) %>%
   mutate(std.error=sd(ksi_rate), lower=quantile(ksi_rate,probs=.025), upper=quantile(ksi_rate,probs=.975)) %>%
@@ -232,12 +259,9 @@ gradient <- rate_boots_selected %>%
     axis.title.y=element_blank()
   )
 
-
 plot <- half_eye + gradient + plot_layout(nrow=1)
 
-
 ggsave(filename=here("figs", "07", "selected_uncertainty.png"), plot=plot,width=8, height=3, dpi=300)
-
 
 rate_boots_temporal <- ped_veh %>%
   mutate(
@@ -278,6 +302,9 @@ plot <- rate_boots_temporal %>%
   theme(axis.text = element_blank())
 
 ggsave(filename=here("figs", "07", "temporal_uncertainty.png"), plot=plot,width=8, height=3, dpi=300)
+
+
+# 2.3 HOP  --------------------------
 
 sample_ids <- rate_boots_temporal |>  select(id) |> unique() |>  sample_n(size=20) |> pull(id)
 

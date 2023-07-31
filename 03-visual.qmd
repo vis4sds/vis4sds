@@ -986,6 +986,10 @@ For a primer on visualization design principles:
 
 * Munzner, T. 2014. "Visualization Analysis and Design", *CRC Press*.
 
+A paper presenting evidence-backed guidelines on visualization design, aimed at applied researchers:
+
+* Franconeri S. L., Padilla L. M., Shah P., Zacks J. M., Hullman J. (2021). "The science of visual data communication: What works". *Psychological Science in the Public Interest*, 22(3), 110–161. doi: [10.1177/15291006211051956](https://doi.org/10.1177/15291006211051956)
+
 For an introduction to ggplot2 and its relationship with @wilkinson_grammar_1999's *grammar of graphics*:
 
 * Wickham, H., Çetinkaya-Rundel, M., Grolemund, G. 2023, "R for Data Science, 2nd Edition", *Orielly*.

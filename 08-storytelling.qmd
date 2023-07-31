@@ -162,17 +162,353 @@ The annotations in @fig-ft-vaccine have heavy saliency thanks to the parsimoniou
 
 ## Techniques
 
+The technical element demonstrates how to design plots deliberatively with annotations in ggplot2. We will recreate a glyphmap type graphic that originally appeared in [The Washington Post](https://www.washingtonpost.com/nation/2020/05/24/coronavirus-rural-america-outbreaks/?arc404=true) to tell a story of growth in Covid-19 cases by US county. The graphic is presented in @fig-wp. Each US county is represented as a line encoded by daily growth rates in new cases between 3rd May and 26th May 2020.  Lines are positioned at the geographic centre of each county. 
+
+```{r}
+#| label: fig-wp
+#| out.width: 100%
+#| fig-cap: "Glyphmap design displaying growth in COVID-19 cases by US county, based on the design by Thebault and Hauslohner, original in [The Washington Post](https://www.washingtonpost.com/nation/2020/05/24/coronavirus-rural-america-outbreaks/?arc404=true)."
+#| echo: false
+#| eval: true
+
+include_graphics("figs/08/wp.png", error = FALSE)
+```
+
+@fig-wp is certainly data dense. Without careful decisions on which aspects to emphasise it would be quite unreadable. Line thickness is varied according to relative infection rates (cumulative cases/population size) and growth rate is double encoded with colour value -- darker and steeper lines for higher growth rates. Even with these additions, it is challenging to discern trajectories for every county, but instead a typical model or expectation of these trajectories can be learnt from visually scanning the graphic. That there is spatial autocorrelation in trajectories means an overall pattern of exposure can be inferred, before eyes are drawn to exceptions. Initially these are towards the extreme end; tall, steep, dark and thick lines, suggesting rapid growth rates and high case rates. Secondary patterns can also be discerned, for example thick and mid-dark lines surrounded by lines that are generally lighter and thinner; counties that appear locally exceptional in having comparatively high growth and exposure rates.
+
+The design is impressive, and there is an obvious benefit to showing growth rates in their spatial position. However, we are not looking at absolute numbers here. The counties that are most salient are not those with the largest case counts. Rather, they have experienced rapid growth since the number of cases reported on 3rd May. So the graphic is most certainly *partial* and *designed* to suit a particular purpose. A slight adjustment in the implementation in @fig-wp was to only show growth rates for counties that had non-negligible case counts on 3rd May ($\geq20$ cases). 
+
+Without the careful integration of annotations and non-standard legends, @fig-wp would not be so successful.  The aim of this technical section is to demonstrate an approach to generating heavily designed annotations -- custom legends, which are often necessary when communicating with maps. For more extensive demonstration of how charts can be annotated and refined, do see the Further Reading section of this chapter.
+
+### Import
+
+* Download the [08-template.qmd]() file and save it to the `reports` folder of your `vis4sds` project.
+* Open your `vis4sds` project in RStudio and load the template file by clicking `File` > `Open File ...` > `reports/08-template.qmd`.
+
+The template file lists the required packages -- `tidyverse` and `sf`. The data were collected using [Kieran Healy](https://kieranhealy.org/)'s [`covdata`](https://kjhealy.github.io/covdata/) package [@healy_covdata_2020], attributing  the [county-level cumulative cases dataset](https://github.com/nytimes/covid-19-data) released and maintained by data journalists at The New York Times [see @nyt_coronavirus_2021].
+
+The template provides access to a version of this dataset that is 'staged' for charting. For this cases are filtered on the dates covered by the Washington Post graphic (3rd to 25th May); identified counties whose daily case counts were $\geq20$ cases on 3rd May; calculated daily growth rates anchored to case counts on 3rd May; calculated 'end' growth rates and daily counts for each county (those recorded on 25th May); and finally a binned growth rate variable identifying counties with daily case counts on 25rd May that were $\leq2\times$, $\geq2\times$, $\geq4\times$,  $\geq7\times$ the daily case counts measured on 3rd May. Also there is a `state_boundaries` dataset to download, which contains `geometry` data for each US state, collected from [US Census Bureau](https://www.census.gov/geographies/mapping-files/time-series/geo/carto-boundary-file.html) as well as coordinate variables describing the geographic centroid of each state. The [Albers Equal Area](https://en.wikipedia.org/wiki/Albers_projection) projection is used.
+
+### Plot trajectories
+
+```{r}
+#| label: fig-wp-basic
+#| out.width: 100%
+#| fig-cap: "Glyphmap design displaying growth in COVID-19 cases by US county, without legend and annotations."
+#| echo: false
+#| eval: true
+
+include_graphics("figs/08/wp-basic.png", error = FALSE)
+```
+
+The main graphic is reasonably straightforward to construct. Different from many of the data graphics in earlier chapters, the way in which growth lines are generated is more low-level. Remembering that lines are initially positioned in x- and y- on their county centroid, we generate from the data, positions in geographic space for each observation -- growth rate recorded on a day since 3rd May 2020.
+
+The code:
+
+```{r}
+#| echo: true
+#| eval: false
+
+county_data |> 
+  ggplot()+
+  geom_sf(
+    data=state_boundaries, 
+    fill="#eeeeee", colour="#ffffff", linewidth=0.4
+  )+ 
+  coord_sf(crs = 5070, datum=NA, clip="off") +
+  geom_point(
+    data=.%>% filter(date=="2020-05-03"), 
+    aes(x=x, y=y, colour=binned_growth_rate, 
+        alpha=binned_growth_rate, size=case_rate)
+  ) +
+  # Plot case data.
+  geom_path(
+    aes(x=x+(day_num*6000)-6000, y=y+(growth_rate*50000)-50000, 
+        group=fips, colour=binned_growth_rate, size=case_rate, 
+        alpha=binned_growth_rate
+    ),
+    lineend="round"
+  ) +
+  scale_colour_manual(values=c("#fa9fb5", "#dd3497", "#7a0177", "#49006a")) +
+  scale_size(range=c(.1,2.5))+
+  scale_alpha_ordinal(range=c(.2,1)) +
+  guides(colour="none", size="none", alpha="none") +
+  theme_void()
+```
+
+The plot specification:
+
+1. *Data*: The main dataset -- the staged `county_data` file. Separately there is a `state_boundaries` file used to draw state boundaries and later label states. For the points drawn at the centroid of each US county (`geom_point()`), the data are filtered so that only a single day is represented (`filter(date=="2020-05-03")`).
+2. *Encoding*: For `geom_point()`, x-position and y-position is mapped to county centroid (`x`,`y` variables in `county_data`), points are coloured according to `binned_growth_rate` using both `colour` and `alpha` and sized according to that county's `case_rate`. The same colour and size encoding is used for the lines (`geom_path()`). County lines are again anchored at county centroids but offset in `x` according to time elapsed (`day_num`) and in `y` according to `growth_rate`. The constants applied to `growth_rate` (5000) and `day_num` (6000), which control the space occupied by the lines, was arrived at manually through trial and error. Note that these numbers are large as they relate to geographic coordinate space. In order to draw separate lines for each county, we set the `group=` argument to the county identifier variable `fips`.
+3. *Marks*: `geom_point()` for the start points centred on county centroids and `geom_path()` for the lines.
+4. *Scale*: `scale_colour_manual()` for the binned growth rate colours; `scale_alpha()` for an ordinal transparency range -- the floor for this is 0.2 and not 0, otherwise counties with the smallest binned growth rates would not be visible; `scale_size()` for varying size continuously according to case rate, the range was arrived at through trial and error.
+5. *Setting*: We don't want the default legend to appear and so `guides()` turns these off; additionally `theme_void()` for removing default axes, gridlines etc.
+
+### Add labels and annotations
+
+The two-letter state boundaries, held in the `state_boundaries` file can be added in a `geom_text()` layer, positioned in `x` and `y` at state centroids. For obvious reasons this needs to appear *after* the first call to `geom_sf()`, which draws the filled state outlines:
+
+```{r}
+#| echo: true
+#| eval: false
+
+county_data |>
+  ggplot()+
+  geom_sf(data=state_boundaries, fill="#eeeeee", colour="#ffffff", size=0.4)+
+  geom_text(data=state_boundaries, aes(x=x,y=y,label=STUSPS), alpha=.8)+
+  ...
+  ...
+  ...
+```
+
+For the counties annotated with accompanying growth rates we create a staged, filtered data frame containing only those counties and with just one row for each county. This is a little more tedious as we have to manually identify these in a `filter()`. Note that we filter on `date` first, so that only one row is returned for each county. Within the `mutate()` some manual abbreviations are made for state names and also the `end_rate` variable is rounded to whole numbers for better labelling.
+
+```{r}
+#| echo: true
+#| eval: false
+# Counties to annotate.
+annotate <- county_data |>  
+  filter(
+    date=="2020-05-03",
+    county==c("Huntingdon") & state=="Pennsylvania" |
+    county==c("Lenawee") & state=="Michigan" |
+    county==c("Crawford") & state=="Iowa" |
+    county==c("Wapello") & state=="Iowa" |
+    county==c("Lake") & state=="Tennessee" |
+    county=="Texas" & state == c("Oklahoma") |
+    county==c("Duplin") & state=="North Carolina" |
+    county==c("Santa Cruz") & state=="Arizona"|
+    county==c("Titus") & state=="Texas"|
+    county==c("Yakima") & state=="Washington"
+    ) |> 
+  mutate(
+    state_abbr=case_when(
+      state=="Pennsylvania" ~ "Penn.",
+      state=="Iowa" ~ "Iowa",
+      state=="Tennessee" ~ "Tenn.",
+      state=="Oklahoma" ~ "Okla.",
+      state=="Texas" ~ "Texas",
+      state=="North Carolina" ~ "N.C.",
+      state=="Washington" ~ "Wash.",
+      state=="Michigan" ~ "Mich.",
+      state=="Arizona" ~ "Arizona",
+      TRUE ~ ""),
+    end_rate_round = round(end_rate,0)
+  )
+```
+
+Plotting these is again quite straightforward with `geom_text()`. The `paste0()` function is used to build labels that display conty names (`county`) and then state abbreviations (`state_abbr`). These appear below each county and this is effected by offseting y-position. Additionally the counties are given a bold font by passing an argument to `fontface="bold"`. The same approach is used for the rate labels, but with an incremented y-position offset so that they don't overlap the county name labels.
+
+```{r}
+#| echo: true
+#| eval: false
+county_data |> 
+  ggplot()+
+  geom_sf(data=state_boundaries, fill="#eeeeee", colour="#ffffff", linewidth=0.4)+ 
+  ...
+  ...
+  geom_text(
+    data=annotate, 
+    aes(x=x,y=y-20000,label=paste0(county,", ",state_abbr)), 
+    size=3, fontface="Bold"
+    )+
+  geom_text(
+    data=annotate, 
+    aes(x=x,y=y-65000,label=paste0(end_rate_round,"X more cases")), 
+    size=2.5
+    )+
+  ...
+  ...
+  ...
+```
+
+### Build custom legend
+
+
+::: {#fig-legends}
+
+:::: {.columns}
+
+::: {.column width="47%"}
+![Growth rates](figs/08/wp-legend-growth.png){#fig-wp-growth-legend}
+:::
+
+::: {.column width="53%"}
+![Case rates](figs/08/wp-legend-case.png){#fig-wp-case-legend}
+:::
+
+:::
+
+Custom legends used to demonstrate growth and case rates.
+:::
+
+```{r}
+#| label: fig-wp-growth-legend
+#| out.width: 80%
+#| fig-cap: "Legend demonstrating growth rates."
+#| echo: false
+#| eval: true
+#| include: false
+
+include_graphics("figs/08/wp-legend-growth.png", error = FALSE)
+```
+
+Since @fig-wp is a non-standard data graphic coded in a more low-level way with `geom_segment()`, it is useful to accompany it with a more expressive legend. We therefore build our own legend from scratch, using the geographic space of the plot as our canvas.
+
+To support positioning of the legend we extract the spatial limits, or bounding box,  of our plot area -- the mainland US.
+
+
+```{r}
+#| echo: true
+#| eval: false
+# Bounding box for mainland US.
+bbox <- st_bbox(state_boundaries)
+width <- bbox$xmax-bbox$xmin
+height <- bbox$ymax-bbox$ymin
+```
+
+We then create a dataset for the top right legend displaying the different categories of growth rate (@fig-wp-growth-legend). Counties filtered by their different growth rates were identified manually. As you will see shortly, we use exactly the same *encoding* as the main graphic for the example legend lines, but rather than positioning these selected counties in their real geographic position, we override their x- and y- location so that the lines appear in a margin to the top right of the graphic. This is achieved in the `mutate()`, where we set x-position to start at the right quarter of the graphic (`bbox$xmax-.25*width`) and y-position to start slightly above the top of the graphic `bbox$ymax+.05*height`. `case_rate` is set to a constant as we don't want line width to vary and also a manually created `label` variable.
+
+```{r}
+#| echo: true
+#| eval: false
+# Legend : growth
+legend_growth <- county_data |>
+  filter(
+    county=="Dubois" & state=="Indiana" |
+    county=="Androscoggin" & state=="Maine" |
+    county=="Fairfax" & state=="Virginia" |
+    county=="Bledsoe" & state=="Tennessee"
+  ) |>
+  mutate(
+    x=bbox$xmax-.25*width, y=bbox$ymax+.05*height,
+    case_rate=.01,
+    label=case_when(
+      county == "Dubois" ~ "7x more cases than on May 3",
+      county == "Androscoggin" ~ "4x",
+      county == "Fairfax" ~ "2x",
+      county == "Bledsoe" ~ "About the same as on May 3"
+    )
+  )
+```
+
+
+
+A separate dataset is also created for drawing the top left legend (@fig-wp-case-legend), showing different case rates relative to population size. In the `mutate()` we set x-position to start towards the left of the graphic (`bbox$xmax-.88*width`) and y-position to start slightly above the top of the graphic `bbox$ymax+.05*height`. We want to draw three lines corresponding to a low, medium and high growth rate and so `pivot_longer()` to duplicate the daily case data over rows. Each line needs to be drawn next to one another and this is achieved with the `offset_day` variable,  a multiple applied to the geographic `width` of US used later in the ggplot2 specification.
+
+```{r}
+#| echo: true
+#| eval: false
+# Legend : case
+legend_case <- county_data |>
+  filter(
+    county == "Kings" & state=="California" ) |>
+  mutate(
+    x=bbox$xmax-.88*width,y=bbox$ymax+.05*height,
+    binned_growth_rate=factor(binned_growth_rate)
+  ) %>%
+  select(x, y, day_num, growth_rate, binned_growth_rate, fips) |>
+  mutate(
+    low=.001, mid=.009, high=.015,
+  ) |>
+  pivot_longer(cols=c(low, mid, high), names_to="offset", values_to="offset_rate") |>
+  mutate(
+    offset_day= case_when(
+      offset == "low" ~ 0,
+      offset == "mid" ~ .04,
+      offset == "high" ~ .08
+    )
+  )
+```
+
+
+### Compose graphic 
+
+The code block below demonstrates how derived data for the legends are used in the ggplot2 specification. Exactly the same mappings are used in the legend as the main graphic, and so the call to `geom_path()` looks similar, except for the different use of x- and y- position. Labels for the legends are generated using `annotate()` and again positioned using location information contained in `bbox`.
+
+```{r}
+#| echo: true
+#| eval: false
+
+# Text for annotations and titles.
+growth_text <- "Line height and colour show change in reported cases 
+relative to May 3"
+case_text <- "Line thickness shows current number relative to 
+county population"
+title_text <- "Change in reported cases since May 3"
+
+county_data |>
+  ggplot()+
+  geom_sf(data=state_boundaries, fill="#eeeeee", colour="#bcbcbc", size=0.2)+
+  ...
+  ...
+  ...
+  # Plot growth legend lines.
+  geom_path(
+    data=legend_growth,
+    aes(x=x+(day_num*6000)-6000, y=y+(growth_rate*50000)-50000,
+      group=fips, colour=binned_growth_rate, size=case_rate,
+      alpha=binned_growth_rate), lineend="round"
+  ) +
+  # Text label for growth legend lines.
+  geom_text(
+    # For positioning manually edit growth_rate of Bledsoe.
+    data=legend_growth %>% filter(day_num == max(county_data$day_num)) %>%
+      mutate(growth_rate=if_else(county=="Bledsoe", -1,growth_rate)),
+    aes(
+      x=x+(day_num*6000)+10000,y=y+(growth_rate*50000)-50000,
+      label=str_wrap(label, 15)), 
+      size=2.5
+      )+
+  annotate("text",
+    x=bbox$xmax-.25*width, y=bbox$ymax+.08*height,
+    label=str_wrap(growth_text,35), size=3.5, hjust=1
+    )+
+  
+  # Plot case legend lines.
+  geom_path(
+    data=legend_case,
+    aes(x=x+(day_num*6000)-6000+offset_day*width, y=y+(growth_rate*50000)-50000,
+      group=paste0(fips,offset), colour=binned_growth_rate, size=offset_rate,
+      alpha=binned_growth_rate), lineend="round"
+    ) +
+  # Text label for case legend lines.
+  annotate("text", 
+    x=bbox$xmax-.88*width, y=bbox$ymax+.04*height, label="Less", size=2.5
+    )+
+  annotate("text", 
+    x=bbox$xmax-.8*width, y=bbox$ymax+.04*height, label="More", size=2.5
+    )+
+  annotate("text", 
+    x=bbox$xmax-.75*width, y=bbox$ymax+.08*height, label=str_wrap(case_text,35),
+    size=3.5, hjust=0
+    )+
+
+  # Title.
+  annotate("text", 
+    x=bbox$xmax-.5*width, y=bbox$ymax+.15*height, label=title_text, size=5
+    )+
+  ...
+  ...
+  ...
+```
+
 
 ## Conclusions
 
-Communicating effectively with data is not an easy undertaking. Difficult decisions must be made around how much important detail to sacrifice in favour of clarity and simplicity of message. Visual approaches can help here, giving cues that order and prioritise information and that build explanatory narratives using metaphor and other rhetorical devices. There are stellar examples of this from in-house Data Journalism teams, most obviously in recent evidence-based stories around the Covid-19 pandemic. We have considered some of these and the careful design decisions made when communicating data-driven stories in light of data, audience and intended purpose. Many leading data journalists use ggplot2 as their visualization toolkit of choice and in the technical section we demonstrated how more deliberatively designed graphics can be generated. This somewhat fiddly approach to creating graphics is different from the style of workflow envisaged in the Chapters -@sec-visual and -@sec-explore on exploratory visual analysis. However, as demonstrated through the examples in this chapter, and the book more generally, ggplot2 can be used for visualization design, making control over annotations, text labels and embedded graphics important skills to develop.
+Communicating effectively with data is not an easy undertaking. Difficult decisions must be made around how much important detail to sacrifice in favour of clarity and simplicity of message. Visual approaches can help here, giving cues that order and prioritise information and that build explanatory narratives using metaphor and other rhetorical devices. There are stellar examples of this from in-house Data Journalism teams, most obviously in recent evidence-based stories around the Covid-19 pandemic. We have considered some of these and the careful design decisions made when communicating data-driven stories in light of data, audience and intended purpose. Many leading data journalists use ggplot2 as their visualization toolkit of choice and in the technical section we demonstrated how more deliberatively designed graphics can be generated. This somewhat fiddly approach to creating graphics is different from the style of workflow envisaged in @sec-visual and @sec-explore on exploratory visual analysis. However, as demonstrated through the examples in this chapter, and the book more generally, ggplot2 can be used for visualization design, making control over annotations, text labels and embedded graphics important skills to develop.
 
 
 ## Further Reading
 
-Cédric Scherer's excellent workshop at rstudio::conf(2022). Highly recommended as a resource for covering in a methodical way how to parameterise ggplor2 scales, coordinate systemas, facets and view components, annotation and labelling.
+Cédric Scherer's excellent workshop at rstudio::conf(2022). Highly recommended as a resource for covering in a methodical way how to parameterise ggplot2 scales, coordinate systemas, facets and view components, annotation and labelling.
 
 * Cédric Scherer, 2022. "Graphic Design with ggplot2: How to Create Engaging and Complex Visualizations in R", An rstudio::conf(2022) Workshop, [rstudio-conf-2022.github.io/ggplot2-graphic-design/](https://rstudio-conf-2022.github.io/ggplot2-graphic-design/)
+
+For a similarly excellent resource see:
+
+* Kieran Healy, 2019. "Data Visualization: A Practical Introduction". *Princeton University Press*. 
+  - Chapter 8
 
 Data journalists at the BBC have assembled a useful 'cookbook' demonstrating basic but useful edits to standard ggplot2 graphics.
 
