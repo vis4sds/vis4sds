@@ -316,8 +316,8 @@ The technical element to this chapter demonstrates how linear regression models 
 
 ### Import, transform, explore
 
-* Download the [06-template.qmd]() file for this chapter and save it to the `reports` folder of your `vis4sds` project.
-* Open your `vis4sds` project in RStudio and load the template file by clicking `File` > `Open File ...` > `reports/06-template.qmd`.
+* Download the [06-template.qmd]() file for this chapter and save it to your `vis4sds` project.
+* Open your `vis4sds` project in RStudio and load the template file by clicking `File` > `Open File ...` > `06-template.qmd`.
 
 The template file lists the required packages: `tidyverse`, `sf` and `tidymodels` for extracting model outputs. The processed data with selected 2011 Census demographics can be loaded from the book's accompanying data repository. In this folder is also a `.geojson` file containing a hexagon cartogram of UK parliamentary constituencies, derived from Open-Innovations' [HexJSON](https://open-innovations.org/projects/hexmaps/hexjson.html) format.
 

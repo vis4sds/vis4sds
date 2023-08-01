@@ -218,8 +218,8 @@ The technical element to this chapter continues in our analysis of 2011 Census t
 
 ### Import
 
-* Download the [05-template.qmd]() file for this chapter and save it to the `reports` folder of your `vis4sds` project.
-* Open your `vis4sds` project in RStudio and load the template file by clicking `File` > `Open File ...` > `reports/05-template.qmd`.
+* Download the [05-template.qmd]() file for this chapter and save it to your `vis4sds` project.
+* Open your `vis4sds` project in RStudio and load the template file by clicking `File` > `Open File ...` > `05-template.qmd`.
 
 A `.csv` file containing Census travel-to-work data in London has been stored in the book's accompanying [data repository](https://github.com/vis4sds/data). Code for downloading the data is in  the template file.  The data can then be read into your session in the usual way.
 

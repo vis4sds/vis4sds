@@ -345,12 +345,12 @@ include_graphics("figs/07/geog-severity-lineup.png", error = FALSE)
 ## Techniques
 
 
-The technical element demonstrates how some of the uncertainty estimates in the chapter can be reproduced.  We will again make use of functional programming approaches via the [`purrr`](https://purrr.tidyverse.org/) package, most obviously for generating and working over bootstrap resamples.
+The technical element demonstrates how some of the uncertainty estimates in the chapter can be reproduced.  We will again make use of functional programming approaches via the [`purrr`](https://purrr.tidyverse.org/) package, most obviously for generating and working over bootstrap resamples.
 
 ### Import
 
-* Download the [07-template.qmd]() file for this chapter and save it to the `reports` folder of your `vis4sds` project.
-* Open your `vis4sds` project in RStudio and load the template file by clicking `File` > `Open File ...` > `reports/07-template.qmd`.
+* Download the [07-template.qmd]() file for this chapter and save it to your `vis4sds` project.
+* Open your `vis4sds` project in RStudio and load the template file by clicking `File` > `Open File ...` > `07-template.qmd`.
 
 The template file lists the required packages -- `tidyverse`, `sf`, `tidymodels` (for working with the bootstraps), [`ggdist`](https://mjskay.github.io/ggdist/) and [`distributional`](https://pkg.mitchelloharawild.com/distributional/) for generating plots of parameter uncertainty and [`gganimate`](https://gganimate.com/index.html) for the hypothetical outcome plot. Code for loading the STATS19  pedestrian crash data is in the [07-template.qmd]() file.
 

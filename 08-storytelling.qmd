@@ -139,7 +139,9 @@ include_graphics("figs/08/jbm-anim.gif", error = FALSE)
 
 @fig-ft-vaccine presents a final example of [visual narrative](https://twitter.com/jburnmurdoch/status/1382013080448724994) from Financial Times with an obviously political purpose. The graphic was created in response to claims from the UK's Prime Minister that it is largely restrictions rather than vaccination that has reduced infection rates in the country. Interesting here is how annotation and *visual saliency* is used to direct how the graphic is perceived. If the graphic was only annotated  with points in time when lockdown and vaccination was initiated, it would *invite* us to make judgements about the effects of these two events on infectious rates. That the graphic makes highly salient annotations labelling the (unmeasurable) effect of *lockdown* and *vaccine* is an interesting addition. There is little room for ambiguity.
 
-This sort of presentation, labelling the chart with an unmeasurable effect, may risk graphical integrity (see @tufte_visual_1983's [lie factor](https://infovis-wiki.net/wiki/Lie_Factor)). In a keynote given at IEEE VIS 2020 [@burnmurdoch_beliv_2020], John Burn Murdoch, who created this and the other Financial Times graphics, reflected on his experiences generating data stories early in the pandemic --  that the way in which the FT's data graphics were interpreted, and misinterpreted, varied depending on the prior expectations and political beliefs of those consuming them. The chart labelling in this case might have been added to signal more directly the evidence-based argument that was being made, or alternatively perhaps spark debate.
+This sort of presentation, labelling the chart with an unmeasurable effect, may risk graphical integrity (see @tufte_visual_1983's [lie factor](https://infovis-wiki.net/wiki/Lie_Factor)). In a keynote given at IEEE VIS 2020 [@burnmurdoch_beliv_2020], John Burn Murdoch, who created this and the other Financial Times graphics, reflected on his experiences generating data stories early in the pandemic --  that the way in which the FT's data graphics were interpreted, and misinterpreted, varied depending on the prior expectations and political beliefs of those consuming them. The chart labelling in this case might have been added to signal more directly the evidence-based argument that was being made -- to amplify the conclusion believed to be supported by the data.  
+
+
 
 Clearly all data analysis is heavily informed by the values, prejudices, motivations and incentives of those undertaking them. As demonstrated by @roth_cartographic_2020's characteristics of data storytelling, these individual factors are necessary to communicate effectively. An interesting question, then, is around how integrity and trust is designed into a data analysis. Perhaps in the case of the Financial Times data journalists, this trust is established over time, through a portfolio of data analysis work that is considered, communicated transparently and with humility.
 
@@ -182,8 +184,8 @@ Without the careful integration of annotations and non-standard legends, @fig-wp
 
 ### Import
 
-* Download the [08-template.qmd]() file and save it to the `reports` folder of your `vis4sds` project.
-* Open your `vis4sds` project in RStudio and load the template file by clicking `File` > `Open File ...` > `reports/08-template.qmd`.
+* Download the [08-template.qmd]() file and save it to your `vis4sds` project.
+* Open your `vis4sds` project in RStudio and load the template file by clicking `File` > `Open File ...` > `08-template.qmd`.
 
 The template file lists the required packages -- `tidyverse` and `sf`. The data were collected using [Kieran Healy](https://kieranhealy.org/)'s [`covdata`](https://kjhealy.github.io/covdata/) package [@healy_covdata_2020], attributing  the [county-level cumulative cases dataset](https://github.com/nytimes/covid-19-data) released and maintained by data journalists at The New York Times [see @nyt_coronavirus_2021].
 

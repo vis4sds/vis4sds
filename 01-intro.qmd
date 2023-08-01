@@ -171,7 +171,7 @@ knitr::include_graphics("figs/01/rstudio_annotate.png", error = FALSE)
 
 <!-- ![The RStudio IDE](figs/01/rstudio_annotate.png){#fig-rstudio width=100% fig-align="center"} -->
 
-You should see a set of windows roughly similar to those in @fig-rstudio. The top left pane is used either as a code editor (the tab named `Untitled1`) or data viewer. This is where you'll write, organise and comment R code for execution or inspect datasets as a spreadsheet representation. Below this in the bottom left pane is the R *Console*, in which you write and execute commands directly. To the top right is a pane with the tabs *Environment* and *History*. This displays all objects -- data and plot items, calculated functions -- stored in-memory during an R session. In the bottom right is a pane for navigating through project directories, displaying plots, details of installed and loaded packages and documentation on their functions.
+You should see a set of windows roughly similar to those in @fig-rstudio. The top left pane is used either as a code editor (the tab named `Untitled1`) or data viewer. This is where you'll write, organise and comment R code for execution or inspect datasets as a spreadsheet representation. Below this in the bottom left pane is the R *Console*, in which you write and execute commands directly. To the top right is a pane with the tabs *Environment* and *History*. This displays all objects -- data and plot items, calculated functions -- stored in-memory during an R session. In the bottom right is a pane for navigating through project folders, displaying plots, details of installed and loaded packages and documentation on their functions.
 
 ### Compute in the console
 
@@ -204,7 +204,7 @@ There are two steps to getting packages down and available in your working envir
 1.  `install.packages("<package-name>")` downloads the named package from a repository.
 2.  `library(<package-name>)` makes the package available in your current session.
 
-Install `tidyverse`, the core collection of packages for doing Data Science in R, by running the code below:
+Download `tidyverse`, the core collection of packages for doing Data Science in R, by running the code below:
 
 ```{r}
 #| echo: true
@@ -249,7 +249,8 @@ Since you've downloaded the package but not made it available to your session, y
 ```{r}
 #| echo: true
 #| eval: false
-> No documentation for ‘st_contains’ in specified packages and libraries
+> Error in .helpForCall(topicExpr, parent.frame()) : 
+  no methods for ‘st_contains’ and no documentation for it as a function
 ```
 
 So let's try again, by first calling `library(sf)`.
@@ -258,7 +259,7 @@ So let's try again, by first calling `library(sf)`.
 #| echo: true
 #| eval: false
 library(sf)
-## Linking to GEOS 3.7.2, GDAL 2.4.1, PROJ 6.1.0
+## Linking to GEOS 3.11.0, GDAL 3.5.3, PROJ 9.1.0
 ?st_contains()
 ```
 
@@ -294,7 +295,7 @@ A quick anatomy of `.qmd` files :
 
 -   [YAML](https://en.wikipedia.org/wiki/YAML) - positioned at the head of the document and contains metadata determining amongst other things the author details and the output format when rendering.
 -   TEXT - incorporated throughout to document and comment on your analysis.
--   CODE chunks - containing discrete blocks that are run when the .qmd file is rendered.
+-   CODE chunks - containing discrete blocks that are run when the `.qmd` file is rendered.
 
 ```{r}
 #| echo: false
@@ -401,7 +402,7 @@ Unlike `.qmd` everything within a script file is treated as code to be executed,
 
 ### Create an RStudio Project
 
-Throughout the book we will use project-oriented workflows. This is where all files pertaining to a data analysis -- data, code and outputs -- are organised from a single root folder and where file path discipline is used such that all paths are relative to the project's root folder [see Chapter 7 of @wickham_r_2023]. You can imagine this self-contained project set-up is necessary for achieving reproducibility of your research. It allows anyone to take a project and run it on their own machines with minimal adjustment.
+Throughout the book we will use project-oriented workflows. This is where all files pertaining to a data analysis -- data, code and outputs -- are organised from a single top-level, or root, folder and where file path discipline is used such that all paths are relative to the project's root folder [see Chapter 7 of @wickham_r_2023]. You can imagine this self-contained project set-up is necessary for achieving reproducibility of your research. It allows anyone to take a project and run it on their own machines with minimal adjustment.
 
 When opening RStudio, the IDE automatically points to a working directory, likely the home folder for your local machine. RStudio will save any outputs to this folder and expect any data you use to be saved there. Clearly to incorporate neat, self-contained project workflows you will want a dedicated project folder rather than the default home folder for your machine. This can be achieved with the `setwd(<path-to-your-project>)` function. The problem with doing this is that you insert a path which cannot be understood outside of your local machine at the time it was created. This is a real pain. It makes simple things like moving projects around on your machine an arduous task and most importantly it hinders reproducibility if others are to reuse your work.
 
@@ -424,19 +425,18 @@ Let's create a new Project for this book:
 
 You will notice that the top of the Console window now indicates the root for this new project (`~projects/vis4sds`).
 
--   In the root of your project, create folders called `reports`, `code`, `data`, `figures`.
--   Save this session's [01-template.qmd]() file to the `reports` folder.
+-   In the top-level folder of your project, create folders called `code`, `data`, `figures`.
+-   Save this session's [01-template.qmd]() file to the `vis4sds` folder.
 
 Your project's folder structure should now look like this:
 
 ``` text
 vis4sds\
   vis4sds.Rproj
+  01-template.qmd
   code\
   data\
   figures\
-  reports\
-    01-template.qmd
 ```
 
 ## Conclusions

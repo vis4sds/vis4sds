@@ -6,13 +6,13 @@ format: html
 
 ## Introduction
 
-Reopen the project you created in Chapter 1 and save this `.qmd` file to the `reports` folder. When working through the materials from this chapter run each code chunk separately by clicking the small green arrow beside each code chunk. By default `eval: false` on most code chunks, so when you knit the code chunk will not execute. We are working with a reasonably large dataset so this is to avoid the tedium of waiting long periods for this document to render.
+Reopen the project you created in Chapter 1 and save this `.qmd` file in the top-level folder. When working through the materials from this chapter run each code chunk separately by clicking the small green arrow beside each code chunk. By default `eval: false` on most code chunks, so when you knit the code chunk will not execute. We are working with a reasonably large dataset so this is to avoid the tedium of waiting long periods for this document to render.
 
 The technical element to this chapter works with data from a large bikeshare scheme -- New York's [Citibike](https://www.citibikenyc.com/) scheme.
 
 ## Setup
 
-The code block below points to the packages you need to do the work discussed in the chapter. If you have been following the instructions from the last chapter, you will have already installed the key packages -- `tidyverse` , `fst`, `lubridate`, `sf`, `here` -- and so simply need to make them available in session with `library(<package-name>)`. If you have not yet downloaded these packages you will need to make separate calls to `install.packages("<package-name>")` as described in the previous chapter.
+The code block below points to the packages you need to do the work discussed in the chapter. If you have been following the instructions from the last chapter you will have already installed the key packages -- `tidyverse` , `fst`, `lubridate`, `sf`, `here` -- and so simply need to make them available in session with `library(<package-name>)`. If you have not yet downloaded these packages you will need to make separate calls to `install.packages("<package-name>")` as described in the previous chapter.
 
 ```{r}
 #| echo: true
@@ -31,12 +31,12 @@ library(here)
 install.packages("geosphere") 
 ```
 
-Run the code block below to download the pre-processed and extracted data to your project's data folder. Note that you should only run the import code below once. When returning to this work in a new R session, you need only then read in the `ny_trips.fst` and `ny_stations.csv` file that is held locally on your machines. Unfortunately due to storage limitations I had to make `ny_trips.fst` just a 500k random sample of the larger dataset that appears in the chapter.
+Run the code block below to download the pre-processed and extracted data to your project's data folder. Note that you should only run the import code below once. When returning to this work in a new R session, you need only then read in the `ny_trips.fst` and `ny_stations.csv` file that is held locally on your machines. Unfortunately due to storage limits I had to make `ny_trips.fst` just a 500k random sample of the c.1.9m trips made in Citibike in June 2020.
 
 ```{r}
 #| echo: true
 #| eval: false
-# Create subdirectory 'data'. if none exists.
+# Create subdirectory 'data' if none exists.
 if(!dir.exists(here("data"))) dir.create(here("data"))
 
 # Download .csv file of stations data from book's data repo.
@@ -54,7 +54,7 @@ ny_trips <- read_fst(here("data", "ny_trips.fst"))
 
 ## Describe
 
-The code block below performs some useful recoding operations: convert `chr` fields to `int` for efficient storage, temporal fields `dttm` objects, and longitude and latitude to `dbl` so that we can do calculations.
+The code block below performs some useful recoding operations: convert `chr` fields to `int` for efficient storage, temporal fields to `dttm` objects, and longitude and latitude to `dbl` so that we can do calculations.
 
 ```{r}
 #| echo: true
@@ -237,3 +237,4 @@ temp_plot_data |>
   geom_line(aes(colour=gender))+
   facet_wrap(~dist_bands, nrow=1)
 ```
+

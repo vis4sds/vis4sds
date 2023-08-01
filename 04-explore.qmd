@@ -418,8 +418,8 @@ It does so by exploring the characteristics of individuals involved in pedestria
 
 ### Import
 
-* Download the [04-template.qmd](./files/04-template.qmd) file for this chapter and save it to the `reports` folder of your `vis4sds` project.
-* Open your `vis4sds` project in RStudio and load the template file by clicking `File` > `Open File ...` > `reports/04-template.qmd`.
+* Download the [04-template.qmd](./files/04-template.qmd) file for this chapter and save it to your `vis4sds` project.
+* Open your `vis4sds` project in RStudio and load the template file by clicking `File` > `Open File ...` > `04-template.qmd`.
 
 The presented analysis is based on that published in @beecham_vis_2022 and investigates vehicle–pedestrian crashes in STATS19 between 2010 and 2019, where the Indeces of Multiple Deprivation (IMD) class of the pedestrian, driver and crash location is recorded.
 
