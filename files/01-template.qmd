@@ -21,7 +21,7 @@ library(tidyverse)
 
 ## Plotting Anscombe's Quartet
 
-There was little in the way of data analysis in this first chapter. However, to demonstrate how code and analysis can be executed in `.qmd` files, we can plot the famous [Anscombe's Quartet](https://en.wikipedia.org/wiki/Anscombe%27s_quartet) datasets.You automatically loaded these data with the tidverse package, when calling `library(tidyverse)`. Should you wish to inspect them, type `View(anscombe)` in the R Console.
+There was little in the way of data analysis in this first chapter. However, to demonstrate how code and analysis can be executed in `.qmd` files, we can plot the famous [Anscombe's Quartet](https://en.wikipedia.org/wiki/Anscombe%27s_quartet) datasets. You automatically loaded these data with the tidverse package, when calling `library(tidyverse)`. Should you wish to inspect them, type `View(anscombe)` in the R Console.
 
 Below is some code for generating scatterplots of the Anscombe datasets. No need to worry about the code -- there is a bit of data reshaping using [`tidyr`](https://tidyr.tidyverse.org/), combined with a [`ggplot2`](https://ggplot2.tidyverse.org/) specification for generating the scatterplots.
 
@@ -46,15 +46,15 @@ When you work with Quarto documents it is cumbersome to constantly render the do
 
 ## Writing plot to your project folder
 
-If you've followed the instructions in the chapter, you should have created an RStudio project and saved this `.qmd` file in you project's `reports` folder.
+If you've followed the instructions in the chapter, you should have created an RStudio project and saved this `.qmd` file in your project's top-level, or root, folder.
 
 Let's now save our Anscombe quartet plot to the project's `figures` folder by **evaluating** the code block below when you next click *Render*. Note: you will need to edit `eval: <true|false>` in the block below.
-
+s
 ```{r}
 #| echo: true
 #| eval: false
 # Save plot.
-ggsave("../figures/anscombe.png", plot=plot,width=7, height=4, dpi=300)
+ggsave("figures/anscombe.png", plot=plot,width=7, height=4, dpi=300)
 ```
 
 To present this figure in your document as an image (`.png`) file, you can use `knitr::include_graphics(<>)` (note this requires you to download the `knitr` package) and reference this location. Again, you will need to edit `eval: <true|false>` in the block below.
@@ -63,5 +63,5 @@ To present this figure in your document as an image (`.png`) file, you can use `
 #| echo: true
 #| eval: false
 # Display plot.
-knitr::include_graphics("../figures/anscombe.png")
+knitr::include_graphics("figures/anscombe.png")
 ```

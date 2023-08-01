@@ -404,7 +404,7 @@ Watch [Jo Wood's TEDx](https://www.youtube.com/embed/FaRBUnO5PZI) talk demonstra
 </div>
 </div>
 <!-- ![The RStudio IDE](figs/01/rstudio_annotate.png){#fig-rstudio width=100% fig-align="center"} -->
-<p>You should see a set of windows roughly similar to those in <a href="#fig-rstudio">Figure&nbsp;<span>1.1</span></a>. The top left pane is used either as a code editor (the tab named <code>Untitled1</code>) or data viewer. This is where you’ll write, organise and comment R code for execution or inspect datasets as a spreadsheet representation. Below this in the bottom left pane is the R <em>Console</em>, in which you write and execute commands directly. To the top right is a pane with the tabs <em>Environment</em> and <em>History</em>. This displays all objects – data and plot items, calculated functions – stored in-memory during an R session. In the bottom right is a pane for navigating through project directories, displaying plots, details of installed and loaded packages and documentation on their functions.</p>
+<p>You should see a set of windows roughly similar to those in <a href="#fig-rstudio">Figure&nbsp;<span>1.1</span></a>. The top left pane is used either as a code editor (the tab named <code>Untitled1</code>) or data viewer. This is where you’ll write, organise and comment R code for execution or inspect datasets as a spreadsheet representation. Below this in the bottom left pane is the R <em>Console</em>, in which you write and execute commands directly. To the top right is a pane with the tabs <em>Environment</em> and <em>History</em>. This displays all objects – data and plot items, calculated functions – stored in-memory during an R session. In the bottom right is a pane for navigating through project folders, displaying plots, details of installed and loaded packages and documentation on their functions.</p>
 </section><section id="compute-in-the-console" class="level3" data-number="1.3.2"><h3 data-number="1.3.2" class="anchored" data-anchor-id="compute-in-the-console">
 <span class="header-section-number">1.3.2</span> Compute in the console</h3>
 <p>You will write and execute almost all code from the code editor pane. To start though let’s use <code>R</code> as a calculator by typing some commands into the console. You’ll create an object (<code>x</code>) and assign it a value using the assignment operator (<code>&lt;-</code>), then perform some simple statistical calculations using functions that are held within the <code>base</code> package.</p>
@@ -439,7 +439,7 @@ R package documentation
 <li>
 <code>library(&lt;package-name&gt;)</code> makes the package available in your current session.</li>
 </ol>
-<p>Install <code>tidyverse</code>, the core collection of packages for doing Data Science in R, by running the code below:</p>
+<p>Download <code>tidyverse</code>, the core collection of packages for doing Data Science in R, by running the code below:</p>
 <div class="cell">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"tidyverse"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -461,12 +461,13 @@ R package documentation
 </div>
 <p>Since you’ve downloaded the package but not made it available to your session, you should get the message:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> No documentation <span class="cf">for</span> ‘st_contains’ <span class="cf">in</span> specified packages and libraries</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> Error <span class="cf">in</span> <span class="fu">.helpForCall</span>(topicExpr, <span class="fu">parent.frame</span>()) <span class="sc">:</span> </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  no methods <span class="cf">for</span> ‘st_contains’ and no documentation <span class="cf">for</span> it as a <span class="cf">function</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>So let’s try again, by first calling <code><a href="https://r-spatial.github.io/sf/">library(sf)</a></code>.</p>
 <div class="cell">
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/">sf</a></span><span class="op">)</span></span>
-<span><span class="co">## Linking to GEOS 3.7.2, GDAL 2.4.1, PROJ 6.1.0</span></span>
+<span><span class="co">## Linking to GEOS 3.11.0, GDAL 3.5.3, PROJ 9.1.0</span></span>
 <span><span class="op">?</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_binary_pred.html">st_contains</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now let’s install some of the remaining core packages on which this book depends. Run the block below, which passes a <a href="https://r4ds.had.co.nz/vectors.html">vector</a> of package names to the <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code> function.</p>
@@ -501,7 +502,7 @@ R package visibility
 <li>
 <a href="https://en.wikipedia.org/wiki/YAML">YAML</a> - positioned at the head of the document and contains metadata determining amongst other things the author details and the output format when rendering.</li>
 <li>TEXT - incorporated throughout to document and comment on your analysis.</li>
-<li>CODE chunks - containing discrete blocks that are run when the .qmd file is rendered.</li>
+<li>CODE chunks - containing discrete blocks that are run when the <code>.qmd</code> file is rendered.</li>
 </ul>
 <div class="cell">
 <div class="cell-output-display">
@@ -602,7 +603,7 @@ format: html
 </div>
 </section><section id="create-an-rstudio-project" class="level3" data-number="1.3.6"><h3 data-number="1.3.6" class="anchored" data-anchor-id="create-an-rstudio-project">
 <span class="header-section-number">1.3.6</span> Create an RStudio Project</h3>
-<p>Throughout the book we will use project-oriented workflows. This is where all files pertaining to a data analysis – data, code and outputs – are organised from a single root folder and where file path discipline is used such that all paths are relative to the project’s root folder <span class="citation" data-cites="wickham_r_2023">(see Chapter 7 of <a href="references.html#ref-wickham_r_2023" role="doc-biblioref">Wickham, Çetinkaya-Rundel, and Grolemund 2023</a>)</span>. You can imagine this self-contained project set-up is necessary for achieving reproducibility of your research. It allows anyone to take a project and run it on their own machines with minimal adjustment.</p>
+<p>Throughout the book we will use project-oriented workflows. This is where all files pertaining to a data analysis – data, code and outputs – are organised from a single top-level, or root, folder and where file path discipline is used such that all paths are relative to the project’s root folder <span class="citation" data-cites="wickham_r_2023">(see Chapter 7 of <a href="references.html#ref-wickham_r_2023" role="doc-biblioref">Wickham, Çetinkaya-Rundel, and Grolemund 2023</a>)</span>. You can imagine this self-contained project set-up is necessary for achieving reproducibility of your research. It allows anyone to take a project and run it on their own machines with minimal adjustment.</p>
 <p>When opening RStudio, the IDE automatically points to a working directory, likely the home folder for your local machine. RStudio will save any outputs to this folder and expect any data you use to be saved there. Clearly to incorporate neat, self-contained project workflows you will want a dedicated project folder rather than the default home folder for your machine. This can be achieved with the <code>setwd(&lt;path-to-your-project&gt;)</code> function. The problem with doing this is that you insert a path which cannot be understood outside of your local machine at the time it was created. This is a real pain. It makes simple things like moving projects around on your machine an arduous task and most importantly it hinders reproducibility if others are to reuse your work.</p>
 <p>RStudio Projects resolve these problems. Whenever you load an RStudio Project, <code>R</code> starts up and the working directory is automatically set to the project’s root folder. If you were to move the project elsewhere on your machine, or to another machine, a new root is automatically generated – so RStudio projects ensure that relative paths work.</p>
 <div class="cell">
@@ -622,17 +623,16 @@ format: html
 </ul>
 <p>You will notice that the top of the Console window now indicates the root for this new project (<code>~projects/vis4sds</code>).</p>
 <ul>
-<li>In the root of your project, create folders called <code>reports</code>, <code>code</code>, <code>data</code>, <code>figures</code>.</li>
-<li>Save this session’s <a href="">01-template.qmd</a> file to the <code>reports</code> folder.</li>
+<li>In the top-level folder of your project, create folders called <code>code</code>, <code>data</code>, <code>figures</code>.</li>
+<li>Save this session’s <a href="">01-template.qmd</a> file to the <code>vis4sds</code> folder.</li>
 </ul>
 <p>Your project’s folder structure should now look like this:</p>
 <pre class="text"><code>vis4sds\
   vis4sds.Rproj
+  01-template.qmd
   code\
   data\
-  figures\
-  reports\
-    01-template.qmd</code></pre>
+  figures\</code></pre>
 </section></section><section id="conclusions" class="level2" data-number="1.4"><h2 data-number="1.4" class="anchored" data-anchor-id="conclusions">
 <span class="header-section-number">1.4</span> Conclusions</h2>
 <p>Visual data analysis approaches are necessary for exploring complex patterns in data and to make and communicate claims under uncertainty. This is especially true of social data science applications. Datasets are repurposed for research often for the first time; contain complex structure and geo-spatial relations that cannot be easily captured by statistical summaries alone; and, consequently, where the types of questions that can be asked and the techniques deployed to answer them cannot be specified in advance. This is demonstrated in the book as we explore (Chapters <a href="04-explore.html"><span>4</span></a> and <a href="05-network.html"><span>5</span></a>), model under uncertainty (Chapter <a href="06-model.html"><span>6</span></a>) and communicate (Chapters <a href="07-uncertainty.html"><span>7</span></a> and <a href="08-storytelling.html"><span>8</span></a>) with various social science datasets. All technical activity is completed in R, making use of tools and software libraries that form part of the R ecosystem: the <code>tidyverse</code> for doing modern data science and Quarto for authoring reproducible research projects.</p>
