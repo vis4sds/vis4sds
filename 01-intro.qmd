@@ -212,7 +212,7 @@ Download `tidyverse`, the core collection of packages for doing Data Science in 
 install.packages("tidyverse")
 ```
 
-If you have little or no experience in R, it is easy to get confused about downloading and then using packages in a session. For example, let's say we want to make use of the Simple Features package ([`sf`](https://r-spatial.github.io/sf/index.html)) for performing spatial operations.
+If you have little or no experience in R, it is easy to get confused about downloading and then using packages in a session. For example, let's say we want to make use of the Simple Features package ([`sf`](https://r-spatial.github.io/sf/index.html)) [@pebesma_simple_2018] for performing spatial operations.
 
 ```{r}
 #| echo: true
