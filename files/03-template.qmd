@@ -6,9 +6,9 @@ format: html
 
 ## Introduction
 
-Reopen your project and save this `.qmd` to the `reports` folder. When working through the materials from this chapter run each code chunk separately by clicking the small green arrow beside each code chunk. By default I have set `eval: false` on most code chunks, so when you knit the code chunk will not execute.
+Reopen your project and save this  `.qmd` file in the top-level folder. When working through the materials from this chapter run each code chunk separately by clicking the small green arrow beside each code chunk. By default I have set `eval: false` on most code chunks, so when you knit the code chunk will not execute.
 
-The technical element involves analysing data from the 2019 UK General Election. You will work with results data recorded by Parliamentary Constituency. After importing and describing the dataset, you will generate data graphics that expose patterns in voting behaviour by writing `ggplot2` specifications.
+The technical element involves analysing data from the 2019 UK General Election. You will work with results data recorded by Parliamentary Constituency. After importing and describing the dataset, you will generate data graphics that expose patterns in voting behaviour by writing ggplot2 specifications.
 
 ## Setup
 
@@ -35,7 +35,7 @@ We also need to import geographic boundary data for Parliamentary Constituencies
 ```{r}
 #| echo: true
 #| eval: false
-url <- "https://vis4sds.github.io/data/ch3/cons_outline.geojson"
+url <- "https://vis4sds.github.io/data/ch3/constituency_boundaries.geojson"
 download.file(url, here("data", "constituency_boundaries.geojson"))
 cons_outline <- st_read(here("data", "constituency_boundaries.geojson"), crs=27700)
 ```
@@ -120,11 +120,11 @@ cons_outline |>
   ggplot()+
   geom_sf(aes(fill=elected), colour="#636363", alpha=.2, linewidth=.01)+
   geom_spoke(
-    aes(x=bng_e, y=bng_n, angle=swing_angle, colour=elected, size=is_flipped),
+    aes(x=bng_e, y=bng_n, angle=swing_angle, colour=elected, linewidth=is_flipped),
       radius=7000, position="center_spoke"
     )+
   coord_sf(crs=27700, datum=NA)+
-  scale_size_ordinal(range=c(.3,.9))+
+  scale_linewidth_ordinal(range=c(.2,.5))+
   scale_colour_manual(values=party_colours)+
   scale_fill_manual(values=party_colours)
 ```
