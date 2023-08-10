@@ -644,6 +644,7 @@ The analysis above might give the impression that OD maps should be used in pref
 <div class="cell">
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Install odvis.</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"rogerbeecham/odvis"</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">odvis</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Combine the grid and london_boroughs (real geography)</span></span>
 <span><span class="co"># objects into a single simple features data frame.</span></span>
@@ -658,15 +659,15 @@ The analysis above might give the impression that OD maps should be used in pref
 <span><span class="co"># -- origin, destination and control point locations.</span></span>
 <span><span class="va">trajectories</span> <span class="op">&lt;-</span> <span class="va">lon_geogs</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">st_drop_geometry</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">ward_name</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">area_name</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">pivot_wider</span><span class="op">(</span>names_from <span class="op">=</span> <span class="va">type</span>, values_from <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">mutate</span><span class="op">(</span>id <span class="op">=</span> <span class="fu">row_number</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">nest</span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">ward_name</span>, <span class="va">x_real</span>, <span class="va">y_real</span>, <span class="va">x_grid</span>, <span class="va">y_grid</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">nest</span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">area_name</span>, <span class="va">x_real</span>, <span class="va">y_real</span>, <span class="va">x_grid</span>, <span class="va">y_grid</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">mutate</span><span class="op">(</span></span>
 <span>    trajectory <span class="op">=</span> <span class="fu">map</span><span class="op">(</span></span>
 <span>      <span class="va">data</span>,</span>
 <span>      <span class="op">~</span><span class="fu">get_trajectory</span><span class="op">(</span></span>
-<span>        <span class="va">.x</span><span class="op">$</span><span class="va">x_real</span>, <span class="va">.x</span><span class="op">$</span><span class="va">y_real</span>, <span class="va">.x</span><span class="op">$</span><span class="va">x_grid</span>, <span class="va">.x</span><span class="op">$</span><span class="va">y_grid</span>, <span class="va">.x</span><span class="op">$</span><span class="va">ward_name</span></span>
+<span>        <span class="va">.x</span><span class="op">$</span><span class="va">x_real</span>, <span class="va">.x</span><span class="op">$</span><span class="va">y_real</span>, <span class="va">.x</span><span class="op">$</span><span class="va">x_grid</span>, <span class="va">.x</span><span class="op">$</span><span class="va">y_grid</span>, <span class="va">.x</span><span class="op">$</span><span class="va">area_name</span></span>
 <span>        <span class="op">)</span></span>
 <span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -686,7 +687,8 @@ The analysis above might give the impression that OD maps should be used in pref
 <span>    colour <span class="op">=</span> <span class="st">"#08306b"</span>, linewidth <span class="op">=</span> <span class="fl">.4</span></span>
 <span>    <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">scale_fill_manual</span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"#f0f0f0"</span>, <span class="st">"transparent"</span><span class="op">)</span>, guide <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">scale_colour_manual</span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"#FFFFFF"</span>, <span class="st">"#525252"</span><span class="op">)</span>, guide <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="fu">scale_colour_manual</span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"#FFFFFF"</span>, <span class="st">"#525252"</span><span class="op">)</span>, guide <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">theme_void</span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section><section id="analysing-over-the-nodes-boroughs" class="level3" data-number="5.3.3"><h3 data-number="5.3.3" class="anchored" data-anchor-id="analysing-over-the-nodes-boroughs">
 <span class="header-section-number">5.3.3</span> Analysing over the nodes (boroughs)</h3>
@@ -831,7 +833,21 @@ The analysis above might give the impression that OD maps should be used in pref
 </div>
 <p>The code:</p>
 <div class="cell">
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">plot_data</span> <span class="op">&lt;-</span> <span class="va">edges</span> <span class="op">|&gt;</span> <span class="fu">mutate</span><span class="op">(</span>non_prof <span class="op">=</span> <span class="va">commutes</span><span class="op">-</span><span class="va">is_prof</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">edges</span> <span class="op">&lt;-</span> <span class="va">od_pairs</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">o_bor</span>, <span class="va">d_bor</span><span class="op">)</span>  <span class="op">|&gt;</span>  </span>
+<span>  <span class="fu">summarise</span><span class="op">(</span></span>
+<span>    commutes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">count</span><span class="op">)</span>,</span>
+<span>    is_prof <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">count</span><span class="op">[</span><span class="va">is_prof</span><span class="op">]</span><span class="op">)</span>,</span>
+<span>    prop_prof<span class="op">=</span> <span class="va">is_prof</span><span class="op">/</span><span class="va">commutes</span></span>
+<span>    <span class="op">)</span> <span class="op">|&gt;</span>  </span>
+<span>  <span class="fu">ungroup</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">left_join</span><span class="op">(</span><span class="va">grid</span>, by<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"o_bor"</span><span class="op">=</span><span class="st">"area_name"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">st_drop_geometry</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span>  <span class="fu">select</span><span class="op">(</span><span class="op">-</span><span class="va">geom</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">rename</span><span class="op">(</span>o_x<span class="op">=</span><span class="va">x</span>, o_y<span class="op">=</span><span class="va">y</span>, o_col<span class="op">=</span><span class="va">col</span>, o_row<span class="op">=</span><span class="va">row</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">left_join</span><span class="op">(</span><span class="va">grid</span>, by<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"d_bor"</span><span class="op">=</span><span class="st">"area_name"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">st_drop_geometry</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span>  <span class="fu">select</span><span class="op">(</span><span class="op">-</span><span class="va">geom</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">rename</span><span class="op">(</span>d_x<span class="op">=</span><span class="va">x</span>, d_y<span class="op">=</span><span class="va">y</span>, d_col<span class="op">=</span><span class="va">col</span>, d_row<span class="op">=</span><span class="va">row</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="va">plot_data</span> <span class="op">&lt;-</span> <span class="va">edges</span> <span class="op">|&gt;</span> <span class="fu">mutate</span><span class="op">(</span>non_prof <span class="op">=</span> <span class="va">commutes</span><span class="op">-</span><span class="va">is_prof</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">rename</span><span class="op">(</span>prof <span class="op">=</span> <span class="va">is_prof</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">ungroup</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">mutate</span><span class="op">(</span>global_prof <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">prof</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">prof</span> <span class="op">+</span> <span class="va">non_prof</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -854,7 +870,7 @@ The analysis above might give the impression that OD maps should be used in pref
 <span></span>
 <span><span class="va">bbox_grid</span> <span class="op">&lt;-</span> <span class="fu">st_bbox</span><span class="op">(</span><span class="va">grid</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">plot</span> <span class="op">&lt;-</span> <span class="va">plot_data</span> <span class="op">|&gt;</span></span>
+<span><span class="va">plot_data</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_sf</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>fill<span class="op">=</span><span class="va">resid</span><span class="op">)</span>, colour <span class="op">=</span> <span class="st">"#616161"</span>, size <span class="op">=</span> <span class="fl">0.15</span>, alpha <span class="op">=</span> <span class="fl">0.9</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_sf</span><span class="op">(</span></span>
