@@ -331,7 +331,7 @@ strategies <- tibble::tibble(
     "Direct encoding"),
   Function = c(
     "faceting",
-    "pkg: patchwork | cowplot",
+    "patchwork cowplot pkg",
     "geoms",
     "NA"
     ),
@@ -350,7 +350,7 @@ As with most visualization design, each involves trade-offs and so careful decis
 
 #### Comparison and layout {-}
 
-Layout is an extremely important property in visual data analysis. Judiciously laid out data graphics can help explore and test complex patterns that would be difficult to capture through numerical summaries alone. In @fig-spatial-layout mosaic plots of crash frequencies (bar height) and relative number of weekday/weekend crashes (dark bar width) are presented for each borough in London, with plots for vehicle type juxtaposed side-by-side for comparison. Rather than laying out boroughs top-to-bottom on frequency, boroughs are given an approximate spatial arrangement, generated using the [`gridmappr`](https://www.roger-beecham.com/gridmappr/index.html) package. This arrangement enables several patterns to be quickly inferred. From it, we can observe that pedestrian crashes involving bicycles and motorcycles generally occur more in central London boroughs; those involving cars occur in greater relative number during weekends, especially so for those that take place in central London boroughs;
+Layout is an extremely important property in visual data analysis. Judiciously laid out data graphics can help explore and test complex patterns that would be difficult to capture through numerical summaries alone. In @fig-spatial-layout mosaic plots of crash frequencies (bar height) and relative number of weekday/weekend crashes (dark bar width) are presented for each borough in London, with plots for vehicle type juxtaposed side-by-side for comparison. Rather than laying out boroughs top-to-bottom on frequency, boroughs are given an approximate spatial arrangement, generated using the [`gridmappr`](https://www.roger-beecham.com/gridmappr/index.html) package. This arrangement enables several patterns to be quickly inferred. From it, we can observe that pedestrian crashes involving  motorcycles generally occur more in central London boroughs; those involving cars occur in greater relative number during weekends, especially so for those that take place in central London boroughs;
  and, different from other vehicle types, pedestrian crashes involving cars occur in similarly large numbers in outer London boroughs (Barnet, Croydon) as inner London boroughs such as Westminster.
 
 <!-- Alternatively we could directly encode difference from expectation by centring the dark bars and varying the widths according to how much the relative number of weekend crashes is above (oriented to right) or below (oriented to left) this expectation (middle plot). The latter approach helps highlight boroughs that are different from the London average: the more dark blue the more atypical that borough is. The largest differences from expectation are in Westminster, with crashes involving vans, motorcycles and bicycles overrepresented amongst weekdays. Finally, if we are to compare across all 33 London boroughs we may chose to reduce some of the detail in the graphic and focus on a subset of vehicle types. As vehicle type is a categorical nominal variable it may also be sensible to encode that variable using colour hue to help associate vehicle types between boroughs.
@@ -401,7 +401,7 @@ include_graphics("figs/04/mosaic_boroughs_spatial.svg", error = FALSE)
 #| eval: true
 #| warning: false
 
-include_graphics("figs/04/grids_vehicle.png", error = FALSE)
+include_graphics("figs/04/grids_vehicle_test.png", error = FALSE)
 ```
 
 
@@ -441,7 +441,7 @@ An [`.fst`](https://www.fstpackage.org/) dataset that uses these three tables to
 
 The focus of our analysis is inequalities in the characteristics of those involved in pedestrian crashes. There is only high-level information on these characteristics in the STATS19 dataset. However, the [Indices of Multiple Deprivation](https://www.gov.uk/government/statistics/english-indices-of-deprivation-2019) [@noble_english_2019] quintile of the small area neighbourhood in which casualties and drivers live is recorded, and we have separately derived the IMD quintile of the neighbourhood in which crashes took place.
 
-Not all recorded crashes contain this information and first create a new dataset -- `ped_veh_complete` -- identifying those linked crashes where the full IMD data are recorded:
+Not all recorded crashes contain this information and we first create a new dataset -- `ped_veh_complete` -- identifying those linked crashes where the full IMD data are recorded:
 
 
 <!-- Often IMD is reported at the quintile level (5 rather than 10 quantiles), and we aggregate to this level in our EDA. Code for performing this aggregation is in the template. The crashes data do not automatically contain information on the IMD status of the neighbourhood in which the crash took place. A final bit of data processing code in the template is to download the full English IMD dataset and assign this to crashes dataset based on crash location. -->
@@ -452,6 +452,7 @@ Not all recorded crashes contain this information and first create a new dataset
 # Complete demographics for pedestrians, drivers and crash locations.
 ped_veh_complete <- ped_veh |>
   filter(
+    !is.na(crash_quintile),
     !is.na(casualty_quintile),
     casualty_quintile != "Data missing or out of range",
     driver_quintile != "Data missing or out of range"
@@ -512,7 +513,7 @@ kbl(completeness,  caption = "Proportion of records -- or *completeness rates* -
  column_spec(2, width = "20%", extra_css = "font-size:  90%") |> row_spec(0, extra_css = "border-bottom: 1px solid;")
 ```
 
-This difference in record completeness may reflect genuine differences in recording behaviour for crashes occurring in high deprivation neighbourhoods, or it might be a function of some confounding context. For example, one might expect crashes more serious in nature to be reported in greater detail and so have higher completion rates. If crashes resulting in slight injuries are overrepresented in high deprivation areas, this might explain the pattern of completeness rates by deprivation area. To explore this further completeness rates are calculated separately by crash injury severity (@fig-completeness). This demonstrates, as expected, higher completion rates for crashes resulting in more serious injury, but that record completion rates are still lower for crashes taking place in the high deprivation neighbourhoods.
+This difference in record completeness may reflect genuine differences in recording behaviour for crashes occurring in high deprivation neighbourhoods, or it might be a function of some confounding context. For example, one might expect crashes more serious in nature to be reported in greater detail and so have higher completeness rates. If crashes resulting in slight injuries are overrepresented in high deprivation areas, this might explain the pattern of completeness rates by deprivation area. To explore this further completeness rates are calculated separately by crash injury severity (@fig-completeness). This demonstrates, as expected, higher completeness rates for crashes resulting in more serious injury, but that record completeness is still lower for crashes taking place in the high deprivation neighbourhoods.
 
 ```{r}
 #| label: fig-completeness

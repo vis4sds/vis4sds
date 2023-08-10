@@ -21,8 +21,6 @@ The code block below points to the packages you need to do the work discussed in
 library(tidyverse) 
 # For fast/efficient working with tibbles.
 library(fst)
-# For spatial operations.
-library(sf)
 # For working with dates.
 library(lubridate) 
 # For navigating a project's directory.

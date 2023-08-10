@@ -405,7 +405,7 @@ But this is quite imperceptible when mapping raw frequencies to colour value."
 borough_counts_vehicle_annotate <- ggplot() +
   annotate("text", 0,1, label=
              str_wrap(annotate_text, 15),
-           hjust="left", vjust="top", size=4) + 
+           hjust="left", vjust="top", size=3.5) + 
   scale_x_continuous(limits=c(0,1)) +
   scale_y_continuous(limits=c(0,1)) +
   theme_void()
@@ -753,7 +753,7 @@ plot <- ggplot() +
   )+
   annotate(
     geom = "curve",
-    x = .25, xend = .31,
+    x = .28, xend = .35,
     y = .89, yend = .85,
     curvature = -.5,
     angle = 35, size=.2
@@ -848,9 +848,9 @@ grids_car <- plot_data |>
                 xmin=x-.5*cell_width, xmax=x+.5*cell_width), fill=site_colours$primary,
             alpha=.5
    ) +
- geom_text(aes(x = x, y = y, label = str_extract(local_authority_district, "^.{3}")), size = 3, alpha=.8) +
- annotate("text", x=max_x -2.5 *cell_width, y=max_y+1.5*cell_height, vjust="bottom", hjust="right", label="Car", size=4) +
- annotate("text", x=min_x-1.25*cell_width, y=max_y, vjust="bottom", hjust="left", label="", size=4) +
+ geom_text(aes(x = x, y = y, label = str_extract(local_authority_district, "^.{3}")), size = 3.5, alpha=.8, family="Avenir Medium") +
+ annotate("text", x=max_x -4.5 *cell_width, y=max_y+.5*cell_height, vjust="bottom", hjust="right", label="Car", size=4) +
+ annotate("text", x=max_x-1.25*cell_width, y=max_y, vjust="bottom", hjust="left", label="", size=4) +
   coord_sf() +
   facet_wrap(~vehicle_type, nrow=1) +
   #labs(caption= "<span style = 'color: #4A679D;'> weekend </span> | <span style = 'color: #3B7EBA;'>weekday </span>") +
@@ -905,8 +905,8 @@ grids_motobike <- plot_data |>
                 xmin=x-.5*cell_width, xmax=x+.5*cell_width), fill=site_colours$primary,
             alpha=.5
   ) +
-  geom_text(aes(x = x, y = y, label = str_extract(local_authority_district, "^.{3}")), size = 3, alpha=.8) +
-  annotate("text", x=max_x -2.5 *cell_width, y=max_y+1.5*cell_height, vjust="bottom", hjust="right", label="Motorcycle", size=4) +
+  geom_text(aes(x = x, y = y, label = str_extract(local_authority_district, "^.{3}")), size = 3.5, alpha=.8, family="Avenir Medium") +
+  annotate("text", x=max_x -4.5 *cell_width, y=max_y+.5*cell_height, vjust="bottom", hjust="right", label="Motorcycle", size=4) +
   coord_sf() +
   facet_wrap(~vehicle_type, nrow=1) +
   #labs(caption= "<span style = 'color: #4A679D;'> weekend </span> | <span style = 'color: #3B7EBA;'>weekday </span>") +
@@ -919,10 +919,11 @@ grids_motobike <- plot_data |>
 
 labels <- grid |> 
   ggplot() +
-  geom_sf(fill="#d9d9d9",colour="#ffffff") +
-  geom_text(aes(x = x, y = y-.15*cell_height, label = word(area_name, 1)), size = 2.1) +
-  geom_text(aes(x = x, y = y+.15*cell_height, label = str_extract(area_name, "^.{3}")), size = 3) +
-  annotate("text", x=max_x -2.5 *cell_width, y=max_y+1.5*cell_height, vjust="bottom", hjust="right", label="Gridmap layout", size=4) +
+  geom_sf(fill="#d9d9d9",colour="#ffffff", linewidth=.4) +
+  geom_text(aes(x = x, y = y-.15*cell_height, label = word(area_name, 1)), size = 2) +
+  geom_text(aes(x = x, y = y+.15*cell_height, label = str_extract(area_name, "^.{3}")), size = 3, family="Avenir Medium") +
+  annotate("text", x=max_x -4.5 *cell_width, y=max_y+.5*cell_height, vjust="bottom", hjust="right", label="Gridmap layout", size=4) +
+  
   theme(
     panel.grid.major=element_blank(), panel.grid.minor = element_blank(), axis.title.y=element_blank(), 
     axis.text.x = element_blank(), axis.text.y = element_blank(), axis.title.x = element_blank(), axis.line = element_blank()
@@ -935,12 +936,12 @@ grids_cam <- plot_data |>
   geom_sf(fill="#d9d9d9", colour="#ffffff") +
   # prop weekend
   geom_rect(aes(ymin=y-.5*cell_height, ymax=y+(freq/freq_global-.5)*cell_height,
-                xmin=x-.5*cell_width, xmax=x+(obs-.5)*cell_width), fill=site_colours$primary,
+                xmin=x-.5*cell_width, xmax=x+(obs-.5)*cell_width), fill="#838485",
             alpha=.5
   ) +
   # frequency 
   geom_rect(aes(ymin=y-.5*cell_height, ymax=y+(freq/freq_global-.5)*cell_height,
-                xmin=x-.5*cell_width, xmax=x+.5*cell_width), fill=site_colours$primary,
+                xmin=x-.5*cell_width, xmax=x+.5*cell_width), fill="#838485",
             alpha=.5
   ) +
   
@@ -1004,13 +1005,26 @@ img <- image_read(here("figs", "04", "grids_camx.png")) |>
 min_x <- 507258.2
 min_y <- 198096.9
 
-p1 <- grids_car +
-  annotation_raster(img, min_x-1.2*cell_width, min_x + 1.1*cell_width, max_y-.5*cell_height, max_y+1.8*cell_height)
+# p1 <- grids_car +
+#   annotation_raster(img, min_x-1.2*cell_width, min_x + 1.1*cell_width, max_y-.5*cell_height, max_y+1.8*cell_height)
+
+p1 <- labels + 
+  annotate("text", x=max_x + 8 *cell_width, y=max_y, label="", size=1) +
+  # annotate("text", x=max_x +3.1 *cell_width, y=max_y-4.2*cell_height, label="Mosaic encoding", size=3.5) +
+  # annotation_raster(img, max_x+1.8*cell_width, max_x + 4.5*cell_width, max_y-4.6*cell_height, max_y-7.1*cell_height)
+  annotate("text", x=max_x +3.1 *cell_width, y=max_y+.5*cell_height, label="Mosaic encoding", size=4) +
+  annotation_raster(img, max_x+1.8*cell_width, max_x + 4.5*cell_width, max_y-0.2*cell_height, max_y-2.7*cell_height)
+
 plot <- (p1 +  grids_bike) / 
   (labels  + grids_motobike)         
 ggsave(filename= here("figs", "04", "grids_vehicle.png"), plot=plot,
        width=9.5, height=8, dpi=900)
 
+plot <- (grids_car + grids_motobike)/ p1  + plot_layout(heights=c(1.05,1))
+
+
+ggsave(filename= here("figs", "04", "grids_vehicle_test.png"), plot=plot,
+       width=9.5, height=8, dpi=900)
 
 #-----------------------------------------
 # 3. Techniques graphics

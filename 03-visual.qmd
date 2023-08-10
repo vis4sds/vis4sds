@@ -55,7 +55,7 @@ Data graphics take numerous forms and are used in many different ways by scienti
 
 Given these characteristics consider the data graphic below (@fig-wp-map), which presents an analysis of 2016 US Presidential Election, or the *Peaks and Valleys of Trump and Clinton's Support*. The map is reproduced from an article in the [The Washington Post](https://www.washingtonpost.com/graphics/politics/2016-election/election-results-from-coast-to-coast/). Included in the bottom margin is a choropleth map coloured according to party majority, more standard practice for reporting county-level voting.
 
-The Washington Post graphic is clearly *data rich*, encoding many more data items than does the standard choropleth. It is not simply the data density that makes the graphic successful; there are careful design choices which help *support comparison* and emphasise *complex structure*. By varying the height of triangles according to the number of votes cast, the thickness according to whether or not the result for Trump/Clinton was a landslide and rotating the map 90 degrees, the very obvious differences between metropolitan, densely populated coastal counties that voted emphatically for Clinton and the vast number of suburban, provincial town and rural counties (everywhere else) that voted Trump, are exposed.
+The Washington Post graphic is clearly *data rich*, encoding many more data items than does the standard choropleth. It is not simply the data density that makes the graphic successful; there are careful design choices that help *support comparison* and emphasise *complex structure*. By varying the height of triangles according to the number of votes cast, the thickness according to whether or not the result for Trump/Clinton was a landslide and rotating the map 90 degrees, the very obvious differences between metropolitan, densely populated coastal counties that voted emphatically for Clinton and the vast number of suburban, provincial town and rural counties (everywhere else) that voted Trump, are exposed.
 
 ```{r}
 #| label: fig-wp-map
@@ -173,7 +173,9 @@ In @fig-gog-demo are three plots, accompanied by ggplot2 specifications used to 
 2. Next is the encoding (`mapping=aes()`), which determines how the data are to be mapped to visual <span style="color:#62B743;font-weight:bold">channels</span>. A scatterplot is a 2D representation in which horizontal and vertical position varies in a meaningful way, in response to the values of a dataset. Here the values of `leave_hanretty` are mapped along the x-axis and the values of `con_1719` are mapped along the y-axis.
 3. Finally, we represent individual data items with <span style="color:#E17637;font-weight:bold">marks</span> using the `geom_point()` geometry.
 
-In the middle plot, the grammar is updated such that the points are coloured according to `winning_party`, a variable of type categorical `nominal`. In the bottom plot constituencies that flipped from Labour-to-Conservative between 2017-19 are emphasised by varying the  `shape` (filled and not filled) and transparency (`alpha`) of points. `flipped` is labelled an `ordinal` variable, but strictly it is a `nominal` (binary) variable. In the plot, constituencies that flipped are given greater visual emphasis and so it is appropriate to call `flipped` an ordinal variable.
+In the middle plot, the grammar is updated such that the points are coloured according to `winning_party`, a variable of type categorical `nominal`. In the bottom plot constituencies that flipped from Labour-to-Conservative between 2017-19 are emphasised by varying the  `shape` (filled and not filled) and transparency (`alpha`) of points. 
+
+<!-- `flipped` is labelled an `ordinal` variable, but it could also be a `nominal` variable. In the plot, constituencies that flipped are given greater visual emphasis and so it is appropriate to call `flipped` an ordinal variable. -->
 
 ```{r}
 #| label: fig-gog-demo
@@ -445,7 +447,7 @@ The template file lists the required packages -- `tidyverse`, `sf` and also [`pa
 
 The data frame containing 2019 UK General Election data is called `bes_2019`. This stores results data released by [House of Commons Library](https://commonslibrary.parliament.uk/research-briefings/cbp-8749/). We can get a quick overview  with a call to `glimpse(<dataset-name>)`. `bes_2019` contains 650 rows, one for each parliamentary constituency, and 118 columns. Contained in the columns are variables reporting vote numbers and shares for the main political parties for 2019 and 2017 General Elections, as well as names and codes (`ID`s) for each constituency and the county, region and country in which they are contained.
 
-The technical component replicates some of the visual data analysis in @beecham_using_2020. For this we need to calculate an additional variable, Butler Swing [@butler_why_1990]; the average change in share of the vote won by two parties contesting successive elections. Code for calculating this variable, named  `swing_con_lab`, is in the [03-template.qmd](./files/03-template.qmd). The only other dataset to load is a `.geojson` file containing simplified geometries of constituencies, collected originally from [ONS Open Geography Portal](https://geoportal.statistics.gov.uk/). This is a special class of data frame containing a [Simple Features](https://r-spatial.github.io/sf/articles/sf1.html) `geometry` column.
+The technical component replicates some of the visual data analysis in @beecham_using_2020. For this we need to calculate an additional variable: Butler Swing [@butler_why_1990], the average change in share of the vote won by two parties contesting successive elections. Code for calculating this variable, named  `swing_con_lab`, is in the [03-template.qmd](./files/03-template.qmd). The only other dataset to load is a `.geojson` file containing simplified geometries of constituencies, collected originally from [ONS Open Geography Portal](https://geoportal.statistics.gov.uk/). This is a special class of data frame containing a [Simple Features](https://r-spatial.github.io/sf/articles/sf1.html) `geometry` column.
 
 <!-- Although initially intuitive, the measure takes a little interpretation. A Swing to the Conservatives, which we observe most often in this dataset, could happen in three ways:
 
@@ -460,8 +462,6 @@ Different from the US where "third parties" play a negligible role, scenarios 2 
 ### Summarise
 
 You may be familiar with the result of the 2019 General Election: a landslide Conservative victory that confounded expectations. To start, we can quickly compute some summary statistics around the vote.  In the code block below, we count the number of seats won and overall vote share by party. For the latter, the code is a little more elaborate than we might wish at this stage. We needed to reshape the data frame using `pivot_wider()` such that each row represents a vote for a party in a constituency. From here the vote share for each party can be easily computed.
-
-Whilst the Conservative party hold 56% of constituencies, they won only 44% of the vote share. The equivalent figures for Labour are 31% and 32% respectively. Incidentally, whilst the Conservatives increased their share of constituencies from 2017 (where they had just 317, 49% of constituencies) their vote share increase was reasonably small -- in 2017 they gained 43% of the vote. This fact is interesting as it may suggest some shift in where, which constituencies, the Conservative party gained majorities.
 
 ```{r}
 #| echo: true
@@ -521,6 +521,9 @@ bes_2019 |>
 ## 11 sdlp        0.00371
 ## 12 uup         0.00291
 ```
+
+Whilst the Conservative party hold 56% of constituencies, they won only 44% of the vote share. The equivalent figures for Labour are 31% and 32% respectively. Incidentally, whilst the Conservatives increased their share of constituencies from 2017 (where they had just 317, 49% of constituencies) their vote share increase was reasonably small -- in 2017 they gained 43% of the vote. This fact is interesting as it may suggest some shift in where, which constituencies, the Conservative party gained majorities.
+
 
 Below are some summary statistics computed over the newly created `swing_con_lab` variable. As the Conservative and Labour votes are negligible in Northern Ireland, it makes sense to focus on Great Britain for our analysis of Conservative-Labour Swing and so the first step in the code is to create a new data frame filtering out Northern Ireland.
 

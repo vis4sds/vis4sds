@@ -32,7 +32,7 @@ library(magick)
 # Constituency boundaries, simplified using mapshapr. 
 # From -- https://geoportal.statistics.gov.uk/
 constituency_boundaries <-
-  st_read(here("../", "data", "constituency_boundaries.geojson"), crs=27700)
+  st_read(here("../", "data", "ch3", "constituency_boundaries.geojson"), crs=27700)
 
 # Swing.
 data <- bes_2019 |>
@@ -845,15 +845,25 @@ map_1 <- data_gb |>
 
 map_2 <- data_gb |> 
   mutate(
+    winner_19=case_when(
+      winner_19== "Conservative" ~ "Conservative",
+      winner_19== "Labour" ~ "Labour",
+      winner_19== "Liberal Democrat" ~  "Lib Dems",
+      winner_19== "Green" ~  "Green",
+      winner_19== "Scottish National Party" ~  "SNP",
+      winner_19== "Plaid Cymru" ~  "Plaid",
+      winner_19== "Other" ~  "Other"
+      ),
     winner_19=factor(winner_19, 
-                     levels=c("Conservative", "Labour", "Liberal Democrat","Green", "Scottish National Party", 
-                              "Plaid Cymru", "Other")
+                     levels=c("Conservative", "Labour", "Lib Dems","Green", "SNP", 
+                              "Plaid", "Other")
     )
   ) |> 
   ggplot() +
   geom_sf(aes(fill=winner_19), alpha=.7, colour="#eeeeee", linewidth=0.001)+
   geom_sf(data=. %>% group_by(region) %>% summarise(), colour="#eeeeee", fill="transparent", linewidth=0.08)+
   coord_sf(crs=27700, datum=NA) +
+  labs(fill="") +
   theme(legend.position = "bottom") +
   scale_fill_manual(values=party_colours) +
   theme(legend.title = element_text(size=8), legend.text = element_text(size=6.8), legend.key.size = unit(.4, 'cm'))
@@ -869,17 +879,14 @@ map_3 <- data_gb |>
   geom_sf(aes(fill=winner_19, alpha=swing_con_lab), colour="#eeeeee", linewidth=0.001)+
   geom_sf(data=. %>% group_by(region) %>% summarise(), colour="#eeeeee", fill="transparent", linewidth=0.08)+
   coord_sf(crs=27700, datum=NA) +
-  theme(legend.position = "bottom") +
+  labs(fill="") +
+  theme(legend.position = "right") +
   guides(alpha="none", fill="none") +
   scale_fill_manual(values=party_colours)
 
+plot <- map_1 + map_2 + map_3
 
-plot <- map_1 + map_2 + map_3 + plot_annotation(
- # title="Winning parties for in 2019 General Election",
- # subtitle="-- Constituencies in Great Britain.",
- # caption="Data published by House of Commons Library, accessed via `parlitools`",
-  theme = theme_v_gds())
-#ggsave(here("figs", "03", "map-winners.png"), plot=plot,width=8.6, height=7, dpi=300)
+
 ggsave(here("figs", "03", "map-winners.png"), plot=plot,width=8, height=6, dpi=300)
 ggsave(here("figs", "03", "map-winners.svg"), plot=plot,width=8, height=6)
 
