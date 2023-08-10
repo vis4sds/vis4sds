@@ -12,18 +12,16 @@ The technical element involves analysing 2011 Census travel-to-work data.
 
 ## Setup
 
-The code block below points to the packages you need. Uncomment the `intall_packages("devtools")` line if you have not already downloaded it. You need this for installing development versions of `gridmappr` and `odvis`.
+The code block below points to the packages you need. Uncomment the `intall_packages("devtools")` line if you have not already downloaded it. You need this for installing development versions of `gridmappr` and `odvis`. Also the ggplot2 extension package `ggforce`.
 
 ```{r}
 #| echo: true
 #| eval: false
 library(tidyverse)
 library(here)
+library(sf)
 # install.packages("devtools")
-devtools::install_github("rogerbeecham/gridmappr")
-library(gridmappr)
-devtools::install_github("rogerbeecham/odvis")
-library(odvis)
+# install.packages("ggforce")
 ```
 
 Bring in the London travel to work data.

@@ -349,6 +349,7 @@ The code is slightly more advanced. Some concepts, for example functional-style 
 
 # Install odvis.
 devtools::install_github("rogerbeecham/odvis")
+library(odvis)
 
 # Combine the grid and london_boroughs (real geography)
 # objects into a single simple features data frame.
@@ -363,15 +364,15 @@ lon_geogs <- bind_rows(
 # -- origin, destination and control point locations.
 trajectories <- lon_geogs |>
   st_drop_geometry() |>
-  filter(!is.na(ward_name)) |>
+  filter(!is.na(area_name)) |>
   pivot_wider(names_from = type, values_from = c(x, y)) |>
   mutate(id = row_number()) |>
-  nest(data = c(ward_name, x_real, y_real, x_grid, y_grid)) |>
+  nest(data = c(area_name, x_real, y_real, x_grid, y_grid)) |>
   mutate(
     trajectory = map(
       data,
       ~get_trajectory(
-        .x$x_real, .x$y_real, .x$x_grid, .x$y_grid, .x$ward_name
+        .x$x_real, .x$y_real, .x$x_grid, .x$y_grid, .x$area_name
         )
     )
   ) |>
@@ -391,7 +392,8 @@ ggplot() +
     colour = "#08306b", linewidth = .4
     ) +
   scale_fill_manual(values = c("#f0f0f0", "transparent"), guide = "none") +
-  scale_colour_manual(values = c("#FFFFFF", "#525252"), guide = "none")
+  scale_colour_manual(values = c("#FFFFFF", "#525252"), guide = "none") +
+  theme_void()
 ```
 
 
@@ -563,6 +565,20 @@ The code:
 ```{r}
 #| echo: true
 #| eval: false
+edges <- od_pairs |> 
+  group_by(o_bor, d_bor)  |>  
+  summarise(
+    commutes = sum(count),
+    is_prof = sum(count[is_prof]),
+    prop_prof= is_prof/commutes
+    ) |>  
+  ungroup() |> 
+  left_join(grid, by=c("o_bor"="area_name")) |> st_drop_geometry() |>  select(-geom) |> 
+  rename(o_x=x, o_y=y, o_col=col, o_row=row) |> 
+  left_join(grid, by=c("d_bor"="area_name")) |> st_drop_geometry() |>  select(-geom) |> 
+  rename(d_x=x, d_y=y, d_col=col, d_row=row)
+
+
 plot_data <- edges |> mutate(non_prof = commutes-is_prof) |>
   rename(prof = is_prof) |>
   ungroup() |>
@@ -586,7 +602,7 @@ plot_data <- edges |> mutate(non_prof = commutes-is_prof) |>
 
 bbox_grid <- st_bbox(grid)
 
-plot <- plot_data |>
+plot_data |>
   ggplot() +
   geom_sf(aes(fill=resid), colour = "#616161", size = 0.15, alpha = 0.9) +
   geom_sf(
