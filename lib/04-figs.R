@@ -1024,7 +1024,7 @@ plot <- (grids_car + grids_motobike)/ p1  + plot_layout(heights=c(1.05,1))
 
 
 ggsave(filename= here("figs", "04", "grids_vehicle_test.png"), plot=plot,
-       width=9.5, height=8, dpi=900)
+       width=9.5, height=8, dpi=600)
 
 #-----------------------------------------
 # 3. Techniques graphics

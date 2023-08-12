@@ -34,3 +34,10 @@ theme_v_sds <- function(base_size = 14, base_family = "Avenir Book") {
 # Set ggplot2 theme
 theme_set(theme_v_sds())
 
+site_colours <- list(
+  primary = "#003c8f",
+  primary_selected = "#1565c0",
+  secondary = "#8e0000",
+  secondary_selected = "#c62828"
+)
+

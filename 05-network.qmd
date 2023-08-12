@@ -579,19 +579,16 @@ edges <- od_pairs |>
   rename(d_x=x, d_y=y, d_col=col, d_row=row)
 
 
-plot_data <- edges |> mutate(non_prof = commutes-is_prof) |>
-  rename(prof = is_prof) |>
-  ungroup() |>
-  mutate(global_prof = sum(prof) / sum(prof + non_prof)) |>
-  # Group by o_bor for an O-OD map.
-  group_by(d_bor) |>
+plot_data <- edges |> 
   mutate(
+    non_prof = commutes-is_prof, 
+    prof = is_prof,
+    global_prof = sum(prof) / sum(prof + non_prof),
     count = prof + non_prof,
     obs = prof,
     exp = (global_prof * count),
     resid = (obs - exp) / (exp^.7)
     ) |>
-  ungroup() |>
   # Join on d_bor for an O-OD map.
   left_join(grid |> select(area_name), by = c("o_bor" = "area_name")) |>
   mutate(
