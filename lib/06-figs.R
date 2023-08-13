@@ -153,6 +153,8 @@ cons_hex <- st_read(here("../", "data", "ch6", "cons_hex.geojson"))
 # 2. Concepts graphics
 #-----------------------------------------
 
+cons_outline <- cons_outline |> rmapshaper::ms_simplify(keep=.7)
+
 gb_leave <- .519
 cons_data <- cons_data |> mutate(resid_uniform = leave-gb_leave)
 
@@ -170,7 +172,8 @@ map <- cons_outline |> inner_join(
   by=c("pcon19cd"="pcon19cd")) |> 
   ggplot() +
   geom_sf(aes(fill=leave-gb_leave), colour="#757575", linewidth=0.1)+
-  geom_sf(data=. %>% group_by(region) %>% summarise(), colour="#757575", fill="transparent", linewidth=0.25)+
+  geom_sf(data=. %>% group_by(region) %>% summarise(), colour="#757575", 
+          fill="transparent", linewidth=0.28)+
   coord_sf(crs=27700, datum=NA) +
   theme(legend.position = "right") +
   scale_fill_distiller(palette="RdBu", direction=1, 
@@ -180,7 +183,8 @@ map_hex <- cons_hex |> select(-region) |>
   inner_join(cons_data |> st_drop_geometry(), by=c("cons_code"="pcon19cd")) |> 
   ggplot() +
   geom_sf(aes(fill=leave-gb_leave), colour="#757575", linewidth=0.12)+
-  geom_sf(data=. %>% group_by(region) %>% summarise(), colour="#757575", fill="transparent", linewidth=0.3)+
+  geom_sf(data=. %>% group_by(region) %>% summarise(), colour="#757575",
+          fill="transparent", linewidth=0.4)+
   theme(legend.position = "right") +
   scale_fill_distiller(palette="RdBu", direction=1, 
                        limits=c(-max_resid, max_resid), guide="none") +
@@ -198,8 +202,8 @@ bars <- cons_data |> st_drop_geometry() |>
   #annotate("text", x=628, y=0.01, hjust=0, vjust=1, label="red + neg < model", size=2) +
   annotate("segment", x=316, xend=316, y=.005, yend=.3,
            arrow = arrow(ends = "both", length = unit(.1,"cm")), size=.18)+
-  annotate("text", x=325, y=0.15, hjust=0.5, vjust=0, label=str_wrap("bar length is",30), size=3.5) +
-  annotate("text", x=309, y=0.15, hjust=0.5, vjust=1, label=str_wrap("obs - model",30), size=3.5) +
+  annotate("text", x=325, y=0.15, hjust=0.5, vjust=0, label=str_wrap("bar length is",30), size=3.8) +
+  annotate("text", x=309, y=0.15, hjust=0.5, vjust=1, label=str_wrap("obs - model",30), size=3.8) +
   labs(x="Constituencies by Leave", y="GB 52% Leave")+
   coord_flip() 
 
@@ -294,15 +298,17 @@ plot <- plot_data |>
   # annotate(geom="text", x="leave", y=-4.3, label="heavy vote for:", vjust=-2.8, hjust=0, size=4.5) +
   geom_text(
       data= . %>%  filter(constituency_name==low$constituency_name) %>% slice(1),
-      aes(x="leave", y=-3.0, label=str_wrap(constituency_name,15), colour=majority), size=3.5, vjust=-.5, hjust="centre") +
+      aes(x="leave", y=-3.0, label=str_wrap(constituency_name,15), colour=majority), size=3.5, vjust="top", hjust="centre", nudge_x=+.5) +
   geom_text(
     data= . %>%  filter(constituency_name==high$constituency_name) %>% slice(1),
-    aes(x="leave", y=1.5, label=str_wrap(constituency_name,15), colour=majority), size=3.5, vjust=-.5, hjust="centre") +
+    aes(x="leave", y=1.5, label=str_wrap(constituency_name,15), colour=majority), size=3.5, vjust="top", hjust="centre", nudge_x=+.5) +
   # Setting parameters.
   scale_colour_manual(values=c("#b2182b","#2166ac")) +
+  labs(x="explanatory variable", y="z-score") +
   guides(colour="none") +
   coord_flip()
 
+ggsave(filename=here("figs", "06", "pcps.png"), plot=plot,width=6, height=3.5, dpi=500)
 
 plot_data |>  
   ggplot()+
@@ -313,7 +319,7 @@ plot_data |>
   scale_colour_manual(values=c("#b2182b","#2166ac")) +
   coord_flip()
 
-ggsave(filename=here("figs", "06", "pcps.png"), plot=plot,width=7, height=6.5, dpi=500)
+
 
 
 # Correlations plot 
@@ -830,6 +836,7 @@ permuted_data <- model |>
 
 # Store max value of residuals for setting limits in map colour scheme.
 max_resid <- max(abs(permuted_data$.resid))
+max_resid <- .14
 # Store vector of permutation IDs for shuffling facets in the plots.
 ids <- permuted_data %>% pull(id) %>% unique()
 
@@ -846,14 +853,14 @@ plot <- #cons_data |> filter(constituency_name!="Orkney and Shetland") |>
   #coord_sf(crs=27700, datum=NA) +
   facet_wrap(~id, ncol=5) +
   scale_fill_distiller(palette="RdBu", direction=1,
-                       limits=c(-14, 14), guide="none") +
+                       limits=c(-max_resid, max_resid), guide="none") +
   theme(
    # strip.text.x = element_blank(),
     axis.text = element_blank(),
     axis.line = element_blank()
   )
 
-ggsave(filename=here("figs", "06", "lineups_fe.png"), plot=plot,width=12, height=6, dpi=300)
+ggsave(filename=here("figs", "06", "lineups_fe.png"), plot=plot,width=12, height=6.5, dpi=300)
 
 
 model <- cons_data |> st_drop_geometry() |> 
