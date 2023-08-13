@@ -1,8 +1,23 @@
-###############################################################################
-# Figures for vis4sds 
-# Chapter 6
+# Filename: 02-figs.R 
+#
+# Figures for Chapter 2 of vis4sds 
+# 
 # Author: Roger Beecham
-###############################################################################
+#
+#-----------------------------------------
+# Contents
+#-----------------------------------------
+# 
+# 1. Packages and data
+# 2. Concepts graphics
+# 3. Techniques graphics
+#
+#-----------------------------------------
+
+#-----------------------------------------
+# 1. Packages and Data
+#-----------------------------------------
+
 
 # install.packages("parlitools")
 library(parlitools)
@@ -76,11 +91,6 @@ hex_grid |>  ggplot() + geom_sf() +
   geom_text(aes(x=east, y=north+.15, label=east), size=2) +
   geom_text( aes(x=east, y=north-.15, label=paste("r", north_recode)), size=2)
 
-# hex_grid <- hex_grid %>%
-#   filter(between(north_recode, -16, 29)) %>% 
-#   mutate(
-#     north_recode=
-#       round(map_scale(north_recode, -16, max_row+1, min_row, max_row),0))
 # Now transform column references depending on whether on an even/odd row.
 hex_grid <- hex_grid |> 
   mutate(
@@ -105,7 +115,6 @@ hex_map |> ggplot() + geom_sf()
 cons_hex <- hex_map |> inner_join(cons_data |> st_drop_geometry() |> select(pcon19cd, region), by=c("cons_code"="pcon19cd"))
 st_write(cons_hex, here("../", "data", "ch6", "cons_hex.geojson"))
 cons_hex <- st_read(here("../", "data", "ch6", "cons_hex.geojson"))
-
 
 
 url <- "https://www.roger-beecham.com/datasets/cons_outline.geojson"
@@ -134,22 +143,31 @@ cons_data <- cons_data |>
   inner_join(explanatory |> select(-c(region, constituency_name)),
              by=c("pcon19cd"="ons_const_id"))
 
-write_csv(cons_data, here("../", "data", "ch6", "cons_data.csv"))
+write_csv(cons_data |>  ungroup(), here("../", "data", "ch6", "cons_data.csv"))
 
 cons_data <- read_csv(here("../", "data", "ch6", "cons_data.csv"))
 
+cons_hex <- st_read(here("../", "data", "ch6", "cons_hex.geojson"))
+
+#-----------------------------------------
+# 2. Concepts graphics
+#-----------------------------------------
+
+gb_leave <- .519
 cons_data <- cons_data |> mutate(resid_uniform = leave-gb_leave)
 
-explanatory_z_scores <- cons_data |> st_drop_geometry() |> 
+explanatory_z_scores <- cons_data |> 
   mutate(
     across(
       .cols=c(younger:heavy_industry), .fns=~(.x-mean(.x))/sd(.x)
     )
   )
 
-max_resid <-max(abs(outcome$resid_unform))
+max_resid <-max(abs(cons_data$resid_uniform))
 
-map <- cons_data |> filter(constituency_name!="Orkney and Shetland") |> 
+map <- cons_outline |> inner_join(
+  cons_data |> filter(constituency_name!="Orkney and Shetland"),
+  by=c("pcon19cd"="pcon19cd")) |> 
   ggplot() +
   geom_sf(aes(fill=leave-gb_leave), colour="#757575", linewidth=0.1)+
   geom_sf(data=. %>% group_by(region) %>% summarise(), colour="#757575", fill="transparent", linewidth=0.25)+
@@ -220,15 +238,13 @@ plot <- cons_data |> st_drop_geometry() |>
 ggsave(filename=here("figs", "06", "scatters.png"), plot=plot,width=10, height=7, dpi=500)
 
 # Additional dependency.
-plot_data <- cons_data |> st_drop_geometry() |> 
-  select(-c(population, population_density)) |> 
+plot_data <- cons_data |> 
   mutate(
     across(c(younger:heavy_industry), ~(.x-mean(.x))/sd(.x))
   ) |> 
   # Identify Leave/Remain majority and deciles.
   mutate(
-    is_leave=leave>.5,
-    majority=if_else(is_leave, "Leave", "Remain"),
+    majority=if_else(leave>.5, "Leave", "Remain"),
     leave_transformed=(leave-mean(leave))/sd(leave),
     decile=ntile(leave, 10),
     is_extreme = decile > 9 | decile < 2
@@ -237,8 +253,7 @@ plot_data <- cons_data |> st_drop_geometry() |>
   select(
     majority, decile, is_extreme, 
     #extreme_extent,
-    region, 
-    is_leave, constituency_name, leave=leave_transformed, 
+    region, constituency_name, leave=leave_transformed, 
     degree, professional, younger, eu_born, no_car, white, own_home, christian, not_good_health, heavy_industry
     ) |>  
   # Change polarity in selected variables.
@@ -255,34 +270,34 @@ plot_data <- cons_data |> st_drop_geometry() |>
 # Holborn and St Pancras
 # Basildon and Billericay
 
-high <- plot_data %>%  filter(decile==10) %>% sample_n(1)
-low <-  plot_data %>%  filter(decile==1) %>% sample_n(1)
+high <- plot_data |>   filter(decile==10) |>  sample_n(1)
+low <-  plot_data |>   filter(decile==1) |>  sample_n(1)
 
 plot <- plot_data |>  
   ggplot()+
   # Plot all constituencies.
   geom_path(
-    aes(x=var, y=z_score, group=c(constituency_name), colour=is_leave), alpha=0.15, linewidth=.2
+    aes(x=var, y=z_score, group=c(constituency_name), colour=majority), alpha=0.15, linewidth=.2
   )+
   # Highlight extreme remain/leave constituencies and animate over using the 
   # decile var.
   geom_path(
     data= . %>%  filter(constituency_name==low$constituency_name),
-    aes(x=var, y=z_score, group=constituency_name, colour=is_leave), alpha=1, linewidth=.4
+    aes(x=var, y=z_score, group=constituency_name, colour=majority), alpha=1, linewidth=.4
   )+
   geom_path(
     data= . %>%  filter(constituency_name==high$constituency_name),
-    aes(x=var, y=z_score, group=constituency_name, colour=is_leave), alpha=1, linewidth=.4
+    aes(x=var, y=z_score, group=constituency_name, colour=majority), alpha=1, linewidth=.4
   )+
   
   # Annotate with text describing the transitions -- tedious.
   # annotate(geom="text", x="leave", y=-4.3, label="heavy vote for:", vjust=-2.8, hjust=0, size=4.5) +
   geom_text(
       data= . %>%  filter(constituency_name==low$constituency_name) %>% slice(1),
-      aes(x="leave", y=-3.0, label=str_wrap(constituency_name,15), colour=is_leave), size=3.5, vjust=-.5, hjust="centre") +
+      aes(x="leave", y=-3.0, label=str_wrap(constituency_name,15), colour=majority), size=3.5, vjust=-.5, hjust="centre") +
   geom_text(
     data= . %>%  filter(constituency_name==high$constituency_name) %>% slice(1),
-    aes(x="leave", y=1.5, label=str_wrap(constituency_name,15), colour=is_leave), size=3.5, vjust=-.5, hjust="centre") +
+    aes(x="leave", y=1.5, label=str_wrap(constituency_name,15), colour=majority), size=3.5, vjust=-.5, hjust="centre") +
   # Setting parameters.
   scale_colour_manual(values=c("#b2182b","#2166ac")) +
   guides(colour="none") +

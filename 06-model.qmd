@@ -33,9 +33,9 @@ By the end of this chapter you should gain the following knowledge and practical
 
 ## Introduction
 
-So far the analysis presented in this book has been quite data-driven. Having described data in a consistent way ([@sec-data]), visual analysis approaches  have been applied to expose structure in datasets, informed by established visualization guidelines. Chapters [-@sec-explore] and [-@sec-network] involved model building, but these were largely value-free models based on limited prior theory.
+So far the analysis presented in this book has been data-driven. Having described data in a consistent way ([@sec-data]), visual analysis approaches  have been applied to expose structure in datasets, informed by established visualization guidelines. Chapters [-@sec-explore] and [-@sec-network] involved model building, but these were largely value-free models based on limited prior theory.
 
-This chapter is presented as a worked data analysis: we attend to a well-known  dataset with a more explicit and theoretically-informed motivation. We will explore variation in voting behaviour in the UK's 2016 referendum on leaving the EU. You might remember that whilst there was a slight majority for Leave (51.9%), the vote varied between different parts of the country. There were many theories and explanations offered around for why particular places voted the way they did, often related to the demographic composition of those areas. We will explore whether the sorts of compositional demographic factors discussed vary systematically with area-level Leave voting. Using regression frameworks, we will model the relative effect of each of these compositional factors in structuring variation in the vote and construct data graphics that allow these models and parameters to be considered and evaluated in detail.
+This chapter is presented as a worked data analysis: we attend to a well-known  dataset with a more explicit and theoretically-informed motivation. We will explore variation in voting behaviour in the UK's 2016 referendum on leaving the EU. You might remember that whilst there was a slight majority for Leave (c. 52%), the vote varied between different parts of the country. There were many theories and explanations offered for why particular places voted the way they did, often related to the demographic composition of those areas. We will explore whether the sorts of compositional demographic factors discussed vary systematically with area-level Leave voting. Using regression frameworks, we will model the relative effect of each of these compositional factors in structuring variation in the vote and construct data graphics that allow these models and parameters to be considered and evaluated in detail.
 
 ::: {.callout-note}
 This chapter assumes some basic familiarity with linear regression modelling. For a clear and detailed overview, with excellent social science examples, you may wish to consult @bartholomew_analysis_2008.
@@ -47,7 +47,7 @@ This chapter assumes some basic familiarity with linear regression modelling. Fo
 
 <!-- Variation is central to most data analysis, and certainly regression modelling: quantifying variation, exploring how it is structured and accounting for (or explaining) it using a combination of empirical data, prior theory and knowledge. -->
 
-In @fig-map-uniform is a map and bar chart displaying total variation in vote shares for Leave in Great Britain (GB), estimated at Parliamentary Constituency level [see @hanretty_areal_2017]. The values themselves are the difference in estimated vote shares from an expectation that the Leave vote by constituency, $y_{i}$ our *outcome* of interest, is uniformly distributed across the country and so equivalent to the overall vote share for Leave, which is 51.9%. Although a slightly contrived formulation, we could express this as an intercept-only linear regression model, where the estimated *slope* ($\beta_{1}$) is 'turned off' (takes the value $0$) and the *intercept* ($\beta_{0}$) is the GB average vote share for Leave ($\bar{y}$):
+In @fig-map-uniform is a map and bar chart displaying total variation in vote shares for Leave in Great Britain (GB), estimated at Parliamentary Constituency level [see @hanretty_areal_2017]. The values themselves are the difference in estimated vote shares from an expectation that the Leave vote by constituency, $y_{i}$ our *outcome* of interest, is uniformly distributed across the country and so equivalent to the overall vote share for Leave of c. 52%. Although a slightly contrived formulation, we could express this as an intercept-only linear regression model, where the estimated *slope* ($\beta_{1}$) is 'turned off' (takes the value $0$) and the *intercept* ($\beta_{0}$) is the GB average vote share for Leave ($\bar{y}$):
 
 \begin{align*}
        y_{i}= \beta_{0} + \beta_{1} + \varepsilon_{i}
@@ -75,14 +75,14 @@ include_graphics("figs/06/map_uniform.png", error = FALSE)
 @fig-map-uniform is similar to the maps that were [published widely in press reports](https://www.theguardian.com/politics/2016/jun/24/eu-voting-map-lays-bare-depth-of-division-across-britain) in the aftermath of the vote, and demonstrates that there is indeed substantial variation in Leave voting between different parts of the country. The intercept-only model, which assumes a uniform distribution of Leave across the country, consistently underestimates the vote in Scotland and most of London. Outside of this, constituencies voting in smaller proportions than would be expected for Leave are distributed more discretely in the country: the dark red dot with surrounding red area in the east of England is Cambridge and Cambridgeshire, constituencies in Bristol (south west), Manchester and Liverpool (north west), Brighton (south),  are also reasonably strong red.
 
 
-When evaluating the effectiveness of modelled values, there are various checks that can be performed. An obvious one here is whether there is bias in the residuals -- whether residuals have structure that suggests they are grouped in a way not captured by the model. Given the motivation behind our analysis it is no surprise that there is a geographic pattern to the residuals in @fig-map-uniform, but also the non-symmetrical shape of the 'signed' bars is instructive. There are more constituencies with positive values than negative, the Leave vote is underestimated by the uniform model for 57% of constituencies, and some constituencies have quite large negative values. The strongest vote for Leave was Boston and Skegness with 76% for Leave, but the strongest for Remain was Hackney North and Stoke Newington 80% for Remain.
+When evaluating the effectiveness of modelled values, there are various checks that can be performed. An obvious one here is whether there is bias in the residuals -- whether residuals have structure that suggests they are grouped in a way not captured by the model. Given the motivation behind our analysis it is no surprise that there is a geographic pattern to the residuals in @fig-map-uniform, but also the non-symmetrical shape of the 'signed' bars is instructive. There are more constituencies with positive values than negative, the Leave vote is underestimated by the uniform model for 57% of constituencies, and some constituencies have quite large negative values. The strongest vote for Leave was Boston and Skegness with 76% for Leave, but the strongest for Remain was Hackney North and Stoke Newington with 80% for Remain.
 
 
 ### Quantifying and exploring co-variation
 
 More interesting still is whether the pattern of variation in @fig-map-uniform is correlated with compositional factors that we think explain this variation; and also whether bias or structure in residuals exists even after accounting for these compositional factors.
 
-In @tbl-variables is a list of candidate explanatory variables describing the demographic composition of constituencies.  Each variable is expressed as a proportion of the constituency's population. So the *degree educated* variable describes the proportion of residents in the constituency educated at least to degree-level. Comparison across these variables is challenging due to the fact that their ranges differ: the *EU-born* variable ranges from 0.6% to 17%; the *white* variable from 14% to 98%. There are also obvious ceilings that limit how successful explanatory variables are likely to be at discriminating variation. Common practice for addressing the range problem is to [z-score transform](https://en.wikipedia.org/wiki/Standard_score) the variables so that each value is expressed in standard deviation units from its variable's mean.
+In @tbl-variables is a list of possible explanatory variables describing the demographic composition of constituencies.  Each variable is expressed as a proportion of the constituency's population. So the *degree educated* variable describes the proportion of residents in the constituency educated at least to degree-level. Comparison across these variables is challenging due to the fact that their ranges differ: the *EU-born* variable ranges from 0.6% to 17%; the *white* variable from 14% to 98%. Common practice for addressing these sorts of range problem is to [z-score transform](https://en.wikipedia.org/wiki/Standard_score) the variables so that each value is expressed in standard deviation units from its variable's mean.
 
 ```{r}
 #| label: tbl-variables
@@ -107,7 +107,7 @@ vars <- tibble::tibble(
 ```
 
 
-@fig-scatters presents scatterplots from which the extent of linear association between these demographics and Leave voting in each constituency can be inferred. Each dot is a constituency, arranged on the x-axis according to the value of each candidate explanatory variable and the y-axis according to the share of Leave vote. The scatterplots are faceted by explanatory variable and ordered left-to-right and top-to-bottom according to correlation coefficient. The variable most heavily correlated with Leave voting is that measuring levels of *degree* education: as the share of a constituency's population educated at least to *degree-level* increases, the share of Leave vote in that constituency decreases. An association in the same direction, but to a lesser extent, is observed for variables representing similar concepts:  *professional occupations*, *younger adults*, *EU-born*, *no-car* and the reverse for *Christian*, *not-good health* and *heavy industry*.
+@fig-scatters presents scatterplots from which the extent of linear association between these demographics and Leave voting in each constituency can be inferred. Each dot is a constituency, arranged on the x-axis according to the value of each explanatory variable and the y-axis according to the share of Leave vote. The scatterplots are faceted by explanatory variable and ordered left-to-right and top-to-bottom according to correlation coefficient. The variable most heavily correlated with Leave voting is that measuring levels of *degree* education: as the share of a constituency's population educated at least to *degree-level* increases, the share of Leave vote in that constituency decreases. An association in the same direction, but to a lesser extent, is observed for variables representing similar concepts:  *professional occupations*, *younger adults*, *EU-born*, *no-car* and the reverse for *Christian*, *not-good health* and *heavy industry*.
 
 
 ```{r}
@@ -122,7 +122,7 @@ include_graphics("figs/06/scatters.png", error = FALSE)
 ```
 
 
-It is of course possible, and likely, that there is some some autocorrelation in the compositional characteristics of constituencies and Leave voting. Parallel coordinate plots are useful for visually exploring this multivariate correlation. Whereas in scatterplots, observations are represented as points located in x- and y- axes that are orthogonal, in a parallel coordinate plot axes are parallel and the values of an observation encoded via a line connecting the multiple parallel axes, as in @fig-pcps. Each of the thin lines is a constituency coloured according to whether the constituency voted majority Remain (red) or Leave (blue). The first variable encoded is the size of the Leave vote (z-score transformed) and variables are then ordered according to linear association with Leave. Note that we have reversed the polarity of variables such as *degree-educated* and *professional* so that we expect more Leave (blue lines) towards the right locations of the parallel axis. That the blue and red lines are reasonably separated suggests that there is autocorrelation in the demographics of Leave and Remain constituencies.
+It is of course possible, and likely, that there is autocorrelation in many of the compositional characteristics of constituencies and Leave voting. Parallel coordinate plots are useful for visually exploring this autocorrelation. Whereas in scatterplots, observations are represented as points located in x- and y- axes that are orthogonal, in a parallel coordinate plot axes are parallel and the values of an observation encoded via a line connecting the multiple parallel axes. In @fig-pcps each of the thin lines is a constituency coloured according to whether the constituency voted majority Remain (red) or Leave (blue). The first variable encoded is the size of the Leave vote and variables are then ordered according to linear association with Leave. Note that we have reversed the polarity of variables such as *degree-educated* and *professional* so that we expect more Leave (blue lines) towards the right locations of the parallel axes. That the blue and red lines are reasonably separated suggests that there is autocorrelation across many of the demographics characteristics in constituencies voting differenly for Leave and Remain.
 
 <!-- Although they enable some aspects of association between multiple variables to be encoded, parallel coordinate plots have several deficiencies;  -->
 
@@ -139,7 +139,7 @@ include_graphics("figs/06/pcps.png", error = FALSE)
 
 
 ::: {.callout-note}
-Although parallel coordinate plots enable some aspects of association between multiple variables to be inferred, they have several deficiencies. Association can only really be directly inferred by comparing variables that are immediately adjacent in parallel space; the order of parallel variables can affect the visual appearance and patterns of plots; and relatedly, visual patterns of the plot that are salient may be be incidental to the phenomena being investigated.
+Although parallel coordinate plots enable some aspects of association between multiple variables to be inferred, they have several deficiencies. Association can only really be directly inferred by comparing variables that are immediately adjacent in parallel space. The order of parallel variables can affect the visual appearance and patterns of plots. And relatedly, visual patterns of the plot that are salient may be be incidental to the phenomena being investigated.
 :::
 
 <!--
@@ -163,7 +163,7 @@ include_graphics("figs/06/cors.png", error = FALSE)
 
 ### Modelling for co-variation
 
-Linear regression provides a framework for systematically describing the associations implied by the scatterplots and parallel coordinate plot, and with respect to the constituency-level variation identified in @fig-map-uniform. Having seen this new data, the candidate demographic variables in @fig-scatters, we can derive expected values closer to those observed and so better account for constituency-level variation in Leave voting.
+Linear regression provides a framework for systematically describing the associations implied by the scatterplots and parallel coordinate plot, and with respect to the constituency-level variation identified in @fig-map-uniform. Having seen these data, the demographic variables in @fig-scatters, we can derive expected values of constituency-level Leave voting closer to those observed.
 
 To express this in equation form, we update the uniform model such that Leave vote is a *function* of the candidate explanatory variables. For single-variable linear regression,  we might select the proportion of residents educated at least to *degree-level* (${d_{i1}}$):
 
@@ -177,9 +177,11 @@ So we now estimate the Leave vote in each constituency ($y_{i}$) as a function o
 * $\beta_{1}=\beta_{1}{d_{i1}}$, the slope, indicating in which direction and to what extent *degree-educated* is associated with Leave,  $+$
 * $\varepsilon_{i}$, the difference between $y_{i}$ (the observed value) and the unobservable 'true population' value of the Leave vote in that constituency (statistical error)
 
-There are different algorithms that can be used to estimate these parameters. Most obvious is ordinary least squares (OLS), which aims to minimise the sum of the (squared) residuals between the observed Leave vote in a constituency, $y_{i}$, and that expected given the association with the *degree-educated* explanatory variable $d_{i1}$. Eyeballing the scatterplots in @fig-scatters we can already infer many of the parameters estimated via OLS regression. *Degree-educated* is most consistently associated with Leave voting and, according to our linear regression model, explains 60% of the total variation (the sum of bars in @fig-map-uniform) in constituency-level Leave voting. Also from the scatterplots, especially those associating Leave with *degree-educated* and *professionals*, there is a grouping of constituencies where the Leave vote is lower than we might expect given that constituency's population characteristics -- and this is reflected when inspecting the 1D distribution of residuals in histograms (not included here).
+There are different algorithms that can be used to estimate these parameters. Most obvious is ordinary least squares (OLS), which aims to minimise the sum of the (squared) residuals between the observed Leave vote in a constituency, $y_{i}$, and that expected given the association with the *degree-educated* explanatory variable $d_{i1}$. 
 
-It is of course possible, and likely, that some of these variables account for different elements of the variation in the Leave vote than others. You will be aware that the linear regression model can be extended to include many explanatory variables:
+<!-- Eyeballing the scatterplots in @fig-scatters we can already infer many of the parameters estimated via OLS regression. *Degree-educated* is most consistently associated with Leave voting and, according to our linear regression model, explains 60% of the total variation (the sum of bars in @fig-map-uniform) in constituency-level Leave voting. Also from the scatterplots, especially those associating Leave with *degree-educated* and *professionals*, there is a grouping of constituencies where the Leave vote is lower than we might expect given that constituency's population characteristics -- and this is reflected when inspecting the 1D distribution of residuals in histograms (not included here). -->
+
+It is of course possible, and likely from the scatterplots in @fig-scatters, that some demographic variables account for different elements of the variation in the Leave vote than others. You will be aware that the linear regression model can be extended to include many explanatory variables:
 
 \begin{align*}
       y_{i}&= \beta_{0} +\beta_{1}x_{i1} + ... + \beta_{k}x_{ik} + \varepsilon_{i}  \\
@@ -187,13 +189,10 @@ It is of course possible, and likely, that some of these variables account for d
 
 So this results in *separate* $\beta_{k}$ coefficients for separate explanatory variables. These coefficients can be interpreted as the degree of association between the explanatory variable $k$ and the outcome variable, keeping all the other explanatory variables constant -- or the distinct correlation between an explanatory variable $k$ and the outcome variable, net of the other correlated variables.
 
-In @fig-outputs are regression coefficients ($\beta_{k}$) from a multiple regression model with *degree-educated*, *no car*, *white*, *heavy industry*, *EU-born* and *not good health* selected as explanatory variables. Coefficients are reported as dots with estimates of uncertainty represented as lines encoding 95% [confidence intervals](http://www.sumsar.net/blog/2013/12/an-animation-of-the-construction-of-a-confidence-interval/).
-<!-- the range of values the true (*unobservable*) coefficient is likely to take --> Most variables' coefficients are in the direction that would be expected given the associations in @fig-scatters. Net of variation in the other compositional factors, increased levels of *degree education* in a constituency has the effect of reducing the Leave vote. The two exceptions are *EU-born*  and *white*: after controlling for variation in the other demographic variables, increased proportions of residents identifying as *white* reduces the Leave vote and increased proportions of residents that are *EU-born* increases the Leave vote. Since the confidence interval for *white* crosses zero, this coefficient is subject to much uncertainty; further exploration may allow us to identify whether these counter-intuitive effects are genuine or the result of a poorly-specified model.
-
 
 ```{r}
 #| label: fig-outputs
-#| out.width: 70%
+#| out.width: 85%
 #| fig-cap: "Outputs from multiple regression model of Leave vote by demographic composition of constituency"
 #| echo: false
 #| eval: true
@@ -202,20 +201,26 @@ In @fig-outputs are regression coefficients ($\beta_{k}$) from a multiple regres
 include_graphics("figs/06/outputs.png", error = FALSE)
 ```
 
-::: {.callout-note}
+In @fig-outputs are regression coefficients ($\beta_{k}$) from a multiple regression model with *degree-educated*, *no car*, *white*, *heavy industry*, *EU-born* and *not good health* selected as explanatory variables. Coefficients are reported as dots with estimates of uncertainty represented as lines encoding 95% [confidence intervals](http://www.sumsar.net/blog/2013/12/an-animation-of-the-construction-of-a-confidence-interval/).
+<!-- the range of values the true (*unobservable*) coefficient is likely to take --> Most variables' coefficients are in the direction that would be expected given the associations in @fig-scatters. Net of variation in the other compositional factors, increased levels of *degree education* in a constituency has the effect of reducing the Leave vote. The two exceptions are *EU-born*  and *white*: after controlling for variation in the other demographic variables, increased proportions of *white* residents reduces the Leave vote and increased proportions of residents that are *EU-born* increases the Leave vote. Since the confidence interval for *white* crosses zero, this coefficient is subject to much uncertainty; further exploration may allow us to identify whether these counter-intuitive effects are genuine or the result of a poorly-specified model.
+
+
+
+
+<!-- ::: {.callout-note}
 Given the spirit of this book, you might have wondered about the reasonably abbreviated discussion of techniques for representing model outputs and their uncertainty estimates (via Confidence Intervals). More involved coverage of this is in @sec-uncertainty.
-:::
+::: -->
 
 ### Evaluating model bias
 
-The new expected values for Leave derived from the multivariate model are much closer to those observed in the data; the model  accounts for a reasonably large share (c.76%) of variation in constituency-level Leave voting. However, our analysis becomes more interesting when we start to explore and characterise model *bias*: any underlying structure to the observations which are better or less well accounted for by the model.
+The new expected values for Leave derived from the multivariate model are much closer to those observed in the data; the model  accounts for a reasonably large share (c.76%) of variation in constituency-level Leave voting. However, our analysis becomes more interesting when we start to explore and characterise model *bias*: any underlying structure to the observations that are less well accounted for by the model.
 
-For area-level regression models such as ours, it is usual for residuals to exhibit some [spatial autocorrelation](https://rspatial.org/raster/analysis/3-spauto.html) structure. For certain parts of a country, a model will overestimate an outcome given the relationship implied by associations between explanatory and outcome variables; for other parts, the outcome will be underestimated. This might occur due to:
+For area-level regression models such as ours, it is usual for residuals to exhibit some [spatial autocorrelation](https://rspatial.org/raster/analysis/3-spauto.html) structure. For certain parts of a country a model will overestimate an outcome given the relationship implied by associations between explanatory and outcome variables; for other parts the outcome will be underestimated. This might occur due to:
 
-* *Spatial dependence* in *variable values* over space. We know that the geography of GB is quite socially distinctive, so it is reasonable to expect, for example, the range in variables like *heavy industry* and *white* to be bounded to economic regions and metropolitan-versus-peripheral regional contexts.
-* *Spatial nonstationarity* in *processes* over space. It is possible that associations between variables might be grouped over space -- that the associations vary for different parts of the country. For example, high levels of *EU-born* migration might affect political attitudes, and thus area-level voting, differently in different parts of a country.
+* *Spatial dependence in variable values* over space. We know that the geography of GB is quite socially distinctive, so it is reasonable to expect, for example, the range in variables like *heavy industry* and *white* to be bounded to economic regions and metropolitan-versus-peripheral regional contexts.
+* *Spatial nonstationarity in processes* over space. It is possible that associations between variables might be grouped over space -- that the associations vary for different parts of the country. For example, high levels of *EU-born* migration might affect political attitudes, and thus area-level voting, differently in different parts of a country.
 
-We can test for and characterise [spatial autocorrelation](https://rspatial.org/raster/analysis/3-spauto.html) by performing a graphical inference test, a map line-up [@beecham_map_2017; @wickham_graphical_2010] against a null hypothesis of *complete spatial randomness* (CSR) in residuals. Here a plot of real data, the true map of residuals, is hidden amongst a set of decoys, in this case maps with the residual values randomly permuted around constituencies. If the real map can be correctly identified from the decoys, then this lends statistical credibility to the claim that the observed data are not consistent with the null of CSR. Graphical line-up tests have been used in various domains, also to test regression assumptions [@loy_model_2017]. The map line-up in @fig-lineup demonstrates that there *is* very obviously spatial (and *regional*) autocorrelation in residuals, and therefore structure that our regression model misses.
+We can test for and characterise [spatial autocorrelation](https://rspatial.org/raster/analysis/3-spauto.html) by performing a graphical inference test, a map line-up [@beecham_map_2017; @wickham_graphical_2010] against a null hypothesis of *complete spatial randomness* (CSR) in residuals. Here a plot of real data, the true map of residuals, is hidden amongst a set of decoys, in this case maps with the residual values randomly permuted around constituencies. If the real map can be correctly identified from the decoys, then this lends statistical credibility to the claim that the observed data are not consistent with the null of CSR. Graphical line-up tests have been used in various domains, also to test regression assumptions [@loy_model_2017]. The map line-up in @fig-lineup demonstrates that there *is* very obviously spatial and *regional* autocorrelation in residuals, and therefore structure that our regression model misses.
 
 ```{r}
 #| label: fig-lineup
@@ -259,9 +264,9 @@ include_graphics("figs/06/lineups_fe.png", error = FALSE)
 ```
 
 
-Presented in @fig-outputs-fe are updated regression coefficients for a multivariate model fit with a FE on region. In the left panel are the FE constants. Together these capture the variance in Leave vote between regions after accounting for demographic composition. These coefficients have useful properties: they are the estimated size of the Leave vote for a constituency in a region *net* of demographic composition. London is in interesting here. When initially analysing variation in the vote, constituencies in Scotland and London were distinctive in voting in much smaller proportions than the rest of the country for Leave. Given the associations we observe with Leave voting and demographic composition, however, if we were to randomly sample two constituencies that contain the same demographic characteristics, one in London and one in another region (say North West), on average we would expect Leave from the constituency in London to be higher (~60%) than that sampled from North West (~51%).  A separate, and more anticipated pattern is that Scotland would have a lower Leave vote (~38%) -- that is, net of demographics there is some additional context in Scotland that means Leave is lower than in other regions.
+Presented in @fig-outputs-fe are updated regression coefficients for a multivariate model fit with a FE on region. In the left panel are the FE constants. Together these capture the variance in Leave vote between regions after accounting for demographic composition. These coefficients have useful properties: they are the estimated size of the Leave vote for a constituency in a region *net* of demographic composition. London is in interesting here. When initially analysing variation in the vote, constituencies in Scotland and London were distinctive in voting in much smaller proportions than the rest of the country for Leave. Given the associations we observe with Leave voting and demographic composition, however, if we were to randomly sample two constituencies that contain the same demographic characteristics, one in London and one in another region (say North West), on average we would expect the Leave vote in the London constituency to be higher (~60%) than that sampled from North West (~51%).  A separate, and more anticipated pattern is that Scotland would have a lower Leave vote (~38%) -- that is, net of demographics there is some additional context in Scotland that means Leave is lower than in other regions.
 
-In the right panel are the regression coefficients net of this between-region variation.  In the previous model, the *white* variable was shown counterintuitively to have a slight negative association with Leave (although there was high uncertainty here). Now the *white* variable has a direction of effect that conforms to expectation -- net of variation in other demographics increased proportions of *white* residents is associated with increased Leave voting. For the other variable with a counterintuitive effect --  *EU born* -- the coefficient still  suggests a positive association with Leave.
+In the right panel are the regression coefficients net of this between-region variation.  Previously the *white* variable had a a slight negative association with Leave, counterintuitively. Now the *white* variable has a direction of effect that conforms to expectation -- net of variation in other demographics increased proportions of *white* residents is associated with increased Leave voting. For the other variable with an unexpected direction of effect --  *EU born* -- the coefficient still  suggests a positive association with Leave.
 
 ```{r}
 #| label: fig-outputs-fe
@@ -311,7 +316,7 @@ Our treatment of regression frameworks has in this chapter been reasonably breez
 
 ## Techniques
 
-The technical element to this chapter demonstrates how linear regression models can be specified in R, including approaches to extract model summaries and diagnostics, and of course representing them visually. Data recording estimated vote shares for Leave by Parliamentary Constituency, as well as constituency-level 2011 Census demographics, are available via the [`parlitools`](https://docs.evanodell.com/parlitools/) package used in Chapter [-@sec-visual].
+The technical element to this chapter demonstrates how linear regression models can be specified in R, including approaches to extract model summaries and diagnostics, and of course represent them visually. Data recording estimated vote shares for Leave by Parliamentary Constituency, as well as constituency-level 2011 Census demographics, were originally collected from the [`parlitools`](https://docs.evanodell.com/parlitools/) package used in Chapter [-@sec-visual].
 
 
 ### Import, transform, explore
@@ -321,15 +326,19 @@ The technical element to this chapter demonstrates how linear regression models 
 
 The template file lists the required packages: `tidyverse`, `sf` and `tidymodels` for extracting model outputs. The processed data with selected 2011 Census demographics can be loaded from the book's accompanying data repository. In this folder is also a `.geojson` file containing a hexagon cartogram of UK parliamentary constituencies, derived from Open-Innovations' [HexJSON](https://open-innovations.org/projects/hexmaps/hexjson.html) format.
 
-Explanatory variables describing the demographic composition of constituencies are expressed as proportions. In order to support comparison in the multivariate models they are z-score transformed. Here, the distance between observed values for each 2011 Census variable is expressed in standard deviation units from the mean across constituencies for that variable. Our approach is to perform this transformation to each explanatory variable 'on the fly' before piping into the model specification. This is achieved with `across()`. The first argument is the set of columns you would like the same function to be applied to and the second is the function you would like to apply. Remembering that `mutate()` works over columns of a data frame, and that a single column of a dataframe is a vector of values, the notation `.x` is used to access each element of the vector of values of the columns being worked across.
+Explanatory variables describing the demographic composition of constituencies are expressed as proportions. In order to support comparison in the multivariate models they are z-score transformed. Here, the distance between observed values for each 2011 Census variable is expressed in standard deviation units from the mean across constituencies for that variable. Our approach is to perform this transformation to each explanatory variable before piping into the model specification. This is achieved with `across()`. The first argument is the set of columns you would like the same function to be applied to and the second is the function you would like to apply. Remembering that `mutate()` works over columns of a data frame, and that a single column of a dataframe is a vector of values, the notation `.x` is used to access each element of the columns being worked across.
 
 ```{r}
 #| echo: true
 #| eval: false
-# z-score transform explanatory variables before model specification.
-cons_data |> st_drop_geometry() |>
+# z-score transform explanatory variables before model 
+# specification.
+cons_data |> 
   mutate(
-    across(.cols=c(younger:heavy_industry), .fns=~(.x-mean(.x))/sd(.x))
+    across(
+      .cols=c(younger:heavy_industry), 
+      .fns=~(.x-mean(.x))/sd(.x)
+      )
   )
   <some-model-specification-code>
 ```
@@ -354,10 +363,13 @@ The most straightforward way of specifying a linear regression model is with the
 ```{r}
 #| echo: true
 #| eval: false
-# z-score transform explanatory variables before model specification.
+
 model <- cons_data |> st_drop_geometry() |>
   mutate(
-    across(.cols=c(younger:heavy_industry), .fns=~(.x-mean(.x))/sd(.x))
+    across(
+      .cols=c(younger:heavy_industry), 
+      .fns=~(.x-mean(.x))/sd(.x)
+      )
   ) %>%
   lm(leave ~ degree, data=.)
 
@@ -395,7 +407,8 @@ tidy(model)
 #   1 (Intercept)   0.521    0.00290     180.  0
 # 2 degree       -0.0883   0.00290     -30.5 5.67e-126
 
-# glance() returns a single row containing summaries of model fit.
+# glance() returns a single row containing summaries of 
+# model fit.
 glance(model)
 # # A tibble: 1 × 12
 # r.squared adj.r.squared  sigma statistic   p.value    df logLik    AIC    BIC
@@ -403,8 +416,8 @@ glance(model)
 #   1     0.596         0.595 0.0728      928. 5.67e-126     1   760. -1514. -1501.
 # # ℹ 3 more variables: deviance <dbl>, df.residual <int>, nobs <int>
 
-# augment() returns a data frame of residuals and predictions (fitted values)
-# for the model realisation.
+# augment() returns a data frame of residuals and predictions 
+# (fitted values) for the model realisation.
 augment(model)
 # # A tibble: 632 × 8
 # leave  degree .fitted   .resid    .hat .sigma   .cooksd .std.resid
@@ -428,9 +441,11 @@ single_model_fits <-  cons_data |> st_drop_geometry() |>
     across(c(younger:heavy_industry), ~(.x-mean(.x))/sd(.x))
   ) |>
   pivot_longer(
-    cols=younger:heavy_industry, names_to="expl_var", values_to="z_score"
+    cols=younger:heavy_industry, 
+    names_to="expl_var", values_to="z_score"
     ) |>
-  nest(data=-expl_var) |> # Nest to generate list-column by expl_var.
+  # Nest to generate list-column by expl_var.
+  nest(data=-expl_var) |> 
   mutate(
     # Use map() to iterate over the list of datasets.
     model = map(data, ~lm(leave ~ z_score, data = .x)),
@@ -443,8 +458,10 @@ single_model_fits <-  cons_data |> st_drop_geometry() |>
   )
 
 single_model_fits |>
-  unnest(cols = fits) |>  # unnest output from glance.
-  select(-c(data, model)) # remove other list-columns.
+  # Unnest output from glance.
+  unnest(cols = fits) |>  
+  # Remove other list-columns.
+  select(-c(data, model)) 
 
 # # A tibble: 10 × 15
 # expl_var  r.squared adj.r.squared  sigma statistic   p.value    df logLik    AIC
@@ -466,10 +483,10 @@ single_model_fits |>
 
 Code description:
 
-1. *Setup*: In order to generate separate models for separate explanatory variables, we need to generate [nested data frames](https://cran.r-project.org/web/packages/tidyr/vignettes/nest.html). These are data frames stored in a special type of column (a `list-column`) in which the values of the column is a list of data frames -- in this case one for each explanatory variable that we would like to compute a model over. You can think of parameterising `nest()` in a similar way to `group_by()`. We first `pivot_longer()` to generate a data frame where each observation contains the recorded Leave vote for a constituency and its corresponding `z_score` value for each explanatory variable.  There are 10 explanatory variables and so `nest()` returns a data frame with the dimensions `10x2` -- a variable identifying the explanatory variable on which the model is to be built (`expl_var`) and a `list-column`, each element containing a data frame  with the dimensions `632x13`.
+1. *Setup*: In order to generate separate models for separate explanatory variables we need to generate [nested data frames](https://cran.r-project.org/web/packages/tidyr/vignettes/nest.html). These are data frames stored in a special type of column (a `list-column`) in which the values of the column is a list of data frames -- in this case one for each explanatory variable that we would like to compute a model over. You can think of parameterising `nest()` in a similar way to `group_by()`. We first `pivot_longer()` to generate a data frame where each observation contains the recorded Leave vote for a constituency and its corresponding `z_score` value for each explanatory variable.  There are 10 explanatory variables and so `nest()` returns a data frame with the dimensions `10x2` -- a variable identifying the explanatory variable on which the model is to be built (`expl_var`) and a `list-column`, each element containing a data frame  with the dimensions `632x13`.
 2. *Build model*: In `mutate()`, `purrr`'s [`map()`](https://purrr.tidyverse.org/reference/map.html) function is used to iterate over the list of datasets and fit a model to each nested dataset. The new column `model` is a `list-column` this time containing a list of model objects.
 3. *Generate outputs*: Next, the different model outputs can be generated using `glance(), tidy(), augment()`, with `map()` to iterate over the list of model objects. The new columns are now `list-columns` of data frames containing model outputs.
-4. *Extract outputs*: Finally, we want to variously extract the values from these nested data. This can be achieved using `unnest()` and supplying to the `cols` argument the names of the `list-columns` that we want to flatten over.
+4. *Extract outputs*: Finally we want to extract the values from these nested data. This can be achieved using `unnest()` and supplying to the `cols` argument the names of the `list-columns` that we want to extract values from.
 
 ### Plot models tidily
 
@@ -481,9 +498,10 @@ The code for @fig-outputs:
 #| echo: true
 #| eval: false
 model <- cons_data |> st_drop_geometry() |>
-  mutate(across(c(younger:heavy_industry), ~(.x-mean(.x))/sd(.x))) %>%
+  mutate(across(c(younger:heavy_industry), ~(.x-mean(.x))/sd(.x))) |>
   lm(
-    leave ~ degree + eu_born + white  + no_car + not_good_health + heavy_industry,
+    leave ~ 
+    degree + eu_born + white  + no_car + not_good_health + heavy_industry,
      data=.)
 
 tidy(model) |>
@@ -507,7 +525,7 @@ The plot specification:
 
 ### Extended model terms
 
-To include a fixed effect (FE) term on region, the `region` variable is simply added as a variable to `lm()`. However, we must convert it to a factor variable (this has the effect of creating dummies on each value of `region`). Default behaviour within `lm()` is to hold back a reference value (of region) with FE regression coefficients describing the effect on the outcome of a constituency located in a given region relative to the reference region.  So the reference region (intercept) in the model below is East Midlands -- the first in the factor to appear alphabetically. The signed coefficient estimates for regions identifies whether, after controlling for variation in demographics, the Leave vote for a particular region is expected to be higher or lower than this.
+To include a fixed effect (FE) term on region, the `region` variable is simply added as a variable to `lm()`. However, we must convert it to a factor variable (this has the effect of creating dummies on each value of `region`). Default behaviour within `lm()` is to hold back a reference value of region with FE regression coefficients describing the effect on the outcome of a constituency located in a given region relative to the reference region.  So the reference region (intercept) in the model below is East Midlands -- the first in the factor to appear alphabetically. The signed coefficient estimates for regions identifies whether, after controlling for variation in demographics, the Leave vote for a particular region is expected to be higher or lower than this.
 
 ```{r}
 #| echo: true
@@ -544,7 +562,7 @@ cons_data |> st_drop_geometry() |>
 # 17 heavy_industry                  0.0132    0.00266     4.96  9.23e- 7
 ```
 
-We want our model to represent a dummy for every area and so we add `-1` to the specification. Doing this removes the intercept (reference region), and this is why $R^2$ is no longer meaningful.
+We want our model to represent a dummy for every region and so we add `-1` to the specification. Doing this removes the intercept (reference region), making $R^2$ is no longer meaningful.
 
 ```{r}
 #| echo: true
@@ -612,7 +630,7 @@ The plot specification:
 
 ### Evaluate models with lineup plots
 
-In @fig-lineup-fe is a map line-up of the residuals from the model updated with a fixed effect on region. Using functional-style programming, and `tidymodels`, plot lineups can be generated with surprisingly paired-back code.
+In @fig-lineup-fe is a map line-up of the residuals from the model updated with a fixed effect on region -- our expectation is that these residuals should *no longer* be spatially autocorrelated. Using functional-style programming, and `tidymodels`, plot lineups can be generated with surprisingly paired-back code.
 
 ```{r}
 #| label: fig-lineup-fe
@@ -673,7 +691,7 @@ Now we have the permuted dataset, the lineup can be generated straightforwardly 
 # Store max value of residuals for setting limits in map colour scheme.
 max_resid <- max(abs(permuted_data$.resid))
 # Store vector of permutation IDs for shuffling facets in the plots.
-ids <- permuted_data %>% pull(id) %>% unique()
+ids <- permuted_data |> pull(id) |> unique()
 
 cons_hex |>
   select(cons_code, region) |>
@@ -692,7 +710,7 @@ cons_hex |>
 
 The plot specification:
 
-1. *Data*: `inner_join` the permuted data on the simple features file containing the hexagon cartogram boundaries (`cons_hex`). To generate the lineup we `facet_wrap()` on the permutation `id`. By default ggplot2 will draw facets according to a consistent order -- determined either by the numeric or alphabetical order of the facet variable's values, or by an order determined by a factor variable. Each time we plot the lineups, we want the order in which the real and decoy plots are to be drawn to vary. Therefore we convert `id` to a factor variable and shuffle the levels (the ordering) around, using the `sample()` function on a recorded vector of permutation IDs (`ids`) before piping to `ggplot()`. Note that we also record the maximum absolute value of the residuals to ensure that they are coloured symmetrically on $0$ (`max_resid`). Finally, you may notice there are two `geom_sf()` calls in the plot specification. The second draws regional boundary outlines across each plot. This is achieved by collapsing the hex data on region (using `group_by()` and `summarise()`).
+1. *Data*: `inner_join` the permuted data on the simple features file containing the hexagon cartogram boundaries (`cons_hex`). To generate the lineup we `facet_wrap()` on the permutation `id`. By default ggplot2 will draw facets in a particular order -- determined either by the numeric or alphabetical order of the facet variable's values, or by an order determined by a factor variable. Each time we plot the lineups we want the order in which the real and decoy plots are drawn to vary. Therefore we convert `id` to a factor variable and shuffle the levels (the ordering) around, using the `sample()` function on a recorded vector of permutation IDs (`ids`) before piping to `ggplot()`. Note that we also record the maximum absolute value of the residuals to ensure that they are coloured symmetrically on $0$ (`max_resid`). Finally, you may notice there are two `geom_sf()` calls in the plot specification. The second draws regional boundary outlines across each plot. This is achieved by collapsing the hex data on region (using `group_by()` and `summarise()`).
 2. *Encoding*: hexagons are filled according to the residual values (`fill=.resid`).
 3. *Marks*: `geom_sf()` for drawing the hexagon outlines. The first `geom_sf` colours each constituency on its residual value. The second does not encode any data values -- notice there is no `aes()` -- and is for drawing the regional outlines.   
 4. *Facets*: `facet_wrap()` on `region` in order to display coefficients estimated separately for each region.
@@ -701,7 +719,7 @@ The plot specification:
 
 ## Conclusion
 
-Variation is central to most data analysis, and certainly regression modelling: quantifying variation, exploring how it is structured and accounting for (or explaining) it using a combination of data and prior theory/knowledge. This chapter introduced a linear regression modelling framework with the explicit aim of analysing whether variation in constituency-level voting in the UK’s 2016 EU Referendum varies systematically with the demographic composition of constituencies. Visual approaches were used to explore associations between constituency-level voting and demographics and also to characterise bias in the specified models -- to identify geographic and regional groupings that our early models ignore. Two different classes of approach to addressing this geographic grouping were covered: those that treat geographic dependence in the values of variables as a nuisance term that is to be quantified and controlled away; and those that explicitly try to model for geographic grouping in processes. We introduced some initial techniques for dealing with both, treating geography as a categorical variable: introducing a Fixed Effect term to assess regional dependence and Interaction term to assess regional non-stationarity. Importantly, the chapter reused some of the `dplyr` and [functional programming](https://adv-r.hadley.nz/fp.html) code templates instrumental for working over models. There was a step-up in code complexity. Hopefully you will see in the next chapter that this sort of [functional programming](https://adv-r.hadley.nz/fp.html) style is fundamental to modern computational data analysis.
+Variation is central to most data analysis, and certainly regression modelling: quantifying variation, exploring how it is structured and accounting for it using a combination of data and prior theory/knowledge. This chapter introduced linear regression modelling frameworks with the explicit aim of analysing whether variation in constituency-level voting in the UK’s 2016 EU Referendum varies systematically with the demographic composition of constituencies. Visual approaches were used to explore associations between constituency-level voting and demographics and also to characterise bias in the specified models -- to identify geographic and regional groupings that our early models ignore. Two different classes of approach to addressing this geographic grouping were covered: those that treat geographic dependence in the values of variables as a nuisance term that is to be quantified and controlled away; and those that explicitly try to model for geographic grouping in processes. We introduced some initial techniques for dealing with both, treating geography as a categorical variable: introducing a Fixed Effect term to assess regional dependence and Interaction term to assess regional non-stationarity. Importantly, the chapter reused some of the `dplyr` and [functional programming](https://adv-r.hadley.nz/fp.html) code templates instrumental for working over models. There was a step-up in code complexity. Hopefully you will see in the next chapter that this sort of [functional programming](https://adv-r.hadley.nz/fp.html) style is fundamental to modern computational data analysis.
 
 ## Further Reading
 
