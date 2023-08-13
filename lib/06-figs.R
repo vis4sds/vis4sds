@@ -844,16 +844,16 @@ plot <- #cons_data |> filter(constituency_name!="Orkney and Shetland") |>
   geom_sf(data=. %>% group_by(region) %>% summarise(), colour="#636363", linewidth=0.2, fill="transparent")+
   geom_sf(data=. %>% group_by(id) %>% summarise(), colour="#636363", linewidth=0.25, fill="transparent")+
   #coord_sf(crs=27700, datum=NA) +
-  facet_wrap(~id, ncol=3) +
+  facet_wrap(~id, ncol=5) +
   scale_fill_distiller(palette="RdBu", direction=1,
-                       limits=c(-max_resid, max_resid), guide="none") +
+                       limits=c(-14, 14), guide="none") +
   theme(
    # strip.text.x = element_blank(),
     axis.text = element_blank(),
     axis.line = element_blank()
   )
 
-ggsave(filename=here("figs", "06", "lineups_fe.png"), plot=plot,width=6.5, height=8, dpi=300)
+ggsave(filename=here("figs", "06", "lineups_fe.png"), plot=plot,width=12, height=6, dpi=300)
 
 
 model <- cons_data |> st_drop_geometry() |> 
