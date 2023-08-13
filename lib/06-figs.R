@@ -220,7 +220,7 @@ order_vars <-
   pull(expl_var)
 
 
-plot <- cons_data |> st_drop_geometry() |> 
+plot <- cons_data |> 
   select(-c(population, population_density)) |> 
   mutate(
     across(c(younger:heavy_industry), ~(.x-mean(.x))/sd(.x))
@@ -301,6 +301,16 @@ plot <- plot_data |>
   # Setting parameters.
   scale_colour_manual(values=c("#b2182b","#2166ac")) +
   guides(colour="none") +
+  coord_flip()
+
+
+plot_data |>  
+  ggplot()+
+  geom_path(
+    aes(x=var, y=z_score, group=c(constituency_name), colour=majority), 
+    alpha=0.15, linewidth=.2
+  )+
+  scale_colour_manual(values=c("#b2182b","#2166ac")) +
   coord_flip()
 
 ggsave(filename=here("figs", "06", "pcps.png"), plot=plot,width=7, height=6.5, dpi=500)
@@ -531,7 +541,7 @@ cons_data |> st_drop_geometry() |>
 
 
 
-model <- cons_data |> st_drop_geometry() |> 
+model <- cons_data |> 
   mutate(
     across(c(younger:heavy_industry), ~(.x-mean(.x))/sd(.x))
   ) |> 
@@ -585,17 +595,18 @@ plot <- cons_data |> filter(constituency_name!="Orkney and Shetland") |>
   )
 
 
-plot <- #cons_data |> filter(constituency_name!="Orkney and Shetland") |> 
-  cons_hex |>   
+
+
+plot_large <- cons_hex |> 
   select(cons_code, region) |> 
   inner_join(permuted_data, by=c("cons_code"="pcon19cd")) |> 
-  mutate(id=factor(id, sample(ids)), id=paste0("p", as.numeric(id))) |> 
+  filter(id=="Apparent") |> 
   ggplot() +
-  geom_sf(aes(fill=.resid), colour="#636363", linewidth=0.05)+
-  geom_sf(data=. %>% group_by(region) %>% summarise(), colour="#636363", linewidth=0.2, fill="transparent")+
-  geom_sf(data=. %>% group_by(id) %>% summarise(), colour="#636363", linewidth=0.25, fill="transparent")+
+  geom_sf(aes(fill=.resid), colour="#636363", linewidth=0.03)+
+  geom_sf(data=. %>% group_by(region) %>% summarise(), colour="#636363", linewidth=0.15, fill="transparent")+
+  geom_sf(data=. %>% group_by(id) %>% summarise(), colour="#636363", linewidth=0.2, fill="transparent")+
   #coord_sf(crs=27700, datum=NA) +
-  facet_wrap(~id, ncol=3) +
+  #facet_wrap(~id, ncol=3) +
   scale_fill_distiller(palette="RdBu", direction=1,
                        limits=c(-max_resid, max_resid), guide="none") +
   theme(
@@ -604,8 +615,54 @@ plot <- #cons_data |> filter(constituency_name!="Orkney and Shetland") |>
     axis.line = element_blank()
   )
 
+plot_small <- cons_hex |> 
+  select(cons_code, region) |> 
+  inner_join(permuted_data, by=c("cons_code"="pcon19cd")) |> 
+  mutate(id=factor(id, sample(ids)), id=paste0("p", as.numeric(id))
+  ) |> 
+  ggplot() +
+  geom_sf(aes(fill=.resid), colour="#636363", linewidth=0.02)+
+  geom_sf(data=. %>% group_by(region) %>% summarise(), colour="#636363", linewidth=0.1, fill="transparent")+
+  geom_sf(data=. %>% group_by(id) %>% summarise(), colour="#636363", linewidth=0.15, fill="transparent")+
+  #coord_sf(crs=27700, datum=NA) +
+  facet_wrap(~id, ncol=3) +
+  scale_fill_distiller(palette="RdBu", direction=1,
+                       limits=c(-max_resid, max_resid), guide="none") +
+  theme(
+    # strip.text.x = element_blank(),
+    strip.text=element_text(size=10),
+    axis.text = element_blank(),
+    axis.line = element_blank()
+  )
 
-ggsave(filename=here("figs", "06", "lineups_hex.png"), plot=plot,width=6.5, height=8, dpi=300)
+plot <- plot_large + plot_small + plot_layout(widths=c(.55,1))
+
+ggsave(filename=here("figs", "06", "lineups_hex.png"), plot=plot,width=7, height=6.5, dpi=300)
+
+library(magick)
+# Load in as image to annotate.
+img <- image_read(here("figs", "06", "lineups_hex.png")) |> 
+  image_fill('none') |> 
+  as.raster()
+
+insight <- "1. Analyst observes apparent spatial autocorrelation structure in model residuals." 
+task <- "2. Indepenent observer asked to pick real data from a group of decoys."
+result <- "3. If the real is correctly identified, we reject the null of CSR in residuals."
+
+ggplot() +
+  annotation_raster(img, 0, 1, 0, 1) +
+  annotate("text", 
+           label=str_wrap(insight, 25),
+           x=0, y=.87, size=2, hjust="left", vjust="top") +
+  annotate("text", 
+           label=str_wrap(task, 25),
+           x=0.37, y=.19, size=2, hjust="right", vjust="top") +
+  annotate("text", 
+           label=str_wrap(result, 20),
+           x=1.0, y=.9, size=2, hjust="left", vjust="top") +
+  annotate("rect", xmin=.79, xmax=.97, ymin=.66, ymax=.94, fill="transparent", colour="#000000", linewidth=.03 )+
+  scale_x_continuous(limits=c(0, 1.4)) +
+  scale_y_continuous(limits=c(0, 1))
 
 
 ### Multi-level model experiments
