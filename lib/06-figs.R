@@ -274,34 +274,26 @@ plot_data <- cons_data |>
 # Holborn and St Pancras
 # Basildon and Billericay
 
-high <- plot_data |>   filter(decile==10) |>  sample_n(1)
-low <-  plot_data |>   filter(decile==1) |>  sample_n(1)
+high <- plot_data |>   filter(decile==10) |>  sample_n(1) |> pull(constituency_name)
+low <-  plot_data |>   filter(decile==1) |>  sample_n(1) |> pull(constituency_name)
+
+annotate_data <- c(high, low)
 
 plot <- plot_data |>  
-  ggplot()+
+  ggplot(aes(x=var, y=z_score, group=c(constituency_name)))+
   # Plot all constituencies.
+  # geom_path(
+  #   aes(colour=majority), alpha=0.15, linewidth=.2
+  # )+
+  # Highlight extreme remain/leave constituencies.
   geom_path(
-    aes(x=var, y=z_score, group=c(constituency_name), colour=majority), alpha=0.15, linewidth=.2
-  )+
-  # Highlight extreme remain/leave constituencies and animate over using the 
-  # decile var.
-  geom_path(
-    data= . %>%  filter(constituency_name==low$constituency_name),
-    aes(x=var, y=z_score, group=constituency_name, colour=majority), alpha=1, linewidth=.4
-  )+
-  geom_path(
-    data= . %>%  filter(constituency_name==high$constituency_name),
+    data= . %>% filter(constiuency_name %in% annotate_data),
     aes(x=var, y=z_score, group=constituency_name, colour=majority), alpha=1, linewidth=.4
   )+
   
-  # Annotate with text describing the transitions -- tedious.
-  # annotate(geom="text", x="leave", y=-4.3, label="heavy vote for:", vjust=-2.8, hjust=0, size=4.5) +
   geom_text(
-      data= . %>%  filter(constituency_name==low$constituency_name) %>% slice(1),
-      aes(x="leave", y=-3.0, label=str_wrap(constituency_name,15), colour=majority), size=3.5, vjust="top", hjust="centre", nudge_x=+.5) +
-  geom_text(
-    data= . %>%  filter(constituency_name==high$constituency_name) %>% slice(1),
-    aes(x="leave", y=1.5, label=str_wrap(constituency_name,15), colour=majority), size=3.5, vjust="top", hjust="centre", nudge_x=+.5) +
+      data= . %>% filter(var=="leave"),
+      aes(x="leave", y=z_score, label=str_wrap(constituency_name,15), colour=majority), size=3.5, vjust="top", hjust="centre", nudge_x=+.5) +
   # Setting parameters.
   scale_colour_manual(values=c("#b2182b","#2166ac")) +
   labs(x="explanatory variable", y="z-score") +

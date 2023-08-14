@@ -364,7 +364,7 @@ The most straightforward way of specifying a linear regression model is with the
 #| echo: true
 #| eval: false
 
-model <- cons_data |> st_drop_geometry() |>
+model <- cons_data |> 
   mutate(
     across(
       .cols=c(younger:heavy_industry), 
@@ -436,7 +436,7 @@ Example code:
 ```{r}
 #| echo: true
 #| eval: false
-single_model_fits <-  cons_data |> st_drop_geometry() |>
+single_model_fits <-  cons_data |> 
   mutate(
     across(c(younger:heavy_industry), ~(.x-mean(.x))/sd(.x))
   ) |>
@@ -497,8 +497,8 @@ The code for @fig-outputs:
 ```{r}
 #| echo: true
 #| eval: false
-model <- cons_data |> st_drop_geometry() |>
-  mutate(across(c(younger:heavy_industry), ~(.x-mean(.x))/sd(.x))) |>
+model <- cons_data |> 
+  mutate(across(c(younger:heavy_industry), ~(.x-mean(.x))/sd(.x))) %>%
   lm(
     leave ~ 
     degree + eu_born + white  + no_car + not_good_health + heavy_industry,
@@ -530,7 +530,7 @@ To include a fixed effect (FE) term on region, the `region` variable is simply a
 ```{r}
 #| echo: true
 #| eval: false
-cons_data |> st_drop_geometry() |>
+cons_data |> 
   mutate(
     across(c(younger:heavy_industry), ~(.x-mean(.x))/sd(.x)),
     region=factor(region)) %>%
@@ -567,7 +567,7 @@ We want our model to represent a dummy for every region and so we add `-1` to th
 ```{r}
 #| echo: true
 #| eval: false
-cons_data |> st_drop_geometry() |>
+cons_data |> 
   mutate(
     across(c(younger:heavy_industry), ~(.x-mean(.x))/sd(.x)),
     region=factor(region)) %>%
@@ -588,7 +588,7 @@ To include an Interaction on region, we need to set a variable that will be used
 ```{r}
 #| echo: true
 #| eval: false
-model <- cons_data |> st_drop_geometry() |>
+model <- cons_data |> 
   mutate(
     across(c(younger:heavy_industry), ~(.x-mean(.x))/sd(.x)),
     region=as.factor(region), cons=1) %>%
@@ -648,13 +648,13 @@ First generate a model object and extract residuals from it, again making use of
 ```{r}
 #| echo: true
 #| eval: false
-model <- cons_data |> st_drop_geometry() |>
+model <- cons_data |> 
   select(-c(population, population_density)) |>
   mutate(
     across(c(younger:heavy_industry), ~(.x-mean(.x))/sd(.x)),
     type="full_dataset", region=as.factor(region)
     ) |>
-  nest(data=-type) %>%
+  nest(data=-type) |>
   mutate(
     # Include `-1` to eliminate the constant term and include a dummy for every area
     model=map(data,
