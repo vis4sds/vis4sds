@@ -860,7 +860,8 @@ array_data <- tibble(
       size=100, replace=FALSE)
 )
 
-plot <- array_data |> 
+plot <- 
+array_data |> 
   pivot_longer(cols=c(Oxford,Fareham), names_to="la", values_to="is_ksi") |> 
   ggplot(aes(x=row,y=col, fill=is_ksi)) +
   geom_tile(colour="#ffffff", size=1) +
@@ -899,7 +900,7 @@ plot <- theatre_cells |>
     axis.title.x = element_blank(), axis.title.y = element_blank()
   )
 
-ggsave(filename=here("figs", "07", "theatre-technical.png"), plot=plot,width=8, height=5, dpi=500)
+ggsave(filename=here("figs", "07", "theatre-technical-seats.png"), plot=plot,width=8, height=5, dpi=500)
 
 
 rate_boots <- ped_veh |> 
@@ -941,4 +942,83 @@ rate_boots_temporal |>
   geom_line(data=. %>%  filter(id!="Apparent"), aes(group=id), alpha=.1, size=.2) +
   facet_wrap(~local_authority_district)
 
+
+
+
+array_data <- tibble(
+  row=rep(1:10, times=1, each=10),
+  col=rep(1:10, times=10, each=1),
+  Oxford=
+    sample(
+      c(rep(TRUE, times=1, each=17), rep(FALSE, times=1, each=83)),
+      size=100, replace=FALSE),
+  Fareham=
+    sample(
+      c(rep(TRUE, times=1, each=41), rep(FALSE, times=1, each=59)),
+      size=100, replace=FALSE)
+)
+
+
+theatre_cells <- st_read(here("../", "data", "ch7", "theatre_cells.geojson"))
+
+ksi_seats <- bind_rows(
+  theatre_cells |> slice_sample(n=170) |>
+    add_column(la="Oxford\n170 KSI in 1,000 crashes"),
+  theatre_cells |> slice_sample(n=410) |>
+    add_column(la="Fareham\n410 KSI in 1,000 crashes")
+)
+
+theatre_cells |>
+  ggplot() +
+  geom_sf() +
+  geom_sf(
+    data=ksi_seats,
+    fill="#000000"
+  ) +
+  annotate("text", x=23, y=1, label="Stage", alpha=.5) +
+  annotate("text", x=23, y=21, label="Orchestra", alpha=.5) +
+  annotate("text", x=23, y=31, label="Front mezzanine", alpha=.5) +
+  annotate("text", x=23, y=42, label="Rear mezzanine", alpha=.5) +
+  facet_wrap(~la)
+
+
+
+library(rsample)
+library(ggdist)
+library(distributional)
+
+rate_boots <- ped_veh |>
+  mutate(
+    is_ksi=accident_severity!="Slight",
+    year=lubridate::year(date)
+  ) |>
+  filter(year==2019,
+         local_authority_district %in% c("Bristol, City of",
+                                         "Sheffield", "Bromsgrove", "Cotswold")
+  ) |>
+  select(local_authority_district, is_ksi) |>
+  nest(data=-local_authority_district) |>
+  mutate(la_boot=map(data, bootstraps, times=1000, apparent=TRUE)) |>
+  select(-data) |>
+  unnest(la_boot) |>
+  mutate(
+    is_ksi=map(splits, ~ analysis(.) |>  pull(is_ksi)),
+    ksi_rate=map_dbl(is_ksi, ~mean(.x)),
+    sample_size=map_dbl(is_ksi, ~length(.x))
+  ) |>
+  select(-c(splits, is_ksi))
+
+plot <- rate_boots |>
+  group_by(local_authority_district) |>
+  mutate(std.error=sd(ksi_rate)) |>
+  filter(id=="Apparent") |>
+  ggplot(aes(x=reorder(local_authority_district, ksi_rate), y=ksi_rate)) +
+  stat_gradientinterval(
+    aes(dist = dist_normal(mu=ksi_rate, sigma=std.error)),
+    point_size = 1.5
+  ) +
+  labs(x="local authority", y="ksi rate") +
+  coord_flip()
+
+ggsave(filename=here("figs", "07", "selected_uncertainty_slides.png"), plot=plot,width=5, height=3, dpi=300)
 
