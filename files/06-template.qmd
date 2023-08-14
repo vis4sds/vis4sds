@@ -50,10 +50,10 @@ The data for the parallel coordinate plots is z-score transformed. In the code b
 
 plot_data <- cons_data |> 
   mutate(
+    majority=if_else(leave>.5, "Leave", "Remain"),
     across(c(leave, younger:heavy_industry), ~(.x-mean(.x))/sd(.x))
   ) |> 
   mutate(
-    majority=if_else(leave>.5, "Leave", "Remain"),
     decile=ntile(leave, 10),
     is_extreme = decile > 9 | decile < 2
   )  |> 
