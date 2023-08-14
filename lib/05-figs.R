@@ -510,11 +510,11 @@ plot <- ggplot() +
   annotation_raster(img, 0, 1, 0, 1) +
   annotate("text", 
            label="destination boroughs",
-           x=.01, y=1.02, size=2.5, hjust="left", family="Avenir Book") +
+           x=.01, y=1.005, size=2.5, hjust="left", family="Avenir Book") +
   annotate(
     geom = "curve",
     x = .165, xend = .25,
-    y = 1.015, yend = .98,
+    y = 1.005, yend = .96,
     curvature = -.3,
     angle = 135, size=.1
   ) +
@@ -531,13 +531,13 @@ plot <- ggplot() +
   ) +
   
   annotate("text", 
-           label=str_wrap("outer London boroughs have more self-contained labour markets",30),
-           x=.38, y=-.08, size=2.5, hjust="left", family="Avenir Book") +
+           label=str_wrap("outer London boroughs have more self-contained labour markets",40),
+           x=.31, y=-.03, size=2.5, hjust="left", family="Avenir Book") +
   annotate(
     geom = "curve",
     x = .565, xend = .565,
-    y = -.02, yend = .4,
-    curvature = .3,
+    y = -.02, yend = .15,
+    curvature = .33,
     angle = 45, size=.1
   ) +
   
