@@ -27,6 +27,8 @@ library(sf)
 library(here)
 library(jsonlite) 
 
+source(here("lib", "book_theme.R"))
+
 # ODI Hex layout for LADs
 hex_data <- fromJSON(here("cons.hexjson"))  %>% as_tibble() %>%
   dplyr::select(-layout) %>%  mutate(cons_code=names(hexes)) %>%
@@ -280,25 +282,67 @@ low <-  plot_data |>   filter(decile==1) |>  sample_n(1) |> pull(constituency_na
 annotate_data <- c(high, low)
 
 plot <- plot_data |>  
-  ggplot(aes(x=var, y=z_score, group=c(constituency_name)))+
+  ggplot(aes(x=var, y=z_score, group=c(constituency_name), colour=majority))+
   # Plot all constituencies.
-  # geom_path(
-  #   aes(colour=majority), alpha=0.15, linewidth=.2
-  # )+
+  geom_path(alpha=0.15, linewidth=.2)+
   # Highlight extreme remain/leave constituencies.
   geom_path(
-    data= . %>% filter(constiuency_name %in% annotate_data),
-    aes(x=var, y=z_score, group=constituency_name, colour=majority), alpha=1, linewidth=.4
+    data= . %>% filter(constituency_name %in% annotate_data),
+    alpha=1, linewidth=.4
   )+
   
   geom_text(
-      data= . %>% filter(var=="leave"),
+      data= . %>% filter(constituency_name %in% annotate_data, var=="leave"),
       aes(x="leave", y=z_score, label=str_wrap(constituency_name,15), colour=majority), size=3.5, vjust="top", hjust="centre", nudge_x=+.5) +
+  
   # Setting parameters.
   scale_colour_manual(values=c("#b2182b","#2166ac")) +
   labs(x="explanatory variable", y="z-score") +
   guides(colour="none") +
   coord_flip()
+
+anim_cons <- plot_data |> 
+  filter(decile %in% c(1,  10 )) |> 
+  select(constituency_name, decile) |> 
+  unique() |> 
+  group_by(decile) |> 
+  sample_n(25) |> 
+  mutate(frame=row_number()) |> 
+  ungroup() |> 
+  select(-decile)
+
+library(gganimate)
+
+plot <- plot_data |> 
+  ggplot(aes(x=var, y=z_score, group=c(constituency_name), colour=majority))+
+  
+  # Plot all constituencies.
+  geom_path(alpha=0.15, linewidth=.2)+
+  
+  # Animate over remain/leave constituencies.
+  geom_path(data= . %>% inner_join(anim_cons), alpha=1, linewidth=.4)+
+  # Animate over remain/leave constituency names.
+  geom_text(
+    data= . %>% inner_join(anim_cons) %>% filter(var=="leave"),
+    aes(x="leave", y=z_score, label=str_wrap(constituency_name,15), colour=majority), 
+    size=3.5, vjust="top", hjust="centre", nudge_x=+.5) +
+  
+  # Setting parameters.
+  scale_colour_manual(values=c("#b2182b","#2166ac")) +
+  
+  # Animate over extremes.
+  transition_states(frame, transition_length = .2, state_length = .5)+
+  
+  labs(x="explanatory variable", y="z-score") +
+  guides(colour="none") +
+  coord_flip()
+
+animate(plot, duration=23.2, start_pause=5, width=900, height=1000, res=150, renderer=gifski_renderer(here("figs", "06", "pcp-anim.gif")) )
+
+
+
+
+transition_states(decile, transition_length = 2, state_length = 3)+
 
 ggsave(filename=here("figs", "06", "pcps.png"), plot=plot,width=6, height=3.5, dpi=500)
 
