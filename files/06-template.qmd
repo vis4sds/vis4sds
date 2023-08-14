@@ -85,7 +85,7 @@ order_vars <-
 
 ```
 
-As ever the data processing code for the plot is more involved that the ggplot specification. We use `geom_path()` for drawing connected lines of the parallel coordinate plot, coloured according to `majority` and grouped by `constituency` -- that is, separate lines for each constituency.
+As ever the data processing code for the plot is more involved than the ggplot specification. We use `geom_path()` for drawing connected lines of the parallel coordinate plot, coloured according to `majority` and grouped by `constituency` -- that is, separate lines for each constituency.
 
 ```{r}
 #| echo: true
