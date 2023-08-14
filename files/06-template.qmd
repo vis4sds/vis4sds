@@ -8,7 +8,6 @@ format: html
 
 Reopen your project and save this `.qmd` file in the top-level folder. When working through the materials from this chapter run each code chunk separately by clicking the small green arrow beside each code chunk. By default I have set `eval: false` on most code chunks, so when you knit the code chunk will not execute.
 
-The technical element involves analysing 2011 Census travel-to-work data.
 
 ## Setup
 
@@ -91,11 +90,8 @@ As ever the data processing code for the plot is more involved than the ggplot s
 #| echo: true
 #| eval: false
 plot_data |>  
-  ggplot()+
-  geom_path(
-    aes(x=var, y=z_score, group=c(constituency_name), colour=majority), 
-    alpha=0.15, linewidth=.2
-  )+
+  ggplot(aes(x=var, y=z_score, group=c(constituency_name), colour=majority)) +
+  geom_path( alpha=0.15, linewidth=.2) +
   scale_colour_manual(values=c("#b2182b","#2166ac")) +
   coord_flip()
 ```
