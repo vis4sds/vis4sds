@@ -989,3 +989,8 @@ For an introduction to ggplot2 and its relationship with @wilkinson_grammar_1999
 
 * Wickham, H., Çetinkaya-Rundel, M., Grolemund, G. 2023, "R for Data Science, 2nd Edition", *Orielly*.
   - Chapters 2, 10.
+
+
+Excellent paper looking at consumption and impact of election forecast visualizations:
+
+* Yang, Fumeng, Mandi Cai, Chloe Mortenson, Hoda Fakhari, Ayse D. Lokmanoglu, Jessica Hullman, Steven Franconeri, et al. 2023. “Swaying the Public? Impacts of Election Forecast Visualizations on Emotion, Trust, and Intention in the 2022 U.S. Midterms.” OSF Preprints. doi: [10.31219/osf.io/qpyna](https://doi.org/10.31219/osf.io/qpyna).
