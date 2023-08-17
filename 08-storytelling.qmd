@@ -73,6 +73,7 @@ Perhaps the most high-profile examples through the Covid-19 pandemic of data gra
 #| eval: true
 
 include_graphics("figs/08/jbm-logchart.jpeg", error = FALSE)
+include_graphics("figs/08/cum_deaths_full", error = FALSE)
 ```
 
 We can evaluate the graphic using some of the principles introduced in @sec-visual. In its use of position on an aligned scale to encode death counts and colour hue to differentiate countries, the graphic's visual encoding exploits our cognitive abilities. Comparison is also supportted by superimposition [@gleicher_visual_2011] -- lines for each country represented on the same coordinate space.
@@ -100,6 +101,7 @@ An interesting design alternative that supports between country comparison is [A
 #| eval: true
 
 include_graphics("figs/08/covid-trends.png", error = FALSE)
+include_graphics("figs/08/covid_logs.png", error = FALSE)
 ```
 
 ### Intuitive and compelling
@@ -176,7 +178,7 @@ The technical element demonstrates how to design plots deliberatively with annot
 include_graphics("figs/08/wp.png", error = FALSE)
 ```
 
-@fig-wp is certainly data dense. Without careful decisions on which aspects to emphasise it would be quite unreadable. Line thickness is varied according to relative infection rates (cumulative cases/population size) and growth rate is double encoded with colour value -- darker and steeper lines for higher growth rates. Even with these additions, it is challenging to discern trajectories for every county, but instead a typical model or expectation of these trajectories can be learnt from visually scanning the graphic. That there is spatial autocorrelation in trajectories means an overall pattern of exposure can be inferred, before eyes are drawn to exceptions. Initially these are towards the extreme end; tall, steep, dark and thick lines, suggesting rapid growth rates and high case rates. Secondary patterns can also be discerned, for example thick and mid-dark lines surrounded by lines that are generally lighter and thinner; counties that appear locally exceptional in having comparatively high growth and exposure rates.
+@fig-wp is certainly data dense. Without careful decisions on which aspects to emphasise it would be quite unreadable. Line thickness is varied according to relative infection rates (cumulative cases/population size) and growth rate is double encoded with colour value -- darker and steeper lines for higher growth rates. Even with these additions it is challenging to discern trajectories for every county, but instead a typical model or expectation of these trajectories can be learnt from visually scanning the graphic. That there is spatial autocorrelation in trajectories means an overall pattern of exposure can be inferred, before eyes are drawn to exceptions. Initially these are towards the extreme end: tall, steep, dark and thick lines suggesting rapid growth rates and high case rates. Secondary patterns can also be discerned, for example thick and mid-dark lines surrounded by lines that are generally lighter and thinner: counties that appear locally exceptional in having comparatively high growth and exposure rates.
 
 The design is impressive, and there is an obvious benefit to showing growth rates in their spatial position. However, we are not looking at absolute numbers here. The counties that are most salient are not those with the largest case counts. Rather, they have experienced rapid growth since the number of cases reported on 3rd May. So the graphic is most certainly *partial* and *designed* to suit a particular purpose. A slight adjustment in the implementation in @fig-wp was to only show growth rates for counties that had non-negligible case counts on 3rd May ($\geq20$ cases). 
 
@@ -184,12 +186,12 @@ Without the careful integration of annotations and non-standard legends, @fig-wp
 
 ### Import
 
-* Download the [08-template.qmd]() file and save it to your `vis4sds` project.
+* Download the [08-template.qmd](./files/08-template.qmd) file and save it to your `vis4sds` project.
 * Open your `vis4sds` project in RStudio and load the template file by clicking `File` > `Open File ...` > `08-template.qmd`.
 
 The template file lists the required packages -- `tidyverse` and `sf`. The data were collected using [Kieran Healy](https://kieranhealy.org/)'s [`covdata`](https://kjhealy.github.io/covdata/) package [@healy_covdata_2020], attributing  the [county-level cumulative cases dataset](https://github.com/nytimes/covid-19-data) released and maintained by data journalists at The New York Times [see @nyt_coronavirus_2021].
 
-The template provides access to a version of this dataset that is 'staged' for charting. For this cases are filtered on the dates covered by the Washington Post graphic (3rd to 25th May); identified counties whose daily case counts were $\geq20$ cases on 3rd May; calculated daily growth rates anchored to case counts on 3rd May; calculated 'end' growth rates and daily counts for each county (those recorded on 25th May); and finally a binned growth rate variable identifying counties with daily case counts on 25rd May that were $\leq2\times$, $\geq2\times$, $\geq4\times$,  $\geq7\times$ the daily case counts measured on 3rd May. Also there is a `state_boundaries` dataset to download, which contains `geometry` data for each US state, collected from [US Census Bureau](https://www.census.gov/geographies/mapping-files/time-series/geo/carto-boundary-file.html) as well as coordinate variables describing the geographic centroid of each state. The [Albers Equal Area](https://en.wikipedia.org/wiki/Albers_projection) projection is used.
+The template provides access to a version of this dataset that is 'staged' for charting. For this cases are filtered on the dates covered by the Washington Post graphic (3rd to 25th May); counties whose daily case counts were $\geq20$ cases on 3rd May are identified; calculated daily growth rates are anchored to case counts on 3rd May; calculated 'end' growth rates and daily counts for each county are calculated (those recorded on 25th May); and finally a binned growth rate variable identifying counties with daily case counts on 25rd May that were $\leq2\times$, $\geq2\times$, $\geq4\times$,  $\geq7\times$ the daily case counts measured on 3rd May. Also there is a `state_boundaries` dataset to download, which contains `geometry` data for each US state, collected from [US Census Bureau](https://www.census.gov/geographies/mapping-files/time-series/geo/carto-boundary-file.html) as well as coordinate variables describing the geographic centroid of each state. The [Albers Equal Area](https://en.wikipedia.org/wiki/Albers_projection) projection is used.
 
 ### Plot trajectories
 
@@ -203,7 +205,7 @@ The template provides access to a version of this dataset that is 'staged' for c
 include_graphics("figs/08/wp-basic.png", error = FALSE)
 ```
 
-The main graphic is reasonably straightforward to construct. Different from many of the data graphics in earlier chapters, the way in which growth lines are generated is more low-level. Remembering that lines are initially positioned in x- and y- on their county centroid, we generate from the data, positions in geographic space for each observation -- growth rate recorded on a day since 3rd May 2020.
+The main graphic is reasonably straightforward to construct. Different from many of the data graphics in earlier chapters, the way in which growth lines are generated is somewhat low-level. Remembering that lines are initially positioned in x- and y- on their county centroid, we generate from the data positions in geographic space for each observation -- growth rates recorded by day since 3rd May 2020.
 
 The code:
 
@@ -226,13 +228,14 @@ county_data |>
   # Plot case data.
   geom_path(
     aes(x=x+(day_num*6000)-6000, y=y+(growth_rate*50000)-50000, 
-        group=fips, colour=binned_growth_rate, size=case_rate, 
+        group=fips, colour=binned_growth_rate, linewidth=case_rate, 
         alpha=binned_growth_rate
     ),
     lineend="round"
   ) +
   scale_colour_manual(values=c("#fa9fb5", "#dd3497", "#7a0177", "#49006a")) +
-  scale_size(range=c(.1,2.5))+
+  scale_size(range=c(.1,1.5))+
+  scale_linewidth(range=c(.3,3))+
   scale_alpha_ordinal(range=c(.2,1)) +
   guides(colour="none", size="none", alpha="none") +
   theme_void()
@@ -243,7 +246,7 @@ The plot specification:
 1. *Data*: The main dataset -- the staged `county_data` file. Separately there is a `state_boundaries` file used to draw state boundaries and later label states. For the points drawn at the centroid of each US county (`geom_point()`), the data are filtered so that only a single day is represented (`filter(date=="2020-05-03")`).
 2. *Encoding*: For `geom_point()`, x-position and y-position is mapped to county centroid (`x`,`y` variables in `county_data`), points are coloured according to `binned_growth_rate` using both `colour` and `alpha` and sized according to that county's `case_rate`. The same colour and size encoding is used for the lines (`geom_path()`). County lines are again anchored at county centroids but offset in `x` according to time elapsed (`day_num`) and in `y` according to `growth_rate`. The constants applied to `growth_rate` (5000) and `day_num` (6000), which control the space occupied by the lines, was arrived at manually through trial and error. Note that these numbers are large as they relate to geographic coordinate space. In order to draw separate lines for each county, we set the `group=` argument to the county identifier variable `fips`.
 3. *Marks*: `geom_point()` for the start points centred on county centroids and `geom_path()` for the lines.
-4. *Scale*: `scale_colour_manual()` for the binned growth rate colours; `scale_alpha()` for an ordinal transparency range -- the floor for this is 0.2 and not 0, otherwise counties with the smallest binned growth rates would not be visible; `scale_size()` for varying size continuously according to case rate, the range was arrived at through trial and error.
+4. *Scale*: `scale_colour_manual()` for the binned growth rate colours; `scale_alpha()` for an ordinal transparency range -- the floor for this is 0.2 and not 0, otherwise counties with the smallest binned growth rates would not be visible; `scale_size()` and `scale_linewidth_size()` for varying the size of points and thickness of lines continuously according to case rate, the range was arrived at through trial and error.
 5. *Setting*: We don't want the default legend to appear and so `guides()` turns these off; additionally `theme_void()` for removing default axes, gridlines etc.
 
 ### Add labels and annotations
@@ -312,7 +315,7 @@ county_data |>
   geom_text(
     data=annotate, 
     aes(x=x,y=y-20000,label=paste0(county,", ",state_abbr)), 
-    size=3, fontface="Bold"
+    size=3, fontface="bold"
     )+
   geom_text(
     data=annotate, 
@@ -326,6 +329,7 @@ county_data |>
 
 ### Build custom legend
 
+Since @fig-wp is a non-standard data graphic coded in a more low-level way with `geom_segment()`, it is useful to accompany it with a more expressive legend. We therefore build our own legend from scratch, using the geographic space of the plot as our canvas.
 
 ::: {#fig-legends}
 
@@ -355,8 +359,6 @@ Custom legends used to demonstrate growth and case rates.
 include_graphics("figs/08/wp-legend-growth.png", error = FALSE)
 ```
 
-Since @fig-wp is a non-standard data graphic coded in a more low-level way with `geom_segment()`, it is useful to accompany it with a more expressive legend. We therefore build our own legend from scratch, using the geographic space of the plot as our canvas.
-
 To support positioning of the legend we extract the spatial limits, or bounding box,  of our plot area -- the mainland US.
 
 
@@ -369,7 +371,7 @@ width <- bbox$xmax-bbox$xmin
 height <- bbox$ymax-bbox$ymin
 ```
 
-We then create a dataset for the top right legend displaying the different categories of growth rate (@fig-wp-growth-legend). Counties filtered by their different growth rates were identified manually. As you will see shortly, we use exactly the same *encoding* as the main graphic for the example legend lines, but rather than positioning these selected counties in their real geographic position, we override their x- and y- location so that the lines appear in a margin to the top right of the graphic. This is achieved in the `mutate()`, where we set x-position to start at the right quarter of the graphic (`bbox$xmax-.25*width`) and y-position to start slightly above the top of the graphic `bbox$ymax+.05*height`. `case_rate` is set to a constant as we don't want line width to vary and also a manually created `label` variable.
+We then create a dataset for the top right legend displaying the different categories of growth rate (@fig-wp-growth-legend). Counties filtered by their different growth rates were identified manually. As you will see shortly we use exactly the same *encoding* as the main graphic for the example legend lines, but rather than positioning these selected counties in their real geographic position, we override their x- and y- location so that the lines appear in a margin to the top right of the graphic. This is achieved in the `mutate()`, where we set x-position to start at the right quarter of the graphic (`bbox$xmax-.25*width`) and y-position to start slightly above the top of the graphic `bbox$ymax+.05*height`. `case_rate` is set to a constant as we don't want line width to vary and also a manually created `label` variable.
 
 ```{r}
 #| echo: true
@@ -498,12 +500,12 @@ county_data |>
 
 ## Conclusions
 
-Communicating effectively with data is not an easy undertaking. Difficult decisions must be made around how much important detail to sacrifice in favour of clarity and simplicity of message. Visual approaches can help here, giving cues that order and prioritise information and that build explanatory narratives using metaphor and other rhetorical devices. There are stellar examples of this from in-house Data Journalism teams, most obviously in recent evidence-based stories around the Covid-19 pandemic. We have considered some of these and the careful design decisions made when communicating data-driven stories in light of data, audience and intended purpose. Many leading data journalists use ggplot2 as their visualization toolkit of choice and in the technical section we demonstrated how more deliberatively designed graphics can be generated. This somewhat fiddly approach to creating graphics is different from the style of workflow envisaged in @sec-visual and @sec-explore on exploratory visual analysis. However, as demonstrated through the examples in this chapter, and the book more generally, ggplot2 can be used for visualization design, making control over annotations, text labels and embedded graphics important skills to develop.
+Communicating effectively with data is not an easy undertaking. Difficult decisions must be made around how much detail to sacrifice in favour of clarity and simplicity of message. Visual approaches can help here, giving cues that order and prioritise information and that build explanatory narratives using metaphor and other rhetorical devices. There are stellar examples of this from in-house data journalism teams, most obviously in recent evidence-based stories around the Covid-19 pandemic. We have considered some of these and the careful design decisions made when communicating data-driven stories in light of data, audience and intended purpose. Many leading data journalists use ggplot2 as their visualization toolkit of choice and in the technical section we demonstrated how more deliberatively designed graphics can be generated. This somewhat fiddly approach to creating graphics is different from the style of workflow envisaged in @sec-visual and @sec-explore on exploratory visual analysis. However, as demonstrated through the examples in this chapter and the book more generally, ggplot2 can be used for this more deliberative visualization design, making control over annotations, text labels and embedded graphics useful skills to develop.
 
 
 ## Further Reading
 
-Cédric Scherer's excellent workshop at rstudio::conf(2022). Highly recommended as a resource for covering in a methodical way how to parameterise ggplot2 scales, coordinate systemas, facets and view components, annotation and labelling.
+Cédric Scherer's excellent workshop at rstudio::conf(2022). Highly recommended as a resource for covering in a methodical way how to parameterise ggplot2 scales, coordinate systems, facets, annotation and labelling.
 
 * Cédric Scherer, 2022. "Graphic Design with ggplot2: How to Create Engaging and Complex Visualizations in R", An rstudio::conf(2022) Workshop, [rstudio-conf-2022.github.io/ggplot2-graphic-design/](https://rstudio-conf-2022.github.io/ggplot2-graphic-design/)
 
@@ -516,7 +518,7 @@ Data journalists at the BBC have assembled a useful 'cookbook' demonstrating bas
 
 * BBC, 2019. "BBC Visual and Data Journalism cookbook for R graphics", [bbc.github.io/rcookbook/](https://bbc.github.io/rcookbook/)
 
-High-level, but principled description of how to incorporate annotations, customise scales and legends when generating plots for communication.
+High-level but principled description of how to incorporate annotations, customise scales and legends when generating plots for communication.
 
 * Wickham, H., Çetinkaya-Rundel, M., Grolemund, G. 2023, "R for Data Science, 2nd Edition", *Orielly*.
   - Chapter 12.
