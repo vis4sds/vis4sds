@@ -28,7 +28,7 @@ Bring in the staged Covid-19 case data by US county, as well as the `.geojson` f
 #| eval: false
 url <- "https://vis4sds.github.io/data/ch8/county_data_covid.csv"
 download.file(url, here("data", "county_data_covid.csv"))
-county_data <- read_csv(here("data", "county_data_covid.csv")) |> View() 
+county_data <- read_csv(here("data", "county_data_covid.csv")) |> 
   # make binned_growth_rate a factor variable.
   mutate(binned_growth_rate=factor(binned_growth_rate)) 
 
