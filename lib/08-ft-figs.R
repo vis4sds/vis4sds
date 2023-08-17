@@ -65,6 +65,9 @@ country_colours <- c(spain, france, italy, china, us, uk, japan, korea_s, iran, 
                      switzerland, germany, belgium, indonesia, philippines, iraq, sweden)
 
 
+# Recode UK to 0 until first public announcement of death. 
+# Recode Philipines to 0 also
+
 dat <- dat |>  filter(country %in% countries) |> filter(date< "2020-03-25") |> 
   group_by(country) |> 
   mutate(
@@ -73,7 +76,8 @@ dat <- dat |>  filter(country %in% countries) |> filter(date< "2020-03-25") |>
     day_num=cumsum(start_count)
   ) |> 
   ungroup() |> 
-  filter(day_num>0)
+  filter(day_num>0) |> 
+  filter(country=="United Kingdom") |> View()
 
 plot <- dat |> 
   ggplot() +
