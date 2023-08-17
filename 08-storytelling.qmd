@@ -212,9 +212,8 @@ The code:
 ```{r}
 #| echo: true
 #| eval: false
-
 county_data |> 
-  ggplot()+
+  ggplot(aes(colour=binned_growth_rate, alpha=binned_growth_rate))+
   geom_sf(
     data=state_boundaries, 
     fill="#eeeeee", colour="#ffffff", linewidth=0.4
@@ -222,14 +221,12 @@ county_data |>
   coord_sf(crs = 5070, datum=NA, clip="off") +
   geom_point(
     data=.%>% filter(date=="2020-05-03"), 
-    aes(x=x, y=y, colour=binned_growth_rate, 
-        alpha=binned_growth_rate, size=case_rate)
+    aes(x=x, y=y, size=case_rate)
   ) +
   # Plot case data.
   geom_path(
-    aes(x=x+(day_num*6000)-6000, y=y+(growth_rate*50000)-50000, 
-        group=fips, colour=binned_growth_rate, linewidth=case_rate, 
-        alpha=binned_growth_rate
+    aes(x=x+((day_num-1)*6000), y=y+((growth_rate-1)*50000), 
+        group=fips, linewidth=case_rate
     ),
     lineend="round"
   ) +
@@ -258,8 +255,8 @@ The two-letter state boundaries, held in the `state_boundaries` file can be adde
 #| eval: false
 
 county_data |>
-  ggplot()+
-  geom_sf(data=state_boundaries, fill="#eeeeee", colour="#ffffff", size=0.4)+
+  ggplot(aes(colour=binned_growth_rate, alpha=binned_growth_rate))+
+  geom_sf(data=state_boundaries, fill="#eeeeee", colour="#ffffff", linewidth=0.4)+
   geom_text(data=state_boundaries, aes(x=x,y=y,label=STUSPS), alpha=.8)+
   ...
   ...
@@ -308,7 +305,7 @@ Plotting these is again quite straightforward with `geom_text()`. The `paste0()`
 #| echo: true
 #| eval: false
 county_data |> 
-  ggplot()+
+  ggplot(aes(colour=binned_growth_rate, alpha=binned_growth_rate))+
   geom_sf(data=state_boundaries, fill="#eeeeee", colour="#ffffff", linewidth=0.4)+ 
   ...
   ...
@@ -442,17 +439,17 @@ county population"
 title_text <- "Change in reported cases since May 3"
 
 county_data |>
-  ggplot()+
-  geom_sf(data=state_boundaries, fill="#eeeeee", colour="#bcbcbc", size=0.2)+
+  ggplot(aes(colour=binned_growth_rate, alpha=binned_growth_rate))+
+  geom_sf(data=state_boundaries, fill="#eeeeee", colour="#bcbcbc", linewidth=0.4)+
   ...
   ...
   ...
   # Plot growth legend lines.
   geom_path(
     data=legend_growth,
-    aes(x=x+(day_num*6000)-6000, y=y+(growth_rate*50000)-50000,
-      group=fips, colour=binned_growth_rate, size=case_rate,
-      alpha=binned_growth_rate), lineend="round"
+    aes(x=x+((day_num-1)*6000), y=y+((growth_rate-1)*50000),
+      group=fips, linewidth=case_rate), 
+      lineend="round"
   ) +
   # Text label for growth legend lines.
   geom_text(
@@ -460,7 +457,7 @@ county_data |>
     data=legend_growth %>% filter(day_num == max(county_data$day_num)) %>%
       mutate(growth_rate=if_else(county=="Bledsoe", -1,growth_rate)),
     aes(
-      x=x+(day_num*6000)+10000,y=y+(growth_rate*50000)-50000,
+      x=x+(day_num*6000)+10000,y=y+((growth_rate-1)*50000),
       label=str_wrap(label, 15)), 
       size=2.5
       )+
@@ -472,9 +469,9 @@ county_data |>
   # Plot case legend lines.
   geom_path(
     data=legend_case,
-    aes(x=x+(day_num*6000)-6000+offset_day*width, y=y+(growth_rate*50000)-50000,
-      group=paste0(fips,offset), colour=binned_growth_rate, size=offset_rate,
-      alpha=binned_growth_rate), lineend="round"
+    aes(x=x+((day_num-1)*6000)+offset_day*width, y=y+((growth_rate-1)*50000),
+      group=paste0(fips,offset), linewidth=offset_rate, 
+      lineend="round"
     ) +
   # Text label for case legend lines.
   annotate("text", 
