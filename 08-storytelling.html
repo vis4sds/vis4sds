@@ -469,7 +469,7 @@ Note
 <p>The code:</p>
 <div class="cell">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">county_data</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>colour<span class="op">=</span><span class="va">binned_growth_rate</span>, alpha<span class="op">=</span><span class="va">binned_growth_rate</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_sf</span><span class="op">(</span></span>
 <span>    data<span class="op">=</span><span class="va">state_boundaries</span>, </span>
 <span>    fill<span class="op">=</span><span class="st">"#eeeeee"</span>, colour<span class="op">=</span><span class="st">"#ffffff"</span>, linewidth<span class="op">=</span><span class="fl">0.4</span></span>
@@ -482,8 +482,7 @@ Note
 <span>  <span class="co"># Plot case data.</span></span>
 <span>  <span class="fu">geom_path</span><span class="op">(</span></span>
 <span>    <span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">x</span><span class="op">+</span><span class="op">(</span><span class="op">(</span><span class="va">day_num</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span><span class="op">*</span><span class="fl">6000</span><span class="op">)</span>, y<span class="op">=</span><span class="va">y</span><span class="op">+</span><span class="op">(</span><span class="op">(</span><span class="va">growth_rate</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span><span class="op">*</span><span class="fl">50000</span><span class="op">)</span>, </span>
-<span>        group<span class="op">=</span><span class="va">fips</span>, linewidth<span class="op">=</span><span class="va">case_rate</span></span>
-<span>    <span class="op">)</span>,</span>
+<span>        group<span class="op">=</span><span class="va">fips</span>, linewidth<span class="op">=</span><span class="va">case_rate</span>, alpha<span class="op">=</span><span class="va">binned_growth_rate</span>, colour<span class="op">=</span><span class="va">binned_growth_rate</span><span class="op">)</span>,</span>
 <span>    lineend<span class="op">=</span><span class="st">"round"</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">scale_colour_manual</span><span class="op">(</span>values<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"#fa9fb5"</span>, <span class="st">"#dd3497"</span>, <span class="st">"#7a0177"</span>, <span class="st">"#49006a"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
@@ -510,7 +509,7 @@ Note
 <p>The two-letter state boundaries, held in the <code>state_boundaries</code> file can be added in a <code>geom_text()</code> layer, positioned in <code>x</code> and <code>y</code> at state centroids. For obvious reasons this needs to appear <em>after</em> the first call to <code>geom_sf()</code>, which draws the filled state outlines:</p>
 <div class="cell">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">county_data</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>colour<span class="op">=</span><span class="va">binned_growth_rate</span>, alpha<span class="op">=</span><span class="va">binned_growth_rate</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu">geom_sf</span><span class="op">(</span>data<span class="op">=</span><span class="va">state_boundaries</span>, fill<span class="op">=</span><span class="st">"#eeeeee"</span>, colour<span class="op">=</span><span class="st">"#ffffff"</span>, linewidth<span class="op">=</span><span class="fl">0.4</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu">geom_text</span><span class="op">(</span>data<span class="op">=</span><span class="va">state_boundaries</span>, <span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">x</span>,y<span class="op">=</span><span class="va">y</span>,label<span class="op">=</span><span class="va">STUSPS</span><span class="op">)</span>, alpha<span class="op">=</span><span class="fl">.8</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="va">...</span></span>
@@ -552,7 +551,7 @@ Note
 <p>Plotting these is again quite straightforward with <code>geom_text()</code>. The <code><a href="https://rdrr.io/r/base/paste.html">paste0()</a></code> function is used to build labels that display conty names (<code>county</code>) and then state abbreviations (<code>state_abbr</code>). These appear below each county and this is effected by offseting y-position. Additionally the counties are given a bold font by passing an argument to <code>fontface="bold"</code>. The same approach is used for the rate labels, but with an incremented y-position offset so that they don’t overlap the county name labels.</p>
 <div class="cell">
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">county_data</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>colour<span class="op">=</span><span class="va">binned_growth_rate</span>, alpha<span class="op">=</span><span class="va">binned_growth_rate</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu">geom_sf</span><span class="op">(</span>data<span class="op">=</span><span class="va">state_boundaries</span>, fill<span class="op">=</span><span class="st">"#eeeeee"</span>, colour<span class="op">=</span><span class="st">"#ffffff"</span>, linewidth<span class="op">=</span><span class="fl">0.4</span><span class="op">)</span><span class="op">+</span> </span>
 <span>  <span class="va">...</span></span>
 <span>  <span class="va">...</span></span>
@@ -647,67 +646,67 @@ Note
 <span class="header-section-number">8.3.5</span> Compose graphic</h3>
 <p>The code block below demonstrates how derived data for the legends are used in the ggplot2 specification. Exactly the same mappings are used in the legend as the main graphic, and so the call to <code>geom_path()</code> looks similar, except for the different use of x- and y- position. Labels for the legends are generated using <code>annotate()</code> and again positioned using location information contained in <code>bbox</code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Text for annotations and titles.</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>growth_text <span class="ot">&lt;-</span> <span class="st">"Line height and colour show change in reported cases </span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="st">relative to May 3"</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>case_text <span class="ot">&lt;-</span> <span class="st">"Line thickness shows current number relative to </span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="st">county population"</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>title_text <span class="ot">&lt;-</span> <span class="st">"Change in reported cases since May 3"</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>county_data <span class="sc">|&gt;</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">colour=</span>binned_growth_rate, <span class="at">alpha=</span>binned_growth_rate))<span class="sc">+</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data=</span>state_boundaries, <span class="at">fill=</span><span class="st">"#eeeeee"</span>, <span class="at">colour=</span><span class="st">"#bcbcbc"</span>, <span class="at">linewidth=</span><span class="fl">0.4</span>)<span class="sc">+</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  ...</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  ...</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  ...</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Plot growth legend lines.</span></span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_path</span>(</span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">data=</span>legend_growth,</span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x=</span>x<span class="sc">+</span>((day_num<span class="dv">-1</span>)<span class="sc">*</span><span class="dv">6000</span>), <span class="at">y=</span>y<span class="sc">+</span>((growth_rate<span class="dv">-1</span>)<span class="sc">*</span><span class="dv">50000</span>),</span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>      <span class="at">group=</span>fips, <span class="at">linewidth=</span>case_rate), </span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>      <span class="at">lineend=</span><span class="st">"round"</span></span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Text label for growth legend lines.</span></span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(</span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># For positioning manually edit growth_rate of Bledsoe.</span></span>
-<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">data=</span>legend_growth <span class="sc">%&gt;%</span> <span class="fu">filter</span>(day_num <span class="sc">==</span> <span class="fu">max</span>(county_data<span class="sc">$</span>day_num)) <span class="sc">%&gt;%</span></span>
-<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="at">growth_rate=</span><span class="fu">if_else</span>(county<span class="sc">==</span><span class="st">"Bledsoe"</span>, <span class="sc">-</span><span class="dv">1</span>,growth_rate)),</span>
-<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
-<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>      <span class="at">x=</span>x<span class="sc">+</span>(day_num<span class="sc">*</span><span class="dv">6000</span>)<span class="sc">+</span><span class="dv">10000</span>,<span class="at">y=</span>y<span class="sc">+</span>((growth_rate<span class="dv">-1</span>)<span class="sc">*</span><span class="dv">50000</span>),</span>
-<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>      <span class="at">label=</span><span class="fu">str_wrap</span>(label, <span class="dv">15</span>)), </span>
-<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>      <span class="at">size=</span><span class="fl">2.5</span></span>
-<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>      )<span class="sc">+</span></span>
-<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>,</span>
-<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">x=</span>bbox<span class="sc">$</span>xmax<span class="fl">-.25</span><span class="sc">*</span>width, <span class="at">y=</span>bbox<span class="sc">$</span>ymax<span class="fl">+.08</span><span class="sc">*</span>height,</span>
-<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">label=</span><span class="fu">str_wrap</span>(growth_text,<span class="dv">35</span>), <span class="at">size=</span><span class="fl">3.5</span>, <span class="at">hjust=</span><span class="dv">1</span></span>
-<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>    )<span class="sc">+</span></span>
-<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Plot case legend lines.</span></span>
-<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_path</span>(</span>
-<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">data=</span>legend_case,</span>
-<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x=</span>x<span class="sc">+</span>((day_num<span class="dv">-1</span>)<span class="sc">*</span><span class="dv">6000</span>)<span class="sc">+</span>offset_day<span class="sc">*</span>width, <span class="at">y=</span>y<span class="sc">+</span>((growth_rate<span class="dv">-1</span>)<span class="sc">*</span><span class="dv">50000</span>),</span>
-<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>      <span class="at">group=</span><span class="fu">paste0</span>(fips,offset), <span class="at">linewidth=</span>offset_rate, </span>
-<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>      <span class="at">lineend=</span><span class="st">"round"</span></span>
-<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
-<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Text label for case legend lines.</span></span>
-<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, </span>
-<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a>    <span class="at">x=</span>bbox<span class="sc">$</span>xmax<span class="fl">-.88</span><span class="sc">*</span>width, <span class="at">y=</span>bbox<span class="sc">$</span>ymax<span class="fl">+.04</span><span class="sc">*</span>height, <span class="at">label=</span><span class="st">"Less"</span>, <span class="at">size=</span><span class="fl">2.5</span></span>
-<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a>    )<span class="sc">+</span></span>
-<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, </span>
-<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a>    <span class="at">x=</span>bbox<span class="sc">$</span>xmax<span class="fl">-.8</span><span class="sc">*</span>width, <span class="at">y=</span>bbox<span class="sc">$</span>ymax<span class="fl">+.04</span><span class="sc">*</span>height, <span class="at">label=</span><span class="st">"More"</span>, <span class="at">size=</span><span class="fl">2.5</span></span>
-<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a>    )<span class="sc">+</span></span>
-<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, </span>
-<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a>    <span class="at">x=</span>bbox<span class="sc">$</span>xmax<span class="fl">-.75</span><span class="sc">*</span>width, <span class="at">y=</span>bbox<span class="sc">$</span>ymax<span class="fl">+.08</span><span class="sc">*</span>height, <span class="at">label=</span><span class="fu">str_wrap</span>(case_text,<span class="dv">35</span>),</span>
-<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a>    <span class="at">size=</span><span class="fl">3.5</span>, <span class="at">hjust=</span><span class="dv">0</span></span>
-<span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a>    )<span class="sc">+</span></span>
-<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-55"><a href="#cb8-55" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Title.</span></span>
-<span id="cb8-56"><a href="#cb8-56" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, </span>
-<span id="cb8-57"><a href="#cb8-57" aria-hidden="true" tabindex="-1"></a>    <span class="at">x=</span>bbox<span class="sc">$</span>xmax<span class="fl">-.5</span><span class="sc">*</span>width, <span class="at">y=</span>bbox<span class="sc">$</span>ymax<span class="fl">+.15</span><span class="sc">*</span>height, <span class="at">label=</span>title_text, <span class="at">size=</span><span class="dv">5</span></span>
-<span id="cb8-58"><a href="#cb8-58" aria-hidden="true" tabindex="-1"></a>    )<span class="sc">+</span></span>
-<span id="cb8-59"><a href="#cb8-59" aria-hidden="true" tabindex="-1"></a>  ...</span>
-<span id="cb8-60"><a href="#cb8-60" aria-hidden="true" tabindex="-1"></a>  ...</span>
-<span id="cb8-61"><a href="#cb8-61" aria-hidden="true" tabindex="-1"></a>  ...</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Text for annotations and titles.</span></span>
+<span><span class="va">growth_text</span> <span class="op">&lt;-</span> <span class="st">"Line height and colour show change in reported cases </span></span>
+<span><span class="st">relative to May 3"</span></span>
+<span><span class="va">case_text</span> <span class="op">&lt;-</span> <span class="st">"Line thickness shows current number relative to </span></span>
+<span><span class="st">county population"</span></span>
+<span><span class="va">title_text</span> <span class="op">&lt;-</span> <span class="st">"Change in reported cases since May 3"</span></span>
+<span></span>
+<span><span class="va">county_data</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu">geom_sf</span><span class="op">(</span>data<span class="op">=</span><span class="va">state_boundaries</span>, fill<span class="op">=</span><span class="st">"#eeeeee"</span>, colour<span class="op">=</span><span class="st">"#bcbcbc"</span>, linewidth<span class="op">=</span><span class="fl">0.4</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="va">...</span></span>
+<span>  <span class="va">...</span></span>
+<span>  <span class="va">...</span></span>
+<span>  <span class="co"># Plot growth legend lines.</span></span>
+<span>  <span class="fu">geom_path</span><span class="op">(</span></span>
+<span>    data<span class="op">=</span><span class="va">legend_growth</span>,</span>
+<span>    <span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">x</span><span class="op">+</span><span class="op">(</span><span class="op">(</span><span class="va">day_num</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span><span class="op">*</span><span class="fl">6000</span><span class="op">)</span>, y<span class="op">=</span><span class="va">y</span><span class="op">+</span><span class="op">(</span><span class="op">(</span><span class="va">growth_rate</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span><span class="op">*</span><span class="fl">50000</span><span class="op">)</span>,</span>
+<span>      group<span class="op">=</span><span class="va">fips</span>, linewidth<span class="op">=</span><span class="va">case_rate</span>, alpha<span class="op">=</span><span class="va">binned_growth_rate</span>, colour<span class="op">=</span><span class="va">binned_growth_rate</span><span class="op">)</span>,</span>
+<span>      lineend<span class="op">=</span><span class="st">"round"</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="co"># Text label for growth legend lines.</span></span>
+<span>  <span class="fu">geom_text</span><span class="op">(</span></span>
+<span>    <span class="co"># For positioning manually edit growth_rate of Bledsoe.</span></span>
+<span>    data<span class="op">=</span><span class="va">legend_growth</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">day_num</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">county_data</span><span class="op">$</span><span class="va">day_num</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>      <span class="fu">mutate</span><span class="op">(</span>growth_rate<span class="op">=</span><span class="fu">if_else</span><span class="op">(</span><span class="va">county</span><span class="op">==</span><span class="st">"Bledsoe"</span>, <span class="op">-</span><span class="fl">1</span>,<span class="va">growth_rate</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    <span class="fu">aes</span><span class="op">(</span></span>
+<span>      x<span class="op">=</span><span class="va">x</span><span class="op">+</span><span class="op">(</span><span class="va">day_num</span><span class="op">*</span><span class="fl">6000</span><span class="op">)</span><span class="op">+</span><span class="fl">10000</span>,y<span class="op">=</span><span class="va">y</span><span class="op">+</span><span class="op">(</span><span class="op">(</span><span class="va">growth_rate</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span><span class="op">*</span><span class="fl">50000</span><span class="op">)</span>,</span>
+<span>      label<span class="op">=</span><span class="fu">str_wrap</span><span class="op">(</span><span class="va">label</span>, <span class="fl">15</span><span class="op">)</span>, alpha<span class="op">=</span><span class="va">binned_growth_rate</span>, colour<span class="op">=</span><span class="va">binned_growth_rate</span><span class="op">)</span>, </span>
+<span>      size<span class="op">=</span><span class="fl">2.5</span></span>
+<span>      <span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu">annotate</span><span class="op">(</span><span class="st">"text"</span>,</span>
+<span>    x<span class="op">=</span><span class="va">bbox</span><span class="op">$</span><span class="va">xmax</span><span class="op">-</span><span class="fl">.25</span><span class="op">*</span><span class="va">width</span>, y<span class="op">=</span><span class="va">bbox</span><span class="op">$</span><span class="va">ymax</span><span class="op">+</span><span class="fl">.08</span><span class="op">*</span><span class="va">height</span>,</span>
+<span>    label<span class="op">=</span><span class="fu">str_wrap</span><span class="op">(</span><span class="va">growth_text</span>,<span class="fl">35</span><span class="op">)</span>, size<span class="op">=</span><span class="fl">3.5</span>, hjust<span class="op">=</span><span class="fl">1</span></span>
+<span>    <span class="op">)</span><span class="op">+</span></span>
+<span>  </span>
+<span>  <span class="co"># Plot case legend lines.</span></span>
+<span>  <span class="fu">geom_path</span><span class="op">(</span></span>
+<span>    data<span class="op">=</span><span class="va">legend_case</span>,</span>
+<span>    <span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">x</span><span class="op">+</span><span class="op">(</span><span class="op">(</span><span class="va">day_num</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span><span class="op">*</span><span class="fl">6000</span><span class="op">)</span><span class="op">+</span><span class="va">offset_day</span><span class="op">*</span><span class="va">width</span>, y<span class="op">=</span><span class="va">y</span><span class="op">+</span><span class="op">(</span><span class="op">(</span><span class="va">growth_rate</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span><span class="op">*</span><span class="fl">50000</span><span class="op">)</span>,</span>
+<span>      group<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">fips</span>,<span class="va">offset</span><span class="op">)</span>, linewidth<span class="op">=</span><span class="va">offset_rate</span>, alpha<span class="op">=</span><span class="va">binned_growth_rate</span>, colour<span class="op">=</span><span class="va">binned_growth_rate</span><span class="op">)</span>, </span>
+<span>      lineend<span class="op">=</span><span class="st">"round"</span></span>
+<span>    <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="co"># Text label for case legend lines.</span></span>
+<span>  <span class="fu">annotate</span><span class="op">(</span><span class="st">"text"</span>, </span>
+<span>    x<span class="op">=</span><span class="va">bbox</span><span class="op">$</span><span class="va">xmax</span><span class="op">-</span><span class="fl">.88</span><span class="op">*</span><span class="va">width</span>, y<span class="op">=</span><span class="va">bbox</span><span class="op">$</span><span class="va">ymax</span><span class="op">+</span><span class="fl">.04</span><span class="op">*</span><span class="va">height</span>, label<span class="op">=</span><span class="st">"Less"</span>, size<span class="op">=</span><span class="fl">2.5</span></span>
+<span>    <span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu">annotate</span><span class="op">(</span><span class="st">"text"</span>, </span>
+<span>    x<span class="op">=</span><span class="va">bbox</span><span class="op">$</span><span class="va">xmax</span><span class="op">-</span><span class="fl">.8</span><span class="op">*</span><span class="va">width</span>, y<span class="op">=</span><span class="va">bbox</span><span class="op">$</span><span class="va">ymax</span><span class="op">+</span><span class="fl">.04</span><span class="op">*</span><span class="va">height</span>, label<span class="op">=</span><span class="st">"More"</span>, size<span class="op">=</span><span class="fl">2.5</span></span>
+<span>    <span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu">annotate</span><span class="op">(</span><span class="st">"text"</span>, </span>
+<span>    x<span class="op">=</span><span class="va">bbox</span><span class="op">$</span><span class="va">xmax</span><span class="op">-</span><span class="fl">.75</span><span class="op">*</span><span class="va">width</span>, y<span class="op">=</span><span class="va">bbox</span><span class="op">$</span><span class="va">ymax</span><span class="op">+</span><span class="fl">.08</span><span class="op">*</span><span class="va">height</span>, label<span class="op">=</span><span class="fu">str_wrap</span><span class="op">(</span><span class="va">case_text</span>,<span class="fl">35</span><span class="op">)</span>,</span>
+<span>    size<span class="op">=</span><span class="fl">3.5</span>, hjust<span class="op">=</span><span class="fl">0</span></span>
+<span>    <span class="op">)</span><span class="op">+</span></span>
+<span></span>
+<span>  <span class="co"># Title.</span></span>
+<span>  <span class="fu">annotate</span><span class="op">(</span><span class="st">"text"</span>, </span>
+<span>    x<span class="op">=</span><span class="va">bbox</span><span class="op">$</span><span class="va">xmax</span><span class="op">-</span><span class="fl">.5</span><span class="op">*</span><span class="va">width</span>, y<span class="op">=</span><span class="va">bbox</span><span class="op">$</span><span class="va">ymax</span><span class="op">+</span><span class="fl">.15</span><span class="op">*</span><span class="va">height</span>, label<span class="op">=</span><span class="va">title_text</span>, size<span class="op">=</span><span class="fl">5</span></span>
+<span>    <span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="va">...</span></span>
+<span>  <span class="va">...</span></span>
+<span>  <span class="va">...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section></section><section id="conclusions" class="level2" data-number="8.4"><h2 data-number="8.4" class="anchored" data-anchor-id="conclusions">
 <span class="header-section-number">8.4</span> Conclusions</h2>
