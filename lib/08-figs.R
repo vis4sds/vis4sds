@@ -98,6 +98,11 @@ state_boundaries <- st_read(here("../", "data", "ch8", "state_boundaries.geojson
 county_data <- read_csv(here("../", "data", "ch8", "county_data_covid.csv")) |> 
     # Cast binned_growth_rate to factor.
   mutate(binned_growth_rate=factor(binned_growth_rate))
+
+
+ggsave(filename=here("figs", "08", "trajectrory.png"), plot, width=5, height=3)
+
+
 #-----------------------------------------
 # 3. Techniques graphics
 #-----------------------------------------

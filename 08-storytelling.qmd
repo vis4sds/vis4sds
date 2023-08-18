@@ -68,11 +68,9 @@ Perhaps the most high-profile examples through the Covid-19 pandemic of data gra
 ```{r}
 #| label: fig-ft-vis
 #| out.width: 95%
-#| fig-cap: "[John Burn-Murdoch](https://www.ft.com/john-burn-murdoch)'s international comparison of deaths, as it appeared on [twitter](https://twitter.com/jburnmurdoch/status/1241820210455285760). **TO DO: Update with own implementation due to Copyright reasons.**"
+#| fig-cap: "[John Burn-Murdoch](https://www.ft.com/john-burn-murdoch)'s international comparison of deaths, as it appeared on [twitter](https://twitter.com/jburnmurdoch/status/1241820210455285760). For copyright reasons this is an approximate re-implementation of the original Financial Times graphic."
 #| echo: false
 #| eval: true
-
-include_graphics("figs/08/jbm-logchart.jpeg", error = FALSE)
 include_graphics("figs/08/cum_deaths_full", error = FALSE)
 ```
 
@@ -96,11 +94,10 @@ An interesting design alternative that supports between country comparison is [A
 ```{r}
 #| label: fig-covid-trends
 #| out.width: 95%
-#| fig-cap: "[Aatish Bhatia](https://aatishb.com)'s [Covid Trends](https://aatishb.com/covidtrends/) chart. [Source](https://github.com/aatishb/covidtrends#credits). **TO DO: Update with own implementation (Copyright).**"
+#| fig-cap: "[Aatish Bhatia](https://aatishb.com)'s [Covid Trends](https://aatishb.com/covidtrends/) chart. [Source](https://github.com/aatishb/covidtrends#credits). For copyright reasons this is an approximate re-implementation of a static from the original webpage."
 #| echo: false
 #| eval: true
 
-include_graphics("figs/08/covid-trends.png", error = FALSE)
 include_graphics("figs/08/covid_logs.png", error = FALSE)
 ```
 
@@ -221,7 +218,7 @@ county_data |>
   coord_sf(crs = 5070, datum=NA, clip="off") +
   geom_point(
     data=.%>% filter(date=="2020-05-03"), 
-    aes(x=x, y=y, size=case_rate)
+    aes(x=x, y=y, size=case_rate, alpha=binned_growth_rate, colour=binned_growth_rate)
   ) +
   # Plot case data.
   geom_path(

@@ -67,8 +67,16 @@ country_colours <- c(spain, france, italy, china, us, uk, japan, korea_s, iran, 
 
 # Recode UK to 0 until first public announcement of death. 
 # Recode Philipines to 0 also
-
-dat <- dat |>  filter(country %in% countries) |> filter(date< "2020-03-25") |> 
+dat <- dat_original |>  filter(country %in% countries) |> filter(date< "2020-03-25") |> 
+  mutate(
+    deaths=case_when(
+      country == "United Kingdom" & date< "2020-03-06" ~ 0,
+      country == "Philippines" & date< "2020-03-12" ~ 0,
+      country == "Japan" & date< "2020-03-08" ~ 0,
+      country == "France" & date< "2020-02-15" ~ 0,
+      TRUE ~ deaths
+    )
+  ) |> 
   group_by(country) |> 
   mutate(
     deaths_cum=cumsum(deaths),
@@ -76,8 +84,7 @@ dat <- dat |>  filter(country %in% countries) |> filter(date< "2020-03-25") |>
     day_num=cumsum(start_count)
   ) |> 
   ungroup() |> 
-  filter(day_num>0) |> 
-  filter(country=="United Kingdom") |> View()
+  filter(day_num>0) 
 
 plot <- dat |> 
   ggplot() +
@@ -104,10 +111,10 @@ korea_text <- "         early and large-scale testing and\ntracing helped author
 
 spain_14 <- dat |> filter(country=="Spain", date=="2020-03-14")
 france_14 <- dat |> filter(country=="France", date=="2020-03-18")
-spain_text <- "Spain locked down    after c.540 deaths,\nFrance after c.410, Italy not until c.1780.\nWith 40 days since its 10th death,\nUK has yet to lockdown."
+spain_text <- "Spain locked down    after c.540 deaths,\nFrance after c.410, Italy not until c.1780.\nUK's lockdown even later than Italy."
 
 plot <- dat |> 
-  filter(!country %in% c("Germany", "Belgium")) |> 
+ filter(!country %in% c("Germany", "Belgium")) |> 
   mutate(
     country = case_when(
       country == "United Kingdom" ~ "UK",
@@ -130,6 +137,7 @@ plot <- dat |>
   ungroup() |> 
   ggplot(aes(x=day_num, y=deaths_cum, colour=country)) +
   geom_line(aes(group=country), linewidth=.5 ) +
+  
   geom_point(size=.5) +
   geom_point(data=. %>% filter(date==max_date), aes(fill=country), pch=21, colour="#000000") +
   geom_text(data=. %>% filter(date==max_date, country_focus), 
@@ -141,7 +149,7 @@ plot <- dat |>
             aes(label=country), hjust=0, nudge_x = .7, family="Avenir Light", size=2.6) +
   
   annotate("segment", x=0, xend=36, y=10, yend=growth_count(10,1/2,26), linetype="dashed",
-           linewidth=.2) +
+           linewidth=.25) +
   
   annotate("text", x=35, y=growth_count(10,1/2,25)+1000, label="DOUBLES EVERY \n2 DAYS", size=2, 
            angle=40, hjust="left", vjust="centre") +
@@ -155,10 +163,10 @@ plot <- dat |>
   # annotate("text", x=korea_40$day_num+2.8, y=korea_40$deaths_cum+250, label=korea_text, size=2.5, 
   #          hjust="left", vjust="top", colour="#525252") +
   # 
-  annotate("text", x=0, y=spain_14$deaths_cum+10000, label=spain_text, size=2.5, 
+  annotate("text", x=0, y=spain_14$deaths_cum+20000, label=spain_text, size=2.5, 
            hjust="left", vjust="top", colour="#525252") +
   
-  annotate("point", x=8.2, y=spain_14$deaths_cum+9300, shape=8, size=1.5, stroke=.5, colour="#525252") +
+  annotate("point", x=8.2, y=spain_14$deaths_cum+20300, shape=8, size=1.5, stroke=.5, colour="#525252") +
   
   scale_y_log10(
     breaks = c(10, 20, 60, 200, 1000, 10000, 80000), 
@@ -210,11 +218,8 @@ countries_selected <- c("Singapore", "US", "Germany")
 
 # https://nrennie.rbind.io/blog/adding-social-media-icons-ggplot2/
 
-github_icon <- "&#xf09b"
 play_icon <- "&#xf01D"
-
-
-social_caption <- glue::glue(
+play_caption <- glue::glue(
   "<span style='font-family:\"Font Awesome 6 Free\"; color: #db386c'>{play_icon};</span>
   <span style='color: #db386c; font-family: Avenir Black'>2020-09-01</span>"
 )
@@ -258,7 +263,7 @@ plot <- dat_original |>
                 expand = c(0, 0)) +
   labs(
     title="Trajectory of World Covid-19 Confirmed Cases",
-    subtitle=social_caption,
+    subtitle=play_caption,
     y="new confirmed cases (past 7 days)", 
     x="total confirmed cases") +
   theme(
@@ -270,106 +275,28 @@ plot <- dat_original |>
 ggsave(here("figs", "08", "covid_logs.png"), plot, width=6.4, height=5, dpi=300)
 
 
-# ggsave(here("cum_deaths1.png"), plot, width=5, height=3, dpi=300)
+# 1.4 JBM Animated hospitalisations -------------------
 
-country_focus <- c("Spain", "France", "Italy", "China", "US", "UK", "Japan", "S Korea", "Iran")
+# https://webarchive.nationalarchives.gov.uk/ukgwa/20220402124218/https://www.gov.uk/government/collections/weekly-national-flu-reports
+# data https://webarchive.nationalarchives.gov.uk/ukgwa/20220401234257/https://www.gov.uk/government/statistics/weekly-national-flu-reports-2019-to-2020-season
+# https://www.england.nhs.uk/statistics/statistical-work-areas/hospital-activity/monthly-hospital-activity/mar-data/
+https://www.gov.uk/government/statistics/weekly-national-flu-reports-2019-to-2020-season
+https://webarchive.nationalarchives.gov.uk/ukgwa/20220401234439/https://www.gov.uk/government/statistics/national-flu-and-covid-19-surveillance-reports-2021-to-2022-season
+https://twitter.com/jburnmurdoch/status/1347200811303055364
 
-country_levels <- 
-  c("Spain", "France", "Italy", "China", "US", "UK", "Japan", "S Korea", "Iran",
-    "Netherlands", "Switzerland", "Germany", "Belgium", "Indonesia", "Philippines", "Iraq", "Sweden")
+# week 40 Oct -- Week 20 May
+# file ODS
+# file , sheet
+# 2021w51_2020w51.xlsx : Figure 44. SARI Watch-ICUHDU
+# 2021w26_2020w27.xlsx : Figure 41. SARI Watch-ICUHDU 
 
-growth_count <- function(start, rate, days) {start*(2^rate)^days}
-
-
-
-china_40 <- dat |> filter(country=="China") |> filter(day_num=="40") 
-china_text <- "         had 50,178\ndeaths at 40 days."
-
-korea_40 <- dat |> mutate(max_date=max(date)) |> filter(day_num<41, country=="Korea, South", date==max_date)  
-korea_text <- "         early and large-scale testing and\ntracing helped authorities get the\noutbreak under control."
-
-spain_14 <- dat |> filter(country=="Spain", date=="2020-03-14")
-france_14 <- dat |> filter(country=="France", date=="2020-03-18")
-spain_text <- "Spain locked down    after c.540 deaths,\nFrance after c.410, Italy not until c.1780.\nWith 40 days since its 10th death,\nUK has yet to lockdown."
-
-plot <- dat |> 
-  filter(!country %in% c("Germany", "Belgium")) |> 
-  mutate(
-    country = case_when(
-      country == "United Kingdom" ~ "UK",
-      country == "Korea, South" ~ "S Korea",
-      TRUE ~ country),
-    country_focus=country %in% country_focus,
-    country=factor(country, levels=country_levels),
-    is_lockdown=
-      case_when(
-        (country=="Spain" & date == "2020-03-14") ~ TRUE,
-        (country=="France" & date == "2020-03-14") ~ TRUE,
-        (country=="UK" & date == "2020-03-23") ~ TRUE,
-        (country=="Italy" & date == "2020-03-09") ~ TRUE,
-        TRUE ~ FALSE
-      )
-  ) |>  
-  filter(day_num<41) |> 
-  group_by(country) |> 
-  mutate(max_date=max(date)) |> 
-  ungroup() |> 
-  ggplot(aes(x=day_num, y=deaths_cum, colour=country)) +
-  geom_line(aes(group=country), linewidth=.5 ) +
-  geom_point(size=.5) +
-  geom_point(data=. %>% filter(date==max_date), aes(fill=country), pch=21, colour="#000000") +
-  geom_text(data=. %>% filter(date==max_date, country_focus), 
-            aes(label=country), hjust=0, nudge_x = .7, family="Avenir Heavy", size=3) +
-  
-  geom_point(data=. %>% filter(is_lockdown), aes(fill=country), shape=8, size=1.8, stroke=.8) +
-  
-  geom_text(data=. %>% filter(!country_focus, date==max_date), 
-            aes(label=country), hjust=0, nudge_x = .7, family="Avenir Light", size=2.6) +
-  
-  annotate("segment", x=0, xend=36, y=10, yend=growth_count(10,1/2,26), linetype="dashed",
-           linewidth=.2) +
-  
-  annotate("text", x=35, y=growth_count(10,1/2,25)+1000, label="DOUBLES EVERY \n2 DAYS", size=2, 
-           angle=40, hjust="left", vjust="centre") +
-  
-  annotate("text", x=41.7, y=china_40$deaths_cum+5000, label=china_text, size=2.5, 
-           hjust="left", vjust="top", colour="#525252") +
-  
-  annotate("text", x=korea_40$day_num+2.8, y=korea_40$deaths_cum+190, label=korea_text, size=2.5, 
-           hjust="left", vjust="top", colour="#525252") +
-  
-  # annotate("text", x=korea_40$day_num+2.8, y=korea_40$deaths_cum+250, label=korea_text, size=2.5, 
-  #          hjust="left", vjust="top", colour="#525252") +
-  # 
-  annotate("text", x=0, y=spain_14$deaths_cum+10000, label=spain_text, size=2.5, 
-           hjust="left", vjust="top", colour="#525252") +
-  
-  annotate("point", x=8.2, y=spain_14$deaths_cum+9300, shape=8, size=1.5, stroke=.5, colour="#525252") +
-  
-  scale_y_log10(
-    breaks = c(10, 20, 60, 200, 1000, 10000, 80000), 
-    expand = c(0, 0), label=scales::comma,
-    limits=c(10,250000)
-  ) +
-  scale_x_continuous(breaks=seq(0, 40, 5), expand = c(0, 0), limits=c(0,50))+
-  
-  labs(x="# days since 10th death", y="") +
-  scale_colour_manual(values=country_colours, guide="none") +
-  scale_fill_manual(values=country_colours, guide="none") +
-  
-  labs(
-    title="Coronavirus deaths in UK, France and Spain increasing more\nrapidly than they did in China",
-    subtitle = "Cumulative number of deaths, by number of days since 10th death"
-  ) +
-  
-  theme(
-    plot.title = element_text(size=13),
-    plot.subtitle = element_text(size=10, family="Avenir Book"),
-    axis.line.y =element_blank(),
-    panel.grid.major = element_line(colour="#e0e0e0", linewidth=0.15),
-    axis.text.x=element_text(size=9), axis.text.y=element_text(size=9),
-    axis.title.x=element_text(size=9)
-  ) 
+# 2020w51_2019w27.xlsx : Figure 39. SARI Watch-ICUHDU
+# 2020w51_2019w27.xlsx : Figure 39. SARI Watch-ICUHDU
 
 
-     
+
+# w27y2019w52y2020.xlsx : Figure 39. SARI Watch-ICUHDU
+
+
+t <- read_excel("/Users/rogerbeecham/Downloads/jul_2021_week26.xlsx", sheet="Figure 41. SARI Watch-ICUHDU")
+
