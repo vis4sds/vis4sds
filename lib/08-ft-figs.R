@@ -216,12 +216,14 @@ countries_selected <- c("Singapore", "US", "Germany")
 # sysfonts::font_add(family = "Avenir",
 #                    regular = "/Users/rogerbeecham/Library/Fonts/Avenir.ttc")
 
+
+
 # https://nrennie.rbind.io/blog/adding-social-media-icons-ggplot2/
 
 play_icon <- "&#xf01D"
 play_caption <- glue::glue(
   "<span style='font-family:\"Font Awesome 6 Free\"; color: #db386c'>{play_icon};</span>
-  <span style='color: #db386c; font-family: Avenir Black'>2020-09-01</span>"
+  <span style='color: #db386c; font-family:\"Avenir Black\"'>2020-09-01</span>"
 )
 
 #db386c
@@ -268,11 +270,15 @@ plot <- dat_original |>
     x="total confirmed cases") +
   theme(
     panel.grid.major = element_line(colour="#e0e0e0", linewidth=0.15),
-    plot.subtitle = element_markdown(size=14),
-    plot.title = element_text(size=16)
+    plot.subtitle = element_markdown(size=11.5),
+    plot.title = element_text(size=13.5),
+    axis.title.x = element_text(size=9),
+    axis.title.y = element_text(size=9),
+    axis.text =element_text(size=8)
     )
 
-ggsave(here("figs", "08", "covid_logs.png"), plot, width=6.4, height=5, dpi=300)
+
+ggsave(here("figs", "08", "covid_logs.png"), plot, width=6, height=4.5, dpi=300)
 
 
 # 1.4 JBM Animated hospitalisations -------------------
@@ -280,15 +286,19 @@ ggsave(here("figs", "08", "covid_logs.png"), plot, width=6.4, height=5, dpi=300)
 # https://webarchive.nationalarchives.gov.uk/ukgwa/20220402124218/https://www.gov.uk/government/collections/weekly-national-flu-reports
 # data https://webarchive.nationalarchives.gov.uk/ukgwa/20220401234257/https://www.gov.uk/government/statistics/weekly-national-flu-reports-2019-to-2020-season
 # https://www.england.nhs.uk/statistics/statistical-work-areas/hospital-activity/monthly-hospital-activity/mar-data/
-https://www.gov.uk/government/statistics/weekly-national-flu-reports-2019-to-2020-season
-https://webarchive.nationalarchives.gov.uk/ukgwa/20220401234439/https://www.gov.uk/government/statistics/national-flu-and-covid-19-surveillance-reports-2021-to-2022-season
-https://twitter.com/jburnmurdoch/status/1347200811303055364
+# https://www.gov.uk/government/statistics/weekly-national-flu-reports-2019-to-2020-season
+# https://webarchive.nationalarchives.gov.uk/ukgwa/20220401234439/https://www.gov.uk/government/statistics/national-flu-and-covid-19-surveillance-reports-2021-to-2022-season
+# https://twitter.com/jburnmurdoch/status/1347200811303055364
 
 # week 40 Oct -- Week 20 May
 # file ODS
 # file , sheet
+# YEAR : 2021
 # 2021w51_2020w51.xlsx : Figure 44. SARI Watch-ICUHDU
+
+# YEAR : 2020
 # 2021w26_2020w27.xlsx : Figure 41. SARI Watch-ICUHDU 
+
 
 # 2020w51_2019w27.xlsx : Figure 39. SARI Watch-ICUHDU
 # 2020w51_2019w27.xlsx : Figure 39. SARI Watch-ICUHDU
@@ -298,5 +308,148 @@ https://twitter.com/jburnmurdoch/status/1347200811303055364
 # w27y2019w52y2020.xlsx : Figure 39. SARI Watch-ICUHDU
 
 
-t <- read_excel("/Users/rogerbeecham/Downloads/jul_2021_week26.xlsx", sheet="Figure 41. SARI Watch-ICUHDU")
+months <- c("August", "September", "October", "November", "December", "January", "February", "March", "April", "May")
+counts <- c(4, 4, 5, 4, 5, 4, 4, 4, 5, 4) 
+breaks <- tibble(month=months, count=counts) |>  uncount(count) |> 
+  mutate(
+    obs=row_number(),
+    is_break=lag(month, 1) != month,
+    is_break=if_else(is.na(is_break), TRUE, is_break),
+    label=str_sub(month, 1,3)
+  ) |> 
+  filter(is_break)
 
+icu <- read_csv(here("files", "csv", "icu_data_all.csv"))
+
+
+grey <- "#CEC5BE"
+red <- "#A62538"
+blue <- "#5086BF"
+
+
+title_text <- 
+  "<span style='font-family:\"Avenir Black Oblique\"'>'No different to a bad flu season?'</span><br>
+  How England's winter Covid surge compares to flu seasons"
+
+
+
+subtitle_text <-
+  "Weekly ICU admissions of 
+  <span style= 'font-family:\"Avenir Black\"; color: #A62538;'>Covid-19</span> + flu
+  patients per million people in winter 
+  <span style= 'font-family:\"Avenir Black\"; color: #A62538;'>2020-2021</span>"
+
+subtitle_text_comp <-
+  "Weekly ICU admissions of flu
+  patients per million people in winter 
+  <span style= 'font-family:\"Avenir Black\"; color: #5086BF;'>2014-2015</span>"
+
+
+p1 <- icu |> 
+  filter(month %in% months, 
+         !season %in% c("2021-2022", "2020-2021","2019-2020", "2018-2019", "2017-2018", "2016-2017", "2015-2016"), 
+         !week %in% 23:31, include) |> 
+  mutate(focus= season == "2014-2015") |> 
+  group_by(season) |> 
+  mutate(obs=row_number()) |> ungroup() |> 
+  ggplot(aes(x=obs, y=rate, colour=focus)) +
+  geom_line(aes(group=season), linewidth=1) +
+  scale_colour_manual(values=c(grey, blue), guide="none") +
+  scale_x_continuous(breaks=breaks$obs, labels=breaks$label, expand=c(0,0)) +
+  scale_y_continuous(breaks=c(0:25), labels=0:25, expand=c(0,0)) +
+  labs(x="", y="", title=title_text, subtitle = subtitle_text_comp) +
+  theme(
+    panel.grid.major.y = element_line(colour="#e0e0e0", linewidth=0.15),
+    plot.title = element_markdown(size=13),
+    plot.subtitle = element_markdown(size=10, family="Avenir Book"),
+    axis.text.x = element_text(hjust=0, size=9),
+    axis.text.y = element_text(hjust=0, size=8),
+    axis.ticks.x = element_line(colour="#000000", linewidth=0.15)
+  )
+
+
+subtitle_text_comp <-
+  "Weekly ICU admissions of flu
+  patients per million people in winter 
+  <span style= 'font-family:\"Avenir Black\"; color: #5086BF;'>2017-2018</span>"
+
+
+p2 <- icu |> 
+  filter(month %in% months, !season %in% c("2021-2022", "2020-2021", "2019-2020", "2018-2019"), !week %in% 23:31, include) |> 
+  mutate(focus= season == "2017-2018") |> 
+  group_by(season) |> 
+  mutate(obs=row_number()) |> ungroup() |> 
+  ggplot(aes(x=obs, y=rate, colour=focus)) +
+  geom_line(aes(group=season), linewidth=1) +
+  scale_colour_manual(values=c(grey, blue), guide="none") +
+  scale_x_continuous(breaks=breaks$obs, labels=breaks$label, expand=c(0,0)) +
+  scale_y_continuous(breaks=c(0:25), labels=0:25, expand=c(0,0)) +
+  labs(x="", y="", title=title_text, subtitle = subtitle_text_comp) +
+  theme(
+    panel.grid.major.y = element_line(colour="#e0e0e0", linewidth=0.15),
+    plot.title = element_markdown(size=13),
+    plot.subtitle = element_markdown(size=10, family="Avenir Book"),
+    axis.text.x = element_text(hjust=0, size=9),
+    axis.text.y = element_text(hjust=0, size=8),
+    axis.ticks.x = element_line(colour="#000000", linewidth=0.15)
+  )
+
+
+subtitle_text_comp <-
+  "Weekly ICU admissions of flu
+  patients per million people in winter 
+  <span style= 'font-family:\"Avenir Black\"; color: #5086BF;'>2019-2020</span>"
+
+
+p3 <- icu |> 
+  filter(month %in% months, !season %in% c("2021-2022", "2020-2021"), !week %in% 23:31, include) |> 
+  mutate(focus= season == "2019-2020") |> 
+  group_by(season) |> 
+  mutate(obs=row_number()) |> ungroup() |> 
+  ggplot(aes(x=obs, y=rate, colour=focus)) +
+  geom_line(aes(group=season), linewidth=1) +
+  scale_colour_manual(values=c(grey, blue), guide="none") +
+  scale_x_continuous(breaks=breaks$obs, labels=breaks$label, expand=c(0,0)) +
+  scale_y_continuous(breaks=c(0:25), labels=0:25, expand=c(0,0)) +
+  labs(x="", y="", title=title_text, subtitle = subtitle_text_comp) +
+  theme(
+    panel.grid.major.y = element_line(colour="#e0e0e0", linewidth=0.15),
+    plot.title = element_markdown(size=13),
+    plot.subtitle = element_markdown(size=10, family="Avenir Book"),
+    axis.text.x = element_text(hjust=0, size=9),
+    axis.text.y = element_text(hjust=0, size=8),
+    axis.ticks.x = element_line(colour="#000000", linewidth=0.15)
+  )
+
+
+
+
+p4 <- icu |> 
+  filter(month %in% months, season != "2021-2022", !week %in% 23:31, include) |> 
+  mutate(focus= season == "2020-2021") |> 
+  group_by(season) |> 
+  mutate(obs=row_number()) |> ungroup() |> 
+  ggplot(aes(x=obs, y=rate, colour=focus)) +
+  geom_line(aes(group=season), linewidth=1) +
+  scale_colour_manual(values=c(grey, red), guide="none") +
+  scale_x_continuous(breaks=breaks$obs, labels=breaks$label, expand=c(0,0)) +
+  scale_y_continuous(breaks=c(0:25), labels=0:25, expand=c(0,0)) +
+  labs(x="", y="", title=title_text, subtitle = subtitle_text) +
+  theme(
+    panel.grid.major.y = element_line(colour="#e0e0e0", linewidth=0.15),
+    plot.title = element_markdown(size=13),
+    plot.subtitle = element_markdown(size=10, family="Avenir Book"),
+    axis.text.x = element_text(hjust=0, size=9),
+    axis.text.y = element_text(hjust=0, size=8),
+    axis.ticks.x = element_line(colour="#000000", linewidth=0.15)
+  )
+
+
+plot <-  (p4+plot_spacer()) /(p1+p3) + 
+  plot_annotation(tag_levels =list(c('Final\nframe', 'Context\nframes'), '1')) &
+      theme(plot.tag = element_text(size = 13, hjust=1), plot.tag.position = "left")
+
+
+
+
+ggsave(here("figs", "08", "flu_years.png"), plot, width=12, height=9, dpi=500)

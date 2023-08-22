@@ -68,7 +68,7 @@ Perhaps the most high-profile examples through the Covid-19 pandemic of data gra
 ```{r}
 #| label: fig-ft-vis
 #| out.width: 95%
-#| fig-cap: "[John Burn-Murdoch](https://www.ft.com/john-burn-murdoch)'s international comparison of deaths, as it appeared on [twitter](https://twitter.com/jburnmurdoch/status/1241820210455285760). For copyright reasons this is an approximate re-implementation of the original Financial Times graphic."
+#| fig-cap: "[John Burn-Murdoch](https://www.ft.com/john-burn-murdoch)'s international comparison of deaths, as it appeared on [twitter](https://twitter.com/jburnmurdoch/status/1241820210455285760). This is an approximate ggplot2 re-implementation of the original Financial Times graphic."
 #| echo: false
 #| eval: true
 include_graphics("figs/08/cum_deaths_full", error = FALSE)
@@ -93,8 +93,8 @@ An interesting design alternative that supports between country comparison is [A
 
 ```{r}
 #| label: fig-covid-trends
-#| out.width: 95%
-#| fig-cap: "[Aatish Bhatia](https://aatishb.com)'s [Covid Trends](https://aatishb.com/covidtrends/) chart. [Source](https://github.com/aatishb/covidtrends#credits). For copyright reasons this is an approximate re-implementation of a static from the original webpage."
+#| out.width: 80%
+#| fig-cap: "[Aatish Bhatia](https://aatishb.com)'s [Covid Trends](https://aatishb.com/covidtrends/) chart. [Source](https://github.com/aatishb/covidtrends#credits). This is an approximate ggplot2 re-implementation of a static from the original webpage."
 #| echo: false
 #| eval: true
 
@@ -126,12 +126,12 @@ For an example of guided design exposition for explaining complex designs in [an
 
 ```{r}
 #| label: fig-ft-anim
-#| out.width: 95%
-#| fig-cap: "[John Burn-Murdoch](https://www.ft.com/john-burn-murdoch)'s animated rescaling [via twitter](https://twitter.com/jburnmurdoch/status/1347200811303055364) demonstrating how different in terms of intensive care admissions 2020/21 is to a standard flu season.**TO DO: Update with own implementation (Copyright).**"
+#| out.width: 100%
+#| fig-cap: "[John Burn-Murdoch](https://www.ft.com/john-burn-murdoch)'s animated rescaling [via twitter](https://twitter.com/jburnmurdoch/status/1347200811303055364) demonstrating how different in terms of intensive care admissions 2020/21 is to a standard flu season. These are frames from an approximate ggplot2 re-implementation of the original Financial Times graphic. "
 #| echo: false
 #| eval: true
 
-include_graphics("figs/08/jbm-anim.gif", error = FALSE)
+include_graphics("figs/08/flu_years.png", error = FALSE)
 ```
 
 ### Political
