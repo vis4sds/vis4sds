@@ -453,3 +453,180 @@ plot <-  (p4+plot_spacer()) /(p1+p3) +
 
 
 ggsave(here("figs", "08", "flu_years.png"), plot, width=12, height=9, dpi=500)
+
+
+# 1.5 Cases, hospitalisations, deaths -------------------
+# Deaths by age
+# https://www.england.nhs.uk/statistics/statistical-work-areas/covid-19-deaths/
+
+# Dashboard data
+# https://coronavirus.data.gov.uk/details/download
+
+# cases : https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=newCasesBySpecimenDateAgeDemographics&format=csv
+# admissions : https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=cumAdmissionsByAge&format=csv
+# deaths : https://api.coronavirus.data.gov.uk/v2/data?areaType=nation&areaCode=E92000001&metric=newDeaths28DaysByDeathDateAgeDemographics&format=csv
+# 2020-12-20
+
+
+
+install.packages("tidyjson")
+library(tidyjson)
+library(jsonlite)
+
+cases <- read_csv(here("files", "csv", "cases.csv"))
+deaths <- read_csv(here("files", "csv", "deaths.csv"))
+admissions <- read_csv(here("files", "csv", "admissions.csv"))
+
+young_cases <- cases |> select(age) |> unique() |> slice(5:13,15,16) |> pull(age)
+old_cases <-   cases |> select(age) |> unique() |> slice(19:21) |> pull(age)
+young_admissions <- c("18_to_64")
+old_admissions <- c("85+")
+young_deaths <- deaths |> select(age) |> unique() |> slice(5:13,15,16)  |> pull(age)
+old_deaths <- deaths |> select(age) |> unique() |> slice(19:21) |> pull(age)
+
+
+cases <- cases |> 
+  select(age, date, count=cases) |> mutate(type="cases") |> 
+  mutate(age= case_when(
+    age %in% young_cases ~ "young",
+    age %in% old_cases ~ "old",
+    TRUE ~ NA)) |> filter(!is.na(age))
+deaths <- deaths |> 
+  select(age, date, count=deaths) |> mutate(type="deaths") |> 
+  mutate(age= case_when(
+    age %in% young_deaths ~ "young",
+    age %in% old_deaths ~ "old",
+    TRUE ~ NA)) |> filter(!is.na(age))
+admissions <- admissions |> 
+  select(age, date, count=value) |> mutate(type="hospitalisations") |> 
+  mutate(age= case_when(
+    age %in% young_admissions ~ "young",
+    age %in% old_admissions ~ "old",
+    TRUE ~ NA)) |> filter(!is.na(age)) |> 
+  group_by(age) |> 
+  arrange(date) |> 
+  mutate(count=count-lag(count,1))
+
+effect_data <- bind_rows(cases, admissions, deaths)
+
+ 
+effect_data <- effect_data |> 
+  group_by(type, age, date) |> 
+  summarise(count=sum(count)) |> 
+  mutate(
+    #count=log(count),
+    rolling=slider::slide_mean(count, before=7)
+    ) |> ungroup() |> 
+  filter(date >= "2020-12-20" & date <= "2021-04-05") |>  
+  group_by(type, age) |> 
+  mutate(rolling_rescaled=rolling/max(rolling)) |> ungroup() 
+
+
+start_cases <- "2021-01-28"
+start_admissions <- "2021-01-18"
+
+effect_data <- effect_data |> 
+  mutate(type=factor(
+    type, levels=c("cases", "hospitalisations", "deaths"),
+    labels=c("Cases", "Hospital admissions", "Deaths"))) 
+
+
+title_text <- 
+  "<span style='font-family:\"Avenir Black\"'>The UK's vaccine effect:</span> cases, hospital admissions and deaths are<br>
+  now falling much faster in older groups than younger ones"
+subtitle_text <- "Cases, hospitalisations and deaths as a percentage of winter peak, by age group (log scale)"
+
+plot <- effect_data |> 
+  ggplot() +
+  geom_line(aes(x=date, y=rolling_rescaled, colour=age, group=age)) +
+  geom_ribbon(
+    data =  . %>%
+      pivot_wider(id_cols=c(type, date), names_from=age, values_from=rolling_rescaled) %>%
+      filter(
+        (type == "Cases" & date >= lubridate::as_date("2021-02-21")) |
+        (type == "Hospital admissions" & date >= lubridate::as_date("2021-01-17")) |
+          (type == "Deaths" & date >= lubridate::as_date("2021-01-25"))
+      ),
+    aes(x=date, ymin=old, ymax=young), fill="#5F6D28", alpha=.4
+  ) +
+
+  geom_vline(xintercept=lubridate::as_date("2021-01-06"), linewidth=.3) +
+  annotate("text", x=lubridate::as_date("2021-01-05"), y=.05, hjust=1, vjust=1,
+           label="Lockdown\nbegins", size=2) +
+  
+  geom_vline(xintercept=lubridate::as_date("2021-01-17"), linetype="dashed", 
+             linewidth=.4, colour="#5F6D28") +
+  annotate("text", x=lubridate::as_date("2021-01-18"), colour="#5F6D28", y=.05, hjust=0, vjust=1,
+           label="First dose\ngiven to 50%\nof age 50+", size=2, alpha=1) +
+  
+  geom_text(
+    data = . %>% filter(type=="Cases", date==as_date("2021-04-01")) %>% slice(1),
+    aes(x=date, y=.06), label="Vaccine\neffect", hjust=1, vjust=1, family="Avenir Black", colour="#5F6D28", size=2.5
+  ) +
+  
+  geom_text(
+    data = effect_data %>% filter(date==as_date("2021-04-04")) %>% 
+      mutate(label=case_when(
+        (type=="Cases" & age == "old") ~ "Age 80+",
+        (type=="Cases" & age == "young") ~ "Age 15-69",
+        (type=="Deaths" & age == "old") ~ "80+",
+        (type=="Deaths" & age == "young") ~ "15-69",
+        (type=="Hospital admissions" & age == "old") ~ "85+",
+        (type=="Hospital admissions" & age == "young") ~ "18-64",
+        TRUE ~ NA),
+      rolling_rescaled=if_else(age=="old", rolling_rescaled-.001, rolling_rescaled+.05)
+      ),
+    aes(x=date, y=rolling_rescaled, colour=age, label=label), hjust=1, vjust=1, family="Avenir Black", size=2.5
+  ) +
+  
+  geom_text(
+    data = . %>% filter(type=="Cases", date==as_date("2021-04-01")) %>% slice(1),
+    aes(x=date, y=.06), label="Vaccine\neffect", hjust=1, vjust=1, family="Avenir Black", colour="#5F6D28", size=2.5
+  ) +
+  
+  
+  facet_wrap(~type) +
+  
+  labs(title=title_text, subtitle = subtitle_text) +
+  
+  scale_x_date(
+    breaks=c(lubridate::as_date("2020-12-20"), lubridate::as_date("2021-04-05")), 
+    labels=c("Dec 20", "Apr 5"), expand=c(0,0)) +
+  # scale_y_continuous(
+  #   limits=c(0,1),
+  #   breaks=c(.05,.1,.2,.5,1), 
+  #   labels=c("5","10","20","50","100"), 
+  #   expand=c(0,0)) +
+  scale_y_log10(limits=c(.01,1),
+                  breaks=c(.05,.1,.2,.5,1),
+                  labels=c("5","10","20","50","100"),
+                  expand=c(0,0)) +
+  
+  scale_colour_manual(values=c("#355399", "#CE6882"), guide="none") +
+  
+  
+  theme(
+    axis.line.y = element_blank(),
+    strip.text.x = element_text(hjust=0, size=9, family="Avenir Black"),
+    panel.grid.major.y = element_line(colour="#e0e0e0", linewidth=0.15),
+    plot.title = element_markdown(size=12),
+    plot.subtitle = element_markdown(size=9.5, family="Avenir Book"),
+    axis.title.y = element_blank(),
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(hjust=c(0,1), size=8),
+    axis.text.y = element_text(hjust=0, size=8),
+    axis.ticks.x = element_line(colour="#000000", linewidth=0.15)
+  )
+   
+
+
+ggsave(here("figs", "08", "vaccine_effect.png"), plot, width=7.8, height=3.5, dpi=300)
+
+
+   
+deaths <- read_csv(here("files", "csv", "deaths.csv"))
+hospitalisations <- read_csv(here("files", "csv", "admissions.csv"))
+
+
+
+

@@ -778,7 +778,7 @@ For discussion of exploratory analysis and visual methods in modern data analysi
 
 Further discussion with implemented examples:
 
-* Beecham, R., and R. Lovelace. 2022. “A Framework for Inserting Visually-Supported Inferences into Geographical Analysis Workflow: Application to Road Safety Research” *Geographical Analysis*, doi: [10.1111/gean.12338](https://doi.org/10.1111/gean.12338).
+* Beecham, R., and R. Lovelace. 2023. “A Framework for Inserting Visually-Supported Inferences into Geographical Analysis Workflow: Application to Road Safety Research” *Geographical Analysis*, 55: 344--366. doi: [10.1111/gean.12338](https://doi.org/10.1111/gean.12338).
 
 For an introduction to exploratory data analysis in the tidyverse:
 

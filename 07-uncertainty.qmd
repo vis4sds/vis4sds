@@ -199,7 +199,7 @@ In @van_goethem_stenomaps_2014's redesign, *colour value* is used to represent f
 
 ![@van_goethem_stenomaps_2014 redesign](figs/07/cone_redesign.png){#fig-nhc-redesign}
 
-Cone of Uncertainty produced by National Hurricane Center [@nhc_cone_2023] and example re-design in @van_goethem_stenomaps_2014
+Cone graphic produced by National Hurricane Center [@nhc_cone_2023] and example re-design in @van_goethem_stenomaps_2014. **TODO: Permission required for cone graphic and JW redesign.**
 :::
 
 Clearly there are many ways in which uncertainty can be understood to enter a data analysis. For practical reasons the rest of the chapter considers how these general principles for uncertainty representation might be applied to a single aspect of uncertainty --  quantifiable parameter uncertainty. The parameter of interest is estimated pedestrian injury severity rates -- the proportion of pedestrian crashes that result in serious or fatal injury -- collected from  our STATS19 road crash dataset.
