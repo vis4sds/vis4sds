@@ -535,8 +535,7 @@ data_gb <- bes_2019 |>
   filter(region != "Northern Ireland") |>
   mutate(
     # Recode to 0 Chorley incoming speaker, Buckingham outgoing speaker.
-    swing_con_lab=if_else(constituency_name %in% c("Chorley", "Buckingham"),
-    0,
+    swing_con_lab=if_else(constituency_name %in% c("Chorley", "Buckingham"), 0,
     0.5*((con_19-con_17)-(lab_19-lab_17))
     )
   )
@@ -841,7 +840,7 @@ To do this we need to generate a join on the boundary dataset loaded at the star
 
 # Join constituency boundaries.
 data_gb <- cons_outline |>
-  inner_join(data_gb, by=c("pcon19cd"="ons_const_id"))
+  inner_join(data_gb, by=c("pcon17cd"="ons_const_id"))
 # Check class.
 ## [1] "sf"         "data.frame"
 ```
@@ -859,9 +858,9 @@ data_gb <- data_gb |>
     winner_19=as_factor(winner_19))
 
 # Plot map.
-data_gb |>
-  ggplot(aes(fill=winner_19)) +
-  geom_sf(colour="#eeeeee", linewidth=0.01)+
+data_gb |> 
+  ggplot() +
+  geom_sf(aes(fill=winner_19), colour="#eeeeee", linewidth=0.01)+
   # Optionally add a layer for regional boundaries.
   geom_sf(
      data=. %>% group_by(region) %>% summarise(),

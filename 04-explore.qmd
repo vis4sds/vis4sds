@@ -295,7 +295,7 @@ The way in which differences between observed and expected values (residuals) ar
 
 ```{r}
 #| label: fig-borough-freqs-resids
-#| out.width: 100%
+#| out.width: 90%
 #| fig-cap: "Heatmaps of crashes by period of week and vehicle type for London Boroughs."
 #| echo: false
 #| eval: true
@@ -396,12 +396,13 @@ include_graphics("figs/04/mosaic_boroughs_spatial.svg", error = FALSE)
 
 ```{r}
 #| label: fig-spatial-layout
-#| fig-cap: "Mosaic plots of vehicle type and period for London Boroughs with geo-spatial arrangement. **TODO: change arrangement and legend graphic**"
+#| fig-cap: "Mosaic plots of vehicle type and period for London Boroughs with geo-spatial arrangement."
 #| echo: false
 #| eval: true
+#| out.width: 80%
 #| warning: false
 
-include_graphics("figs/04/grids_vehicle_test.png", error = FALSE)
+include_graphics("figs/04/grids_vehicle.png", error = FALSE)
 ```
 
 
@@ -459,7 +460,7 @@ ped_veh_complete <- ped_veh |>
     )
 ```
 
-The dataset contains c. 49,000 observations, 23% of linked pedestrian crashes. Although this is a large number, there may be some systematic bias in the types of pedestrian crashes for which full demographic data are recorded, a challenge often encountered when datasets are repurposed for analysis. For brevity, we will not extensively investigate this bias, but below 'record completeness rates' are calculated for selected crash types.  As anticipated, lower completeness rates appear for crashes coded as *Slight* in injury severity, but there are also lower completeness rates for crashes occurring in the highest deprivation quintile.
+The dataset contains c. 52,600 observations, 23% of linked pedestrian crashes. Although this is a large number, there may be some systematic bias in the types of pedestrian crashes for which full demographic data are recorded, a challenge often encountered when datasets are repurposed for analysis. For brevity, we will not extensively investigate this bias, but below 'record completeness rates' are calculated for selected crash types.  As anticipated, lower completeness rates appear for crashes coded as *Slight* in injury severity, but there are also lower completeness rates for crashes occurring in the highest deprivation quintile.
 
 ```{r}
 #| echo: false
@@ -502,7 +503,7 @@ ped_veh |>
 #| eval: true
 completeness <- tibble::tibble(
   "Crash category" = c("Fatal", "Serious", "Slight", "5 Least deprived", "4 Less deprived", "3 Mid deprived", "2 More deprived", "1 Most deprived"),
-   "Completeness rate" = c("26%","26%","20%","25%","25%","24%", "23%", "19%")
+   "Completeness rate" = c("30%","29%","22%","25%","25%","24%", "23%", "22%")
 )
 
 
@@ -521,7 +522,7 @@ This difference in record completeness may reflect genuine differences in record
 #| echo: false
 #| eval: true
 #| warning: false
-#| out.width: 60%
+#| out.width: 80%
 
 include_graphics("figs/04/completeness.png", error = FALSE)
 ```
@@ -611,7 +612,7 @@ A consequence of the heavy concentration of crash counts, and thus colour, in th
 
 ```{r}
 #| label: fig-imd-driver-cas
-#| fig-cap: "Pedestrian casualties by IMD quintile of pedestrian and driver. **TO DO: space out and annotate.**"
+#| fig-cap: "Pedestrian casualties by IMD quintile of pedestrian and driver. "
 #| out.width: 70%
 #| echo: false
 #| eval: true
@@ -661,7 +662,7 @@ model_data |>
 
 The ggplot2 spec for @fig-imd-driver-cas:
 
-1. *Data*: We create a staged dataset for plotting. Observed values for each cell of the heatmap are computed, along with row and column marginals for calculating expected values. We assume that crash frequencies distribute independently of IMD class, and so derive expected values for each cell of the heatmap ($E_ij$) from its corresponding column ($C_i$), row ($R_j$) maginals and the grand total of crashes ($GT$):  $E_i = \frac{C_i \times R_i}{GT}$. The graphics in the right margin of  @fig-imd-driver-cas show how expectation is spread in this way. You will notice that `group_by()` does some heavy lifting to arrive at these row, column and cell-level totals.  The way in which the signed chi-score residuals are calculated in the final `group_by()` follows that described earlier in the chapter.
+1. *Data*: We create a staged dataset for plotting. Observed values for each cell of the heatmap are computed, along with row and column marginals for calculating expected values. We assume that crash frequencies distribute independently of IMD class, and so derive expected values for each cell of the heatmap ($E_{ij}$) from its corresponding column ($C_i$), row ($R_j$) maginals and the grand total of crashes ($GT$):  $E_i = \frac{C_i \times R_i}{GT}$. The graphics in the right margin of  @fig-imd-driver-cas show how expectation is spread in this way. You will notice that `group_by()` does some heavy lifting to arrive at these row, column and cell-level totals.  The way in which the signed chi-score residuals are calculated in the final `group_by()` follows that described earlier in the chapter.
 2. *Encoding*: Cells of the heatmap are arranged in `x` and `y` on the IMD class of pedestrians and drivers and filled according to signed chi-score residuals. .
 3. *Marks*: `geom_tile()` for drawing cells of the heatmap.
 4. *Scale*: `scale_fill_distiller()` for continuous [ColorBrewer](https://colorbrewer2.org/#type=sequential&scheme=BuGn&n=3) scheme, diverging using the `RdBu` palette. To make the scheme centred on 0, the maximum absolute residual value in `model_data` is used.

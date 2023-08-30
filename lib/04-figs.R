@@ -378,16 +378,27 @@ borough_counts_vehicle <- ped_veh |> filter(police_force == "Metropolitan Police
     is_weekend=factor(
       if_else(day %in% c("Sat", "Sun"), "weekend", "weekday"),
       levels=c("weekend", "weekday")
-      )
+    )
   ) |> 
   # filter(is_weekend) |> 
   group_by(local_authority_district) |> 
   mutate(borough_count=n()) |> ungroup() |> 
   group_by(local_authority_district, vehicle_type, is_weekend) |> 
   summarise(count=n(), borough_count=first(borough_count), prop=count/borough_count, is_inner=first(is_inner)) |> ungroup() |> 
-  mutate(vehicle_type=factor(vehicle_type, levels=vehicle_order)) |> 
+  add_row(local_authority_district=c("Hillingdon", "Hillingdon", "Waltham Forest", "Greenwich", "City of London", 
+                                     "Merton", "Barking and Dagenham", "Havering", "Bexley", "Bexley", "Bexley", "Richmond upon Thames", "Kingston upon Thames", "Kingston upon Thames"), 
+             vehicle_type=c("HGV", "Bicycle", "HGV", "HGV", "Other", "HGV", "HGV", "Bicycle", "HGV", "Bicycle", "Other", "HGV", "HGV", "Other"), 
+             is_weekend=c("weekend", "weekend", "weekend", "weekend", "weekend", "weekend", "weekend", "weekend", "weekend", "weekend", "weekend", "weekend", "weekend", "weekend"), 
+             count=c(0,0,0,0,0,0,0,0,0,0,0,0,0,0), 
+             borough_count=c(0,0,0,0,0,0,0,0,0,0,0,0,0,0),
+             prop=c(0,0,0,0,0,0,0,0,0,0,0,0,0,0),
+             is_inner=c("outer","outer","outer","inner","inner","outer","outer","outer","outer","outer","outer","outer","outer","outer")) |> 
+  mutate(
+    vehicle_type=factor(vehicle_type, levels=vehicle_order),
+    is_weekend=factor(is_weekend, levels=c("weekend", "weekday"))
+    ) |> 
   ggplot(aes(x=vehicle_type,y=reorder(local_authority_district, borough_count), fill=count)) +
-  geom_tile(colour="#707070", size=.2) +
+  geom_tile(colour="#ffffff", size=.4) +
   facet_grid(is_inner~is_weekend, scales="free_y", space="free_y") +
   scale_fill_distiller(palette="Blues", direction=1) +
   guides(fill="none")+
@@ -397,6 +408,8 @@ borough_counts_vehicle <- ped_veh |> filter(police_force == "Metropolitan Police
     axis.text.x = element_text(angle=270, hjust=0, size=8), panel.spacing.x = unit(.5, "lines"),
     legend.position = "right", panel.grid.major.y=element_blank(), strip.text.y=element_blank(), axis.title.x = element_blank(), axis.line = element_blank(),
   )
+
+borough_counts_vehicle
 
 annotate_text <- "Dominance of cars makes patterns in other vehicle types difficult to see. \n\n 
 Inner London boroughs, especially Westminster, contain crashes involving taxis, buses, bikes. \n\n
@@ -640,7 +653,8 @@ resids_vehicle <- ped_veh |> filter(police_force == "Metropolitan Police" | poli
   ) |> 
   
   ggplot(aes(x=vehicle_type,y=reorder(local_authority_district, row_total), fill=resid)) +
-  geom_tile(colour="#707070", size=.2) +
+  #geom_tile(colour="#707070", size=.2) +
+  geom_tile(colour="#ffffff", size=.4) +
   facet_grid(is_inner~., scales="free_y", space="free_y") +
   scale_fill_distiller(palette="RdBu", direction=-1, limits=c(-25,25)) +
   #labs(y="", subtitle="Colour: crash counts by borough <br>  independent of vehicle type") +
@@ -701,7 +715,8 @@ resids_period <- ped_veh |>
   ggplot(
     aes(x=vehicle_type,y=reorder(local_authority_district, row_total), fill=resid)
   ) +
-  geom_tile(colour="#707070", size=.2) +
+ # geom_tile(colour="#707070", size=.2) +
+  geom_tile(colour="#ffffff", size=.4) +
   facet_grid(is_inner~., scales="free_y", space="free_y") +
   scale_fill_distiller(palette="RdBu", direction=1, limits=c(-5.43,5.43)) +
   guides(fill="none")+
@@ -756,7 +771,7 @@ plot <- ggplot() +
     x = .28, xend = .35,
     y = .89, yend = .85,
     curvature = -.5,
-    angle = 35, size=.2
+    angle = 35, size=.1
   ) +
   
   annotate("richtext",
@@ -769,7 +784,7 @@ plot <- ggplot() +
     x = .96, xend = .7,
     y = .6, yend = .6,
     curvature = .3,
-    angle = 135, size=.2
+    angle = 135, size=.1
   ) +
   
   
@@ -849,45 +864,16 @@ grids_car <- plot_data |>
             alpha=.5
    ) +
  geom_text(aes(x = x, y = y, label = str_extract(local_authority_district, "^.{3}")), size = 3.5, alpha=.8, family="Avenir Medium") +
- annotate("text", x=max_x -4.5 *cell_width, y=max_y+.5*cell_height, vjust="bottom", hjust="right", label="Car", size=4) +
- annotate("text", x=max_x-1.25*cell_width, y=max_y, vjust="bottom", hjust="left", label="", size=4) +
-  coord_sf() +
-  facet_wrap(~vehicle_type, nrow=1) +
-  #labs(caption= "<span style = 'color: #4A679D;'> weekend </span> | <span style = 'color: #3B7EBA;'>weekday </span>") +
+ annotate("text", x=bbox$xmin + 0 *cell_width, y=max_y+.3*cell_height, vjust="bottom", hjust="left", label="Car", size=4) +
+ annotate("text", x=max_x-1.25*cell_width, y=max_y, vjust="top", hjust="left", label="", size=4) +
+ coord_sf() +
+ facet_wrap(~vehicle_type, nrow=1) +
   theme(
     strip.text.x = element_blank(),
     panel.grid.major=element_blank(), panel.grid.minor = element_blank(), axis.title.y=element_blank(), 
     axis.text.x = element_blank(), axis.text.y = element_blank(), axis.title.x = element_blank(), axis.line = element_blank(),
     plot.caption=ggtext::element_markdown(family = "Avenir Medium", size=13), plot.margin = unit(c(0,0,0,0), "cm")
 )
-
-
-grids_bike <- plot_data |> 
-  mutate(vehicle_type=factor(vehicle_type, levels=c("Car", "Motorcycle", "Bicycle", "Taxi"))) |> 
-  filter(vehicle_type %in% c("Bicycle")) |> 
-  ggplot() +
-  geom_sf(fill="#d9d9d9", colour="#ffffff") +
-  # prop weekend
-  geom_rect(aes(ymin=y-.5*cell_height, ymax=y+(freq/freq_global-.5)*cell_height,
-                xmin=x-.5*cell_width, xmax=x+(obs-.5)*cell_width), fill=site_colours$primary,
-            alpha=.5
-  ) +
-  # frequency 
-  geom_rect(aes(ymin=y-.5*cell_height, ymax=y+(freq/freq_global-.5)*cell_height,
-                xmin=x-.5*cell_width, xmax=x+.5*cell_width), fill=site_colours$primary,
-            alpha=.5
-  ) +
-  geom_text(aes(x = x, y = y, label = str_extract(local_authority_district, "^.{3}")), size = 3, alpha=.8) +
-  annotate("text", x=max_x -2.5 *cell_width, y=max_y+1.5*cell_height, vjust="bottom", hjust="right", label="Bicycle", size=4) +
-  coord_sf() +
-  facet_wrap(~vehicle_type, nrow=1) +
-  #labs(caption= "<span style = 'color: #4A679D;'> weekend </span> | <span style = 'color: #3B7EBA;'>weekday </span>") +
-  theme(
-    strip.text.x = element_blank(),
-    panel.grid.major=element_blank(), panel.grid.minor = element_blank(), axis.title.y=element_blank(), 
-    axis.text.x = element_blank(), axis.text.y = element_blank(), axis.title.x = element_blank(), axis.line = element_blank(),
-    plot.caption=ggtext::element_markdown(family = "Avenir Medium", size=13),plot.margin = unit(c(0,0,0,0), "cm")
-  )
 
 
 grids_motobike <- plot_data |> 
@@ -906,7 +892,7 @@ grids_motobike <- plot_data |>
             alpha=.5
   ) +
   geom_text(aes(x = x, y = y, label = str_extract(local_authority_district, "^.{3}")), size = 3.5, alpha=.8, family="Avenir Medium") +
-  annotate("text", x=max_x -4.5 *cell_width, y=max_y+.5*cell_height, vjust="bottom", hjust="right", label="Motorcycle", size=4) +
+  annotate("text", x=bbox$xmin -0 *cell_width, y=max_y+.5*cell_height, vjust="top", hjust="left", label="Motorcycle", size=4) +
   coord_sf() +
   facet_wrap(~vehicle_type, nrow=1) +
   #labs(caption= "<span style = 'color: #4A679D;'> weekend </span> | <span style = 'color: #3B7EBA;'>weekday </span>") +
@@ -922,8 +908,7 @@ labels <- grid |>
   geom_sf(fill="#d9d9d9",colour="#ffffff", linewidth=.4) +
   geom_text(aes(x = x, y = y-.15*cell_height, label = word(area_name, 1)), size = 2) +
   geom_text(aes(x = x, y = y+.15*cell_height, label = str_extract(area_name, "^.{3}")), size = 3, family="Avenir Medium") +
-  annotate("text", x=max_x -4.5 *cell_width, y=max_y+.5*cell_height, vjust="bottom", hjust="right", label="Gridmap layout", size=4) +
-  
+  annotate("text", x=bbox$xmin -0 *cell_width, y=max_y+.5*cell_height, vjust="top", hjust="left", label="Gridmap layout and\nencoding", size=4) +
   theme(
     panel.grid.major=element_blank(), panel.grid.minor = element_blank(), axis.title.y=element_blank(), 
     axis.text.x = element_blank(), axis.text.y = element_blank(), axis.title.x = element_blank(), axis.line = element_blank()
@@ -967,23 +952,6 @@ grids_cam <- plot_data |>
            label="num\ncrashes", hjust="right", size=5.5) +
   annotate("text", x=521840.9-.01*cell_width, y=181198-.9*cell_height, 
            label="proportion\nweekend", hjust="centre", size=5.5) +
-  
-  # annotate(
-  #   geom = "curve",
-  #   xend = 521840.9-.42*cell_width, x = 521840.9-.25*cell_width,
-  #   y = 181198-.7*cell_height, yend = 181198-.6*cell_height,
-  #   curvature = -.3,
-  #   angle = 60, size=.2
-  # ) +
-  # 
-  # annotate(
-  #   geom = "curve",
-  #   xend = 521840.9-.85*cell_width, x = 521840.9-.62*cell_width,
-  #   yend = 181198-0*cell_height, y = 181198-.15*cell_height,
-  #   curvature = -.3,
-  #   angle = 60, size=.2
-  # ) +
-  # 
   coord_sf(xlim=c(521840.9-2*cell_width, 521840.9+.49*cell_width), 
            ylim= c(181198-1.5*cell_height, 181198+.5*cell_height), default_crs = sf::st_crs(27700)) +
   theme(
@@ -1005,26 +973,64 @@ img <- image_read(here("figs", "04", "grids_camx.png")) |>
 min_x <- 507258.2
 min_y <- 198096.9
 
+
+
 # p1 <- grids_car +
 #   annotation_raster(img, min_x-1.2*cell_width, min_x + 1.1*cell_width, max_y-.5*cell_height, max_y+1.8*cell_height)
 
+bbox <- st_bbox(gridd)
+
 p1 <- labels + 
-  annotate("text", x=max_x + 8 *cell_width, y=max_y, label="", size=1) +
+  annotate("text", x=max_x + 10 *cell_width, y=bbox$ymin, label="", size=1) +
+  annotation_raster(img, max_x+.5*cell_width, max_x + 4.2*cell_width, max_y-1.2*cell_height, max_y-5.2*cell_height)
   # annotate("text", x=max_x +3.1 *cell_width, y=max_y-4.2*cell_height, label="Mosaic encoding", size=3.5) +
   # annotation_raster(img, max_x+1.8*cell_width, max_x + 4.5*cell_width, max_y-4.6*cell_height, max_y-7.1*cell_height)
-  annotate("text", x=max_x +3.1 *cell_width, y=max_y+.5*cell_height, label="Mosaic encoding", size=4) +
-  annotation_raster(img, max_x+1.8*cell_width, max_x + 4.5*cell_width, max_y-0.2*cell_height, max_y-2.7*cell_height)
+  #annotate("text", x=max_x +3.1 *cell_width, y=max_y+.5*cell_height, label="Mosaic encoding", size=4) +
+ 
+plot <-p1 / (grids_car + grids_motobike)  + plot_layout(heights=c(.95, 1)) 
+
+ggsave(filename= here("figs", "04", "grids_vehicle_test2.png"), plot=plot,
+       width=10, height=7.5, dpi=600)
+
+
+t <- ggdraw() +
+  draw_plot(p1, 0, 0, 1, 1) +
+  draw_plot(grids_car, 0.05, .1, .45, .45) +
+  draw_plot(grids_motobike, .45, .1, .45, .45) 
+t
+
+  draw_plot(grids_motobike, .45, .45, .5, .5) +
+  draw_plot_label(
+    c("A", "B"),
+    c(0, 0.45),
+    c(1, 0.95),
+    size = 12
+  )
+
+
+p1 <- labels + 
+   annotate("text", x=max_x + 1.6*cell_width, y=bbox$ymin-0*cell_height, label="", size=1) +
+  # annotate("text", x=max_x +3.1 *cell_width, y=max_y-4.2*cell_height, label="Mosaic encoding", size=3.5) +
+  # annotation_raster(img, max_x+1.8*cell_width, max_x + 4.5*cell_width, max_y-4.6*cell_height, max_y-7.1*cell_height)
+  #annotate("text", x=bbox$xmax +0 *cell_width, y=bbox$ymin+.8*cell_height, label="Mosaic encoding", size=3.3, hjust=1) +
+  annotation_raster(img, bbox$xmax-1.9*cell_width, bbox$xmax + 1*cell_width, bbox$ymax-2.6*cell_height, bbox$ymax+.7*cell_height)
+
+
+p1
+
 
 plot <- (p1 +  grids_bike) / 
   (labels  + grids_motobike)         
 ggsave(filename= here("figs", "04", "grids_vehicle.png"), plot=plot,
        width=9.5, height=8, dpi=900)
 
-plot <- (grids_car + grids_motobike)/ p1  + plot_layout(heights=c(1.05,1))
+plot <-p1 / (grids_car + grids_motobike)  + plot_layout(heights=c(1, 1.05))
 
 
-ggsave(filename= here("figs", "04", "grids_vehicle_test.png"), plot=plot,
-       width=9.5, height=8, dpi=600)
+plot <- p1 + grids_car + grids_motobike + plot_layout(widths=c(1.1,1,1))
+
+ggsave(filename= here("figs", "04", "grids_vehicle_test2.png"), plot=plot,
+       width=13, height=4, dpi=600)
 
 #-----------------------------------------
 # 3. Techniques graphics
@@ -1037,6 +1043,7 @@ ped_veh_complete <- ped_veh |>
   filter(
     !is.na(crash_quintile),
     !is.na(casualty_quintile), 
+    !is.na(driver_quintile),
     casualty_quintile != "Data missing or out of range", 
     driver_quintile != "Data missing or out of range"
     ) 
@@ -1048,18 +1055,13 @@ ped_veh_missing <- ped_veh |>
 ped_veh |> 
   mutate(
     is_complete=accident_index %in% (ped_veh_complete |> pull(accident_index))
-    ) |> 
-  group_by(accident_severity) |> 
-  summarise(prop_complete=mean(is_complete))
-
-ped_veh |> 
-  mutate(
-    is_complete=accident_index %in% (ped_veh_complete |> pull(accident_index))
   ) |> 
+  filter(str_detect(lsoa_of_accident_location, "^E")) |> 
   group_by(crash_quintile) |> 
   summarise(prop_complete=mean(is_complete))
 
 plot <- ped_veh |> 
+  filter(str_detect(lsoa_of_accident_location, "^E")) |> 
   mutate(
     is_complete=accident_index %in% (ped_veh_complete |> pull(accident_index)),
     is_ksi=if_else(accident_severity != "Slight", "Fatal | Serious", "Slight")
@@ -1072,9 +1074,9 @@ plot <- ped_veh |>
   scale_colour_manual(values=c("#67000d", "#fb6a4a")) +
   scale_x_continuous(limits=c(0.1,.4)) +
   labs(x="proportion complete", y="IMD crash location") +
-  theme(legend.title = element_blank())
+  theme(legend.title = element_blank(), legend.position = "right")
 
-ggsave(filename= here("figs", "04", "completeness.png"), plot=plot,width=5, height=3.5, dpi=300)  
+ggsave(filename= here("figs", "04", "completeness.png"), plot=plot,width=8, height=2.6, dpi=300)  
 
 
 # 3.3 Plot freqs -----------------
@@ -1118,7 +1120,8 @@ freqs <- ped_veh_complete |>
 
 plot_imd_driver <- plot_data |> 
   ggplot(aes(x=casualty_quintile, y=driver_quintile)) +
-  geom_tile(aes(fill=observed), fill="transparent", colour="#707070", size=.1) +
+  #geom_tile(aes(fill=observed), fill="transparent", colour="#707070", size=.1) +
+  geom_tile(fill="#003c8f", colour="#ffffff", size=.5, alpha=.5) +
   annotate("text", x=5,y=0.2, label="least", hjust=.5, size=3) +
   annotate("segment", x=.5, y = 5.7, xend = 5.2, yend = 5.7,
            arrow = arrow(type = "closed", length = unit(0.02, "npc")), linewidth=.15) +
@@ -1232,7 +1235,8 @@ model_data |>
 plot_imd_driver <- plot_data |> 
   ggplot(aes(x=casualty_quintile, y=driver_quintile)) +
   geom_point()+
-  geom_tile(aes(fill=observed), colour="#707070", size=.2) +
+  #geom_tile(aes(fill=observed), colour="#707070", size=.2) +
+  geom_tile(aes(fill=observed), colour="#ffffff", size=.5) +
   
   # annotate("segment", x=.5, y = 5.7, xend = 5.2, yend = 5.7,
   #          arrow = arrow(type = "closed", length = unit(0.02, "npc")), linewidth=.15) +
@@ -1255,7 +1259,7 @@ plot_imd_driver <- plot_data |>
     palette="Blues", direction=1, name="count\nthousands",
     labels = scales::comma_format(scale = .001)
     ) +
-  labs(subtitle="Observed") +
+  # labs(subtitle="Observed") +
   coord_equal() +
   theme(
     plot.margin = unit(c(0,0,0,0), "cm"),
@@ -1276,7 +1280,8 @@ plot_imd_driver <- plot_data |>
 plot_imd_expected <- plot_data |> 
   ggplot(aes(x=casualty_quintile, y=driver_quintile)) +
   geom_point()+
-  geom_tile(aes(fill=expected), colour="#707070", size=.1) +
+  #geom_tile(aes(fill=expected), colour="#707070", size=.1) +
+  geom_tile(aes(fill=expected), colour="#ffffff", size=.3) +
   
   # annotate("text", x=1,y=0.2, label="most", hjust=0.5, size=3) +
   # annotate("text", x=3,y=0.2, label="mid", hjust=0.5, size=3) +
@@ -1309,7 +1314,8 @@ plot_imd_expected <- plot_data |>
 plot_imd_marginal_row <- plot_data |> 
   ggplot(aes(x=casualty_quintile, y=driver_quintile)) +
   geom_point()+
-  geom_tile(aes(fill=row_marginal), colour="#707070", size=.1) +
+  #geom_tile(aes(fill=row_marginal), colour="#707070", size=.1) +
+  geom_tile(aes(fill=row_marginal), colour="#ffffff", size=.3) +
   
   # annotate("text", x=1,y=0.2, label="most", hjust=0.5, size=3) +
   # annotate("text", x=3,y=0.2, label="mid", hjust=0.5, size=3) +
@@ -1347,7 +1353,8 @@ plot_imd_marginal_row <- plot_data |>
 plot_imd_expected <- plot_data |> 
   ggplot(aes(x=casualty_quintile, y=driver_quintile)) +
   geom_point()+
-  geom_tile(aes(fill=expected), colour="#707070", size=.1) +
+  #geom_tile(aes(fill=expected), colour="#707070", size=.1) +
+  geom_tile(aes(fill=expected), colour="#ffffff", size=.3) +
   
   # annotate("text", x=1,y=0.2, label="most", hjust=0.5, size=3) +
   # annotate("text", x=3,y=0.2, label="mid", hjust=0.5, size=3) +
@@ -1382,7 +1389,8 @@ plot_imd_expected <- plot_data |>
 plot_imd_marginal_col <- plot_data |> 
   ggplot(aes(x=casualty_quintile, y=driver_quintile)) +
   geom_point()+
-  geom_tile(aes(fill=col_marginal), colour="#707070", size=.1) +
+  #geom_tile(aes(fill=col_marginal), colour="#707070", size=.1) +
+  geom_tile(aes(fill=col_marginal), colour="#ffffff", size=.3) +
   
   # annotate("text", x=1,y=0.2, label="most", hjust=0.5, size=3) +
   # annotate("text", x=3,y=0.2, label="mid", hjust=0.5, size=3) +
@@ -1417,7 +1425,8 @@ plot_imd_driver_resid <- plot_data |>
   # Censor max values to 40.
   #mutate(resid=if_else(resid>0, pmin(resid, 40), pmax(resid, -40))) |> 
   ggplot(aes(x=casualty_quintile, y=driver_quintile)) +
-  geom_tile(aes(fill=resid), colour="#707070", size=.2) +
+  #geom_tile(aes(fill=resid), colour="#707070", size=.2) +
+  geom_tile(aes(fill=resid), colour="#ffffff", size=.5) +
   
   annotate("text", x=1,y=0.2, label="most", hjust=0.5, size=3) +
   annotate("text", x=3,y=0.2, label="mid", hjust=0.5, size=3) +
@@ -1440,7 +1449,8 @@ plot_imd_driver_resid <- plot_data |>
   # annotate("text", y=6,x=3, label="IMD of pedestrian", hjust=.5, vjust=1, size=3.5) +
   annotate("text", y=3,x=5.8, label="", hjust=.5, vjust=0, size=3.5, angle=270) +
   annotate("text", y=6,x=3, label="", hjust=.5, vjust=1, size=3.5) +
-  labs(x="", subtitle="Obs vs Exp") +
+  #labs(x="", subtitle="Obs vs Exp") +
+  labs(x="") +
   theme(
     legend.text = element_text(size=8),
     legend.title = element_text(size=8),
@@ -1455,15 +1465,17 @@ plot_imd_driver_resid <- plot_data |>
 
 plot_cols <- plot_grid(plot_imd_expected / plot_imd_marginal_row / plot_imd_marginal_col) 
 
+spacer <- ggplot() + theme_void()
+
 plot <- 
-  plot_grid(plot_imd_driver,  
-            plot_imd_driver_resid, plot_cols,  
-            rel_widths = c(1, 1, .75), 
-            rel_heights = c(1,1,1),
-            nrow=1)
+  plot_grid(plot_imd_driver,spacer,  
+            plot_imd_driver_resid, spacer, plot_cols,  
+            rel_widths = c(1,.35, 1,.05, .75), 
+            rel_heights = c(1,1,1,1,1),
+            nrow=1) + theme_map()
 
 
-ggsave(here("figs", "04", "imd_driver_cas.png"), plot=plot,width=4.5, height=3.8, dpi=600)
+ggsave(here("figs", "04", "imd_driver_cas.png"), plot=plot,width=5.3, height=2.5, dpi=600)
 
 
 # 3.6 Plot model 2 -----------------
@@ -1501,7 +1513,8 @@ plot_imd_driver_area_obs <- ped_veh_complete |>
     observed_rescaled=observed/observed_max
   ) |> ungroup() |> 
   ggplot(aes(x=casualty_quintile, y=driver_quintile)) +
-  geom_tile(aes(fill=observed), colour="#707070", size=.2) +
+  #geom_tile(aes(fill=observed), colour="#707070", size=.2) +
+  geom_tile(aes(fill=observed), colour="#ffffff", size=.5) +
   scale_fill_distiller(palette="Blues", direction=1) +
   facet_wrap(~crash_quintile, nrow=1) +
   labs(x="IMD quintile of casualty", y="IMD quintile of driver", subtitle="Observed") +
@@ -1546,7 +1559,8 @@ demog_distances <- demog_distances %>%
 # Model 2.
 plot_imd_driver_area_model <- demog_distances |> 
   ggplot(aes(x=casualty_quintile, y=driver_quintile)) +
-  geom_tile(aes(fill=ml_resids), colour="#707070", size=.2) +
+  #geom_tile(aes(fill=ml_resids), colour="#707070", size=.2) +
+  geom_tile(aes(fill=ml_resids), colour="#ffffff", size=.5) +
   # Make colour scale symmetrical on 0.
   scale_fill_distiller(
     palette="RdBu", direction=-1,
@@ -1565,7 +1579,8 @@ plot_imd_driver_area_model <- demog_distances |>
 
 plot_demog_dists <- demog_distances |> 
   ggplot(aes(x=casualty_quintile, y=driver_quintile)) +
-  geom_tile(aes(fill=demog_dist), colour="#707070", size=.2) +
+  #geom_tile(aes(fill=demog_dist), colour="#707070", size=.2) +
+  geom_tile(aes(fill=demog_dist), colour="#ffffff", size=.5) +
   scale_fill_distiller(palette="Blues", direction=-1) +
   facet_wrap(~crash_quintile, nrow=1) +
   labs(x="IMD quintile of casualty", y="IMD quintile of driver", subtitle="Geodemographic distance") +
@@ -1579,7 +1594,7 @@ plot_demog_dists <- demog_distances |>
 plot <- plot_imd_driver_area_obs / plot_demog_dists / plot_imd_driver_area_model
 
 
-ggsave(filename= here("figs", "04", "model_imd_location.png"), plot=plot,width=8.5, height=6.8, dpi=500) 
+ggsave(filename= here("figs", "04", "model_imd_location.png"), plot=plot,width=8.3, height=6.4, dpi=500) 
 
 
 # plot_imd_driver_area_obs_local <- ped_veh |> 

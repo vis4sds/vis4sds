@@ -436,10 +436,8 @@ Example code:
 ```{r}
 #| echo: true
 #| eval: false
-single_model_fits <-  cons_data |> 
-  mutate(
-    across(c(younger:heavy_industry), ~(.x-mean(.x))/sd(.x))
-  ) |>
+single_model_fits <- cons_data |> 
+  mutate(across(c(younger:heavy_industry), ~(.x-mean(.x))/sd(.x))) |>
   pivot_longer(
     cols=younger:heavy_industry, 
     names_to="expl_var", values_to="z_score"
@@ -499,8 +497,7 @@ The code for @fig-outputs:
 #| eval: false
 model <- cons_data |> 
   mutate(across(c(younger:heavy_industry), ~(.x-mean(.x))/sd(.x))) %>%
-  lm(
-    leave ~ 
+  lm(leave ~ 
     degree + eu_born + white  + no_car + not_good_health + heavy_industry,
      data=.)
 
@@ -508,7 +505,7 @@ tidy(model) |>
   filter(term != "(Intercept)") |>
   ggplot(
     aes(x=reorder(term, -estimate),
-        y=estimate,ymin=estimate-1.96*std.error,
+        y=estimate, ymin=estimate-1.96*std.error,
         ymax=estimate+1.96*std.error)
         ) +
   geom_pointrange() +
@@ -534,8 +531,7 @@ cons_data |>
   mutate(
     across(c(younger:heavy_industry), ~(.x-mean(.x))/sd(.x)),
     region=factor(region)) %>%
-  lm(
-    leave ~
+  lm(leave ~
        region + degree + eu_born + white  + no_car + not_good_health + heavy_industry,
      data=.) |>
   tidy()

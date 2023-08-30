@@ -22,8 +22,8 @@ triangle <-  ggplot()+
   geom_segment(aes(x=.4, xend=0, y=-.35, yend=0.35), linewidth=0.15, lineend="round")+
   geom_segment(aes(x=0, y=-.32, xend=0, yend=.32), linewidth=0.15, arrow=arrow(type="closed", ends="both", length = unit(.025, "inches")), linetype = "dashed", colour="#636363")+
   geom_segment(aes(x=-.34, y=-.35, xend=.34, yend=-.35), linewidth=0.15, arrow=arrow(type="closed", ends="both", length = unit(.025, "inches")), linetype = "dashed", colour="#636363")+
-  geom_text(aes(label="Height is \ntotal votes cast",x=0, y=-.1),hjust="centre", size=2)+
-  geom_text(aes(label="Width is margin \nin net votes",x=0, y=-.5),hjust="centre", size=2)+
+  geom_text(aes(label="Height is \ntotal votes cast",x=0, y=-.1),hjust="centre", size=1.8)+
+  geom_text(aes(label="Width is margin \nin net votes",x=0, y=-.5),hjust="centre", size=1.8)+
   xlim(-0.5,0.5)+
   ylim(-0.6,0.35) +
   theme_void()
@@ -255,59 +255,59 @@ wp <-
   annotate("text", 
            x=unname(us_bbox$xmin-.08*us_width),y=unname(us_bbox$ymin)+0.825*us_height,
            label="THE GREAT LAKES", 
-           hjust="left", vjust="top", size=2.5, family="Avenir Next Demi Bold"
+           hjust="left", vjust="top", size=2.2, family="Avenir Next Demi Bold"
   )+
   
   annotate("text", 
            x=unname(us_bbox$xmin-.08*us_width),y=unname(us_bbox$ymin)+0.81*us_height,
            label=str_wrap(great_lakes,25), 
-           hjust="left", vjust="top", size=2.5
+           hjust="left", vjust="top", size=2.2
   )+
   
   annotate("text", 
            x=unname(us_bbox$xmin)+0.35*us_width,y=unname(us_bbox$ymax)+0.015*us_height,
            label="THE NORTH EAST", 
-           hjust="left", vjust="top", size=2.5, family="Avenir Next Demi Bold"
+           hjust="left", vjust="top", size=2.2, family="Avenir Next Demi Bold"
   )+
   
   annotate("text", 
            x=unname(us_bbox$xmin)+0.35*us_width,y=unname(us_bbox$ymax)+0.00*us_height,
            label=str_wrap(north_east,60), 
-           hjust="left", vjust="top", size=2.5
+           hjust="left", vjust="top", size=2.2
   )+
   
   annotate("text", 
            x=unname(us_bbox$xmin)+0.78*us_width,y=unname(us_bbox$ymax)-.24*us_height,
            label="THE URBAN-RURAL DIVIDE", 
-           hjust="left", vjust="top", size=2.5, family="Avenir Next Demi Bold"
+           hjust="left", vjust="top", size=2.2, family="Avenir Next Demi Bold"
   )+
   
   annotate("text", 
            x=unname(us_bbox$xmin)+0.78*us_width,y=unname(us_bbox$ymax)-0.255*us_height,
            label=str_wrap(urban_rural,30), 
-           hjust="left", vjust="top", size=2.5
+           hjust="left", vjust="top", size=2.2
   )+
   
   annotate("text", 
            x=unname(us_bbox$xmax)-0.15*us_width,y=unname(us_bbox$ymin)+.435*us_height,
            label="TEXAS AND THE PLAINS", 
-           hjust="left", vjust="top", size=2.5, family="Avenir Next Demi Bold"
+           hjust="left", vjust="top", size=2.2, family="Avenir Next Demi Bold"
   )+
   annotate("text", 
            x=unname(us_bbox$xmax)-0.15*us_width,y=unname(us_bbox$ymin)+0.42*us_height,
            label=str_wrap(texas,40), 
-           hjust="left", vjust="top", size=2.5
+           hjust="left", vjust="top", size=2.2
   )+
   
   annotate("text", 
            x=unname(us_bbox$xmax)-.25*us_width,y=unname(us_bbox$ymin)+.165*us_height,
            label="THE SOUTH WEST", 
-           hjust="left", vjust="top", size=2.5, family="Avenir Next Demi Bold"
+           hjust="left", vjust="top", size=2.2, family="Avenir Next Demi Bold"
   )+
   annotate("text", 
            x=unname(us_bbox$xmax)-.25*us_width,y=unname(us_bbox$ymin)+0.15*us_height,
            label=str_wrap(south_west,40), 
-           hjust="left", vjust="top", size=2.5
+           hjust="left", vjust="top", size=2.2
   )+
   
   annotate("text",
@@ -376,59 +376,59 @@ wp <-
   annotate("text", 
            x=unname(us_bbox$xmin-.08*us_width),y=unname(us_bbox$ymin)+0.825*us_height,
            label="THE GREAT LAKES", 
-           hjust="left", vjust="top", size=2.5, family="Avenir Next Demi Bold"
+           hjust="left", vjust="top", size=2.2, family="Avenir Next Demi Bold"
   )+
   
   annotate("text", 
            x=unname(us_bbox$xmin-.08*us_width),y=unname(us_bbox$ymin)+0.81*us_height,
            label=str_wrap(great_lakes,25), 
-           hjust="left", vjust="top", size=2.5
+           hjust="left", vjust="top", size=2.2
   )+
   
   annotate("text", 
            x=unname(us_bbox$xmin)+0.39*us_width,y=unname(us_bbox$ymax)+0.015*us_height,
            label="THE NORTH EAST", 
-           hjust="left", vjust="top", size=2.5, family="Avenir Next Demi Bold"
+           hjust="left", vjust="top", size=2.2, family="Avenir Next Demi Bold"
   )+
   
   annotate("text", 
            x=unname(us_bbox$xmin)+0.39*us_width,y=unname(us_bbox$ymax)+0.00*us_height,
            label=str_wrap(north_east,60), 
-           hjust="left", vjust="top", size=2.5
+           hjust="left", vjust="top", size=2.2
   )+
   
   annotate("text", 
            x=unname(us_bbox$xmin)+0.82*us_width,y=unname(us_bbox$ymax)-.24*us_height,
            label="THE URBAN-RURAL DIVIDE", 
-           hjust="left", vjust="top", size=2.5, family="Avenir Next Demi Bold"
+           hjust="left", vjust="top", size=2.2, family="Avenir Next Demi Bold"
   )+
   
   annotate("text", 
            x=unname(us_bbox$xmin)+0.82*us_width,y=unname(us_bbox$ymax)-0.255*us_height,
            label=str_wrap(urban_rural,30), 
-           hjust="left", vjust="top", size=2.5
+           hjust="left", vjust="top", size=2.2
   )+
   
   annotate("text", 
            x=unname(us_bbox$xmax)-0.12*us_width,y=unname(us_bbox$ymin)+.455*us_height,
            label="TEXAS AND THE PLAINS", 
-           hjust="left", vjust="top", size=2.5, family="Avenir Next Demi Bold"
+           hjust="left", vjust="top", size=2.2, family="Avenir Next Demi Bold"
   )+
   annotate("text", 
            x=unname(us_bbox$xmax)-0.12*us_width,y=unname(us_bbox$ymin)+0.44*us_height,
            label=str_wrap(texas,30), 
-           hjust="left", vjust="top", size=2.5
+           hjust="left", vjust="top", size=2.2
   )+
   
   annotate("text", 
            x=unname(us_bbox$xmax)-.26*us_width,y=unname(us_bbox$ymin)+.185*us_height,
            label="THE SOUTH WEST", 
-           hjust="left", vjust="top", size=2.5, family="Avenir Next Demi Bold"
+           hjust="left", vjust="top", size=2.2, family="Avenir Next Demi Bold"
   )+
   annotate("text", 
            x=unname(us_bbox$xmax)-.26*us_width,y=unname(us_bbox$ymin)+0.17*us_height,
            label=str_wrap(south_west,40), 
-           hjust="left", vjust="top", size=2.5
+           hjust="left", vjust="top", size=2.2
   )+
   
   annotate("text",

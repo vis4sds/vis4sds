@@ -104,17 +104,16 @@ other <- "#bdbdbd"
 party_colours <- c(con, lab, other)
 names(party_colours) <- c("Conservative", "Labour", "Other")
 
-
 # Plot Swing map.
-cons_outline |> 
-  inner_join(data_gb, by=c("pcon17cd"="ons_const_id")) |> 
+data_gb |>
   mutate(
-    is_flipped=seat_change_1719 %in% 
+    is_flipped=seat_change_1719 %in%
        c("Conservative gain from Labour","Labour gain from Conservative"),
-    elected=
-       if_else(!winner_19 %in% c("Conservative", "Labour"), "Other", 
-       as.character(winner_19)),
-    swing_angle=get_radians(map_scale(swing_con_lab,min_shift,max_shift,135,45)
+    elected=if_else(
+      !winner_19 %in% c("Conservative", "Labour"), "Other", as.character(winner_19)
+      ),
+       swing_angle=
+       get_radians(map_scale(swing_con_lab,min_shift,max_shift,135,45)
       )
    ) |>
   ggplot()+

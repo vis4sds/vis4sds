@@ -397,7 +397,7 @@ array_data |>
   pivot_longer(cols=c(Oxford,Fareham), names_to="la", values_to="is_ksi") |>
   ggplot(aes(x=row,y=col, fill=is_ksi)) +
   geom_tile(colour="#ffffff", linewidth=1) +
-  scale_fill_manual(values=c("#fee0d2","#de2d26"), guide=FALSE) +
+  scale_fill_manual(values=c("#fee0d2","#de2d26"), guide="none") +
   facet_wrap(~la)
 ```
 
@@ -426,7 +426,7 @@ To present the icon array as a risk theatre, we have created a shapefile contain
 ```{r}
 #| echo: true
 #| eval: false
-theatre_cells <- st_read("data", "theatre_cells.geojson"))
+theatre_cells <- st_read(here("data", "theatre_cells.geojson"))
 
 ksi_seats <- bind_rows(
   theatre_cells |> slice_sample(n=170) |>
@@ -486,7 +486,7 @@ rate_boots <- ped_veh |>
   select(-data) |>
   unnest(la_boot) |>
   mutate(
-    is_ksi=map(splits, ~ analysis(.) |>  pull(is_ksi)),
+    is_ksi=map(splits, ~analysis(.) |>  pull(is_ksi)),
     ksi_rate=map_dbl(is_ksi, ~mean(.x)),
     sample_size=map_dbl(is_ksi, ~length(.x))
   ) |>
@@ -550,7 +550,7 @@ The ensemble plot is again reasonably straightforward:
 #| eval: false
 rate_boots_temporal |>
   ggplot(aes(x=year, y=ksi_rate)) +
-  geom_line(data=. %>%  filter(id=="Apparent"), aes(group=id), size=.5) +
+  geom_line(data=. %>%  filter(id=="Apparent"), aes(group=id), linewidth=.5) +
   geom_line(
     data=. %>%  filter(id!="Apparent"),
     aes(group=id), alpha=.1, size=.2
@@ -574,7 +574,7 @@ The Hypothetical Outcome Plot (HOP) can be easily created using the [`gganimate`
 rate_boots_temporal |>
   filter(id!="Apparent") |>
   ggplot(aes(x=year, y=ksi_rate)) +
-  geom_line(aes(group=id), size=.6) +
+  geom_line(aes(group=id), linewidth=.6) +
   facet_wrap(~local_authority_district)+
   transition_states(id, 0,1)
   ```

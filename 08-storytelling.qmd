@@ -215,20 +215,27 @@ county_data |>
     data=state_boundaries, 
     fill="#eeeeee", colour="#ffffff", linewidth=0.4
   )+ 
-  coord_sf(crs = 5070, datum=NA, clip="off") +
+  coord_sf(crs=5070, datum=NA, clip="off") +
   geom_point(
     data=.%>% filter(date=="2020-05-03"), 
-    aes(x=x, y=y, size=case_rate, alpha=binned_growth_rate, colour=binned_growth_rate)
+    aes(
+      x=x, y=y, size=case_rate, alpha=binned_growth_rate, 
+      colour=binned_growth_rate
+      )
   ) +
   # Plot case data.
   geom_path(
-    aes(x=x+((day_num-1)*6000), y=y+((growth_rate-1)*50000), 
-        group=fips, linewidth=case_rate, alpha=binned_growth_rate, colour=binned_growth_rate),
-    lineend="round"
+    aes(
+      x=x+((day_num-1)*6000), y=y+((growth_rate-1)*50000), 
+      group=fips, linewidth=case_rate, alpha=binned_growth_rate, 
+      colour=binned_growth_rate),
+      lineend="round"
   ) +
-  scale_colour_manual(values=c("#fa9fb5", "#dd3497", "#7a0177", "#49006a")) +
-  scale_size(range=c(.1,1.5))+
-  scale_linewidth(range=c(.3,3))+
+  scale_colour_manual(
+    values=c("#fa9fb5", "#dd3497", "#7a0177", "#49006a")
+    ) +
+  scale_size(range=c(.1,1.5)) +
+  scale_linewidth(range=c(.3,3)) +
   scale_alpha_ordinal(range=c(.2,1)) +
   guides(colour="none", size="none", alpha="none") +
   theme_void()
@@ -252,7 +259,11 @@ The two-letter state boundaries, held in the `state_boundaries` file can be adde
 
 county_data |>
   ggplot()+
-  geom_sf(data=state_boundaries, fill="#eeeeee", colour="#ffffff", linewidth=0.4)+
+  ggplot() +
+  geom_sf(
+    data=state_boundaries, 
+    fill="#eeeeee", colour="#ffffff", linewidth=0.4
+  )+
   geom_text(data=state_boundaries, aes(x=x,y=y,label=STUSPS), alpha=.8)+
   ...
   ...
@@ -398,17 +409,16 @@ A separate dataset is also created for drawing the top left legend (@fig-wp-case
 #| eval: false
 # Legend : case
 legend_case <- county_data |>
-  filter(
-    county == "Kings" & state=="California" ) |>
+  filter(county == "Kings" & state=="California" ) |>
   mutate(
     x=bbox$xmax-.88*width,y=bbox$ymax+.05*height,
     binned_growth_rate=factor(binned_growth_rate)
   ) %>%
   select(x, y, day_num, growth_rate, binned_growth_rate, fips) |>
-  mutate(
-    low=.001, mid=.009, high=.015,
-  ) |>
-  pivot_longer(cols=c(low, mid, high), names_to="offset", values_to="offset_rate") |>
+  mutate(low=.001, mid=.009, high=.015) |>
+  pivot_longer(
+    cols=c(low, mid, high), names_to="offset", values_to="offset_rate"
+    ) |>
   mutate(
     offset_day= case_when(
       offset == "low" ~ 0,
@@ -452,21 +462,20 @@ county_data |>
     # For positioning manually edit growth_rate of Bledsoe.
     data=legend_growth %>% filter(day_num == max(county_data$day_num)) %>%
       mutate(growth_rate=if_else(county=="Bledsoe", -1,growth_rate)),
-    aes(
-      x=x+(day_num*6000)+10000,y=y+((growth_rate-1)*50000),
-      label=str_wrap(label, 15), alpha=binned_growth_rate, colour=binned_growth_rate), 
+    aes(x=x+(day_num*6000)+10000,y=y+((growth_rate-1)*50000), 
+      label=str_wrap(label, 15)), 
       size=2.5
       )+
   annotate("text",
     x=bbox$xmax-.25*width, y=bbox$ymax+.08*height,
     label=str_wrap(growth_text,35), size=3.5, hjust=1
     )+
-  
   # Plot case legend lines.
   geom_path(
     data=legend_case,
     aes(x=x+((day_num-1)*6000)+offset_day*width, y=y+((growth_rate-1)*50000),
-      group=paste0(fips,offset), linewidth=offset_rate, alpha=binned_growth_rate, colour=binned_growth_rate), 
+      group=paste0(fips,offset), linewidth=offset_rate, 
+      alpha=binned_growth_rate, colour=binned_growth_rate), 
       lineend="round"
     ) +
   # Text label for case legend lines.
@@ -477,13 +486,13 @@ county_data |>
     x=bbox$xmax-.8*width, y=bbox$ymax+.04*height, label="More", size=2.5
     )+
   annotate("text", 
-    x=bbox$xmax-.75*width, y=bbox$ymax+.08*height, label=str_wrap(case_text,35),
-    size=3.5, hjust=0
+    x=bbox$xmax-.75*width, y=bbox$ymax+.08*height, 
+    label=str_wrap(case_text,35), size=3.5, hjust=0
     )+
-
   # Title.
   annotate("text", 
-    x=bbox$xmax-.5*width, y=bbox$ymax+.15*height, label=title_text, size=5
+    x=bbox$xmax-.5*width, y=bbox$ymax+.15*height, 
+    label=title_text, size=5
     )+
   ...
   ...

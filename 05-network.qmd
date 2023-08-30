@@ -265,20 +265,14 @@ Nodes in the dataset are the 33 London boroughs. We can express commuters betwee
 
 nodes_d <- od_pairs |>
   group_by(d_bor, occ_type) |>
-  summarise(
-    count = sum(count),
-    is_prof = first(is_prof)
-  ) |>
+  summarise(count = sum(count), is_prof = first(is_prof)) |>
   ungroup() |>
   rename(la = d_bor) |>
   mutate(type="jobs")
 
 nodes_o <- od_pairs |>
   group_by(o_bor, occ_type) |>
-  summarise(
-    count = sum(count),
-    is_prof = first(is_prof)
-  ) |>
+  summarise(count = sum(count), is_prof = first(is_prof)) |>
   ungroup() |>
   rename(la = o_bor) |>
   mutate(type="workers")
@@ -368,22 +362,18 @@ trajectories <- lon_geogs |>
   pivot_wider(names_from = type, values_from = c(x, y)) |>
   mutate(id = row_number()) |>
   nest(data = c(area_name, x_real, y_real, x_grid, y_grid)) |>
-  mutate(
-    trajectory = map(
-      data,
+  mutate(trajectory = map(data,
       ~get_trajectory(
         .x$x_real, .x$y_real, .x$x_grid, .x$y_grid, .x$area_name
-        )
-    )
-  ) |>
+        ))) |>
   select(trajectory) |>
   unnest(cols = trajectory)
 
 # Plot displacement vectors.
 ggplot() +
   geom_sf(
-    data =
-    lon_geogs |> mutate(type = factor(type, levels = c("real", "grid"))),
+    data = lon_geogs |> 
+    mutate(type = factor(type, levels = c("real", "grid"))),
     aes(fill = type, colour = type), linewidth = .2
     ) +
   ggforce::geom_bezier(
@@ -419,24 +409,18 @@ The code for @fig-nodes-summary:
 #| eval: false
 grid |>
   inner_join(
-    nodes |>
-      group_by(la, is_prof, type) |>
-      summarise(count=sum(count)),
+    nodes |> group_by(la, is_prof, type) |> summarise(count=sum(count)),
     by = c("area_name" = "la")
     ) |>
   mutate(
-    is_prof = factor(
-        if_else(
-          is_prof, "professional", "non-professional"),
-          levels = c("professional", "non-professional")
-        ),
+    is_prof = factor(if_else(
+      is_prof, "professional", "non-professional"),
+      levels = c("professional", "non-professional")),
     type = factor(type, levels = c("workers", "jobs")),
   ) |>
   ggplot(aes(x = x, y = y)) +
   geom_sf(fill = "#EEEEEE") +
-  geom_point(
-    aes(size = count, colour = is_prof), alpha = .3
-    ) +
+  geom_point(aes(size = count, colour = is_prof), alpha = .3) +
   geom_point(
     aes(size = count, colour = is_prof),
     fill = "transparent", pch = 21, stroke = .5
@@ -487,8 +471,7 @@ plot_data <- solution |>
 
 plot_data |>
   filter(
-    area_name %in% 
-    c("Wandsworth", "Westminster", "Bexley", "Hillingdon")
+    area_name %in% c("Wandsworth", "Westminster", "Bexley", "Hillingdon")
     ) |>
   ggplot(aes(x = occ_type, y = count)) +
   geom_col(aes(fill = is_prof), alpha = .5, width = 1) +
@@ -621,7 +604,7 @@ plot_data |>
   ) +
   coord_sf(crs = st_crs(plot_data), datum = NA) +
   facet_grid(-d_row ~ d_col, shrink = FALSE) +
-  scale_fill_distiller(palette = "RdBu", direction = -1 )
+  scale_fill_distiller(palette = "RdBu", direction = -1)
 ```
 
 The `ggplot2` spec:
