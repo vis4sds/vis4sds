@@ -14,8 +14,8 @@ By the end of this chapter you should gain the following knowledge and practical
 ::: {.callout-note icon="false"}
 ## Knowledge outcomes
 
--   [x] Appreciate the motivation for this book: why visualization, why R and why `ggplot2`.
--   [x] Recognise the characteristics of reproducible research and the role of *projects* and *computational notebooks* for curating modern data analysis products.
+-   [ ] Appreciate the motivation for this book: why visualization, why R and why `ggplot2`.
+-   [ ] Recognise the characteristics of reproducible research and the role of *projects* and *computational notebooks* for curating modern data analysis products.
 :::
 
 
@@ -23,12 +23,12 @@ By the end of this chapter you should gain the following knowledge and practical
 ::: {.callout-note icon="false"}
 ## Skills outcomes
 
--   [x] Open R using the RStudio Integrated Developer Environment (IDE).
--   [x] Install and enable R packages and query package documentation.
--   [x] Perform basic calculations via the R Console.
--   [x] Render Quarto files.
--   [x] Create R Projects.
--   [x] Read-in datasets from external resources as objects.
+-   [ ] Open R using the RStudio Integrated Developer Environment (IDE).
+-   [ ] Install and enable R packages and query package documentation.
+-   [ ] Perform basic calculations via the R Console.
+-   [ ] Render Quarto files.
+-   [ ] Create R Projects.
+-   [ ] Read-in datasets from external resources as objects.
 :::
 
 ## Introduction
@@ -373,7 +373,7 @@ Whilst there are obvious benefits to working in `.qmd` documents when doing data
 # curve_position : optional parameter controlling position, relative to
 # line length that curve bends out.
 get_trajectory <-
-  function (o_x, o_y, d_x, d_y, od_pair, curve_extent=-90, curve_position=6)
+function (o_x, o_y, d_x, d_y, od_pair, curve_extent=-90, curve_position=6)
   {
     curve_angle = get_radians(-curve_extent)
     x = (o_x - d_x)/curve_position

@@ -69,8 +69,10 @@ other <- "#bdbdbd"
 elected_parties <- c("Conservative", "Labour", "Other")
 
 
-## ----------------------- D A T A ---------------------------------------------
 
+#-----------------------------------------
+# 2. Concepts graphics
+#-----------------------------------------
 
 # Assemble Munzner visual channels.
 position_common <- image_read(here("figs", "03", "munzner", "position_common.png"))
@@ -178,7 +180,56 @@ munzner_effect <- ggplot() +
     axis.title.y = element_blank()
   )
 
-ggsave(here("figs", "03", "munzner_effect.png"), munzner_effect, dpi=700, width = 9, height=2.5)
+
+munzner_effect <- ggplot() + 
+  annotate("text", x=-1, y=5.5, label="effectiveness", size=3.5, hjust="centre", angle=270) +
+  annotate("text", x=-.3, y=8.4, label="magnitude:order", size=3.5, hjust="left", family="Avenir Medium") +
+  annotate("segment", x=-.8, xend=-.8, y=2.8, yend=8, size=.2, 
+           arrow = arrow(ends="first", length = unit(.15,"cm"))) +
+  annotation_raster(position_common_raster, 1, 2, 8, 7.5) +
+  annotate("text", x=.9, y=7.8, label="position:\n common scale", size=3, hjust="right") +
+  annotation_raster(position_unaligned_raster, 1, 1.98, 7.35, 6.9) +
+  annotate("text", x=.9, y=7.2, label="position:\n unaligned scale", size=3, hjust="right") +
+  annotation_raster(length_raster, 1, 1.95, 6.25, 6.75) +
+  annotate("text", x=.9, y=6.5, label="length:\n 1D size", size=3, hjust="right") +
+  annotation_raster(tilt_raster, 1, 2, 6.2, 5.7) +
+  annotate("text", x=.9, y=5.95, label="tilt/angle", size=3, hjust="right") +
+  annotation_raster(area_raster, 1, 2.1, 5.15, 5.55) +
+  annotate("text", x=.9, y=5.4, label="area:\n 2D size", size=3, hjust="right") +
+  annotation_raster(depth_raster, 1, 2, 5, 4.65) +
+  annotate("text", x=.9, y=4.75, label="depth:\n 3D position", size=3, hjust="right") +
+  annotation_raster(colour_raster, 1, 2, 3.87, 4.35) +
+  annotate("text", x=.9, y=4.1, label="colour luminance\nsaturation", size=3, hjust="right") +
+  annotation_raster(curve_raster, 1, 2, 3.2, 3.7) +
+   annotate("text", x=.9, y=3.5, label="curvature", size=3, hjust="right") +
+  annotation_raster(volume_raster, 1, 2, 3.1, 2.6) +
+  annotate("text", x=.9, y=3.0, label="volume", size=3, hjust="right") +
+  # 
+  annotate("text", x=2.5, y=8.4, label="identity:category", size=3.5, hjust="left", family="Avenir Medium") +
+  # #annotate("text", x=.15, y=.77, label="identity:\ncategory", size=3, hjust="right") +
+  annotate("text", x=3.5, y=7.8, label="spatial region", size=3, hjust="right") +
+  annotation_raster(spatial_raster, 3.6, 4.8, 8, 7.6) +
+  # 
+  annotation_raster(hue_raster, 3.6, 4.7, 7.35, 7) +
+  annotate("text", x=3.5, y=7.2, label="colour hue", size=3, hjust="right") +
+  # 
+  annotation_raster(motion_raster, 3.6, 4.7, 6.8, 6.3) +
+  annotate("text", x=3.5, y=6.55, label="motion", size=3, hjust="right") +
+  # 
+  annotation_raster(shape_raster,  3.6, 4.65, 6.25, 5.85) +
+  annotate("text", x=3.5, y=6, label="shape", size=3, hjust="right") +
+  
+  scale_y_continuous(limits=c(0, 9)) +
+  scale_x_continuous(limits=c(-1.2, 6)) +
+  
+  theme(
+    axis.text = element_blank(),
+    axis.line = element_blank(),
+    axis.title.x = element_blank(),
+    axis.title.y = element_blank()
+  )
+
+ggsave(here("figs", "03", "munzner_effect_trans.png"), munzner_effect, dpi=700, width = 5.7, height=6)
 
 
 # And recode elected variable as factor for use in scale_colour_manual.
@@ -502,6 +553,12 @@ bes_2019 |>
   summarise(vote_share=sum(votes, na.rm=TRUE)/sum(total_vote_19)) |>
   arrange(desc(vote_share))
 
+
+#-----------------------------------------
+# 3. Techniques graphics
+#-----------------------------------------
+
+
 data_gb <- bes_2019 |>
   filter(region!="Northern Ireland") |>
   mutate(
@@ -529,29 +586,24 @@ hist_1 <- data_gb |>
 hist_2 <- data_gb |>
   ggplot(mapping=aes(swing_con_lab)) +
   geom_histogram(fill="#003c8f") +
-  labs(
-    #title="Butler two-party Labour-Conservative Swing",
-    #subtitle="-- GB Constituencies 2019 versus 2017 election",
-    #caption="Data published by House of Commons Library, accessed via `parlitools`",
-    x="Swing", y="count"
-  )
+  labs(x="Swing", y="count")
 
 hist_3 <- data_gb |>
+  mutate(
+    region=case_when(
+      region == "Yorkshire and The Humber" ~ "Yorks and Humber",
+      TRUE ~ region)
+    ) |> 
   ggplot(mapping=aes(swing_con_lab)) +
   geom_histogram(fill="#003c8f") +
   geom_vline(xintercept=4.44, size=.3)+
-  labs(
-    #title="Butler two-party Labour-Conservative Swing",
-    #subtitle="-- GB Constituencies 2019 versus 2017 election",
-    #caption="Data published by House of Commons Library, accessed via `parlitools`",
-    x="Swing", y="count"
-  )+
+  labs(x="Swing", y="count")+
   facet_wrap(~region)
 
-plot = (hist_1 + hist_2)
-ggsave(filename=here("figs", "03", "hist.png"), plot=plot,width=8, height=3.5, dpi=300)
+plot <- (hist_1 + hist_2)
+ggsave(filename=here("figs", "03", "hist.png"), plot=plot,width=7, height=3.2, dpi=300)
 ggsave(filename=here("figs", "03", "hist.svg"), plot=plot,width=8, height=3.5)
-ggsave(filename=here("figs", "03", "hist-region.png"), plot=hist_3,width=9.5, height=6, dpi=300)
+ggsave(filename=here("figs", "03", "hist-region.png"), plot=hist_3,width=7.5, height=5, dpi=300)
 ggsave(filename=here("figs", "03", "hist-region.svg"), plot=hist_3,width=9.5, height=6)
 
 
@@ -645,6 +697,11 @@ party_colours <- c(con, lab, ld, snp, green, brexit, pc)
 names(party_colours) <- levels(temp_party_shares$party)
 
 party_shares_region <- temp_party_shares_region |>
+  mutate(
+    region=case_when(
+      region == "Yorkshire and The Humber" ~ "Yorks and Humber",
+      TRUE ~ region)
+  ) |> 
   ggplot(aes(x=reorder(party, vote_share), y=vote_share)) +
   geom_col(aes(fill=party)) +
   scale_fill_manual(values=party_colours) +
@@ -656,10 +713,13 @@ party_shares_region <- temp_party_shares_region |>
     x="party", y="vote share"
   )+
   facet_wrap(~region) +
-  guides(fill = guide_legend(nrow = 1)) +
-  theme(axis.text.x=element_blank(), axis.line.x = element_blank())
+  #guides(fill = guide_legend(nrow = 1)) +
+  theme(
+    axis.text.x=element_blank(), 
+    axis.line.x = element_blank(), 
+    legend.position = "right")
 
-ggsave(filename=here("figs", "03", "bars-region.png"), plot=party_shares_region,width=10, height=8, dpi=300)
+ggsave(filename=here("figs", "03", "bars-region.png"), plot=party_shares_region,width=8.2, height=5.5, dpi=300)
 ggsave(filename=here("figs", "03", "bars-region.svg"), plot=party_shares_region,width=10, height=8)
 
 plot_scatters <- data_gb |>
@@ -690,49 +750,34 @@ plot_scatters_con <- data_gb |>
   scale_shape_manual(values=c(21,19)) +
   scale_x_continuous(limits=c(0,90)) +
  # annotate("text", x=40, y=90, label="Conservative", hjust=0.5, size=4.5) +
-  annotate("text", x=20, y=60, label="Con increase on\n 2017 vote share", hjust=0.5, size=3.5) +
-  annotate("text", x=80, y=35, label="Con decrease on\n 2019 vote share", hjust=0.5, size=3.5) +
+  annotate("text", x=20, y=60, label="Con increase on\n 2017 vote share", hjust=0.5, size=3.8, colour="#525252") +
+  annotate("text", x=76, y=35, label="Con decrease on\n 2019 vote share", hjust=0.5, size=3.8, colour="#525252") +
   labs(x="vote share 2017 ", y="vote share 2019") +
   guides(fill=FALSE, alpha=FALSE, shape=FALSE, colour=FALSE) 
 
-plot_scatters_lab <- data_gb |>
-  mutate(is_flipped=seat_change_1719=="Conservative gain from Labour",
-         is_flipped=if_else(is.na(is_flipped), FALSE, is_flipped),
-         winner_19=case_when(
-           winner_19 == "Conservative" ~ "Conservative",
-           winner_19 == "Labour" ~ "Labour",
-           TRUE ~ "Other"
-         )) |>
-  ggplot(aes(x=lab_17, y=lab_19)) +
-  geom_point(aes(colour=winner_19, alpha=is_flipped, shape=is_flipped)) +
-  geom_abline(intercept=0, slope=1, size=.3) +
-  annotate("text", x=40, y=90, label="Labour", hjust=0.5, size=4.5) +
-  annotate("text", x=20, y=60, label="vote share > than 2019", hjust=0.5, size=3.5) +
-  annotate("text", x=80, y=20, label="vote share < than 2019", hjust=0.5, size=3.5) +
-  scale_colour_manual(values=c(con,lab,other)) +
-  scale_alpha_ordinal(range=c(.5,1)) +
-  scale_x_continuous(limits=c(0,90)) +
-  guides(fill=FALSE, alpha=FALSE, shape=FALSE, colour=FALSE) +
-  labs(x="vote share 2017 ", y="vote share 2019")
+# plot_scatters_lab <- data_gb |>
+#   mutate(is_flipped=seat_change_1719=="Conservative gain from Labour",
+#          is_flipped=if_else(is.na(is_flipped), FALSE, is_flipped),
+#          winner_19=case_when(
+#            winner_19 == "Conservative" ~ "Conservative",
+#            winner_19 == "Labour" ~ "Labour",
+#            TRUE ~ "Other"
+#          )) |>
+#   ggplot(aes(x=lab_17, y=lab_19)) +
+#   geom_point(aes(colour=winner_19, alpha=is_flipped, shape=is_flipped)) +
+#   geom_abline(intercept=0, slope=1, size=.3) +
+#   annotate("text", x=40, y=90, label="Labour", hjust=0.5, size=4.5) +
+#   annotate("text", x=20, y=60, label="vote share > than 2019", hjust=0.5, size=3.5) +
+#   annotate("text", x=80, y=20, label="vote share < than 2019", hjust=0.5, size=3.5) +
+#   scale_colour_manual(values=c(con,lab,other)) +
+#   scale_alpha_ordinal(range=c(.5,1)) +
+#   scale_x_continuous(limits=c(0,90)) +
+#   guides(fill=FALSE, alpha=FALSE, shape=FALSE, colour=FALSE) +
+#   labs(x="vote share 2017 ", y="vote share 2019")
 
-
-+
-  labs(
-    title="Conservative vote share in 2019 against Conservative vote share in 2017",
-    subtitle="-- Constituencies in Great Britain.",
-    caption="Data published by House of Commons Library, accessed via `parlitools`",
-    x="Conservative vote share 2017 ", y="Conservative vote share 2019"
-  )
-
-plot <- plot_scatters_con  + plot_annotation(
-  title="Conservative vote share in 2019 against vote share in 2017",
-  subtitle="-- Constituencies in Great Britain.",
-  caption="Data published by House of Commons Library, accessed via `parlitools`",
-  theme = theme_v_gds())
-
+plot <- plot_scatters_con  
 
 ggsave(filename=here("figs", "03", "scatters-con.png"), plot=plot,width=6, height=4.5, dpi=300)
-ggsave(filename=here("figs", "03", "scatters-con.svg"), plot=plot,width=, height=4.5)
 
 
 
@@ -788,31 +833,9 @@ plot <- plot_scatters_emph
 ggsave(filename=here("figs", "03", "scatters-region.png"), plot=plot_scatters_region,width=11, height=7, dpi=300)
 ggsave(filename=here("figs", "03", "scatters-region.svg"), plot=plot_scatters_region,width=11, height=7)
 
-data_gb |>
-  mutate(is_flipped=seat_change_1719=="Conservative gain from Labour",
-         is_flipped=if_else(is.na(is_flipped), FALSE, is_flipped),
-         winner_19=case_when(
-           winner_19 == "Conservative" ~ "Conservative",
-           winner_19 == "Labour" ~ "Labour",
-           TRUE ~ "Other"
-         )) |>
-  ggplot(aes(x=con_17, y=con_19)) +
-  geom_point(aes(alpha=is_flipped, colour=winner_19)) +
-  geom_abline(intercept = 0, slope = 1) +
-  scale_alpha_ordinal(range=c(.25,1)) +
-  scale_colour_manual(values=c(con,lab,other)) +
-  #facet_wrap(~region) +
-  theme_v_gds() +
-  labs(
-    title="Conservative vote share in 2019 against Conservative vote share in 2017, grouped by Region",
-    subtitle="-- Constituencies in Great Britain.",
-    caption="Data published by House of Commons Library, accessed via `parlitools`",
-    x="Labour vote share 2017 ", y="Labour vote share 2019"
-  )
 
-
-ggsave(filename="./static/class/03-class_files/bars-region.png", plot=party_shares_region,width=12, height=8, dpi=300)
-
+constituency_boundaries <- constituency_boundaries |>  filter(pcon17nm!="Orkney and Shetland") |> 
+  rmapshaper::ms_simplify(keep=.9)
 
 data_gb <- constituency_boundaries |>
   inner_join(data_gb, by=c("pcon17cd"="ons_const_id"))
@@ -843,6 +866,9 @@ map_1 <- data_gb |>
   scale_fill_manual(values=party_colours)
 
 
+party_colours <- c(con, lab, ld, green, snp, pc, other)
+#names(party_colours) <- levels(temp_party_shares$party)
+
 map_2 <- data_gb |> 
   mutate(
     winner_19=case_when(
@@ -861,12 +887,21 @@ map_2 <- data_gb |>
   ) |> 
   ggplot() +
   geom_sf(aes(fill=winner_19), alpha=.7, colour="#eeeeee", linewidth=0.001)+
-  geom_sf(data=. %>% group_by(region) %>% summarise(), colour="#eeeeee", fill="transparent", linewidth=0.08)+
+  geom_sf(data=. %>% group_by(region) %>% summarise(), colour="#eeeeee", fill="transparent", linewidth=0.1)+
   coord_sf(crs=27700, datum=NA) +
   labs(fill="") +
   theme(legend.position = "bottom") +
   scale_fill_manual(values=party_colours) +
-  theme(legend.title = element_text(size=8), legend.text = element_text(size=6.8), legend.key.size = unit(.4, 'cm'))
+  guides(fill="none") +
+  guides(fill=guide_legend(nrow = 1)) +
+  theme(
+    legend.title = element_text(size=8), 
+    legend.text = element_text(size=6.8), 
+    legend.key.size = unit(.2, 'cm'))
+
+legend <- ggpubr::get_legend(map_2)
+
+ggpubr::as_ggplot(legend)
 
 map_3 <- data_gb |> 
   mutate(
@@ -877,17 +912,18 @@ map_3 <- data_gb |>
   ) |> 
   ggplot() +
   geom_sf(aes(fill=winner_19, alpha=swing_con_lab), colour="#eeeeee", linewidth=0.001)+
-  geom_sf(data=. %>% group_by(region) %>% summarise(), colour="#eeeeee", fill="transparent", linewidth=0.08)+
+  geom_sf(data=. %>% group_by(region) %>% summarise(), colour="#eeeeee", fill="transparent", linewidth=0.1)+
   coord_sf(crs=27700, datum=NA) +
   labs(fill="") +
   theme(legend.position = "right") +
   guides(alpha="none", fill="none") +
   scale_fill_manual(values=party_colours)
 
-plot <- map_1 + map_2 + map_3
+plot <- (map_1 + map_2 + map_3) / ggpubr::as_ggplot(legend) +
+  plot_layout(heights=c(1,.05))
 
 
-ggsave(here("figs", "03", "map-winners.png"), plot=plot,width=8, height=6, dpi=300)
+ggsave(here("figs", "03", "map-winners.png"), plot=plot,width=6, height=3.5, dpi=300)
 ggsave(here("figs", "03", "map-winners.svg"), plot=plot,width=8, height=6)
 
 
@@ -941,11 +977,12 @@ gb <- data_gb |>
          elected=if_else(!winner_19 %in% c("Conservative", "Labour"), "Other", as.character(winner_19))
   ) |>
   ggplot()+
-  geom_sf(aes(fill=elected), colour="#636363", alpha=0.2, linewidth=0.01)+
-  geom_sf(data=. %>% group_by(region) %>% summarise(), colour="#636363", fill="transparent", linewidth=0.08)+
+  geom_sf(aes(fill=elected), colour="#ffffff", alpha=0.2, linewidth=0.01)+
+  geom_sf(data=. %>% group_by(region) %>% summarise(), colour="#ffffff", fill="transparent", linewidth=0.2)+
+  geom_sf(data=. %>% summarise(), colour="#636363", fill="transparent", linewidth=0.05)+
   coord_sf(crs=27700, datum=NA,
            xlim = c(unname(uk_bbox$xmin)-.9*uk_width, unname(uk_bbox$xmax)+0*london_width),
-           ylim = c(unname(uk_bbox$ymin), unname(uk_bbox$ymax)-0.22*uk_height)
+           ylim = c(unname(uk_bbox$ymin), unname(uk_bbox$ymax)-0*uk_height)
   )+
   geom_spoke(
     aes(x=bng_e, y=bng_n, angle=get_radians(map_scale(swing_con_lab,min_shift,max_shift,135,45)), colour=elected, size=is_flipped),
@@ -977,8 +1014,8 @@ data_gb |>
   geom_sf(data=. %>% group_by(region) %>% summarise(), colour="#636363", fill="transparent", linewidth=0.08)+
   geom_spoke(
     aes(x=bng_e, y=bng_n, angle=get_radians(map_scale(swing_con_lab,min_shift,max_shift,135,45)), colour=elected, size=is_flipped),
-    radius=7000, position="center_spoke"
-  )+
+    radius=7000, position="centre_spoke", lineend="round"
+  ) +
   coord_sf(crs=27700, datum=NA)+
   scale_size_ordinal(range=c(.3,.9))+
   scale_colour_manual(values=party_colours)+
@@ -991,8 +1028,8 @@ london <- data_gb |>
          elected=if_else(!winner_19 %in% c("Conservative", "Labour"), "Other", as.character(winner_19))
   ) |>
   ggplot()+
-  geom_sf(aes(fill=elected), colour="#636363", alpha=0.2, linewidth=0.01)+
-  geom_sf(data=. %>% group_by(region) %>% summarise(), colour="#636363", fill="transparent", linewidth=0.08)+
+  geom_sf(aes(fill=elected), colour="#ffffff", alpha=0.2, linewidth=0.01)+
+  geom_sf(data=. %>% group_by(region) %>% summarise(), colour="#ffffff", fill="transparent", linewidth=0.2)+
   coord_sf(datum=NA)+
   geom_spoke(
     aes(x=bng_e, y=bng_n, angle=get_radians(map_scale(swing_con_lab,min_shift,max_shift,135,45)), colour=elected, size=is_flipped),
@@ -1037,24 +1074,9 @@ line <-  ggplot()+
   ylim(-0.35,0.35)+
   theme_void()
 
-
-theme_v_gds() +
-  theme(axis.title.x= element_blank(), axis.title.y= element_blank(), axis.text = element_blank())
-
 # Party colours for legend
 party <- temp_dat |>
-  ggplot()+
-  geom_spoke(aes(x=x, y=y,angle=get_radians(90), colour=elected),radius=0.7, size=1, lineend="round")+
-  scale_colour_manual(values=party_colours)+
-  geom_text(aes(label=elected,x=x+0.03, y=y+0.2),hjust="left",vjust="middle", family="Avenir Book", size=2.5, colour="#636363")+
-  guides(colour=FALSE)+
-  xlim(1,5)+
-  ylim(-4,4)+
-  theme_void()
-theme_v_gds() +
-  theme(axis.title.x= element_blank(), axis.title.y= element_blank(), axis.text = element_blank())
-
-party <- temp_dat |>
+  mutate(elected=if_else(elected=="Conservative", "Con", elected)) |> 
   mutate(y=map_scale(y, 1,3,3,1)) |> 
   ggplot()+
   geom_spoke(aes(x=y, y=x,angle=get_radians(90), colour=elected),radius=0.7, size=1, lineend="round")+
@@ -1066,34 +1088,17 @@ party <- temp_dat |>
   theme_void()
 
 
-# Use annotation_custom to organise grobs in legend.
-legend <- ggplot()+
-  geom_text(aes(label="Each constituency is a line",x=0, y=6.2), hjust="left", vjust="top", family="Avenir Medium", size=4.5)+
-  geom_text(aes(label="Colour hue -- winning party",x=0.1, y=5.2), hjust="left", vjust="top", family="Avenir Next", size=3.2)+
-  geom_text(aes(label="Thick line -- \n constituency flipped \n winning party \n from 2017",x=.1, y=3), hjust="left", vjust="top", family="Avenir Next", size=3)+
-  geom_text(aes(label="Line angle -- \n Butler % swing \n in vote share \n from 2017 -- \n Con-Lab",x=4.3, y=3), hjust="left", vjust="top", family="Avenir Next", size=3)+
-  annotation_custom(grob=ggplotGrob(swing),xmin=5.5,xmax=10,ymin=1.3,ymax=3.5)+
-  annotation_custom(ggplotGrob(line),xmin=2.3,xmax=3.6,ymin=3,ymax=1.8)+
-  annotation_custom(ggplotGrob(party),xmin=.1,xmax=5,ymin=3.8,ymax=4.6)+
-  xlim(0,10)+
-  ylim(0,6.25) +
-  theme_void() +
-  theme(plot.background = element_rect(fill="#eeeeee", colour = NA))
-
-
 legend <- ggplot()+
   #geom_text(aes(label="Each constituency is a line",x=0, y=6.2), hjust="left", vjust="top", family="Avenir Medium", size=4.5)+
   geom_text(aes(label="Colour hue -- \n winning party",x=0.1, y=5), hjust="left", vjust="top", family="Avenir Next", size=3.5)+
-  geom_text(aes(label="Thick line -- \n constituency flipped \n winning party \n from 2017",x=.1, y=3.3), hjust="left", vjust="top", family="Avenir Next", size=3.5)+
-  geom_text(aes(label="Line angle -- \n Butler % swing \n in vote share \n from 2017 -- \n Con-Lab",x=.1, y=.5), hjust="left", vjust="top", family="Avenir Next", size=3.5)+
+  geom_text(aes(label="Thick line -- \n constituency flipped \n winning party",x=.1, y=3.3), hjust="left", vjust="top", family="Avenir Next", size=3.5)+
+  geom_text(aes(label="Line angle -- \n Butler % swing \n in vote share",x=.1, y=.5), hjust="left", vjust="top", family="Avenir Next", size=3.5)+
   annotation_custom(grob=ggplotGrob(swing),xmin=1.5,xmax=3.6,ymin=-1.2,ymax=1.5)+
   annotation_custom(ggplotGrob(line),xmin=1.5,xmax=3.6,ymin=2,ymax=3.5)+
-  annotation_custom(ggplotGrob(party),xmin=1.5,xmax=4,ymin=4.3,ymax=5.3)+
+  annotation_custom(ggplotGrob(party),xmin=1.8,xmax=4,ymin=4.3,ymax=5.3)+
   xlim(0,4)+
   ylim(-1,6.25) +
   theme_void() 
-+
-  theme(plot.background = element_rect(fill="#eeeeee", colour = NA))
 
 
 
@@ -1110,18 +1115,12 @@ map <- gb +
   annotation_custom(
     grob=ggplotGrob(legend),
     xmin=unname(uk_bbox$xmin -1*uk_width),
-    xmax=unname(uk_bbox$xmin),
-    ymin=unname(uk_bbox$ymax) -.6*uk_height,
-    ymax=unname(uk_bbox$ymax) -.2*uk_height
+    xmax=unname(uk_bbox$xmin -.1*uk_width),
+    ymin=unname(uk_bbox$ymax) -.4*uk_height,
+    ymax=unname(uk_bbox$ymax) -0*uk_height
   ) 
   
-
-ggsave(filename=here("figs", "03", "spoke-legend.png"), plot=legend,width=8, height=4, dpi=300)
-ggsave(filename=here("figs", "03", "spoke-svg.png"), plot=legend,width=8, height=4, dpi=300)
-
-
 ggsave(filename=here("figs", "03", "spoke-map.png"), plot=map,width=8, height=7, dpi=300)
-ggsave(filename=here("figs", "03", "spoke-map.svg"), plot=map,width=8.5, height=7)
 
 ggsave(filename="./static/class/03-class_files/spoke-map.png", plot=map,width=11, height=7, dpi=300)
 

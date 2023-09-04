@@ -15,18 +15,18 @@ By the end of this chapter you should gain the following knowledge and practical
 ::: {.callout-note icon=false}
 
 ## Knowledge outcomes
-- [x] Recognise the characteristics of effective data graphics.
-- [x] Understand that there is a *grammar* of graphics, and that this grammar underpins modern visualization toolkits (ggplot2, vega-lite and Tableau).
-- [x] Be aware of the vocabulary used by these toolkits -- that of encoding data through visual channels.
-- [x] Be able to select appropriate visual channels given a data item's measurement type.
-- [x] Appreciate how visual channels and evidence of their encoding effectiveness can be used to evaluate data graphics.
+- [ ] Recognise the characteristics of effective data graphics.
+- [ ] Understand that there is a *grammar* of graphics, and that this grammar underpins modern visualization toolkits (ggplot2, vega-lite and Tableau).
+- [ ] Be aware of the vocabulary used by these toolkits -- that of encoding data through visual channels.
+- [ ] Be able to select appropriate visual channels given a data item's measurement type.
+- [ ] Appreciate how visual channels and evidence of their encoding effectiveness can be used to evaluate data graphics.
 :::
 
 
 ::: {.callout-note icon=false}
 
 ## Skills outcomes
-- [x] Write ggplot2 specifications that represent data using marks (`geoms`) and encoding channels (`aesthetics`).
+- [ ] Write ggplot2 specifications that represent data using marks (`geoms`) and encoding channels (`aesthetics`).
 
 :::
 
@@ -201,15 +201,15 @@ It is understandable if at this stage the specifications in @fig-gog-demo still 
 
 You might have noticed that in our descriptions we introduced <span style="color:#E17637;font-weight:bold">marks</span> as another term for *geometry* and visual encoding <span style="color:#62B743;font-weight:bold">channels</span>  as another term for *aesthetics*. We also paid special attention to the <span style="color:#5A91CA;font-weight:bold">data types</span> that are being encoded. *Marks* are graphical elements such as *bars*, *lines*, *points*, *ellipses*  that can be used to represent data items. In ggplot2 these are accessed through the function layers prefaced with [`geom_*)()`](https://ggplot2.tidyverse.org/reference/#section-geoms). Visual *channels* are attributes such as *colour*, *size*, *position* that, when mapped to data, affect the appearance of marks in response to the values of a dataset. In ggplot2 these attributes are controlled via the `aes()`, or aesthetics, function.
 
-*Marks* and *channels* are terms used widely in Information Visualization, an academic discipline devoted to the study of data graphics, and most notably by Tamara @munzner_visualization_2014 in her textbook [*Visualization Analysis and Design*](https://www.routledge.com/Visualization-Analysis-and-Design/Munzner/p/book/9781466508910). @munzner_visualization_2014's work synthesises over foundational research in Information Visualization and Cognitive Science testing how effective different visual channels are at supporting different tasks. @fig-munzner is taken from @munzner_visualization_2014 and lists the main visual channels with which data might be encoded. The grouping and order of the figure is meaningful. Channels are grouped according to the tasks to which they are best suited and then ordered according to their effectiveness at supporting those tasks. The top grouping displays  *magnitude:order* channels -- those that are best suited to tasks aimed at quantifying data items. The bottom grouping displays *identity:category* channels -- those that are most suited to supporting tasks that involve isolating and associating data items.
+*Marks* and *channels* are terms used widely in Information Visualization, an academic discipline devoted to the study of data graphics, and most notably by Tamara @munzner_visualization_2014 in her textbook [*Visualization Analysis and Design*](https://www.routledge.com/Visualization-Analysis-and-Design/Munzner/p/book/9781466508910). @munzner_visualization_2014's work synthesises over foundational research in Information Visualization and Cognitive Science testing how effective different visual channels are at supporting different tasks. @fig-munzner is taken from @munzner_visualization_2014 and lists the main visual channels with which data might be encoded. The grouping and order of the figure is meaningful. Channels are grouped according to the tasks to which they are best suited and then ordered according to their effectiveness at supporting those tasks. The left grouping displays  *magnitude:order* channels -- those that are best suited to tasks aimed at quantifying data items. The right grouping displays *identity:category* channels -- those that are most suited to supporting tasks that involve isolating and associating data items.
 
 ```{r}
-#| label: fig-munzners  
-#| fig-cap: "Visual channels to which data items can be encoded, as they appear in @munzner_visualization_2014. **TODO: Increase text size**"
+#| label: fig-munzner  
+#| fig-cap: "Visual channels to which data items can be encoded, as they appear in @munzner_visualization_2014."
 #| echo: false
-#| out.width: 100%
+#| out.width: 65%
 
-include_graphics("figs/03/munzner_effect.png", error = FALSE)
+include_graphics("figs/03/munzner_effect_trans.png", error = FALSE)
 ```
 <!-- ![Visual channels to which data items can be encoded, as they appear in @munzner_visualization_2014.](figs/03/munzner.png){#fig-munzner width=100% fig-align="center"} -->
 
@@ -820,6 +820,8 @@ A general point from the code blocks in this chapter is of the importance of pro
 :::
 
 ### Plot geography
+Implicit in the data graphics above is that the composition of Conservative and Labour voting may be shifting. If so, then paying attention to the geography to voting, certainly to observed *changes* in voting between 2017 and 2019 elections (e.g. @fig-hist-region), may be instructive. We end the technical component to the chapter by generating thematic maps of the results data.
+
 
 ```{r}
 #| label: fig-map-winners
@@ -830,7 +832,6 @@ include_graphics("figs/03/map-winners.png", error = FALSE)
 ```
 <!-- ![Choropleth of elected parties in 2019 General Election.](figs/03/map-winners.png){#fig-map-winners width=100% fig-align="center"} -->
 
-Implicit in the data graphics above is that the composition of Conservative and Labour voting may be shifting. If so, then paying attention to the geography to voting, certainly to observed *changes* in voting between 2017 and 2019 elections (e.g. @fig-hist-region), may be instructive. We end the chapter by generating thematic maps of the results data.
 
 To do this we need to generate a join on the boundary dataset loaded at the start of this technical section (`cons_outline`):
 
@@ -878,7 +879,7 @@ A breakdown of the ggplot2 spec:
 4. *Coordinates*: `coord_sf` -- we set the coordinate system (CRS) explicitly. In this case [OS British National Grid](https://spatialreference.org/ref/epsg/osgb-1936-british-national-grid/).
 5. *Setting*: Constituency boundaries are subtly introduced by setting the `geom_sf()` mark to light grey (`colour="#eeeeee"`) with a thin (`size=0.01`) outline. On the map to the right outlines for regions are added as another `geom_sf()` layer. Note how this is achieved in the second `geom_sf()`. The `data_gb` dataset initially passed to ggplot2 (identified by the `.` mark) is collapsed by region (with `group_by()` and `summarise()`), in the background the boundaries in  `geometry` are aggregated bu region.   
 
-In the third map of @fig-map-winners the transparency (`alpha`) of filled constituencies is varied according to the Swing variable. This does demonstrate that constituencies swinging most dramatically for Conservative (darker colours) are in the midlands and North of England and not in London and the South East. The pattern is nevertheless a subtle one; transparency (colour luminance / saturation) is not a highly effective visual channel. It may be worth applying the same encoding to Butler two-party swing as that used in the Washington Post graphic when characterising Republican-Democrat swing in 2016 US Elections (e.g. @beecham_using_2020).
+In the third map of @fig-map-winners the transparency (`alpha`) of filled constituencies is varied according to the Swing variable. This does demonstrate that constituencies swinging most dramatically for Conservative (darker colours) are in the midlands and North of England and not in London and the South East. The pattern is nevertheless a subtle one; transparency (colour luminance / saturation) is not a highly effective visual channel. It may be worth applying the same encoding to Butler two-party swing as that used in the Washington Post graphic when characterising Republican-Democrat swing in 2016 US Elections [e.g. @beecham_using_2020].
 
 This can be achieved by simply adding another ggplot2 layer, though the code is a little more involved. ggplot2's `geom_spoke()` primitive draws line segments parameterised by a location (x,y position) and angle. With this we can encode constituencies with <span style="font-weight:bolder">|</span> marks that angle to the right   <span style="color:#3879A1;font-weight:bold">\/</span> where the constituency swings towards Conservative and to the left where it swings towards Labour <span style="color:#DB534D;font-weight:bolder">\\</span>. This encoding better exposes the pattern of constituencies forming Labour’s “red wall” in the north of England, as well as parts of Wales and the Midlands flipping to Conservative.
 
@@ -888,7 +889,7 @@ This can be achieved by simply adding another ggplot2 layer, though the code is 
 #| fig-cap: "Map of Butler Con-Lab Swing in 2019 General Election."
 #| echo: false
 
-include_graphics("figs/03/spoke-map.svg", error = FALSE)
+include_graphics("figs/03/spoke-map.png", error = FALSE)
 ```
 <!-- ![Map of Butler Con-Lab Swing in 2019 General Election.](figs/03/spoke-map.svg){#fig-spoke-map width=100% fig-align="center"} -->
 

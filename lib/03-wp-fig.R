@@ -22,8 +22,8 @@ triangle <-  ggplot()+
   geom_segment(aes(x=.4, xend=0, y=-.35, yend=0.35), linewidth=0.15, lineend="round")+
   geom_segment(aes(x=0, y=-.32, xend=0, yend=.32), linewidth=0.15, arrow=arrow(type="closed", ends="both", length = unit(.025, "inches")), linetype = "dashed", colour="#636363")+
   geom_segment(aes(x=-.34, y=-.35, xend=.34, yend=-.35), linewidth=0.15, arrow=arrow(type="closed", ends="both", length = unit(.025, "inches")), linetype = "dashed", colour="#636363")+
-  geom_text(aes(label="Height is \ntotal votes cast",x=0, y=-.1),hjust="centre", size=1.8)+
-  geom_text(aes(label="Width is margin \nin net votes",x=0, y=-.5),hjust="centre", size=1.8)+
+  geom_text(aes(label="Height is \ntotal votes cast",x=0, y=-.1),hjust="centre", size=1.8, family="Avenir Book")+
+  geom_text(aes(label="Width is margin \nin net votes",x=0, y=-.5),hjust="centre", size=1.8, family="Avenir Book")+
   xlim(-0.5,0.5)+
   ylim(-0.6,0.35) +
   theme_void()
@@ -208,129 +208,6 @@ choropleth <- trump_data_raw |>
   scale_fill_manual(values=c("#EEF4F9", "#FDF1F1"), guide="none") +
   theme_void()
   
-
-
-wp <- 
-  ggplot() +
-  
-  coord_sf(
-    datum=NA,
-    xlim = c(unname(us_bbox$xmin)-0.05*us_width, unname(us_bbox$xmin)+1.6*us_width), 
-    ylim = c(unname(us_bbox$ymin), unname(us_bbox$ymax)+0.1*us_height)
-  )+
-  
-  annotate("text", 
-           x=unname(us_bbox$xmin)+0.75*us_width,y=unname(us_bbox$ymax)+0.13*us_height,
-           label="The peaks and valleys of Trump and Clinton’s support", 
-           family="Cinzel", hjust="middle", vjust="top", size=5.5
-  ) +
-  annotate("text", 
-           x=unname(us_bbox$xmin)+0.75*us_width,y=unname(us_bbox$ymax)+0.09*us_height,
-           label="Clinton won in urban counties, while Trump won everywhere else.", 
-           family="Cinzel", hjust="middle", vjust="top", size=4
-  )+
-  
-  annotation_custom(
-    grob=ggplotGrob(wp_map),
-    xmin=unname(us_bbox$xmin),
-    xmax=unname(us_bbox$xmax),
-    ymin=unname(us_bbox$ymin),
-    ymax=unname(us_bbox$ymax)
-  )+
-  annotation_custom(
-    grob=ggplotGrob(legend),
-    xmin=unname(us_bbox$xmax) + .11*us_width,
-    xmax=unname(us_bbox$xmax) + 0.72*us_width,
-    ymin=unname(us_bbox$ymax) - 0.01*us_height,
-    ymax=unname(us_bbox$ymax) - .17*us_height
-  ) +
-  annotation_custom(
-    grob=ggplotGrob(choropleth),
-    xmin=unname(us_bbox$xmax)+.15*us_width,
-    xmax=unname(us_bbox$xmax)+.70*us_width,
-    ymin=unname(us_bbox$ymax)-.19*us_height,
-    ymax=unname(us_bbox$ymax)-.48*us_height
-  )+
-  
-  annotate("text", 
-           x=unname(us_bbox$xmin-.08*us_width),y=unname(us_bbox$ymin)+0.825*us_height,
-           label="THE GREAT LAKES", 
-           hjust="left", vjust="top", size=2.2, family="Avenir Next Demi Bold"
-  )+
-  
-  annotate("text", 
-           x=unname(us_bbox$xmin-.08*us_width),y=unname(us_bbox$ymin)+0.81*us_height,
-           label=str_wrap(great_lakes,25), 
-           hjust="left", vjust="top", size=2.2
-  )+
-  
-  annotate("text", 
-           x=unname(us_bbox$xmin)+0.35*us_width,y=unname(us_bbox$ymax)+0.015*us_height,
-           label="THE NORTH EAST", 
-           hjust="left", vjust="top", size=2.2, family="Avenir Next Demi Bold"
-  )+
-  
-  annotate("text", 
-           x=unname(us_bbox$xmin)+0.35*us_width,y=unname(us_bbox$ymax)+0.00*us_height,
-           label=str_wrap(north_east,60), 
-           hjust="left", vjust="top", size=2.2
-  )+
-  
-  annotate("text", 
-           x=unname(us_bbox$xmin)+0.78*us_width,y=unname(us_bbox$ymax)-.24*us_height,
-           label="THE URBAN-RURAL DIVIDE", 
-           hjust="left", vjust="top", size=2.2, family="Avenir Next Demi Bold"
-  )+
-  
-  annotate("text", 
-           x=unname(us_bbox$xmin)+0.78*us_width,y=unname(us_bbox$ymax)-0.255*us_height,
-           label=str_wrap(urban_rural,30), 
-           hjust="left", vjust="top", size=2.2
-  )+
-  
-  annotate("text", 
-           x=unname(us_bbox$xmax)-0.15*us_width,y=unname(us_bbox$ymin)+.435*us_height,
-           label="TEXAS AND THE PLAINS", 
-           hjust="left", vjust="top", size=2.2, family="Avenir Next Demi Bold"
-  )+
-  annotate("text", 
-           x=unname(us_bbox$xmax)-0.15*us_width,y=unname(us_bbox$ymin)+0.42*us_height,
-           label=str_wrap(texas,40), 
-           hjust="left", vjust="top", size=2.2
-  )+
-  
-  annotate("text", 
-           x=unname(us_bbox$xmax)-.25*us_width,y=unname(us_bbox$ymin)+.165*us_height,
-           label="THE SOUTH WEST", 
-           hjust="left", vjust="top", size=2.2, family="Avenir Next Demi Bold"
-  )+
-  annotate("text", 
-           x=unname(us_bbox$xmax)-.25*us_width,y=unname(us_bbox$ymin)+0.15*us_height,
-           label=str_wrap(south_west,40), 
-           hjust="left", vjust="top", size=2.2
-  )+
-  
-  annotate("text",
-           x=unname(us_bbox$xmin)+.1*us_width,y=unname(us_bbox$ymax)-.01*us_height,
-           label="EAST\n COAST", hjust="middle", vjust="top", size=3.5
-  ) +
-  annotate("text", 
-           x=unname(us_bbox$xmin)+.2*us_width,y=unname(us_bbox$ymin)+.025*us_height,
-           label="WEST\n COAST", hjust="middle", vjust="bottom", size=3.5
-  )+
-  annotate("segment", 
-           x=unname(us_bbox$xmax)+.12*us_width, xend=unname(us_bbox$xmax)+.12*us_width,
-           y=unname(us_bbox$ymax), yend=unname(us_bbox$ymax)-.4*us_height, size=.05
-  )+
-  
-  theme(
-    plot.background=element_rect(fill="#ffffff"),
-    axis.text=element_blank(), panel.grid.major=element_blank(),  
-    axis.title.x=element_blank(), axis.title.y=element_blank()
-  )
-
-ggsave(filename=here("figs", "03", "wp_long.png"), plot=wp,width=8.5, height=8.5, dpi=500)
-
 wp <- 
   ggplot() +
   
@@ -535,18 +412,6 @@ party <- temp_dat |>
 
 # Use annotation_custom to organise grobs in legend.
 legend <- ggplot()+
-  geom_text(aes(label="Each county is a line",x=0, y=6.2), hjust="left", vjust="top", family="Avenir Next Medium", size=2.5)+
-  geom_text(aes(label="Colour hue is \n winning party",x=0.02, y=5.2), hjust="left", vjust="top", family="Avenir Next", size=2)+
-  geom_text(aes(label="Thick stroke \ncounty flipped \n from 2012",x=0.02, y=4), hjust="left", vjust="top", family="Avenir Next", size=2)+
-  geom_text(aes(label="Swing -- \n % change votes \n from 2012 Rep-Dem",x=0.02, y=2.2), hjust="left", vjust="top", family="Avenir Next", size=2)+
-  annotation_custom(ggplotGrob(party),xmin=0.1,xmax=1.2,ymin=4.3,ymax=5.3)+
-  annotation_custom(ggplotGrob(line),xmin=0.1,xmax=1.2,ymin=2.8,ymax=3.8)+
-  annotation_custom(grob=ggplotGrob(swing),xmin=0.1,xmax=1.2,ymin=.5,ymax=2.9)+
-  xlim(0,2)+
-  ylim(0, 6.2) +
-  theme_void() 
-
-legend <- ggplot()+
   geom_text(aes(label="Each county is a line",y=1.95, x=0), hjust="left", vjust="top", family="Avenir Next Medium", size=3)+
   geom_text(aes(label="Colour hue \nwinning \nparty",y=1.7, x=6.4), hjust="left", vjust="top", family="Avenir Next", size=2.5)+
   geom_text(aes(label="Thick stroke \ncounty flipped \nfrom 2012", y=1.7, x=4.0), hjust="left", vjust="top", family="Avenir Next", size=2.5)+
@@ -652,16 +517,19 @@ utah <- "The reason you’re seeing counties in Utah swinging has a simple answe
 
 
 library(ggforce)
-rural_counties <- trump_data |> bind_cols(wp_coords) |> 
+wp_coords <- trump_data |> st_centroid() |>
+  st_coordinates() |> as_tibble() |> rename_all(tolower)
+
+rural_counties <- trump_data |> # bind_cols(wp_coords) |> 
   mutate(is_flip= flip %in% c("Obama Trump", "Romney Clinton")) |> 
   filter(is_flip, state_abbr %in% c("ME","NH", "VT"))
 
-rural_counties <- trump_data |> bind_cols(wp_coords) |> 
+rural_counties <- trump_data |> # bind_cols(wp_coords) |> 
   mutate(is_flip= flip %in% c("Obama Trump", "Romney Clinton")) |> 
   filter(is_flip, state_abbr %in% c("ME","NH", "VT"))
 
 
-rural_counties <- trump_data |> bind_cols(wp_coords) |> 
+rural_counties <- trump_data |> # bind_cols(wp_coords) |> 
   mutate(is_flip= flip %in% c("Obama Trump", "Romney Clinton")) |> 
   filter(is_flip, county_name == "Aroostook County")
 
@@ -704,70 +572,70 @@ wp <-
   annotate("text", 
            x=unname(us_bbox$xmin)-.05*us_width,y=unname(us_bbox$ymin)+0.815*us_height,
            label="THE GREAT LAKES", 
-           hjust="left", vjust="top", size=2.5, family="Avenir Next Demi Bold"
+           hjust="left", vjust="top", size=2.2, family="Avenir Next Demi Bold"
   )+
   
   annotate("text", 
            x=unname(us_bbox$xmin)-.05*us_width,y=unname(us_bbox$ymin)+0.80*us_height,
            label=str_wrap(great_lakes,25), 
-           hjust="left", vjust="top", size=2.5
+           hjust="left", vjust="top", size=2.2
   )+
   
   annotate("text", 
            x=unname(us_bbox$xmin)+0.35*us_width,y=unname(us_bbox$ymax)+0.015*us_height,
            label="THE NORTH EAST", 
-           hjust="left", vjust="top", size=2.5, family="Avenir Next Demi Bold"
+           hjust="left", vjust="top", size=2.2, family="Avenir Next Demi Bold"
   )+
   
   annotate("text", 
            x=unname(us_bbox$xmin)+0.35*us_width,y=unname(us_bbox$ymax)+0.00*us_height,
            label=str_wrap(north_east,60), 
-           hjust="left", vjust="top", size=2.5
+           hjust="left", vjust="top", size=2.2
   )+
   
   annotate("text", 
            x=unname(us_bbox$xmin)+0.8*us_width,y=unname(us_bbox$ymax)-.23*us_height,
            label="THE DEEP SOUTH", 
-           hjust="left", vjust="top", size=2.5, family="Avenir Next Demi Bold"
+           hjust="left", vjust="top", size=2.2, family="Avenir Next Demi Bold"
   )+
   
   annotate("text", 
            x=unname(us_bbox$xmin)+0.8*us_width,y=unname(us_bbox$ymax)-0.245*us_height,
            label=str_wrap(deep_south,30), 
-           hjust="left", vjust="top", size=2.5
+           hjust="left", vjust="top", size=2.2
   )+
   
   annotate("text", 
            x=unname(us_bbox$xmax)-0.15*us_width,y=unname(us_bbox$ymin)+.44*us_height,
            label="ALONG THE BORDER", 
-           hjust="left", vjust="top", size=2.5, family="Avenir Next Demi Bold"
+           hjust="left", vjust="top", size=2.2, family="Avenir Next Demi Bold"
   )+
   annotate("text", 
            x=unname(us_bbox$xmax)-0.15*us_width,y=unname(us_bbox$ymin)+0.425*us_height,
            label=str_wrap(border,30), 
-           hjust="left", vjust="top", size=2.5
+           hjust="left", vjust="top", size=2.2
   )+
   
   annotate("text", 
            x=unname(us_bbox$xmin)-.05*us_width,y=unname(us_bbox$ymin)+.06*us_height,
            label="THE WEST", 
-           hjust="left", vjust="top", size=2.5, family="Avenir Next Demi Bold"
+           hjust="left", vjust="top", size=2.2, family="Avenir Next Demi Bold"
   )+
   annotate("text", 
            x=unname(us_bbox$xmin)-.05*us_width,y=unname(us_bbox$ymin)+.045*us_height,
            label=str_wrap(west,105), 
-           hjust="left", vjust="top", size=2.5
+           hjust="left", vjust="top", size=2.2
   )+
   
   annotate("text", 
            x=unname(us_bbox$xmax)-.25*us_width,y=unname(us_bbox$ymin)+.27*us_height,
            label="UTAH", 
-           hjust="left", vjust="top", size=2.5, family="Avenir Next Demi Bold"
+           hjust="left", vjust="top", size=2.2, family="Avenir Next Demi Bold"
   )+
   annotate("text", 
            x=unname(us_bbox$xmax)-.25*us_width,y=unname(us_bbox$ymin)+0.255*us_height,
            label=str_wrap(utah,30), 
-           hjust="left", vjust="top", size=2.5
+           hjust="left", vjust="top", size=2.2
   )+
   
   annotate("text",

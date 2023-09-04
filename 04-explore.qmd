@@ -13,16 +13,16 @@ By the end of this chapter you should gain the following knowledge and practical
 ::: {.callout-note icon=false}
 
 ## Knowledge outcomes
-- [x] An appreciation of how data graphics can support exploratory data analysis (EDA) workflows.
-- [x] The main chart types, their benefits and drawbacks, for summarising variation within- and between- variables.
-- [x] Three strategies for effecting *comparison* in EDA: juxtaposition, superposition and direct encoding [@gleicher_visual_2011].
+  - [ ] An appreciation of how data graphics can support exploratory data analysis (EDA) workflows.
+  - [ ] The main chart types, their benefits and drawbacks, for summarising variation within- and between- variables.
+  - [ ] Three strategies for effecting *comparison* in EDA: juxtaposition, superposition and direct encoding [@gleicher_visual_2011].
 :::
 
 ::: {.callout-note icon=false}
 
 ## Skills outcomes
-- [x] ggplot2 specifications that use visual channels -- colour and layout -- to support comparison.
-- [x] `tidyverse`-style code for computing model-expected values, and piped to ggplot2 for  exploratory analysis.
+  - [ ] ggplot2 specifications that use visual channels -- colour and layout -- to support comparison.
+  - [ ] `tidyverse`-style code for computing model-expected values, and piped to ggplot2 for  exploratory analysis.
 :::
 
 
@@ -295,7 +295,7 @@ The way in which differences between observed and expected values (residuals) ar
 
 ```{r}
 #| label: fig-borough-freqs-resids
-#| out.width: 90%
+#| out.width: 95%
 #| fig-cap: "Heatmaps of crashes by period of week and vehicle type for London Boroughs."
 #| echo: false
 #| eval: true
@@ -399,7 +399,7 @@ include_graphics("figs/04/mosaic_boroughs_spatial.svg", error = FALSE)
 #| fig-cap: "Mosaic plots of vehicle type and period for London Boroughs with geo-spatial arrangement."
 #| echo: false
 #| eval: true
-#| out.width: 80%
+#| out.width: 95%
 #| warning: false
 
 include_graphics("figs/04/grids_vehicle.png", error = FALSE)
@@ -613,7 +613,7 @@ A consequence of the heavy concentration of crash counts, and thus colour, in th
 ```{r}
 #| label: fig-imd-driver-cas
 #| fig-cap: "Pedestrian casualties by IMD quintile of pedestrian and driver. "
-#| out.width: 70%
+#| out.width: 85%
 #| echo: false
 #| eval: true
 #| warning: false
@@ -683,7 +683,7 @@ The concept that we are exploring is whether crash counts vary depending on how 
 
 ```{r}
 #| label: fig-imd-driver-cas-crash
-#| fig-cap: "Pedestrian casualties by IMD quintile of pedestrian, driver and crash location. **TODO: annotate on key observations.**"
+#| fig-cap: "Pedestrian casualties by IMD quintile of pedestrian, driver and crash location."
 #| out.width: 90%
 #| echo: false
 #| eval: true

@@ -141,7 +141,6 @@ twr <- nodes_plot_labels |> filter(la=="Tower Hamlets")
 hns <- nodes_plot_labels |> filter(la=="Hounslow")
 hil <- nodes_plot_labels |> filter(la=="Hilingdon")
 
-geom_text(data=nodes_plot_labels, aes(x,y+.00001, label=abbreviate(la,3)), size=2) +
   
 # Not specifying the layout - defaults to "auto"
 node_link <- ggraph(graph, weights = commutes) + 
@@ -149,7 +148,7 @@ node_link <- ggraph(graph, weights = commutes) +
 
   geom_node_point(aes(size = commutes), fill="#003c8f", colour="#003c8f", alpha=.5) +
   
-  annotate("text", wst$x-.00025, wst$y+.000045, label=wst$la, size=3, hjust='left') +
+  annotate("text", wst$x-.00025, wst$y+.000045, label=wst$la, size=3, hjust='left', family="Avenir Medium") +
   annotate(
     geom = "curve",
     xend = wst$x-.000095, x = wst$x-.000045,
@@ -158,7 +157,7 @@ node_link <- ggraph(graph, weights = commutes) +
     angle = 135, size=.2
   ) + 
   
-  annotate("text", lam$x-.0001, lam$y-.00005, label=lam$la, size=3, hjust='left') +
+  annotate("text", lam$x-.00007, lam$y-.00005, label=lam$la, size=3, hjust='left', family="Avenir Medium") +
   annotate(
     geom = "curve",
     xend = lam$x-.00002, x = lam$x,
@@ -166,7 +165,7 @@ node_link <- ggraph(graph, weights = commutes) +
     curvature = -.5,
     angle = 135, size=.2
   ) +
-  annotate("text", wnd$x-.0003, wnd$y+.000035, label=wnd$la, size=3, hjust='left') +
+  annotate("text", wnd$x-.00015, wnd$y+.000035, label=wnd$la, size=3, hjust='left', family="Avenir Medium") +
   annotate(
     geom = "curve",
     xend = wnd$x-.00008, x = wnd$x,
@@ -175,7 +174,7 @@ node_link <- ggraph(graph, weights = commutes) +
     angle = 135, size=.2
   ) +
   
-  annotate("text", hns$x-.000075, hns$y, label=hns$la, size=3, hjust='right') +
+  annotate("text", hns$x-.000075, hns$y, label=hns$la, size=3, hjust='right', family="Avenir Medium") +
   annotate(
     geom = "curve",
     xend = hns$x-.000015, x = hns$x-.00007,
@@ -184,7 +183,7 @@ node_link <- ggraph(graph, weights = commutes) +
     angle = 135, size=.2
   ) +
   
-  annotate("text", col$x+.00004, col$y+.00003, label=col$la, size=3, hjust='left') +
+  annotate("text", col$x+.00004, col$y+.00003, label=col$la, size=3, hjust='left', family="Avenir Medium") +
   annotate(
     geom = "curve",
     xend = col$x+.000035, x = col$x,
@@ -271,7 +270,7 @@ london_bbox <- st_bbox(london_boroughs)
 london_width <- london_bbox$xmax-london_bbox$xmin
   
 flowline <- ggplot()+
-  geom_sf(data=london_boroughs,  fill="#eeeeee", colour="#bdbdbd", linewidth=0.1, alpha=.7)+
+  geom_sf(data=london_boroughs,  fill="#eeeeee", colour="#ffffff", linewidth=0.4, alpha=.7)+
   coord_sf(crs=st_crs(london_boroughs), datum=NA)+
   geom_point(
     data=london_boroughs %>% inner_join(nodes_count, by=c("area_name"="la")),
@@ -279,7 +278,7 @@ flowline <- ggplot()+
   geom_path(aes(x=x, y=y, group=od_pair, linewidth=f_od, size=f_od^.3), alpha=.5, data=trajs, colour="#003c8f")+
   # geom_text(data=london_boroughs,
   #           aes(x=easting, y=northing, label=abbreviate(area_name,3)), size=3.5, family="Avenir Next")+ 
-  annotate("text", wst$easting+.29*london_width, wst$northing, label=wst$area_name, size=3, hjust='left') +
+  annotate("text", wst$easting+.29*london_width, wst$northing, label=wst$area_name, size=3, hjust='left', family="Avenir Medium") +
   annotate(
     geom = "curve",
     xend = wst$easting+.28*london_width, x = wst$easting,
@@ -288,7 +287,7 @@ flowline <- ggplot()+
     angle = 135, size=.2
   ) + 
   
-  annotate("text", wnd$easting-.16*london_width, wnd$northing-.1*london_width, label=wnd$area_name, size=3, hjust='right') +
+  annotate("text", wnd$easting-.16*london_width, wnd$northing-.1*london_width, label=wnd$area_name, size=3, hjust='right', family="Avenir Medium") +
   annotate(
     geom = "curve",
     xend = wnd$easting-.15*london_width, x = wnd$easting,
@@ -297,7 +296,7 @@ flowline <- ggplot()+
     angle = 135, size=.2
   ) +
   
-  annotate("text", hns$easting-.06*london_width, hns$northing, label=hns$area_name, size=3, hjust='right') +
+  annotate("text", hns$easting-.06*london_width, hns$northing, label=hns$area_name, size=3, hjust='right', family="Avenir Medium") +
   annotate(
     geom = "curve",
     xend = hns$easting-.05*london_width, x = hns$easting,
@@ -305,11 +304,7 @@ flowline <- ggplot()+
     curvature = -.5,
     angle = 135, size=.2
   ) +
-  
-  
   scale_linewidth_continuous(range=c(0.05,2))+
-  # scale_colour_distiller(palette="Blues", direction=1, guide="none") +
-  #scale_size(range=c(.1,8)) +
   scale_linewidth_continuous(range=c(0.02,2))+
   scale_size(labels = scales::comma_format(scale = .001), range=c(.1, 15))+
   guides(linewidth="none", colour="none", fill="none", size="none")+
@@ -350,7 +345,7 @@ trajs <- edges_trajectories |>
 rivers_real_simp <- rmapshaper::ms_simplify(rivers_real, keep=.9)
 
 bezierline <- ggplot()+
-  geom_sf(data=london_boroughs,  fill="#eeeeee", colour="#bdbdbd", linewidth=0.1, alpha=.7)+
+  geom_sf(data=london_boroughs,  fill="#eeeeee", colour="#ffffff", linewidth=0.4, alpha=.7)+
   geom_sf(data=rivers_real, colour="#bdbdbd") +
   coord_sf(crs=st_crs(london_boroughs), datum=NA)+
   geom_point(data=
@@ -367,7 +362,7 @@ bezierline <- ggplot()+
   guides(linewidth="none", colour="none")+
   labs(subtitle = "layout : geospatial") +
   
-  annotate("text", wst$easting+.25*london_width, wst$northing-.05*london_width, label=wst$area_name, size=3, hjust='left') +
+  annotate("text", wst$easting+.25*london_width, wst$northing-.05*london_width, label=wst$area_name, size=3, hjust='left', family="Avenir Medium") +
   annotate(
     geom = "curve",
     xend = wst$easting+.24*london_width, x = wst$easting,
@@ -376,7 +371,7 @@ bezierline <- ggplot()+
     angle = 135, size=.2
   ) + 
   
-  annotate("text", col$easting+.26*london_width, col$northing, label=col$area_name, size=3, hjust='left') +
+  annotate("text", col$easting+.26*london_width, col$northing, label=col$area_name, size=3, hjust='left', family="Avenir Medium") +
   annotate(
     geom = "curve",
     xend = col$easting+.25*london_width, x = col$easting,
@@ -385,7 +380,7 @@ bezierline <- ggplot()+
     angle = 135, size=.2
   ) + 
   
-  annotate("text", wnd$easting-.16*london_width, wnd$northing-.1*london_width, label=wnd$area_name, size=3, hjust='right') +
+  annotate("text", wnd$easting-.16*london_width, wnd$northing-.1*london_width, label=wnd$area_name, size=3, hjust='right', family="Avenir Medium") +
   annotate(
     geom = "curve",
     xend = wnd$easting-.15*london_width, x = wnd$easting,
@@ -394,7 +389,7 @@ bezierline <- ggplot()+
     angle = 135, size=.2
   ) +
   
-  annotate("text", hns$easting-.06*london_width, hns$northing, label=hns$area_name, size=3, hjust='right') +
+  annotate("text", hns$easting-.06*london_width, hns$northing, label=hns$area_name, size=3, hjust='right', family="Avenir Medium") +
   annotate(
     geom = "curve",
     xend = hns$easting-.05*london_width, x = hns$easting,
@@ -403,7 +398,7 @@ bezierline <- ggplot()+
     angle = 45, size=.2
   ) +
   
-  annotate("text", cmd$easting, cmd$northing+.08*london_width, label=cmd$area_name, size=3, hjust='right') +
+  annotate("text", cmd$easting, cmd$northing+.08*london_width, label=cmd$area_name, size=3, hjust='right', family="Avenir Medium") +
   annotate(
     geom = "curve",
     xend = cmd$easting, x = cmd$easting,
@@ -429,13 +424,10 @@ bezierline <- ggplot()+
 
 bezierline
 
-plot <- node_link + bezierline + plot_layout(widths=c(.55,1))
+plot <- node_link + bezierline + plot_layout(widths=c(.6,1))
 
-ggsave(filename=here("figs", "05", "flowlines_test.png"), plot=plot,width=10, height=5, dpi=300)
-# ggsave(filename=here("figs", "05", "flowlines.png"), plot=plot,width=7, height=8, dpi=300)
-# ggsave(filename=here("figs", "05", "flowlines.png"), plot=plot,width=10, height=3.2, dpi=300)
-# ggsave(filename="./static/class/05-class_files/geogs.png", plot=plot,width=9, height=4.35, dpi=300)
-
+ggsave(filename=here("figs", "05", "flowlines_test.png"), plot=plot,width=11.5, height=6, dpi=300)
+  
 bor_orders <- nodes |>  arrange(-jobs) |>  pull(la)
 
 # 2.2 Matrix  ----------------------

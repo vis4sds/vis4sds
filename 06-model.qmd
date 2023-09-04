@@ -14,9 +14,9 @@ By the end of this chapter you should gain the following knowledge and practical
 
 ## Knowledge
 
-- [x] Be reminded of the basics of linear regression modelling.
-- [x] Understand two categories of geographic effect in regression modelling: geographical *dependence* in values and *non-stationarity* in processes.
-- [x] Learn how linear regression models can be updated to account for and explore these two effects.
+- [ ] Be reminded of the basics of linear regression modelling.
+- [ ] Understand two categories of geographic effect in regression modelling: geographical *dependence* in values and *non-stationarity* in processes.
+- [ ] Learn how linear regression models can be updated to account for and explore these two effects.
 
 :::
 
@@ -25,10 +25,10 @@ By the end of this chapter you should gain the following knowledge and practical
 
 ## Practical skills
 
-- [x] Specify linear regression models in R.
-- [x] Apply [functional-style programming](https://purrr.tidyverse.org/articles/other-langs.html) for working over multiple model outputs.
-- [x] Update linear regression models in R with Fixed Effect (FE) and Interaction terms.
-- [x] Extract model outputs and diagnostics in a [`tidy`](https://vita.had.co.nz/papers/tidy-data.pdf) manner.
+- [ ] Specify linear regression models in R.
+- [ ] Apply [functional-style programming](https://purrr.tidyverse.org/articles/other-langs.html) for working over multiple model outputs.
+- [ ] Update linear regression models in R with Fixed Effect (FE) and Interaction terms.
+- [ ] Extract model outputs and diagnostics in a [`tidy`](https://vita.had.co.nz/papers/tidy-data.pdf) manner.
 :::
 
 ## Introduction
