@@ -296,8 +296,9 @@ plot <- rate_boots_temporal %>%
   ) +
   geom_line(
     data=. %>%  filter(id!="Apparent"),
-    aes(group=id), colour=site_colours$primary, alpha=.2, size=.1
+    aes(group=id), colour=site_colours$primary, alpha=.2, size=.15
   ) +
+  labs(y="estimated ksi rate") +
   facet_wrap(~local_authority_district, nrow=1) +
   theme(axis.text = element_blank())
 
@@ -432,8 +433,11 @@ plot <- poll_theatres |>
   theme_void()
 
 
+# 2.4 Mapped multipe testing  ------------------------
 lad_boundary <- st_read(here("../", "data", "ch7", "lad.geojson"))  |>  
-  mutate(pop_density=(res_2019+workday)/st_areashape)
+  mutate(pop_density=(res_2019+workday)/st_areashape) |> 
+  rmapshaper::ms_simplify(keep=.2)
+
 
 
 boots_lad <- ped_veh |> 
@@ -464,7 +468,7 @@ boots_lad <- ped_veh |>
   # Nesting to collapse data to a list-col.
   nest(data=c(local_authority_district, is_ksi)) |> 
   # Resample observations from this data frame with replacement, keep original data.
-  mutate(la_boot = map(data, rsample::bootstraps, times=100, apparent=TRUE)) |> 
+  mutate(la_boot = map(data, rsample::bootstraps, times=1000, apparent=TRUE)) |> 
   # Unnest to generate data frame of bootsrap IDs and associated data, stored in splits.
   select(-data) %>% unnest(la_boot) %>%
   # Map over splits and extract LAD code.
@@ -476,7 +480,8 @@ boots_lad <- ped_veh |>
   select(-splits) |>  unnest(c(la, is_ksi)) |> 
   group_by(id, la) |> 
   summarise(crash_count=n(), ksi=mean(is_ksi)) |>  ungroup() 
-  
+
+lad_region_lookup <- read_csv(here("../", "data", "ch7", "lad_region_lookup.csv"))  
 
 model2 <- boots_lad |> 
   inner_join(
@@ -510,11 +515,10 @@ model2 <- boots_lad |>
   )
 
 hexmap <- st_read(here("../", "data", "ch7", "lad_hex.geojson"))
-
-map_data <- hexmap %>%
+map_data_hex <- hexmap |> 
     inner_join(lad_region_lookup,
                by=c("lad_code"="LAD19CD")) %>% dplyr::select(-id) %>%
-    left_join(model1_data_lon, by=c("LAD19NM"="la")) |> 
+    left_join(model2, by=c("LAD19NM"="la")) |> 
     group_by(LAD19NM) |> 
     mutate(
       is_sig= !between(1,lower, upper),
@@ -524,55 +528,45 @@ map_data <- hexmap %>%
         rr_estimate < 1 ~ "less")
     ) |> ungroup() 
 
-map_data <- t %>% select(lad19cd, east, north) |> 
-  inner_join(lad_region_lookup,
-             by=c("lad19cd"="LAD19CD")) %>% 
-  left_join(model2, by=c("LAD19NM"="la")) |> 
-  group_by(LAD19NM) |> 
-  mutate(
-    is_sig= !between(1,lower, upper),
-    sig_type = case_when(
-      !is_sig ~ "none", 
-      rr_estimate > 1 ~ "greater", 
-      rr_estimate < 1 ~ "less")
-  ) |> ungroup() 
-
-
-# Annotate high/low values outside of London. 
-bristol <- map_data |> filter(LAD19NM == "Bristol, City of")
-bath <-   map_data |> filter(LAD19NM == "Bath and North East Somerset")
-canterbury <-   map_data |> filter(LAD19NM == "Canterbury")
-york <-   map_data |> filter(LAD19NM == "York")
-leicester <-   map_data |> filter(LAD19NM == "Leicester")
-exeter <-   map_data |> filter(LAD19NM == "Exeter")
-ipswich <-   map_data |> filter(LAD19NM == "Ipswich")
-derby <-   map_data |> filter(LAD19NM == "Derby")
-
-cotswold <-   map_data |> filter(LAD19NM == "Cotswold")
-corby <-   map_data |> filter(LAD19NM == "Corby")
-chelmsford <-   map_data |> filter(LAD19NM == "Chelmsford")
-hartlepool <-   map_data |> filter(LAD19NM == "Hartlepool")
-liverpool <-   map_data |> filter(LAD19NM == "Liverpool")
-burnley <-   map_data |> filter(LAD19NM == "Burnley")
-
-
-
 # Bounds to pin oriented lines to.
 max_rr <- max(map_data %>% pull(rr_estimate), na.rm = TRUE)
 min_rr <- min(map_data %>% pull(rr_estimate), na.rm = TRUE)
 # Define colours for encoding by sig type and direction.
-colours_type <- c("#b2182b","#2166ac", "#878787")
+colours_type <- c("#b2182b","#2166ac", "#bdbdbd")
+colours_type_colour <- c("#b2182b","#2166ac", "#878787")
 
-eng_bounds <- st_bbox(
-  lad_boundary |> inner_join(lad_region_lookup, by=c("lad19cd"="LAD19CD"))
-  )
+eng_bounds <- st_bbox(hexmap |> inner_join(lad_region_lookup,by=c("lad_code"="LAD19CD")))
 eng_width <- eng_bounds$xmax-eng_bounds$xmin
 eng_height <- eng_bounds$ymax-eng_bounds$ymin
 
-p1_lon <- map_data |> 
+# Annotate high/low values outside of London. 
+bristol <- map_data_hex |> filter(LAD19NM == "Bristol, City of")
+bath <-   map_data_hex |> filter(LAD19NM == "Bath and North East Somerset")
+canterbury <-   map_data_hex |> filter(LAD19NM == "Canterbury")
+york <-   map_data_hex |> filter(LAD19NM == "York")
+leicester <-   map_data_hex |> filter(LAD19NM == "Leicester")
+exeter <-   map_data_hex |> filter(LAD19NM == "Exeter")
+esuffolk <-   map_data_hex |> filter(LAD19NM == "East Suffolk")
+derby <-  map_data_hex |> filter(LAD19NM == "Derby")
+
+birmingham <-   map_data_hex |> filter(LAD19NM == "Birmingham")
+cotswold <-   map_data_hex |> filter(LAD19NM == "Cotswold")
+corby <-   map_data_hex |> filter(LAD19NM == "Corby")
+chelmsford <-   map_data_hex |> filter(LAD19NM == "Chelmsford")
+hartlepool <-   map_data_hex |> filter(LAD19NM == "Hartlepool")
+liverpool <-   map_data_hex |> filter(LAD19NM == "Liverpool")
+burnley <-   map_data_hex |> filter(LAD19NM == "Burnley")
+
+tower <-   map_data_hex |> filter(LAD19NM == "Tower Hamlets")
+city <-   map_data_hex |> filter(LAD19NM == "City of London")
+
+
+
+source(here("lib", "spoke_helpers.R"))
+p_hex <- map_data_hex |> 
   ggplot()+
   geom_sf(aes(fill=sig_type, alpha=is_sig, colour=sig_type), linewidth=0.1, alpha=.3)+
-  geom_sf(data=. %>% group_by(RGN19CD) %>% summarise(), fill="transparent", linewidth=0.3)+
+  geom_sf(data=. %>% group_by(RGN19CD) %>% summarise(), fill="transparent", linewidth=0.25)+
   coord_sf(datum=NA)+
   # Greater.
   geom_spoke(
@@ -586,61 +580,130 @@ p1_lon <- map_data |>
     aes(x=east, y=north, angle=get_radians(map_scale(rr_estimate,min_rr,1,135,90)), colour=sig_type),
     linewidth=.3, radius=.4, position="center_spoke" 
   )+
-  scale_fill_manual(values=colours_type) +
-  scale_colour_manual(values=colours_type) +
-  guides(fill=FALSE, colour=FALSE, size=FALSE, alpha=FALSE) +
-  theme(axis.title.x=element_blank(), axis.title.y=element_blank())
-
-model1_map_real <- map_data |> 
-  ggplot()+
-  geom_sf(aes(fill=sig_type, alpha=is_sig, colour=sig_type), linewidth=0.03, alpha=.3)+
-  geom_sf(data=. %>% group_by(RGN19CD) %>% summarise(), fill="transparent", linewidth=0.15)+
-  coord_sf(datum=NA)+
-  # Greater.
-  geom_spoke(
-    data=. %>% filter(rr_estimate>1),
-    aes(x=east, y=north, angle=get_radians(map_scale(rr_estimate,1,max_rr,90,45)), colour=sig_type),
-    linewidth=.3, radius=6000, position="center_spoke" #.4
-  )+
-  # Less.
-  geom_spoke(
-    data=. %>% filter(rr_estimate<1),
-    aes(x=east, y=north, angle=get_radians(map_scale(rr_estimate,min_rr,1,135,90)), colour=sig_type),
-    linewidth=.3, radius=6000, position="center_spoke" #.4
-  )+
   
-  annotate(geom="text", x=bristol$east-0.18*eng_width, y=bristol$north, hjust="centre", label=paste0("Bristol\n", round(bristol$rr_estimate,2)), family="Avenir Next", size=2.5, colour="#2166ac")+
+  
+  annotate(geom="text", x=bristol$east-0.18*eng_width, y=bristol$north, hjust="centre", label=paste0("Bristol\n", round(bristol$rr_estimate,2)), size=3, colour="#2166ac")+
   annotate(geom="segment", xend=bristol$east-0.12*eng_width, yend=bristol$north, x=bristol$east-.01*eng_width, y=bristol$north, size=.1)+
-  
-  annotate(geom="text", x=york$east+0.17*eng_width, y=york$north, hjust="centre", label=paste0(york$LAD19NM, "\n", round(york$rr_estimate,2)), family="Avenir Next", size=2.5, colour="#2166ac")+
+
+  annotate(geom="text", x=york$east+0.17*eng_width, y=york$north, hjust="centre", label=paste0(york$LAD19NM, "\n", round(york$rr_estimate,2)), size=3, colour="#2166ac")+
   annotate(geom="segment", xend=york$east+0.13*eng_width, yend=york$north, x=york$east+.01*eng_width, y=york$north, size=.1)+
-  
-  annotate(geom="text", x=canterbury$east+0.03*eng_width, y=canterbury$north-0.1*eng_height, hjust="centre", label=paste0(canterbury$LAD19NM, "\n", round(canterbury$rr_estimate,2)), family="Avenir Next", size=2.5, colour="#2166ac")+
-  annotate(geom="segment", xend=canterbury$east, yend=canterbury$north-0.01*eng_height, x=canterbury$east+.03*eng_width, y=canterbury$north-0.07*eng_height, size=.1)+
 
-  annotate(geom="text", x=leicester$east-0.3*eng_width, y=leicester$north, hjust="centre", label=paste0(leicester$LAD19NM, "\n", round(leicester$rr_estimate,2)), family="Avenir Next", size=2.5, colour="#2166ac")+
-  annotate(geom="segment", xend=leicester$east-.01*eng_width, yend=leicester$north, x=leicester$east-.25*eng_width, y=leicester$north, size=.1)+
+  annotate(geom="text", x=canterbury$east+0.0*eng_width, y=canterbury$north-0.17*eng_height, hjust="centre", label=paste0(canterbury$LAD19NM, "\n", round(canterbury$rr_estimate,2)), size=3, colour="#2166ac")+
+  annotate(geom="segment", xend=canterbury$east, yend=canterbury$north-0.01*eng_height, x=canterbury$east+.0*eng_width, y=canterbury$north-0.12*eng_height, size=.1)+
+
+  # annotate(geom="text", x=leicester$east-0.3*eng_width, y=leicester$north, hjust="centre", label=paste0(leicester$LAD19NM, "\n", round(leicester$rr_estimate,2)), size=3, colour="#2166ac")+
+  # annotate(geom="segment", xend=leicester$east-.01*eng_width, yend=leicester$north, x=leicester$east-.25*eng_width, y=leicester$north, size=.1)+
+
+  annotate(geom="text", x=esuffolk$east+0.02*eng_width, y=esuffolk$north+0.14*eng_height, hjust="centre", label=paste0(esuffolk$LAD19NM, "\n", round(esuffolk$rr_estimate,2)), size=3, colour="#2166ac")+
+  annotate(geom="segment", xend=esuffolk$east, yend=esuffolk$north+0.01*eng_height, x=esuffolk$east+.01*eng_width, y=esuffolk$north+.1*eng_height, size=.1)+
+
+  # annotate(geom="text", x=cotswold$east-0.25*eng_width, y=cotswold$north+0.05*eng_height, hjust="centre", label=paste0(cotswold$LAD19NM, "\n", round(cotswold$rr_estimate,2)), size=3, colour="#b2182b")+
+  # annotate(geom="segment", xend=cotswold$east-0.18*eng_width, yend=cotswold$north+0.045*eng_height, x=cotswold$east-.01*eng_width, y=cotswold$north, size=.1)+
+
+  annotate(geom="text", x=birmingham$east-0.25*eng_width, y=birmingham$north+0.05*eng_height, hjust="centre", label=paste0(birmingham$LAD19NM, "\n", round(birmingham$rr_estimate,2)), size=3, colour="#b2182b")+
+  annotate(geom="segment", xend=birmingham$east-0.18*eng_width, yend=birmingham$north+0.045*eng_height, x=birmingham$east-.01*eng_width, y=birmingham$north, size=.1)+
   
-  annotate(geom="text", x=ipswich$east+0.05*eng_width, y=ipswich$north-0.08*eng_height, hjust="centre", label=paste0(ipswich$LAD19NM, "\n", round(ipswich$rr_estimate,2)), family="Avenir Next", size=2.5, colour="#2166ac")+
-  annotate(geom="segment", xend=ipswich$east, yend=ipswich$north-0.01*eng_height, x=ipswich$east+.03*eng_width, y=ipswich$north-0.05*eng_height, size=.1)+
-  
-  annotate(geom="text", x=cotswold$east-0.25*eng_width, y=cotswold$north+0.04*eng_height, hjust="centre", label=paste0(cotswold$LAD19NM, "\n", round(cotswold$rr_estimate,2)), family="Avenir Next", size=2.5, colour="#b2182b")+
-  annotate(geom="segment", xend=cotswold$east-0.18*eng_width, yend=cotswold$north+0.04*eng_height, x=cotswold$east-.01*eng_width, y=cotswold$north, size=.1)+
-  
-  annotate(geom="text", x=liverpool$east-0.15*eng_width, y=liverpool$north, hjust="centre", label=paste0(liverpool$LAD19NM, "\n", round(liverpool$rr_estimate,2)), family="Avenir Next", size=2.5, colour="#b2182b")+
+  annotate(geom="text", x=liverpool$east-0.15*eng_width, y=liverpool$north, hjust="centre", label=paste0(liverpool$LAD19NM, "\n", round(liverpool$rr_estimate,2)), size=3, colour="#b2182b")+
   annotate(geom="segment", xend=liverpool$east-0.08*eng_width, yend=liverpool$north, x=liverpool$east-.01*eng_width, y=liverpool$north, size=.1)+
+
+  annotate(geom="text", x=hartlepool$east+0.0*eng_width, y=hartlepool$north+.15*eng_height, hjust="centre", label=paste0(hartlepool$LAD19NM, "\n", round(hartlepool$rr_estimate,2)), size=3, colour="#b2182b")+
+  annotate(geom="segment", xend=hartlepool$east+0.0*eng_width, yend=hartlepool$north + .1*eng_height, x=hartlepool$east+.0*eng_width, y=hartlepool$north  + .01*eng_height, size=.1)+
   
-  annotate(geom="text", x=hartlepool$east+0.15*eng_width, y=hartlepool$north, hjust="centre", label=paste0(hartlepool$LAD19NM, "\n", round(hartlepool$rr_estimate,2)), family="Avenir Next", size=2.5, colour="#b2182b")+
-  annotate(geom="segment", xend=hartlepool$east+0.08*eng_width, yend=hartlepool$north, x=hartlepool$east+.01*eng_width, y=hartlepool$north, size=.1)+
+  annotate(geom="text", x=city$east+0.3*eng_width, y=city$north, hjust="centre", label=paste0("City of Lon", "\n", round(city$rr_estimate,2)), size=3, colour="#b2182b")+
+  annotate(geom="segment", xend=city$east+0.23*eng_width, yend=city$north, x=city$east+.01*eng_width, y=city$north, size=.1)+
   
+  annotate(geom="text", x=eng_bounds$xmax+.13*eng_width, y=eng_bounds$ymax, label="") +
   
   scale_fill_manual(values=colours_type) +
-  scale_colour_manual(values=colours_type) +
+  scale_colour_manual(values=colours_type_colour) +
   guides(fill=FALSE, colour=FALSE, size=FALSE, alpha=FALSE) +
   theme(axis.title.x=element_blank(), axis.title.y=element_blank())
 
 
-model2_map_real_dens <- map_data |> 
+map_data_real <- lad_boundary |>   select(lad19cd, east, north) |>
+  inner_join(lad_region_lookup,
+             by=c("lad19cd"="LAD19CD")) %>%
+  left_join(model2, by=c("LAD19NM"="la")) |>
+  group_by(LAD19NM) |>
+  mutate(
+    is_sig= !between(1,lower, upper),
+    sig_type = case_when(
+      !is_sig ~ "none",
+      rr_estimate > 1 ~ "greater",
+      rr_estimate < 1 ~ "less")
+  ) |> ungroup()
+
+
+# p_real <- map_data |> 
+#   ggplot()+
+#   geom_sf(aes(fill=sig_type, alpha=is_sig, colour=sig_type), linewidth=0.03, alpha=.3)+
+#   geom_sf(data=. %>% group_by(RGN19CD) %>% summarise(), fill="transparent", linewidth=0.15)+
+#   coord_sf(datum=NA)+
+#   # Greater.
+#   geom_spoke(
+#     data=. %>% filter(rr_estimate>1),
+#     aes(x=east, y=north, angle=get_radians(map_scale(rr_estimate,1,max_rr,90,45)), colour=sig_type),
+#     linewidth=.3, radius=6000, position="center_spoke" #.4
+#   )+
+#   # Less.
+#   geom_spoke(
+#     data=. %>% filter(rr_estimate<1),
+#     aes(x=east, y=north, angle=get_radians(map_scale(rr_estimate,min_rr,1,135,90)), colour=sig_type),
+#     linewidth=.3, radius=6000, position="center_spoke" #.4
+#   )+
+#   
+#   annotate(geom="text", x=bristol$east-0.18*eng_width, y=bristol$north, hjust="centre", label=paste0("Bristol\n", round(bristol$rr_estimate,2)), family="Avenir Next", size=2.5, colour="#2166ac")+
+#   annotate(geom="segment", xend=bristol$east-0.12*eng_width, yend=bristol$north, x=bristol$east-.01*eng_width, y=bristol$north, size=.1)+
+#   
+#   annotate(geom="text", x=york$east+0.17*eng_width, y=york$north, hjust="centre", label=paste0(york$LAD19NM, "\n", round(york$rr_estimate,2)), family="Avenir Next", size=2.5, colour="#2166ac")+
+#   annotate(geom="segment", xend=york$east+0.13*eng_width, yend=york$north, x=york$east+.01*eng_width, y=york$north, size=.1)+
+#   
+#   annotate(geom="text", x=canterbury$east+0.03*eng_width, y=canterbury$north-0.1*eng_height, hjust="centre", label=paste0(canterbury$LAD19NM, "\n", round(canterbury$rr_estimate,2)), family="Avenir Next", size=2.5, colour="#2166ac")+
+#   annotate(geom="segment", xend=canterbury$east, yend=canterbury$north-0.01*eng_height, x=canterbury$east+.03*eng_width, y=canterbury$north-0.07*eng_height, size=.1)+
+# 
+#   annotate(geom="text", x=leicester$east-0.3*eng_width, y=leicester$north, hjust="centre", label=paste0(leicester$LAD19NM, "\n", round(leicester$rr_estimate,2)), family="Avenir Next", size=2.5, colour="#2166ac")+
+#   annotate(geom="segment", xend=leicester$east-.01*eng_width, yend=leicester$north, x=leicester$east-.25*eng_width, y=leicester$north, size=.1)+
+#   
+#   annotate(geom="text", x=ipswich$east+0.05*eng_width, y=ipswich$north-0.08*eng_height, hjust="centre", label=paste0(ipswich$LAD19NM, "\n", round(ipswich$rr_estimate,2)), family="Avenir Next", size=2.5, colour="#2166ac")+
+#   annotate(geom="segment", xend=ipswich$east, yend=ipswich$north-0.01*eng_height, x=ipswich$east+.03*eng_width, y=ipswich$north-0.05*eng_height, size=.1)+
+#   
+#   annotate(geom="text", x=cotswold$east-0.25*eng_width, y=cotswold$north+0.04*eng_height, hjust="centre", label=paste0(cotswold$LAD19NM, "\n", round(cotswold$rr_estimate,2)), family="Avenir Next", size=2.5, colour="#b2182b")+
+#   annotate(geom="segment", xend=cotswold$east-0.18*eng_width, yend=cotswold$north+0.04*eng_height, x=cotswold$east-.01*eng_width, y=cotswold$north, size=.1)+
+#   
+#   annotate(geom="text", x=liverpool$east-0.15*eng_width, y=liverpool$north, hjust="centre", label=paste0(liverpool$LAD19NM, "\n", round(liverpool$rr_estimate,2)), family="Avenir Next", size=2.5, colour="#b2182b")+
+#   annotate(geom="segment", xend=liverpool$east-0.08*eng_width, yend=liverpool$north, x=liverpool$east-.01*eng_width, y=liverpool$north, size=.1)+
+#   
+#   annotate(geom="text", x=hartlepool$east+0.15*eng_width, y=hartlepool$north, hjust="centre", label=paste0(hartlepool$LAD19NM, "\n", round(hartlepool$rr_estimate,2)), family="Avenir Next", size=2.5, colour="#b2182b")+
+#   annotate(geom="segment", xend=hartlepool$east+0.08*eng_width, yend=hartlepool$north, x=hartlepool$east+.01*eng_width, y=hartlepool$north, size=.1)+
+#   
+#   
+#   scale_fill_manual(values=colours_type) +
+#   scale_colour_manual(values=colours_type) +
+#   guides(fill=FALSE, colour=FALSE, size=FALSE, alpha=FALSE) +
+#   theme(axis.title.x=element_blank(), axis.title.y=element_blank())
+
+eng_bounds <- st_bbox(
+  lad_boundary |> inner_join(lad_region_lookup, by=c("lad19cd"="LAD19CD"))
+)
+eng_width <- eng_bounds$xmax-eng_bounds$xmin
+eng_height <- eng_bounds$ymax-eng_bounds$ymin
+
+pendle <-   map_data_real |> filter(LAD19NM == "Pendle")
+wakefield <-   map_data_real |> filter(LAD19NM == "Wakefield")
+birmingham <-  map_data_real |> filter(LAD19NM == "Birmingham")
+southampton <-   map_data_real |> filter(LAD19NM == "Southampton")
+havering <-   map_data_real |> filter(LAD19NM == "Havering")
+hillingdon <-   map_data_real |> filter(LAD19NM == "Hillingdon")
+tower <-   map_data_real |> filter(LAD19NM == "Tower Hamlets")
+
+nw_label <- "<span style = 'color: #b2182b;'>High rates</span> in North West<br> Liverpool KSI is<br> 1.4x > than expected"
+yorks_label <- "<span style = 'color: #b2182b;'>High rates</span> in<br> South Yorkshire<br> <span style = 'color: #2166ac;'>York</span> is somewhat<br> exceptional"
+mids_label <- "<span style = 'color: #b2182b;'>High rates</span> in Birmingham,<br> 
+Walsall, Wolverhampton <br> and other neighbours"
+south_label <- "South coast has<br> consistently <span style = 'color: #b2182b;'>high rates <span>"
+lon_label <- "Most of London <br> has <span style = 'color: #2166ac;'>low rates</span> <br> even after population <br> density adjustment "
+
+p_real2 <- map_data_real |> 
   ggplot()+
   geom_sf(aes(fill=sig_type, alpha=is_sig, colour=sig_type), linewidth=0.03, alpha=.3)+
   geom_sf(data=. %>% group_by(RGN19CD) %>% summarise(), fill="transparent", linewidth=0.15)+
@@ -657,81 +720,33 @@ model2_map_real_dens <- map_data |>
     aes(x=east, y=north, angle=get_radians(map_scale(rr_estimate,min_rr,1,135,90)), colour=sig_type),
     linewidth=.3, radius=6000, position="center_spoke" #.4
   )+
+
+  annotate(geom="richtext", x=pendle$east-0.15*eng_width, y=pendle$north-0.06*eng_height, hjust="right", label=nw_label, size=3, fill = NA, label.color = NA, family="Avenir Book") +
+  annotate(geom="richtext", x=wakefield$east+0.2*eng_width, y=wakefield$north+0.06*eng_height, hjust="left", label=yorks_label, size=3, fill = NA, label.color = NA, family="Avenir Book") +
+  annotate(geom="richtext", x=birmingham$east-0.19*eng_width, y=birmingham$north, hjust="right", label=mids_label, size=3, fill = NA, label.color = NA, family="Avenir Book") +
+  annotate(geom="richtext", x=southampton$east+0.07*eng_width, y=southampton$north -.11*eng_height, hjust="center", label=south_label, size=3, fill = NA, label.color = NA, family="Avenir Book") +
+  #annotate(geom="richtext", x=tower$east+0.22*eng_width, y=tower$north-0.01*eng_height, hjust="left", label=lon_label, size=3, fill = NA, label.color = NA, family="Avenir Book") +
   
-  # annotate(geom="text", x=havering$east+0.14*eng_width, y=havering$north, hjust="centre", label=paste0("Havering\n", round(havering$rr_estimate,2)), family="Avenir Next", size=2.5, colour="#b2182b")+
-  # annotate(geom="segment", xend=havering$east+0.1*eng_width, yend=havering$north, x=havering$east+.01*eng_width, y=havering$north, size=.1)+
-  # 
-  # annotate(geom="text", x=hillingdon$east-0.02*eng_width, y=hillingdon$north-0.18*eng_height, hjust="centre", label=paste0("Hillingdon\n", round(havering$rr_estimate,2)), family="Avenir Next", size=2.5, colour="#b2182b")+
-  # annotate(geom="segment", xend=hillingdon$east-0.02*eng_width, yend=hillingdon$north-0.15*eng_height, x=hillingdon$east, y=hillingdon$north, size=.1)+
-  # 
-  annotate(geom="text", x=tower$east+0.1*eng_width, y=tower$north-0.16*eng_height, hjust="centre", label=paste0("City | Tower H\n", round(1.27,2), " | ", round(tower$rr_estimate,2)), family="Avenir Next", size=2.5, colour="#b2182b")+
-  annotate(geom="segment", xend=tower$east+0.07*eng_width, yend=tower$north-0.14*eng_height, x=tower$east, y=tower$north-.01*eng_height, size=.1)+
   
-  annotate(geom="text", x=pendle$east-0.13*eng_width, y=pendle$north-0.06*eng_height, hjust="right", label="High in North West\n Liverpool KSI is\n 1.4x > than expected", family="Avenir Next", size=2.5) +
-  annotate(geom="text", x=wakefield$east+0.18*eng_width, y=wakefield$north+0.06*eng_height, hjust="left", label="High rates in\n South Yorkshire\n York remains locally\n exceptional", family="Avenir Next", size=2.5) +
-  annotate(geom="text", x=birmingham$east-0.17*eng_width, y=birmingham$north, hjust="right", label="Group of high rates in\n Birmingham and neighbours\n Walsall, Wolverhampton etc.", family="Avenir Next", size=2.5) +
-  annotate(geom="text", x=southampton$east, y=southampton$north-0.08*eng_height, hjust="centre", label="South coast has\n consistantly high rates", family="Avenir Next", size=2.5) +
-  
+  annotate("text", x=eng_bounds$xmax+.02*eng_width, y=eng_bounds$ymin+.05*eng_height, label="") +
   
   scale_fill_manual(values=colours_type) +
-  scale_colour_manual(values=colours_type) +
+  scale_colour_manual(values=colours_type_colour) +
   guides(fill=FALSE, colour=FALSE, size=FALSE, alpha=FALSE) +
   theme(axis.title.x=element_blank(), axis.title.y=element_blank())
 
 
-pendle <-   map_data |> filter(LAD19NM == "Pendle")
-wakefield <-   map_data |> filter(LAD19NM == "Wakefield")
-birmingham <-   map_data |> filter(LAD19NM == "Birmingham")
-southampton <-   map_data |> filter(LAD19NM == "Southampton")
+
+plot <- p_real2 + p_hex + plot_layout(widths=c(1, .95))
 
 
-Liverpool, Manchester, Wigan 
-
-model2_map_real <- map_data |> 
-  ggplot()+
-  geom_sf(aes(fill=sig_type, alpha=is_sig, colour=sig_type), linewidth=0.03, alpha=.3)+
-  geom_sf(data=. %>% group_by(RGN19CD) %>% summarise(), fill="transparent", linewidth=0.15)+
-  coord_sf(datum=NA)+
-  # Greater.
-  geom_spoke(
-    data=. %>% filter(rr_estimate>1),
-    aes(x=east, y=north, angle=get_radians(map_scale(rr_estimate,1,max_rr,90,45)), colour=sig_type),
-    linewidth=.3, radius=6000, position="center_spoke" #.4
-  )+
-  # Less.
-  geom_spoke(
-    data=. %>% filter(rr_estimate<1),
-    aes(x=east, y=north, angle=get_radians(map_scale(rr_estimate,min_rr,1,135,90)), colour=sig_type),
-    linewidth=.3, radius=6000, position="center_spoke" #.4
-  )+
-  
-  annotate(geom="text", x=havering$east+0.14*eng_width, y=havering$north, hjust="centre", label=paste0("Havering\n", round(havering$rr_estimate,2)), family="Avenir Next", size=2.5, colour="#b2182b")+
-  annotate(geom="segment", xend=havering$east+0.1*eng_width, yend=havering$north, x=havering$east+.01*eng_width, y=havering$north, size=.1)+
-  
-  annotate(geom="text", x=hillingdon$east-0.02*eng_width, y=hillingdon$north-0.18*eng_height, hjust="centre", label=paste0("Hillingdon\n", round(havering$rr_estimate,2)), family="Avenir Next", size=2.5, colour="#b2182b")+
-  annotate(geom="segment", xend=hillingdon$east-0.02*eng_width, yend=hillingdon$north-0.15*eng_height, x=hillingdon$east, y=hillingdon$north, size=.1)+
-  
-  annotate(geom="text", x=tower$east+0.1*eng_width, y=tower$north-0.16*eng_height, hjust="centre", label=paste0("Tower Hamlets\n", round(tower$rr_estimate,2)), family="Avenir Next", size=2.5, colour="#b2182b")+
-  annotate(geom="segment", xend=tower$east+0.07*eng_width, yend=tower$north-0.14*eng_height, x=tower$east, y=tower$north-.01*eng_height, size=.1)+
-  
-  scale_fill_manual(values=colours_type) +
-  scale_colour_manual(values=colours_type) +
-  guides(fill=FALSE, colour=FALSE, size=FALSE, alpha=FALSE) +
-  theme(axis.title.x=element_blank(), axis.title.y=element_blank())
-
-havering <-   map_data |> filter(LAD19NM == "Havering")
-hillingdon <-   map_data |> filter(LAD19NM == "Hillingdon")
-tower <-   map_data |> filter(LAD19NM == "Tower Hamlets")
-
-plot <- model1_map_real + model2_map_real_dens
-
-ggsave(filename=here("figs", "07", "geog-severity-2.png"), plot=plot,width=10, height=6, dpi=300)
+ggsave(filename=here("figs", "07", "geog-severity-2.png"), plot=plot,width=9, height=6, dpi=300)
 
 
+# 2.4 Mapped multipe testing  ------------------------
 
 # Generate permutation data.
 permuted_data <-
-  #model1_data_lon |> 
   model2 |> 
   group_by(la) |> 
   mutate(
@@ -746,9 +761,6 @@ permuted_data <-
   mutate(data=map(splits, ~rsample::analysis(.))) %>%
   select(id, data) %>%
   unnest(cols=data)
-
-lad_region_lookup <- read_csv(here("../", "data", "ch7", "lad_region_lookup.csv"))
-
 # Join on hex cartogram file.
 permuted_data_geo <- hexmap %>%
   inner_join(lad_region_lookup,
@@ -760,35 +772,11 @@ permuted_data_geo <- t %>%
              by=c("lad19cd"="LAD19CD")) |> 
   left_join(permuted_data, by=c("LAD19NM"="la"))
 
-
-# Position subclass for centring geom_spoke.
-# As in --
-# https://stackoverflow.com/questions/55474143/how-to-center-geom-spoke-around-their-origin
-position_center_spoke <- function() PositionCenterSpoke
-PositionCenterSpoke <- ggplot2::ggproto('PositionCenterSpoke', ggplot2::Position,
-                                        compute_panel = function(self, data, params, scales) {
-                                          data$x <- 2*data$x - data$xend
-                                          data$y <- 2*data$y - data$yend
-                                          data$radius <- 2*data$radius
-                                          data
-                                        }
-)
-
-# Convert degrees to radians.
-get_radians <- function(degrees) {
-  (degrees * pi) / (180)
-}
-
-# Rescaling function.
-map_scale <- function(value, min1, max1, min2, max2) {
-  return  (min2+(max2-min2)*((value-min1)/(max1-min1)))
-}
-
 # Bounds to pin oriented lines to.
 max_rr <- max(permuted_data %>% pull(rr_estimate), na.rm = TRUE)
 min_rr <- min(permuted_data %>% pull(rr_estimate), na.rm = TRUE)
 # Define colours for encoding by sig type and direction.
-colours_type <- c("#b2182b","#2166ac", "#878787")
+colours_type <- c("#b2182b","#2166ac", "#bdbdbd")
 
 permuted_data_geo %>%
   filter(!is.na(id)) %>%
