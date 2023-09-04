@@ -16,9 +16,10 @@ The code block below points to the packages you need. Uncomment the `intall_pack
 ```{r}
 #| echo: true
 #| eval: false
+library(here) 
 library(tidyverse) 
 library(sf) 
-library(here) 
+library(fst)
 library(tidymodels) 
 library(rsample)
 
@@ -39,8 +40,8 @@ Bring in road crash data. If you have not previousyly download this, then uncomm
 # download.file(url, here("data", "ped_veh.fst"))
 ped_veh <- read_fst(here("data", "ped_veh.fst"))
 
-url <- "https://vis4sds.github.io/data/ch7/risk_theatre.geojson"
-download.file(url, here("data", "risk_theatre.geojson"))
+url <- "https://vis4sds.github.io/data/ch7/theatre_cells.geojson"
+download.file(url, here("data", "theatre_cells.geojson"))
 ```
 
 

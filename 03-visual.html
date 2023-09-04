@@ -254,19 +254,19 @@ Knowledge outcomes
 <div class="callout-body-container callout-body">
 <ul class="task-list">
 <li>
-<input type="checkbox" disabled="" checked="">
+<input type="checkbox" disabled="">
 Recognise the characteristics of effective data graphics.</li>
 <li>
-<input type="checkbox" disabled="" checked="">
+<input type="checkbox" disabled="">
 Understand that there is a <em>grammar</em> of graphics, and that this grammar underpins modern visualization toolkits (ggplot2, vega-lite and Tableau).</li>
 <li>
-<input type="checkbox" disabled="" checked="">
+<input type="checkbox" disabled="">
 Be aware of the vocabulary used by these toolkits – that of encoding data through visual channels.</li>
 <li>
-<input type="checkbox" disabled="" checked="">
+<input type="checkbox" disabled="">
 Be able to select appropriate visual channels given a data item’s measurement type.</li>
 <li>
-<input type="checkbox" disabled="" checked="">
+<input type="checkbox" disabled="">
 Appreciate how visual channels and evidence of their encoding effectiveness can be used to evaluate data graphics.</li>
 </ul>
 </div>
@@ -283,7 +283,7 @@ Skills outcomes
 <div class="callout-body-container callout-body">
 <ul class="task-list">
 <li>
-<input type="checkbox" disabled="" checked="">
+<input type="checkbox" disabled="">
 Write ggplot2 specifications that represent data using marks (<code>geoms</code>) and encoding channels (<code>aesthetics</code>).</li>
 </ul>
 </div>
@@ -441,12 +441,12 @@ It is understandable if at this stage the specifications in @fig-gog-demo still 
 >
 > via [Jo Wood](https://www.gicentre.net/jwo/index) -->
 <p>You might have noticed that in our descriptions we introduced <span style="color:#E17637;font-weight:bold">marks</span> as another term for <em>geometry</em> and visual encoding <span style="color:#62B743;font-weight:bold">channels</span> as another term for <em>aesthetics</em>. We also paid special attention to the <span style="color:#5A91CA;font-weight:bold">data types</span> that are being encoded. <em>Marks</em> are graphical elements such as <em>bars</em>, <em>lines</em>, <em>points</em>, <em>ellipses</em> that can be used to represent data items. In ggplot2 these are accessed through the function layers prefaced with <a href="https://ggplot2.tidyverse.org/reference/#section-geoms"><code>geom_*)()</code></a>. Visual <em>channels</em> are attributes such as <em>colour</em>, <em>size</em>, <em>position</em> that, when mapped to data, affect the appearance of marks in response to the values of a dataset. In ggplot2 these attributes are controlled via the <code>aes()</code>, or aesthetics, function.</p>
-<p><em>Marks</em> and <em>channels</em> are terms used widely in Information Visualization, an academic discipline devoted to the study of data graphics, and most notably by Tamara <span class="citation" data-cites="munzner_visualization_2014">Munzner (<a href="references.html#ref-munzner_visualization_2014" role="doc-biblioref">2014</a>)</span> in her textbook <a href="https://www.routledge.com/Visualization-Analysis-and-Design/Munzner/p/book/9781466508910"><em>Visualization Analysis and Design</em></a>. <span class="citation" data-cites="munzner_visualization_2014">Munzner (<a href="references.html#ref-munzner_visualization_2014" role="doc-biblioref">2014</a>)</span>’s work synthesises over foundational research in Information Visualization and Cognitive Science testing how effective different visual channels are at supporting different tasks. <span class="quarto-unresolved-ref">?fig-munzner</span> is taken from <span class="citation" data-cites="munzner_visualization_2014">Munzner (<a href="references.html#ref-munzner_visualization_2014" role="doc-biblioref">2014</a>)</span> and lists the main visual channels with which data might be encoded. The grouping and order of the figure is meaningful. Channels are grouped according to the tasks to which they are best suited and then ordered according to their effectiveness at supporting those tasks. The top grouping displays <em>magnitude:order</em> channels – those that are best suited to tasks aimed at quantifying data items. The bottom grouping displays <em>identity:category</em> channels – those that are most suited to supporting tasks that involve isolating and associating data items.</p>
+<p><em>Marks</em> and <em>channels</em> are terms used widely in Information Visualization, an academic discipline devoted to the study of data graphics, and most notably by Tamara <span class="citation" data-cites="munzner_visualization_2014">Munzner (<a href="references.html#ref-munzner_visualization_2014" role="doc-biblioref">2014</a>)</span> in her textbook <a href="https://www.routledge.com/Visualization-Analysis-and-Design/Munzner/p/book/9781466508910"><em>Visualization Analysis and Design</em></a>. <span class="citation" data-cites="munzner_visualization_2014">Munzner (<a href="references.html#ref-munzner_visualization_2014" role="doc-biblioref">2014</a>)</span>’s work synthesises over foundational research in Information Visualization and Cognitive Science testing how effective different visual channels are at supporting different tasks. <a href="#fig-munzner">Figure&nbsp;<span>3.4</span></a> is taken from <span class="citation" data-cites="munzner_visualization_2014">Munzner (<a href="references.html#ref-munzner_visualization_2014" role="doc-biblioref">2014</a>)</span> and lists the main visual channels with which data might be encoded. The grouping and order of the figure is meaningful. Channels are grouped according to the tasks to which they are best suited and then ordered according to their effectiveness at supporting those tasks. The left grouping displays <em>magnitude:order</em> channels – those that are best suited to tasks aimed at quantifying data items. The right grouping displays <em>identity:category</em> channels – those that are most suited to supporting tasks that involve isolating and associating data items.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-munzners" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figs/03/munzner_effect.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 3.4: Visual channels to which data items can be encoded, as they appear in <span class="citation" data-cites="munzner_visualization_2014">Munzner (<a href="references.html#ref-munzner_visualization_2014" role="doc-biblioref">2014</a>)</span>. <strong>TODO: Increase text size</strong></figcaption><p></p>
+<div id="fig-munzner" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="figs/03/munzner_effect_trans.png" class="img-fluid figure-img" style="width:65.0%"></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 3.4: Visual channels to which data items can be encoded, as they appear in <span class="citation" data-cites="munzner_visualization_2014">Munzner (<a href="references.html#ref-munzner_visualization_2014" role="doc-biblioref">2014</a>)</span>.</figcaption><p></p>
 </figure>
 </div>
 </div>
@@ -455,7 +455,7 @@ It is understandable if at this stage the specifications in @fig-gog-demo still 
 <!-- We can use this organisation of visual channels to make decisions on appropriate encodings given a variable's measurement level. If we wished to convey the magnitude of something, for example a quantitative (`ratio`) variable like the size of the Conservative vote share in a constituency, we might select a channel that has good quantitative effectiveness -- *position on a common scale* or *length*.  If we wished to also effectively identify and associate constituencies according to the political party that was elected, a categorical `nominal` variable, we might select a channel that has good associative properties such as *colour hue*. -->
 </section><section id="evaluating-designs" class="level3" data-number="3.2.4"><h3 data-number="3.2.4" class="anchored" data-anchor-id="evaluating-designs">
 <span class="header-section-number">3.2.4</span> Evaluating designs</h3>
-<p>The effectiveness rankings of visual channels in Figure <span class="quarto-unresolved-ref">?fig-munzner</span> are not simply based on Munzner’s preference. They are informed by detailed experimental work by <span class="citation" data-cites="cleveland_graphical_1984">Cleveland and McGill (<a href="references.html#ref-cleveland_graphical_1984" role="doc-biblioref">1984</a>)</span>, later replicated by <span class="citation" data-cites="heer_crowdsourcing_2010">Heer and Bostock (<a href="references.html#ref-heer_crowdsourcing_2010" role="doc-biblioref">2010</a>)</span>, which involved conducting controlled experiments testing people’s ability to make judgements from graphical elements. We can use <span class="quarto-unresolved-ref">?fig-munzner</span> to help make decisions around which data item to encode with which visual channel. This is particularly useful when designing data-rich graphics, where several data items are to be encoded simultaneously <span class="citation" data-cites="beecham_on_2021">(e.g. <a href="references.html#ref-beecham_on_2021" role="doc-biblioref">Beecham et al. 2021</a>)</span>. <span class="quarto-unresolved-ref">?fig-munzner</span> also offers a low cost way of <em>evaluating</em> different designs against their encoding effectiveness.</p>
+<p>The effectiveness rankings of visual channels in Figure <a href="#fig-munzner">Figure&nbsp;<span>3.4</span></a> are not simply based on Munzner’s preference. They are informed by detailed experimental work by <span class="citation" data-cites="cleveland_graphical_1984">Cleveland and McGill (<a href="references.html#ref-cleveland_graphical_1984" role="doc-biblioref">1984</a>)</span>, later replicated by <span class="citation" data-cites="heer_crowdsourcing_2010">Heer and Bostock (<a href="references.html#ref-heer_crowdsourcing_2010" role="doc-biblioref">2010</a>)</span>, which involved conducting controlled experiments testing people’s ability to make judgements from graphical elements. We can use <a href="#fig-munzner">Figure&nbsp;<span>3.4</span></a> to help make decisions around which data item to encode with which visual channel. This is particularly useful when designing data-rich graphics, where several data items are to be encoded simultaneously <span class="citation" data-cites="beecham_on_2021">(e.g. <a href="references.html#ref-beecham_on_2021" role="doc-biblioref">Beecham et al. 2021</a>)</span>. <a href="#fig-munzner">Figure&nbsp;<span>3.4</span></a> also offers a low cost way of <em>evaluating</em> different designs against their encoding effectiveness.</p>
 <p>To illustrate this, we can use Munzner’s ranking of channels to evaluate the Washington Post graphic discussed in <a href="#fig-wp-map">Figure&nbsp;<span>3.1</span></a>. <a href="#tab:wp-eval-size">Table 3.2</a> provides a summary of the encodings used in the graphic. US counties are represented using a peak-shaped <em>mark</em>. The key purpose of the graphic is to depict the geography of voting outcomes, and the most effective quantitative channel – position on an aligned scale – is used to order the county marks with a 2D geographic arrangement. With the positional channels taken, the two quantitive measures are encoded with the next highest ranked channel, 1D length: height varies according to number of <em>total votes cast</em> and width according to <em>margin size</em>. The marks are additionally encoded with two categorical variables: whether the county-level result was a <em>landslide</em> and also the <em>winning party</em>. Since the intention is to give greater visual saliency to counties that resulted in a landslide, this is an <code>ordinal</code> variable encoded with a quantitative channel: 2D area. The <em>winning party</em>, a categorical <code>nominal</code> variable, is encoded using colour hue.</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -820,8 +820,7 @@ Different from the US where "third parties" play a negligible role, scenarios 2 
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">region</span> <span class="op">!=</span> <span class="st">"Northern Ireland"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">mutate</span><span class="op">(</span></span>
 <span>    <span class="co"># Recode to 0 Chorley incoming speaker, Buckingham outgoing speaker.</span></span>
-<span>    swing_con_lab<span class="op">=</span><span class="fu">if_else</span><span class="op">(</span><span class="va">constituency_name</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Chorley"</span>, <span class="st">"Buckingham"</span><span class="op">)</span>,</span>
-<span>    <span class="fl">0</span>,</span>
+<span>    swing_con_lab<span class="op">=</span><span class="fu">if_else</span><span class="op">(</span><span class="va">constituency_name</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Chorley"</span>, <span class="st">"Buckingham"</span><span class="op">)</span>, <span class="fl">0</span>,</span>
 <span>    <span class="fl">0.5</span><span class="op">*</span><span class="op">(</span><span class="op">(</span><span class="va">con_19</span><span class="op">-</span><span class="va">con_17</span><span class="op">)</span><span class="op">-</span><span class="op">(</span><span class="va">lab_19</span><span class="op">-</span><span class="va">lab_17</span><span class="op">)</span><span class="op">)</span></span>
 <span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
@@ -846,7 +845,7 @@ Different from the US where "third parties" play a negligible role, scenarios 2 
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-hist" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figs/03/hist.png" class="img-fluid figure-img" width="1200"></p>
+<figure class="figure"><p><img src="figs/03/hist.png" class="img-fluid figure-img" width="1050"></p>
 <p></p><figcaption aria-hidden="true" class="figure-caption">Figure 3.6: Histograms of Butler two-party Labour-Conservative Swing.</figcaption><p></p>
 </figure>
 </div>
@@ -881,7 +880,7 @@ This design exposition by [Lunzner and McNamara, 2020](http://tinlizzie.org/hist
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-hist-region" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figs/03/hist-region.png" class="img-fluid figure-img" width="1425"></p>
+<figure class="figure"><p><img src="figs/03/hist-region.png" class="img-fluid figure-img" width="1125"></p>
 <p></p><figcaption aria-hidden="true" class="figure-caption">Figure 3.7: Histograms of Swing variable, grouped by region.</figcaption><p></p>
 </figure>
 </div>
@@ -942,7 +941,7 @@ ggplot2 themes control the appearance of all non-data items -- font sizes and ty
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-bars-region" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figs/03/bars-region.png" class="img-fluid figure-img" width="1500"></p>
+<figure class="figure"><p><img src="figs/03/bars-region.png" class="img-fluid figure-img" width="1230"></p>
 <p></p><figcaption aria-hidden="true" class="figure-caption">Figure 3.9: Plots of vote shares by party and region.</figcaption><p></p>
 </figure>
 </div>
@@ -1088,22 +1087,22 @@ Preparing data for plotting
 </div>
 </section><section id="plot-geography" class="level3" data-number="3.3.6"><h3 data-number="3.3.6" class="anchored" data-anchor-id="plot-geography">
 <span class="header-section-number">3.3.6</span> Plot geography</h3>
+<p>Implicit in the data graphics above is that the composition of Conservative and Labour voting may be shifting. If so, then paying attention to the geography to voting, certainly to observed <em>changes</em> in voting between 2017 and 2019 elections (e.g. <a href="#fig-hist-region">Figure&nbsp;<span>3.7</span></a>), may be instructive. We end the technical component to the chapter by generating thematic maps of the results data.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-map-winners" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figs/03/map-winners.png" class="img-fluid figure-img" width="1200"></p>
+<figure class="figure"><p><img src="figs/03/map-winners.png" class="img-fluid figure-img" width="825"></p>
 <p></p><figcaption aria-hidden="true" class="figure-caption">Figure 3.11: Choropleth of elected parties in 2019 General Election.</figcaption><p></p>
 </figure>
 </div>
 </div>
 </div>
 <!-- ![Choropleth of elected parties in 2019 General Election.](figs/03/map-winners.png){#fig-map-winners width=100% fig-align="center"} -->
-<p>Implicit in the data graphics above is that the composition of Conservative and Labour voting may be shifting. If so, then paying attention to the geography to voting, certainly to observed <em>changes</em> in voting between 2017 and 2019 elections (e.g. <a href="#fig-hist-region">Figure&nbsp;<span>3.7</span></a>), may be instructive. We end the chapter by generating thematic maps of the results data.</p>
 <p>To do this we need to generate a join on the boundary dataset loaded at the start of this technical section (<code>cons_outline</code>):</p>
 <div class="cell">
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Join constituency boundaries.</span></span>
 <span><span class="va">data_gb</span> <span class="op">&lt;-</span> <span class="va">cons_outline</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">inner_join</span><span class="op">(</span><span class="va">data_gb</span>, by<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"pcon19cd"</span><span class="op">=</span><span class="st">"ons_const_id"</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu">inner_join</span><span class="op">(</span><span class="va">data_gb</span>, by<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"pcon17cd"</span><span class="op">=</span><span class="st">"ons_const_id"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co"># Check class.</span></span>
 <span><span class="co">## [1] "sf"         "data.frame"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -1116,9 +1115,9 @@ Preparing data for plotting
 <span>    winner_19<span class="op">=</span><span class="fu">as_factor</span><span class="op">(</span><span class="va">winner_19</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Plot map.</span></span>
-<span><span class="va">data_gb</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>fill<span class="op">=</span><span class="va">winner_19</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">geom_sf</span><span class="op">(</span>colour<span class="op">=</span><span class="st">"#eeeeee"</span>, linewidth<span class="op">=</span><span class="fl">0.01</span><span class="op">)</span><span class="op">+</span></span>
+<span><span class="va">data_gb</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_sf</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>fill<span class="op">=</span><span class="va">winner_19</span><span class="op">)</span>, colour<span class="op">=</span><span class="st">"#eeeeee"</span>, linewidth<span class="op">=</span><span class="fl">0.01</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="co"># Optionally add a layer for regional boundaries.</span></span>
 <span>  <span class="fu">geom_sf</span><span class="op">(</span></span>
 <span>     data<span class="op">=</span><span class="va">.</span> <span class="op">%&gt;%</span> <span class="fu">group_by</span><span class="op">(</span><span class="va">region</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">summarise</span><span class="op">(</span><span class="op">)</span>,</span>
@@ -1140,12 +1139,12 @@ Preparing data for plotting
 <li>
 <em>Setting</em>: Constituency boundaries are subtly introduced by setting the <code>geom_sf()</code> mark to light grey (<code>colour="#eeeeee"</code>) with a thin (<code>size=0.01</code>) outline. On the map to the right outlines for regions are added as another <code>geom_sf()</code> layer. Note how this is achieved in the second <code>geom_sf()</code>. The <code>data_gb</code> dataset initially passed to ggplot2 (identified by the <code>.</code> mark) is collapsed by region (with <code>group_by()</code> and <code>summarise()</code>), in the background the boundaries in <code>geometry</code> are aggregated bu region.</li>
 </ol>
-<p>In the third map of <a href="#fig-map-winners">Figure&nbsp;<span>3.11</span></a> the transparency (<code>alpha</code>) of filled constituencies is varied according to the Swing variable. This does demonstrate that constituencies swinging most dramatically for Conservative (darker colours) are in the midlands and North of England and not in London and the South East. The pattern is nevertheless a subtle one; transparency (colour luminance / saturation) is not a highly effective visual channel. It may be worth applying the same encoding to Butler two-party swing as that used in the Washington Post graphic when characterising Republican-Democrat swing in 2016 US Elections (e.g. <span class="citation" data-cites="beecham_using_2020">Beecham (<a href="references.html#ref-beecham_using_2020" role="doc-biblioref">2020</a>)</span>).</p>
+<p>In the third map of <a href="#fig-map-winners">Figure&nbsp;<span>3.11</span></a> the transparency (<code>alpha</code>) of filled constituencies is varied according to the Swing variable. This does demonstrate that constituencies swinging most dramatically for Conservative (darker colours) are in the midlands and North of England and not in London and the South East. The pattern is nevertheless a subtle one; transparency (colour luminance / saturation) is not a highly effective visual channel. It may be worth applying the same encoding to Butler two-party swing as that used in the Washington Post graphic when characterising Republican-Democrat swing in 2016 US Elections <span class="citation" data-cites="beecham_using_2020">(e.g. <a href="references.html#ref-beecham_using_2020" role="doc-biblioref">Beecham 2020</a>)</span>.</p>
 <p>This can be achieved by simply adding another ggplot2 layer, though the code is a little more involved. ggplot2’s <code>geom_spoke()</code> primitive draws line segments parameterised by a location (x,y position) and angle. With this we can encode constituencies with <span style="font-weight:bolder">|</span> marks that angle to the right <span style="color:#3879A1;font-weight:bold">/</span> where the constituency swings towards Conservative and to the left where it swings towards Labour <span style="color:#DB534D;font-weight:bolder">\</span>. This encoding better exposes the pattern of constituencies forming Labour’s “red wall” in the north of England, as well as parts of Wales and the Midlands flipping to Conservative.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-spoke-map" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figs/03/spoke-map.svg" class="img-fluid figure-img"></p>
+<figure class="figure"><p><img src="figs/03/spoke-map.png" class="img-fluid figure-img" width="1124"></p>
 <p></p><figcaption aria-hidden="true" class="figure-caption">Figure 3.12: Map of Butler Con-Lab Swing in 2019 General Election.</figcaption><p></p>
 </figure>
 </div>

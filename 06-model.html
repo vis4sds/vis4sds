@@ -268,13 +268,13 @@ Knowledge
 <div class="callout-body-container callout-body">
 <ul class="task-list">
 <li>
-<input type="checkbox" disabled="" checked="">
+<input type="checkbox" disabled="">
 Be reminded of the basics of linear regression modelling.</li>
 <li>
-<input type="checkbox" disabled="" checked="">
+<input type="checkbox" disabled="">
 Understand two categories of geographic effect in regression modelling: geographical <em>dependence</em> in values and <em>non-stationarity</em> in processes.</li>
 <li>
-<input type="checkbox" disabled="" checked="">
+<input type="checkbox" disabled="">
 Learn how linear regression models can be updated to account for and explore these two effects.</li>
 </ul>
 </div>
@@ -291,16 +291,16 @@ Practical skills
 <div class="callout-body-container callout-body">
 <ul class="task-list">
 <li>
-<input type="checkbox" disabled="" checked="">
+<input type="checkbox" disabled="">
 Specify linear regression models in R.</li>
 <li>
-<input type="checkbox" disabled="" checked="">
+<input type="checkbox" disabled="">
 Apply <a href="https://purrr.tidyverse.org/articles/other-langs.html">functional-style programming</a> for working over multiple model outputs.</li>
 <li>
-<input type="checkbox" disabled="" checked="">
+<input type="checkbox" disabled="">
 Update linear regression models in R with Fixed Effect (FE) and Interaction terms.</li>
 <li>
-<input type="checkbox" disabled="" checked="">
+<input type="checkbox" disabled="">
 Extract model outputs and diagnostics in a <a href="https://vita.had.co.nz/papers/tidy-data.pdf"><code>tidy</code></a> manner.</li>
 </ul>
 </div>
@@ -689,10 +689,8 @@ Task
 <p>The advantage of generating model diagnostics and outputs that are tidy is that this eases the process of working with many model realisations. This is a common requirement for modern data analysis, where statistical inferences are made empirically from resampling. For example, we may wish to generate single-variable linear regression models separately for each candidate explanatory variable. We could, for example, use these outputs to annotate the scatterplots in <a href="#fig-scatters">Figure&nbsp;<span>6.2</span></a> by their regression line and colour observations according to their residual values, distance from the regression line. These models can be generated with reasonably little code by making use of <code>broom</code> and a style of <a href="https://adv-r.hadley.nz/fp.html">functional programming</a> in R, which is supported by the <code>purrr</code> package.</p>
 <p>Example code:</p>
 <div class="cell">
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">single_model_fits</span> <span class="op">&lt;-</span>  <span class="va">cons_data</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu">mutate</span><span class="op">(</span></span>
-<span>    <span class="fu">across</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">younger</span><span class="op">:</span><span class="va">heavy_industry</span><span class="op">)</span>, <span class="op">~</span><span class="op">(</span><span class="va">.x</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">.x</span><span class="op">)</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">.x</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">single_model_fits</span> <span class="op">&lt;-</span> <span class="va">cons_data</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">mutate</span><span class="op">(</span><span class="fu">across</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">younger</span><span class="op">:</span><span class="va">heavy_industry</span><span class="op">)</span>, <span class="op">~</span><span class="op">(</span><span class="va">.x</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">.x</span><span class="op">)</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">.x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">pivot_longer</span><span class="op">(</span></span>
 <span>    cols<span class="op">=</span><span class="va">younger</span><span class="op">:</span><span class="va">heavy_industry</span>, </span>
 <span>    names_to<span class="op">=</span><span class="st">"expl_var"</span>, values_to<span class="op">=</span><span class="st">"z_score"</span></span>
@@ -749,8 +747,7 @@ Task
 <div class="cell">
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">cons_data</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">mutate</span><span class="op">(</span><span class="fu">across</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">younger</span><span class="op">:</span><span class="va">heavy_industry</span><span class="op">)</span>, <span class="op">~</span><span class="op">(</span><span class="va">.x</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">.x</span><span class="op">)</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">.x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span></span>
-<span>    <span class="va">leave</span> <span class="op">~</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">leave</span> <span class="op">~</span> </span>
 <span>    <span class="va">degree</span> <span class="op">+</span> <span class="va">eu_born</span> <span class="op">+</span> <span class="va">white</span>  <span class="op">+</span> <span class="va">no_car</span> <span class="op">+</span> <span class="va">not_good_health</span> <span class="op">+</span> <span class="va">heavy_industry</span>,</span>
 <span>     data<span class="op">=</span><span class="va">.</span><span class="op">)</span></span>
 <span></span>
@@ -758,7 +755,7 @@ Task
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">term</span> <span class="op">!=</span> <span class="st">"(Intercept)"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">ggplot</span><span class="op">(</span></span>
 <span>    <span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/reorder.factor.html">reorder</a></span><span class="op">(</span><span class="va">term</span>, <span class="op">-</span><span class="va">estimate</span><span class="op">)</span>,</span>
-<span>        y<span class="op">=</span><span class="va">estimate</span>,ymin<span class="op">=</span><span class="va">estimate</span><span class="op">-</span><span class="fl">1.96</span><span class="op">*</span><span class="va">std.error</span>,</span>
+<span>        y<span class="op">=</span><span class="va">estimate</span>, ymin<span class="op">=</span><span class="va">estimate</span><span class="op">-</span><span class="fl">1.96</span><span class="op">*</span><span class="va">std.error</span>,</span>
 <span>        ymax<span class="op">=</span><span class="va">estimate</span><span class="op">+</span><span class="fl">1.96</span><span class="op">*</span><span class="va">std.error</span><span class="op">)</span></span>
 <span>        <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_pointrange</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
@@ -782,8 +779,7 @@ Task
 <span>  <span class="fu">mutate</span><span class="op">(</span></span>
 <span>    <span class="fu">across</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">younger</span><span class="op">:</span><span class="va">heavy_industry</span><span class="op">)</span>, <span class="op">~</span><span class="op">(</span><span class="va">.x</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">.x</span><span class="op">)</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">.x</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>    region<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">region</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span></span>
-<span>    <span class="va">leave</span> <span class="op">~</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">leave</span> <span class="op">~</span></span>
 <span>       <span class="va">region</span> <span class="op">+</span> <span class="va">degree</span> <span class="op">+</span> <span class="va">eu_born</span> <span class="op">+</span> <span class="va">white</span>  <span class="op">+</span> <span class="va">no_car</span> <span class="op">+</span> <span class="va">not_good_health</span> <span class="op">+</span> <span class="va">heavy_industry</span>,</span>
 <span>     data<span class="op">=</span><span class="va">.</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">tidy</span><span class="op">(</span><span class="op">)</span></span>

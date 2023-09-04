@@ -251,10 +251,10 @@ Knowledge outcomes
 <div class="callout-body-container callout-body">
 <ul class="task-list">
 <li>
-<input type="checkbox" disabled="" checked="">
+<input type="checkbox" disabled="">
 Appreciate the motivation for this book: why visualization, why R and why <code>ggplot2</code>.</li>
 <li>
-<input type="checkbox" disabled="" checked="">
+<input type="checkbox" disabled="">
 Recognise the characteristics of reproducible research and the role of <em>projects</em> and <em>computational notebooks</em> for curating modern data analysis products.</li>
 </ul>
 </div>
@@ -271,22 +271,22 @@ Skills outcomes
 <div class="callout-body-container callout-body">
 <ul class="task-list">
 <li>
-<input type="checkbox" disabled="" checked="">
+<input type="checkbox" disabled="">
 Open R using the RStudio Integrated Developer Environment (IDE).</li>
 <li>
-<input type="checkbox" disabled="" checked="">
+<input type="checkbox" disabled="">
 Install and enable R packages and query package documentation.</li>
 <li>
-<input type="checkbox" disabled="" checked="">
+<input type="checkbox" disabled="">
 Perform basic calculations via the R Console.</li>
 <li>
-<input type="checkbox" disabled="" checked="">
+<input type="checkbox" disabled="">
 Render Quarto files.</li>
 <li>
-<input type="checkbox" disabled="" checked="">
+<input type="checkbox" disabled="">
 Create R Projects.</li>
 <li>
-<input type="checkbox" disabled="" checked="">
+<input type="checkbox" disabled="">
 Read-in datasets from external resources as objects.</li>
 </ul>
 </div>
@@ -571,7 +571,7 @@ format: html
 <span><span class="co"># curve_position : optional parameter controlling position, relative to</span></span>
 <span><span class="co"># line length that curve bends out.</span></span>
 <span><span class="va">get_trajectory</span> <span class="op">&lt;-</span></span>
-<span>  <span class="kw">function</span> <span class="op">(</span><span class="va">o_x</span>, <span class="va">o_y</span>, <span class="va">d_x</span>, <span class="va">d_y</span>, <span class="va">od_pair</span>, <span class="va">curve_extent</span><span class="op">=</span><span class="op">-</span><span class="fl">90</span>, <span class="va">curve_position</span><span class="op">=</span><span class="fl">6</span><span class="op">)</span></span>
+<span><span class="kw">function</span> <span class="op">(</span><span class="va">o_x</span>, <span class="va">o_y</span>, <span class="va">d_x</span>, <span class="va">d_y</span>, <span class="va">od_pair</span>, <span class="va">curve_extent</span><span class="op">=</span><span class="op">-</span><span class="fl">90</span>, <span class="va">curve_position</span><span class="op">=</span><span class="fl">6</span><span class="op">)</span></span>
 <span>  <span class="op">{</span></span>
 <span>    <span class="va">curve_angle</span> <span class="op">=</span> <span class="fu">get_radians</span><span class="op">(</span><span class="op">-</span><span class="va">curve_extent</span><span class="op">)</span></span>
 <span>    <span class="va">x</span> <span class="op">=</span> <span class="op">(</span><span class="va">o_x</span> <span class="op">-</span> <span class="va">d_x</span><span class="op">)</span><span class="op">/</span><span class="va">curve_position</span></span>

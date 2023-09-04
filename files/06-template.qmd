@@ -35,7 +35,7 @@ cons_data <- read_csv(here("data", "cons_data.csv"))
 
 url <- "https://vis4sds.github.io/data/ch6/cons_hex.geojson"
 download.file(url, here("data", "cons_hex.geojson"))
-hex_data <- st_read(here("data", "cons_hex.geojson"))
+cons_hex <- st_read(here("data", "cons_hex.geojson"))
 ```
 
 
@@ -47,12 +47,18 @@ The data for the parallel coordinate plots is z-score transformed. In the code b
 #| echo: true
 #| eval: false
 
+order_vars <- 
+  cons_data |>
+  mutate(across(c(younger:heavy_industry), ~(.x-mean(.x))/sd(.x))) |> 
+  pivot_longer(cols=younger:heavy_industry, names_to="expl_var", values_to="prop") |> 
+  group_by(expl_var) |>  
+  summarise(cor=cor(leave,prop)) |> ungroup() |> arrange(cor) |>  
+  pull(expl_var)
+
 plot_data <- cons_data |> 
   mutate(
     majority=if_else(leave>.5, "Leave", "Remain"),
-    across(c(leave, younger:heavy_industry), ~(.x-mean(.x))/sd(.x))
-  ) |> 
-  mutate(
+    across(c(leave, younger:heavy_industry), ~(.x-mean(.x))/sd(.x)),
     decile=ntile(leave, 10),
     is_extreme = decile > 9 | decile < 2
   )  |> 
@@ -65,23 +71,12 @@ plot_data <- cons_data |>
   mutate(degree=-degree, professional=-professional, younger=-younger, eu_born=-eu_born, no_car=-no_car) |>  
   # Gather explanatory variables for along rows.
   pivot_longer(cols= c(leave:not_good_health), names_to="var", values_to="z_score") |> 
-  # Recode new explanatory variable as factor variable ordered according to known
-  # assocs. Reverse order here as I've used coord_flip in plot.
+  # Recode new explanatory variable as factor ordered according to known
+  # assocs. Reverse order here as coord_flip() used in plot.
   mutate(
     var=factor(var, levels=c("leave", order_vars)),
     var=fct_rev(var)
   ) 
-
-order_vars <- 
-  cons_data |>
-  mutate(
-    across(c(younger:heavy_industry), ~(.x-mean(.x))/sd(.x))
-  ) |> 
-  pivot_longer(cols=younger:heavy_industry, names_to="expl_var", values_to="prop") |> 
-  group_by(expl_var) |>  
-  summarise(cor=cor(leave,prop)) |>  ungroup() |>   arrange(cor) |>  
-  pull(expl_var)
-
 ```
 
 As ever the data processing code for the plot is more involved than the ggplot specification. We use `geom_path()` for drawing connected lines of the parallel coordinate plot, coloured according to `majority` and grouped by `constituency` -- that is, separate lines for each constituency.

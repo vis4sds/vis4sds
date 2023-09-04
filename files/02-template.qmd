@@ -48,6 +48,12 @@ ny_stations <- read_csv(here("data", "ny_stations.csv"))
 url <- "https://vis4sds.github.io/data/ch2/ny_trips.fst"
 download.file(url, here("data", "ny_trips.fst"))
 ny_trips <- read_fst(here("data", "ny_trips.fst"))
+
+# The two untidy datasets.
+url <- "https://vis4sds.github.io/data/ch2/ny_spread_rows.csv"
+download.file(url, here("data", "ny_spread_rows.csv"))
+url <- "https://vis4sds.github.io/data/ch2/ny_spread_columns.csv"
+download.file(url, here("data", "ny_spread_columns.csv"))
 ```
 
 ## Describe

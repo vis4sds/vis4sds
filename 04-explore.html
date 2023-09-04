@@ -265,13 +265,13 @@ Knowledge outcomes
 <div class="callout-body-container callout-body">
 <ul class="task-list">
 <li>
-<input type="checkbox" disabled="" checked="">
+<input type="checkbox" disabled="">
 An appreciation of how data graphics can support exploratory data analysis (EDA) workflows.</li>
 <li>
-<input type="checkbox" disabled="" checked="">
+<input type="checkbox" disabled="">
 The main chart types, their benefits and drawbacks, for summarising variation within- and between- variables.</li>
 <li>
-<input type="checkbox" disabled="" checked="">
+<input type="checkbox" disabled="">
 Three strategies for effecting <em>comparison</em> in EDA: juxtaposition, superposition and direct encoding <span class="citation" data-cites="gleicher_visual_2011">(<a href="references.html#ref-gleicher_visual_2011" role="doc-biblioref">Gleicher and Roberts 2011</a>)</span>.</li>
 </ul>
 </div>
@@ -288,10 +288,10 @@ Skills outcomes
 <div class="callout-body-container callout-body">
 <ul class="task-list">
 <li>
-<input type="checkbox" disabled="" checked="">
+<input type="checkbox" disabled="">
 ggplot2 specifications that use visual channels – colour and layout – to support comparison.</li>
 <li>
-<input type="checkbox" disabled="" checked=""><code>tidyverse</code>-style code for computing model-expected values, and piped to ggplot2 for exploratory analysis.</li>
+<input type="checkbox" disabled=""><code>tidyverse</code>-style code for computing model-expected values, and piped to ggplot2 for exploratory analysis.</li>
 </ul>
 </div>
 </div>
@@ -434,7 +434,7 @@ It is common in an EDA to quickly compare associations between many quantitive v
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-dots-heatmap" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figs/04/borough-freqs.png" class="img-fluid figure-img" width="1456"></p>
+<figure class="figure"><p><img src="figs/04/borough-freqs.png" class="img-fluid figure-img" width="1452"></p>
 <p></p><figcaption aria-hidden="true" class="figure-caption">Figure 4.4: <a href="https://en.wikipedia.org/wiki/Dot_plot_(statistics)">Cleveland dot plots</a> and heatmaps summarising crash frequencies by London borough, period of day and vehicle type.</figcaption><p></p>
 </figure>
 </div>
@@ -637,7 +637,7 @@ The benefit for EDA is that the signed-scores are very quick and easy to compute
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-borough-freqs-resids" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figs/04/borough-freqs-resids.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figure class="figure"><p><img src="figs/04/borough-freqs-resids.png" class="img-fluid figure-img" style="width:95.0%"></p>
 <p></p><figcaption aria-hidden="true" class="figure-caption">Figure 4.6: Heatmaps of crashes by period of week and vehicle type for London Boroughs.</figcaption><p></p>
 </figure>
 </div>
@@ -730,8 +730,8 @@ include_graphics("figs/04/mosaic_boroughs_spatial.svg", error = FALSE)
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-spatial-layout" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figs/04/grids_vehicle_test.png" class="img-fluid figure-img" width="2534"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 4.7: Mosaic plots of vehicle type and period for London Boroughs with geo-spatial arrangement. <strong>TODO: change arrangement and legend graphic</strong></figcaption><p></p>
+<figure class="figure"><p><img src="figs/04/grids_vehicle.png" class="img-fluid figure-img" style="width:95.0%"></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 4.7: Mosaic plots of vehicle type and period for London Boroughs with geo-spatial arrangement.</figcaption><p></p>
 </figure>
 </div>
 </div>
@@ -780,7 +780,7 @@ include_graphics("figs/04/mosaic_boroughs_spatial.svg", error = FALSE)
 <span>    <span class="va">driver_quintile</span> <span class="op">!=</span> <span class="st">"Data missing or out of range"</span></span>
 <span>    <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The dataset contains c.&nbsp;49,000 observations, 23% of linked pedestrian crashes. Although this is a large number, there may be some systematic bias in the types of pedestrian crashes for which full demographic data are recorded, a challenge often encountered when datasets are repurposed for analysis. For brevity, we will not extensively investigate this bias, but below ‘record completeness rates’ are calculated for selected crash types. As anticipated, lower completeness rates appear for crashes coded as <em>Slight</em> in injury severity, but there are also lower completeness rates for crashes occurring in the highest deprivation quintile.</p>
+<p>The dataset contains c.&nbsp;52,600 observations, 23% of linked pedestrian crashes. Although this is a large number, there may be some systematic bias in the types of pedestrian crashes for which full demographic data are recorded, a challenge often encountered when datasets are repurposed for analysis. For brevity, we will not extensively investigate this bias, but below ‘record completeness rates’ are calculated for selected crash types. As anticipated, lower completeness rates appear for crashes coded as <em>Slight</em> in injury severity, but there are also lower completeness rates for crashes occurring in the highest deprivation quintile.</p>
 <div class="cell">
 
 </div>
@@ -798,15 +798,15 @@ include_graphics("figs/04/mosaic_boroughs_spatial.svg", error = FALSE)
 <tr grouplength="3"><td colspan="2" style="border-bottom: 0px solid; font-size:  90%">Casualty severity</td></tr>
 <tr>
 <td style="text-align:left;padding-left: 2em;width: 30%; font-size:  90%" indentlevel="1"> Fatal </td>
-   <td style="text-align:left;width: 20%; font-size:  90%"> 26% </td>
+   <td style="text-align:left;width: 20%; font-size:  90%"> 30% </td>
   </tr>
 <tr>
 <td style="text-align:left;padding-left: 2em;width: 30%; font-size:  90%" indentlevel="1"> Serious </td>
-   <td style="text-align:left;width: 20%; font-size:  90%"> 26% </td>
+   <td style="text-align:left;width: 20%; font-size:  90%"> 29% </td>
   </tr>
 <tr>
 <td style="text-align:left;padding-left: 2em;width: 30%; font-size:  90%" indentlevel="1"> Slight </td>
-   <td style="text-align:left;width: 20%; font-size:  90%"> 20% </td>
+   <td style="text-align:left;width: 20%; font-size:  90%"> 22% </td>
   </tr>
 <tr grouplength="5"><td colspan="2" style="border-bottom: 0px solid;font-size:  90%">IMD class of crash location</td></tr>
 <tr>
@@ -827,7 +827,7 @@ include_graphics("figs/04/mosaic_boroughs_spatial.svg", error = FALSE)
   </tr>
 <tr>
 <td style="text-align:left;padding-left: 2em;width: 30%; font-size:  90%" indentlevel="1"> 1 Most deprived </td>
-   <td style="text-align:left;width: 20%; font-size:  90%"> 19% </td>
+   <td style="text-align:left;width: 20%; font-size:  90%"> 22% </td>
   </tr>
 </tbody>
 </table>
@@ -838,7 +838,7 @@ include_graphics("figs/04/mosaic_boroughs_spatial.svg", error = FALSE)
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-completeness" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figs/04/completeness.png" class="img-fluid figure-img" style="width:60.0%"></p>
+<figure class="figure"><p><img src="figs/04/completeness.png" class="img-fluid figure-img" style="width:80.0%"></p>
 <p></p><figcaption aria-hidden="true" class="figure-caption">Figure 4.8: Completeness rates by IMD class of crash location and crash injury severity.</figcaption><p></p>
 </figure>
 </div>
@@ -920,8 +920,8 @@ include_graphics("figs/04/mosaic_boroughs_spatial.svg", error = FALSE)
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-imd-driver-cas" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figs/04/imd_driver_cas.png" class="img-fluid figure-img" style="width:70.0%"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 4.10: Pedestrian casualties by IMD quintile of pedestrian and driver. <strong>TO DO: space out and annotate.</strong></figcaption><p></p>
+<figure class="figure"><p><img src="figs/04/imd_driver_cas.png" class="img-fluid figure-img" style="width:85.0%"></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 4.10: Pedestrian casualties by IMD quintile of pedestrian and driver.</figcaption><p></p>
 </figure>
 </div>
 </div>
@@ -961,7 +961,7 @@ include_graphics("figs/04/mosaic_boroughs_spatial.svg", error = FALSE)
 <p>The ggplot2 spec for <a href="#fig-imd-driver-cas">Figure&nbsp;<span>4.10</span></a>:</p>
 <ol type="1">
 <li>
-<em>Data</em>: We create a staged dataset for plotting. Observed values for each cell of the heatmap are computed, along with row and column marginals for calculating expected values. We assume that crash frequencies distribute independently of IMD class, and so derive expected values for each cell of the heatmap (<span class="math inline">E_ij</span>) from its corresponding column (<span class="math inline">C_i</span>), row (<span class="math inline">R_j</span>) maginals and the grand total of crashes (<span class="math inline">GT</span>): <span class="math inline">E_i = \frac{C_i \times R_i}{GT}</span>. The graphics in the right margin of <a href="#fig-imd-driver-cas">Figure&nbsp;<span>4.10</span></a> show how expectation is spread in this way. You will notice that <code>group_by()</code> does some heavy lifting to arrive at these row, column and cell-level totals. The way in which the signed chi-score residuals are calculated in the final <code>group_by()</code> follows that described earlier in the chapter.</li>
+<em>Data</em>: We create a staged dataset for plotting. Observed values for each cell of the heatmap are computed, along with row and column marginals for calculating expected values. We assume that crash frequencies distribute independently of IMD class, and so derive expected values for each cell of the heatmap (<span class="math inline">E_{ij}</span>) from its corresponding column (<span class="math inline">C_i</span>), row (<span class="math inline">R_j</span>) maginals and the grand total of crashes (<span class="math inline">GT</span>): <span class="math inline">E_i = \frac{C_i \times R_i}{GT}</span>. The graphics in the right margin of <a href="#fig-imd-driver-cas">Figure&nbsp;<span>4.10</span></a> show how expectation is spread in this way. You will notice that <code>group_by()</code> does some heavy lifting to arrive at these row, column and cell-level totals. The way in which the signed chi-score residuals are calculated in the final <code>group_by()</code> follows that described earlier in the chapter.</li>
 <li>
 <em>Encoding</em>: Cells of the heatmap are arranged in <code>x</code> and <code>y</code> on the IMD class of pedestrians and drivers and filled according to signed chi-score residuals. .</li>
 <li>
@@ -991,7 +991,7 @@ Task
 <div class="cell-output-display">
 <div id="fig-imd-driver-cas-crash" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="figs/04/model_imd_location.png" class="img-fluid figure-img" style="width:90.0%"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 4.11: Pedestrian casualties by IMD quintile of pedestrian, driver and crash location. <strong>TODO: annotate on key observations.</strong></figcaption><p></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 4.11: Pedestrian casualties by IMD quintile of pedestrian, driver and crash location.</figcaption><p></p>
 </figure>
 </div>
 </div>
