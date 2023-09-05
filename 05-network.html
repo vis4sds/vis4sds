@@ -264,10 +264,10 @@ Knowledge
 <div class="callout-body-container callout-body">
 <ul class="task-list">
 <li>
-<input type="checkbox" disabled="" checked="">
+<input type="checkbox" disabled="">
 Understand the special structure and vocabulary used to represent network data.</li>
 <li>
-<input type="checkbox" disabled="" checked="">
+<input type="checkbox" disabled="">
 Appreciate the strengths, weaknesses and trade-offs of network visualizations and of incorporating geographic context.</li>
 </ul>
 </div>
@@ -284,7 +284,7 @@ Practical skills
 <div class="callout-body-container callout-body">
 <ul class="task-list">
 <li>
-<input type="checkbox" disabled="" checked="">
+<input type="checkbox" disabled="">
 Write <code>ggplot2</code> specifications to analyse spatial network origin-destination data.</li>
 </ul>
 </div>
@@ -331,7 +331,7 @@ Write <code>ggplot2</code> specifications to analyse spatial network origin-dest
 <div class="cell-output-display">
 <div id="fig-matrices" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="figs/05/matrices.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 5.3: Origin-destination matrices ordered according to borough size on number of jobs. <strong>TO DO: keep same OD on local?</strong></figcaption><p></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 5.3: Origin-destination matrices ordered according to borough size on number of jobs.</figcaption><p></p>
 </figure>
 </div>
 </div>
@@ -354,7 +354,7 @@ Write <code>ggplot2</code> specifications to analyse spatial network origin-dest
 <div class="cell-output-display">
 <div id="fig-map-map" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="figs/05/map_map.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 5.5: Map-witin-map layout required for generating OD maps. The approximate spatial arrangement is generated with the <a href="https://www.roger-beecham.com/gridmappr/index.html">gridmappr</a> package. <strong>TODO: annotate refernce cell, origin/destination cell info.</strong></figcaption><p></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 5.5: Map-witin-map layout required for generating OD maps. The approximate spatial arrangement is generated with the <a href="https://www.roger-beecham.com/gridmappr/index.html">gridmappr</a> package <span class="citation" data-cites="beecham_gridmappr_2023">(<a href="references.html#ref-beecham_gridmappr_2023" role="doc-biblioref">Beecham 2023</a>)</span>.</figcaption><p></p>
 </figure>
 </div>
 </div>
@@ -366,7 +366,7 @@ Write <code>ggplot2</code> specifications to analyse spatial network origin-dest
 <div class="cell-output-display">
 <div id="fig-odmap" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="figs/05/od_map.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 5.6: Destination-focussed OD map of commutes between London boroughs with local scaling. <strong>TODO: annotate with observations, remove grey background?</strong></figcaption><p></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 5.6: Destination-focussed OD map of commutes between London boroughs with local scaling.</figcaption><p></p>
 </figure>
 </div>
 </div>
@@ -411,7 +411,7 @@ The analysis above might give the impression that OD maps should be used in pref
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Read in local copies of the Census travel-to-work data.</span></span>
 <span><span class="va">od_pairs</span> <span class="op">&lt;-</span> <span class="fu">read_csv</span><span class="op">(</span><span class="fu">here</span><span class="op">(</span><span class="st">"data"</span>, <span class="st">"london_ttw.csv"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>In order to generate an approximate geographic arrangement of London boroughs we will use the <a href="https://www.roger-beecham.com/gridmappr/index.html"><code>gridmappr</code></a> R package. The development version can be downloaded with:</p>
+<p>In order to generate an approximate geographic arrangement of London boroughs we will use the <a href="https://www.roger-beecham.com/gridmappr/index.html"><code>gridmappr</code></a> R package <span class="citation" data-cites="beecham_gridmappr_2023">(<a href="references.html#ref-beecham_gridmappr_2023" role="doc-biblioref">Beecham 2023</a>)</span>. The development version can be downloaded with:</p>
 <div class="cell">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"rogerbeecham/gridmappr"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -609,7 +609,7 @@ The analysis above might give the impression that OD maps should be used in pref
 </div>
 </section><section id="gridmap-layout" class="level3" data-number="5.3.2"><h3 data-number="5.3.2" class="anchored" data-anchor-id="gridmap-layout">
 <span class="header-section-number">5.3.2</span> Gridmap layout</h3>
-<p>We will analyse over the nodes and edges (flows) data by laying out data graphics with a geo-spatial arrangement. Such arrangements can be automatically created using the <a href="https://www.roger-beecham.com/gridmappr/index.html"><code>gridmappr</code></a> R package. Given a set of point locations the package creates a two-dimensional grid of user-specified dimensions and allocates points to the grid such that the distance between points in geographic and grid space is minimised. The main function to call is <code>points_to_grid()</code>. This takes a tibble of geographic points and returns grid cell positions (<em>row</em> and <em>column</em> identifiers). In the code below an 8x8 grid is used. The allocation is also constrained by a <em>compactness</em> parameter which determines the extent to which points are allocated to cells in the centre (<span class="math inline">compactness = 1</span>), edges (<span class="math inline">0</span>) or scaled geographic location (<span class="math inline">0.5</span>) within the grid.</p>
+<p>We will analyse over the nodes and edges (flows) data by laying out data graphics with a geo-spatial arrangement. Such arrangements can be automatically created using the <a href="https://www.roger-beecham.com/gridmappr/index.html"><code>gridmappr</code></a> R package <span class="citation" data-cites="beecham_gridmappr_2023">(<a href="references.html#ref-beecham_gridmappr_2023" role="doc-biblioref">Beecham 2023</a>)</span>. Given a set of point locations the package creates a two-dimensional grid of user-specified dimensions and allocates points to the grid such that the distance between points in geographic and grid space is minimised. The main function to call is <code>points_to_grid()</code>. This takes a tibble of geographic points and returns grid cell positions (<em>row</em> and <em>column</em> identifiers). In the code below an 8x8 grid is used. The allocation is also constrained by a <em>compactness</em> parameter which determines the extent to which points are allocated to cells in the centre (<span class="math inline">compactness = 1</span>), edges (<span class="math inline">0</span>) or scaled geographic location (<span class="math inline">0.5</span>) within the grid.</p>
 <div class="cell">
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">gridmappr</span><span class="op">)</span></span>
 <span><span class="va">n_row</span> <span class="op">&lt;-</span> <span class="fl">8</span></span>
@@ -784,7 +784,7 @@ The analysis above might give the impression that OD maps should be used in pref
 <div class="cell-output-display">
 <div id="fig-nodes-gridmap" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="figs/05/nodes_gridmap.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 5.10: Workers and jobs in London boroughs by full occupation classes. <strong>TO DO: change annotations and bars with contstnt lightness</strong></figcaption><p></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 5.10: Workers and jobs in London boroughs by full occupation classes.</figcaption><p></p>
 </figure>
 </div>
 </div>
@@ -809,7 +809,7 @@ The analysis above might give the impression that OD maps should be used in pref
 <div class="cell-output-display">
 <div id="fig-edges-odmap" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="figs/05/edges_odmap.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 5.11: Commutes between London boroughs: difference maps by occupation type assuming <em>professional</em> and <em>non-professional</em> distribute uniformly across London. <strong>TODO: Make gridlines lighter, annotations larger</strong></figcaption><p></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 5.11: Commutes between London boroughs: difference maps by occupation type assuming <em>professional</em> and <em>non-professional</em> distribute uniformly across London.</figcaption><p></p>
 </figure>
 </div>
 </div>
@@ -899,7 +899,7 @@ The analysis above might give the impression that OD maps should be used in pref
 <div class="cell-output-display">
 <div id="fig-edges-odmap-borough" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="figs/05/edges_odmap_within.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 5.12: Commutes between London boroughs: difference maps by occupation type assuming <em>professional</em> and <em>non-professional</em> distribute uniformly within boroughs. <strong>TODO: annotate with key observations</strong></figcaption><p></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 5.12: Commutes between London boroughs: difference maps by occupation type assuming <em>professional</em> and <em>non-professional</em> distribute uniformly within boroughs.</figcaption><p></p>
 </figure>
 </div>
 </div>
