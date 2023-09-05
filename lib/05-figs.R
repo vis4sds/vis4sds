@@ -32,6 +32,7 @@ library(ggraph)
 library(ggforce)
 library(here)
 library(ggtext)
+library(magick)
 # install.packages("devtools")
 devtools::install_github("rogerbeecham/gridmappr")
 library(gridmappr)
@@ -41,19 +42,21 @@ library(odvis)
 
 # 1.2 Data ---------------------------
 
-# Generate gridmap of London boroughs.
-n_row <- 8
-n_col <- 8
-pts <- london_boroughs |>
-  st_drop_geometry() |>
-  select(area_name, x = easting, y = northing)
-solution <- points_to_grid(pts, n_row, n_col, compactness = .6)
-grid <- make_grid(london_boroughs, n_row, n_col)
-grid <- grid |>
-  inner_join(solution)
+
+# n_row <- 8
+# n_col <- 8
+# pts <- london_boroughs |>
+#   st_drop_geometry() |>
+#   select(area_name, x = easting, y = northing)
+# solution <- points_to_grid(pts, n_row, n_col, compactness = .6)
+# grid <- make_grid(london_boroughs, n_row, n_col)
+# grid <- grid |>
+#   inner_join(solution)
 
 od_pairs <- read_csv(here("../", "data", "ch5", "london_ttw.csv"))
 rivers_real <- st_read(here("../", "data", "ch5", "rivers_real.geojson"))
+# Generate gridmap of London boroughs + rivers.
+source(here("lib", "river_grid.R"))
 
 edges <- od_pairs |> 
   group_by(o_bor, d_bor)  |>  
@@ -113,10 +116,6 @@ plot <- nodes |>
   annotate("text", x=11.8, y=400000, 
            label=str_wrap("worker-rich boroughs", 10), family="Avenir Book", hjust=0, size=4.5) +
   
-  # scale_y_continuous(
-  #   breaks=c(0:4*10000), 
-  #   labels = scales::comma_format(scale = .001)) +
-  
   labs(x="", y="",  subtitle="<span style = 'color: #377eb8;'>jobs</span> | <span style = 'color: #e41a1c;'>workers</span> ")+
   theme(
     axis.text.x = element_text(angle=-90, hjust=0), 
@@ -148,50 +147,58 @@ node_link <- ggraph(graph, weights = commutes) +
 
   geom_node_point(aes(size = commutes), fill="#003c8f", colour="#003c8f", alpha=.5) +
   
-  annotate("text", wst$x-.00025, wst$y+.000045, label=wst$la, size=3, hjust='left', family="Avenir Medium") +
+  annotate("text", wst$x-.00025, wst$y+.000045, label=wst$la, size=4, hjust='left') +
   annotate(
-    geom = "curve",
+    #geom = "curve",
+    geom = "segment",
     xend = wst$x-.000095, x = wst$x-.000045,
     yend = wst$y+.00004, y = wst$y+.00002,
-    curvature = -.5,
-    angle = 135, size=.2
-  ) + 
-  
-  annotate("text", lam$x-.00007, lam$y-.00005, label=lam$la, size=3, hjust='left', family="Avenir Medium") +
+    #curvature = -.5,
+    #angle = 135, 
+    size=.3
+  ) +
+
+  annotate("text", lam$x-.00007, lam$y-.00005, label=lam$la, size=4, hjust='left') +
   annotate(
-    geom = "curve",
+    #geom = "curve",
+    geom = "segment",
     xend = lam$x-.00002, x = lam$x,
     yend = lam$y-.000045, y = lam$y-.00001,
-    curvature = -.5,
-    angle = 135, size=.2
+    #curvature = -.5, angle = 135, 
+    size=.3
   ) +
-  annotate("text", wnd$x-.00015, wnd$y+.000035, label=wnd$la, size=3, hjust='left', family="Avenir Medium") +
+  annotate("text", wnd$x-.00015, wnd$y+.000035, label=wnd$la, size=4, hjust='left') +
   annotate(
-    geom = "curve",
+    geom = "segment",
+    # geom = "curve",
     xend = wnd$x-.00008, x = wnd$x,
     yend = wnd$y+.00003, y = wnd$y+.00001,
-    curvature = -.5,
-    angle = 135, size=.2
+    #curvature = -.5, angle = 135, 
+    size=.3
   ) +
-  
-  annotate("text", hns$x-.000075, hns$y, label=hns$la, size=3, hjust='right', family="Avenir Medium") +
+
+  annotate("text", hns$x-.000075, hns$y, label=hns$la, size=4, hjust='right') +
   annotate(
-    geom = "curve",
+    geom = "segment",
+    # geom = "curve",
     xend = hns$x-.000015, x = hns$x-.00007,
     yend = hns$y, y = hns$y,
-    curvature = -.5,
-    angle = 135, size=.2
+    # curvature = -.5,   angle = 135, 
+    size=.3
   ) +
-  
-  annotate("text", col$x+.00004, col$y+.00003, label=col$la, size=3, hjust='left', family="Avenir Medium") +
+
+  annotate("text", col$x+.00004, col$y+.00003, label=col$la, size=4, hjust='left') +
   annotate(
-    geom = "curve",
+    geom = "segment",
+    # geom = "curve",
     xend = col$x+.000035, x = col$x,
     y = col$y+.00001, yend = col$y+.000025,
-    curvature = -.5,
-    angle = 135, size=.2
+    #curvature = -.5, angle = 135, 
+    size=.3
   ) +
   
+  annotate("text", wnd$x+.00015, wnd$y+.000035, label="", size=1, hjust='right') +
+
   scale_edge_width(range = c(0.1,3), guide="none")+
   #scale_edge_colour_distiller(palette="Blues", direction=1, guide="none") +
   # annotate("text", x=0, y=-.19, label="") +
@@ -200,8 +207,8 @@ node_link <- ggraph(graph, weights = commutes) +
   labs(subtitle = "layout : force-directed", size="# commutes\nthousands") +
   theme(
     legend.position = "right",
-    legend.text=element_text(size=9),
-    legend.title = element_text(size=9.5),
+    legend.text=element_text(size=10),
+    legend.title = element_text(size=12),
     axis.title.x = element_blank(), axis.title.y = element_blank(),
     plot.subtitle = element_text(size=13, colour="#000000", family = "Avenir Book") 
 ) 
@@ -278,31 +285,31 @@ flowline <- ggplot()+
   geom_path(aes(x=x, y=y, group=od_pair, linewidth=f_od, size=f_od^.3), alpha=.5, data=trajs, colour="#003c8f")+
   # geom_text(data=london_boroughs,
   #           aes(x=easting, y=northing, label=abbreviate(area_name,3)), size=3.5, family="Avenir Next")+ 
-  annotate("text", wst$easting+.29*london_width, wst$northing, label=wst$area_name, size=3, hjust='left', family="Avenir Medium") +
+  annotate("text", wst$easting+.29*london_width, wst$northing, label=wst$area_name, size=4, hjust='left') +
   annotate(
     geom = "curve",
     xend = wst$easting+.28*london_width, x = wst$easting,
     yend = wst$northing, y = wst$northing,
     curvature = -.5,
-    angle = 135, size=.2
+    angle = 135, size=.3
   ) + 
   
-  annotate("text", wnd$easting-.16*london_width, wnd$northing-.1*london_width, label=wnd$area_name, size=3, hjust='right', family="Avenir Medium") +
+  annotate("text", wnd$easting-.16*london_width, wnd$northing-.1*london_width, label=wnd$area_name, size=4, hjust='right') +
   annotate(
     geom = "curve",
     xend = wnd$easting-.15*london_width, x = wnd$easting,
     y = wnd$northing, yend = wnd$northing-.1*london_width,
     curvature = -.5,
-    angle = 135, size=.2
+    angle = 135, size=.3
   ) +
   
-  annotate("text", hns$easting-.06*london_width, hns$northing, label=hns$area_name, size=3, hjust='right', family="Avenir Medium") +
+  annotate("text", hns$easting-.06*london_width, hns$northing, label=hns$area_name, size=4, hjust='right') +
   annotate(
     geom = "curve",
     xend = hns$easting-.05*london_width, x = hns$easting,
     y = hns$northing, yend = hns$northing,
     curvature = -.5,
-    angle = 135, size=.2
+    angle = 135, size=.3
   ) +
   scale_linewidth_continuous(range=c(0.05,2))+
   scale_linewidth_continuous(range=c(0.02,2))+
@@ -324,14 +331,14 @@ dat <- get_trajectory(0,1,1,1,"demo") |>
   )
 # Plot legend
 legend <- ggplot() +
-  geom_point(data=dat %>% filter(row!=2), aes(x=x, y=y), size=1, colour="#737373", alpha=0.5)+
+  geom_point(data=dat %>% filter(row!=2), aes(x=x, y=y), size=1.3, colour="#737373", alpha=0.5)+
   ggforce::geom_bezier0(data=dat, aes(x=x, y=y, group=od_pair), colour="#737373", alpha=.8, linewidth=.5)+
   coord_equal()+
   geom_text(data=dat %>% filter(row!=2),
-            aes(x=x, y=y-0.13, label=type), 
-            colour="#252525", size=3, show.legend=FALSE, hjust="Middle", vjust="Top")+
-  scale_x_continuous(limits=c(-0.14,1.4))+
-  scale_y_continuous(limits=c(0.8,1.19)) +
+            aes(x=x, y=y-0.15, label=type), 
+            colour="#252525", size=3.5, show.legend=FALSE, hjust="Middle", vjust="Top")+
+  scale_x_continuous(limits=c(-0.2,1.4))+
+  scale_y_continuous(limits=c(0.5,1.19)) +
   theme_void()
 # Plot extents in geographic space.
 bbox <- st_bbox(london_boroughs)
@@ -362,58 +369,68 @@ bezierline <- ggplot()+
   guides(linewidth="none", colour="none")+
   labs(subtitle = "layout : geospatial") +
   
-  annotate("text", wst$easting+.25*london_width, wst$northing-.05*london_width, label=wst$area_name, size=3, hjust='left', family="Avenir Medium") +
+  annotate("text", wst$easting+.25*london_width, wst$northing-.05*london_width, label=wst$area_name, size=4, hjust='left') +
   annotate(
-    geom = "curve",
+    #geom = "curve",
+    geom="segment",
     xend = wst$easting+.24*london_width, x = wst$easting,
     yend = wst$northing-.05*london_width, y = wst$northing,
-    curvature = -.5,
-    angle = 135, size=.2
+    #curvature = -.5,
+    #angle = 135, 
+    size=.3
   ) + 
   
-  annotate("text", col$easting+.26*london_width, col$northing, label=col$area_name, size=3, hjust='left', family="Avenir Medium") +
+  annotate("text", col$easting+.26*london_width, col$northing, label=col$area_name, size=4, hjust='left') +
   annotate(
-    geom = "curve",
+    #geom = "curve",
+    geom = "segment",
     xend = col$easting+.25*london_width, x = col$easting,
     yend = col$northing, y = col$northing,
-    curvature = -.5,
-    angle = 135, size=.2
+    #curvature = -.5,
+    #angle = 135, 
+    size=.3
   ) + 
   
-  annotate("text", wnd$easting-.16*london_width, wnd$northing-.1*london_width, label=wnd$area_name, size=3, hjust='right', family="Avenir Medium") +
+  annotate("text", wnd$easting-.16*london_width, wnd$northing-.1*london_width, label=wnd$area_name, size=4, hjust='right') +
   annotate(
-    geom = "curve",
+    #geom = "curve",
+    geom = "segment",
     xend = wnd$easting-.15*london_width, x = wnd$easting,
     y = wnd$northing, yend = wnd$northing-.1*london_width,
-    curvature = -.5,
-    angle = 135, size=.2
+    #curvature = -.5,
+   # angle = 135, 
+   size=.3
   ) +
   
-  annotate("text", hns$easting-.06*london_width, hns$northing, label=hns$area_name, size=3, hjust='right', family="Avenir Medium") +
+  annotate("text", hns$easting-.06*london_width, hns$northing, label=hns$area_name, size=4, hjust='right') +
   annotate(
-    geom = "curve",
+    #geom = "curve",
+    geom = "segment",
     xend = hns$easting-.05*london_width, x = hns$easting,
     y = hns$northing, yend = hns$northing,
-    curvature = .5,
-    angle = 45, size=.2
+    #curvature = .5,
+    #angle = 45, 
+    size=.3
   ) +
   
-  annotate("text", cmd$easting, cmd$northing+.08*london_width, label=cmd$area_name, size=3, hjust='right', family="Avenir Medium") +
+  annotate("text", cmd$easting-.03*london_width, cmd$northing+.19*london_width, label=cmd$area_name, size=4, hjust='right') +
   annotate(
-    geom = "curve",
-    xend = cmd$easting, x = cmd$easting,
-    yend = cmd$northing, y = cmd$northing+.07*london_width,
-    curvature = -.5,
-    angle = 135, size=.2
+    #geom = "curve",
+    geom = "segment",
+    xend = cmd$easting, x = cmd$easting-.03*london_width,
+    yend = cmd$northing, y = cmd$northing+.18*london_width,
+    #curvature = -.5,
+    #angle = 135, 
+    size=.3
   ) +
   
   
   
   annotation_custom(
     grob=ggplotGrob(legend),
-    xmax=unname(bbox$xmax + +0.05*width),
-    xmin=unname(bbox$xmax-0.23*width),
-    ymax=unname(bbox$ymax)+.1*height,
+    xmax=unname(bbox$xmax + 0.0*width),
+    xmin=unname(bbox$xmax-0.21*width),
+    ymax=unname(bbox$ymax)+.2*height,
     ymin=unname(bbox$ymax)-0.25*height
   ) +
   theme(
@@ -426,7 +443,7 @@ bezierline
 
 plot <- node_link + bezierline + plot_layout(widths=c(.6,1))
 
-ggsave(filename=here("figs", "05", "flowlines_test.png"), plot=plot,width=11.5, height=6, dpi=300)
+ggsave(filename=here("figs", "05", "flowlines.png"), plot=plot,width=11.5, height=6, dpi=300)
   
 bor_orders <- nodes |>  arrange(-jobs) |>  pull(la)
 
@@ -441,10 +458,11 @@ matrix_1 <- edges |>
   scale_fill_distiller(palette="Blues", direction=1, guide="none") +
   labs(x="destination borough", y="origin borough", caption="global scaling", fill="count") +
   theme(
+    axis.title = element_text(size=9),
     axis.text.x = element_text(angle=90, hjust=0, size=8),
     axis.text.y = element_text(size=8, hjust=1),
     #axis.title = element_text(size=9), axis.title.y = element_text(size=9, angle=90), 
-    axis.title.x=element_blank(), axis.title.y=element_blank(),
+    #axis.title.x=element_blank(), axis.title.y=element_blank(),
     axis.line = element_blank(),
     plot.subtitle = element_text(size=13), plot.caption = element_text(size=11, colour="#000000"))
 
@@ -458,8 +476,8 @@ matrix_2 <- edges |>
   ggplot(aes(y=fct_rev(o_bor), x=d_bor, fill=commutes_rescaled)) +
   geom_tile(colour="#707070", size=.2)+
   geom_tile(colour="#ffffff", size=.2)+
-  geom_tile(data=. %>% filter(o_bor==d_bor),
-            aes(y=fct_rev(o_bor), x=d_bor), fill="#bdbdbd", colour="#ffffff", size=.2) +
+  # geom_tile(data=. %>% filter(o_bor==d_bor),
+  #           aes(y=fct_rev(o_bor), x=d_bor), fill="#bdbdbd", colour="#ffffff", size=.2) +
   geom_text(data=. %>% filter(o_bor==d_bor), 
             aes(label=stringr::str_extract(o_bor, "^.{1}")), 
             colour="#ffffff", size=2, hjust="centre", family="Avenir Black")+
@@ -500,34 +518,46 @@ aspect <- 3340/6756
 
 plot <- ggplot() +
   annotation_raster(img, 0, 1, 0, 1) +
-  annotate("text", 
-           label="destination boroughs",
-           x=.01, y=1.005, size=2.5, hjust="left", family="Avenir Book") +
-  annotate(
-    geom = "curve",
-    x = .165, xend = .25,
-    y = 1.005, yend = .96,
-    curvature = -.3,
-    angle = 135, size=.1
-  ) +
+  # annotate("text", 
+  #          label="destination\nboroughs",
+  #          x=.155, y=.99, size=2.5, hjust="right", family="Avenir Book") +
+  # annotate(
+  #   geom = "curve",
+  #   x = .165, xend = .25,
+  #   y = .99, yend = .96,
+  #   curvature = -.4,
+  #   angle = 135, size=.1
+  # ) +
+  
+  # annotate("text", 
+  #          label="origin\nboroughs",
+  #          x=.1, y=-.01, size=2.5, hjust="left", family="Avenir Book") +
+  # annotate(
+  #   geom = "curve",
+  #   x = .05, xend = .02,
+  #   y = .05, yend = .15,
+  #   curvature = -.4,
+  #   angle = 135, size=.1
+  # ) +
+
   
   annotate("text", 
            label=str_wrap("central job-rich boroughs draw workers from across London", 30),
-           x=.7, y=.96, size=2.5, hjust="left", family="Avenir Book") +
+           x=.7, y=.9, size=2.5, hjust="left", family="Avenir Book") +
   annotate(
     geom = "curve",
-    x = .62, xend = .69,
-    yend = .96, y = .9,
+    x = .63, xend = .69,
+    y = .85, yend = .9,
     curvature = -.3,
     angle = 135, size=.1
   ) +
   
   annotate("text", 
            label=str_wrap("outer London boroughs have more self-contained labour markets",40),
-           x=.31, y=-.03, size=2.5, hjust="left", family="Avenir Book") +
+           x=.575, y=-.03, size=2.5, hjust="right", family="Avenir Book") +
   annotate(
     geom = "curve",
-    x = .565, xend = .565,
+    x = .585, xend = .585,
     y = -.02, yend = .15,
     curvature = .33,
     angle = 45, size=.1
@@ -538,6 +568,8 @@ plot <- ggplot() +
   theme(axis.text = element_blank(), 
         axis.title.x=element_blank(),
         axis.title.y = element_blank(), axis.line = element_blank())
+
+plot
   
 ggsave(filename=here("figs", "05", "matrices.png"), plot=plot,width=7.3, height=4.5, dpi=600)
 
@@ -622,10 +654,6 @@ plot_data_temp <- plot_data_temp |>
   mutate(bor_label=if_else(o_bor==d_bor,o_bor,""),
          bor_focus=if_else(o_bor==d_bor,1,0)
          )
-
-
-geom_sf(data=plot_data_temp %>% filter(d_bor=="Westminster", o_bor!=d_bor), aes(fill=commutes), colour="#ffffff", linewidth = .5)+
-  geom_sf(data=plot_data_temp  %>% filter(bor_focus==1, d_bor=="Westminster"), fill="#bdbdbd",  colour="#ffffff", linewidth=0.9)+
 # Plot grid-bezier.
 hck_grid_bezier_od <- ggplot()+
   geom_sf(data=plot_data_temp |>  filter(o_bor=="Hackney"),  fill="#f0f0f0", colour="#ffffff", linewidth=0.5)+
@@ -733,7 +761,6 @@ colour="#ffffff", alpha=1, show.legend=FALSE, size=2, hjust="centre", family="Av
   )
 
 plot <- 
-  #(matrix_1 + matrix_2) /
   (matrix + (wst_grid_bezier_do+ wst_grid_fill_do) / (hck_grid_bezier_od + hck_grid_fill_od)) +
   plot_layout(widths=c(.8,1))
 
@@ -750,13 +777,21 @@ plot_data_temp <- grid |>  select(area_name, geom) |> right_join(edges, by=c("ar
 plot_data_temp <- plot_data_temp %>% mutate(bor_label=if_else(o_bor==d_bor,d_bor,""),
                                             bor_focus=if_else(o_bor==d_bor,1,0))
 
-width <- plot_data_temp %>% summarise(width=max(o_x)-min(o_x))  %>% pull(width)
-# height
-height <- plot_data_temp %>% summarise(height=max(o_y)-min(o_y)) %>% pull(height)
 
 #373737
 #ffffff
 bbox_grid <- st_bbox(grid)
+#width <- plot_data_temp %>% summarise(width=max(o_x)-min(o_x))  %>% pull(width)
+#height <- plot_data_temp %>% summarise(height=max(o_y)-min(o_y)) %>% pull(height)
+width <- bbox_grid$xmax-bbox_grid$xmin
+height <- bbox_grid$ymax-bbox_grid$ymin
+
+# Find smwg cell size.
+cell_height <- grid |>  st_drop_geometry() |>  
+  filter(case_when(col==5 & row==6 ~ TRUE,
+                   col==6 & row==6 ~ TRUE,
+                   TRUE ~ FALSE)) |> 
+  transmute(diff=x-lag(x,1)) |>  filter(!is.na(diff), diff>0) %>% pull()
 
 
 rivers_facet <- plot_data_temp |> st_drop_geometry() |> 
@@ -772,8 +807,9 @@ job_rich <- "Less spatial dependency for job-rich boroughs."
 d_od_local <- ggplot() +
   geom_tile(
     data =  plot_data_temp |>  filter(o_bor==d_bor),
-    aes(x = bbox_grid$xmin + .6 * width, y = bbox_grid$ymin + .6 * height),
-    height = height * 1.2, width = width * 1.2, fill="#d9d9d9", alpha=.4
+    aes(x = bbox_grid$xmin + .5 * width, y = bbox_grid$ymin + .5 * height),
+    height = height*1.055, width = width*1.055, 
+    fill="transparent", alpha=.4, linewidth=.06, colour="#525252",
     ) +
   
   geom_sf(data=plot_data_temp %>% filter(o_bor!=d_bor) %>% group_by(d_bor) %>% 
@@ -819,8 +855,6 @@ d_od_local <- ggplot() +
     axis.title.x=element_blank(),axis.title.y=element_blank(),
     strip.text.x = element_blank(), strip.text.y = element_blank(),
     plot.caption = element_text(size = 7),
-  #  panel.background = element_rect(fill="#ffffff", colour="#ffffff"),
-   # plot.background = element_rect(fill="#f0f0f0f0"),
     plot.margin = margin(t = 0, r = 0, b = 0, l = 0, unit = "pt"),
     legend.key = element_rect(size=1.4),
     legend.title = element_text(size = 6),
@@ -828,43 +862,45 @@ d_od_local <- ggplot() +
     legend.key.size = unit(.8,"line"),
   )
 
-
-
-# Find smwg cell size.
-cell_height <- grid |>  st_drop_geometry() |>  
-  filter(case_when(col==5 & row==6 ~ TRUE,
-                   col==6 & row==6 ~ TRUE,
-                   TRUE ~ FALSE)) |> 
-  transmute(diff=x-lag(x,1)) |>  filter(!is.na(diff), diff>0) %>% pull()
+d_od_local
 
 bbox_real <- st_bbox(london_boroughs)
+# real <- london_boroughs |>  
+#   ggplot()+
+#   geom_sf(colour="#ffffff", fill="#d9d9d9", linewidth=.3, alpha=.9)+
+#   geom_sf(data=rivers_real, colour="#525252", linewidth=.45) +
+#   # geom_richtext(
+#   #   data=. %>% slice(1), 
+#   #   aes(x=bbox_real$xmin-2000, y=bbox_real$ymax-1000, label="London borough<br>outlines"), 
+#   #   hjust=0, size=2.5, fill="transparent", label.colour = NA, colour="#252525", family="Avenir Book"
+#   # ) +
+#   coord_sf(crs=27700, datum=NA)+
+#   geom_text(aes(x=easting, y=northing, label=abbreviate(area_name,3)), size=2.2, colour="#252525", show.legend=FALSE, family="Avenir Book")+
+#   theme(axis.title.x = element_blank(), axis.title.y = element_blank())
 
 real <- london_boroughs |>  
   ggplot()+
-  geom_sf(colour="#ffffff", fill="#d9d9d9", linewidth=.3)+
-  geom_sf(data=rivers_real, colour="#525252", linewidth=.45) +
-  geom_richtext(
-    data=. %>% slice(1), 
-    aes(x=bbox_real$xmin-2000, y=bbox_real$ymax-1000, label="London borough<br>outlines"), 
-    hjust=0, size=2.5, fill="transparent", label.colour = NA, colour="#252525", family="Avenir Book"
-  ) +
+  geom_sf(colour="#ffffff", fill="#d9d9d9", linewidth=.25, alpha=.9)+
+  geom_sf(data=rivers_real, colour="#525252", linewidth=.4, alpha=.6) +
+  # geom_richtext(
+  #   data=. %>% slice(1), 
+  #   aes(x=bbox_real$xmin-2000, y=bbox_real$ymax-1000, label="London borough<br>outlines"), 
+  #   hjust=0, size=2.5, fill="transparent", label.colour = NA, colour="#252525", family="Avenir Book"
+  # ) +
   coord_sf(crs=27700, datum=NA)+
-  geom_text(aes(x=easting, y=northing, label=abbreviate(area_name,3)), size=2.2, colour="#252525", show.legend=FALSE, family="Avenir Book")+
+  geom_text(aes(x=easting, y=northing, label=abbreviate(area_name,3)), size=2.4, colour="#252525", show.legend=FALSE, family="Avenir Book")+
   theme(axis.title.x = element_blank(), axis.title.y = element_blank())
 
-
 grid_positions <- make_grid(london_boroughs, n_row, n_col)
-
 t <- grid |> st_drop_geometry() |> select(c(-x,-y)) |> 
   nest(data=c(col, row)) |> 
   mutate(geometry=map(data, ~add_column(grid_positions))) |> select(-data) |> 
   unnest(cols=geometry) |> 
   st_as_sf()
 
-
-width <- plot_data_temp %>% summarise(width=max(o_x)-min(o_x))  %>% pull(width)
+# width <- plot_data_temp %>% summarise(width=max(o_x)-min(o_x))  %>% pull(width)
 # height
-height <- plot_data_temp %>% summarise(height=max(o_y)-min(o_y)) %>% pull(height)
+# height <- plot_data_temp %>% summarise(height=max(o_y)-min(o_y)) %>% pull(height)
 
 generate_positions <- function(geom, dim_x, dim_y) {
   start_x <- st_bbox(geom)$xmin
@@ -876,25 +912,21 @@ generate_positions <- function(geom, dim_x, dim_y) {
     rep(1:n_row, each = n_col),  rep(1:n_col, times = n_row), 
     ~tibble(col= .y, x = ((.y-1)+.5)*w + start_x, row=.x, y = ((.x-1)+.5)*h + start_y )
     )) 
-   #|>  st_as_sf(coords = c("x", "y"), crs = "epsg:27700")
   }
   
-
 grid_coords <- grid |> select(area_name, geom) |> 
   nest(data=geom) |> 
   mutate(coords=map(data, ~generate_positions(.x, 8, 8))) |> select(-data) |> 
   unnest(cols=coords)
 
-
-grid_coords <- grid |> select(area_name, geom) |> 
-  nest(data=geom) |> 
-  mutate(coords=map(data, ~generate_positions(.x, 8, 8))) |> select(-data) |> 
-  unnest(cols=coords)
-
+# grid_coords <- grid |> select(area_name, geom) |> 
+#   nest(data=geom) |> 
+#   mutate(coords=map(data, ~generate_positions(.x, 8, 8))) |> select(-data) |> 
+#   unnest(cols=coords)
 
 gridmap <- grid |> 
   ggplot()+
-  geom_sf(fill="#d9d9d9", colour="#ffffff", linewidth=0.3, alpha=.5)+
+  geom_sf(fill="transparent", colour="#ffffff", linewidth=0.3, alpha=.5)+
   geom_tile(
     data=grid_coords %>% inner_join(grid |> st_drop_geometry() |> select(row, col), by=c("col"="col", "row"="row")), 
     aes(x,y), colour="#525252", fill="#d9d9d9", linewidth=0
@@ -902,7 +934,7 @@ gridmap <- grid |>
   geom_sf(data=river_grid, colour="#525252", linewidth=0.35) +
   geom_richtext(
     data=. %>% slice(1), 
-    aes(x=bbox_grid$xmin-2000, y=bbox_grid$ymax-1000, label="map-within-map<br>layout"), 
+    aes(x=bbox_grid$xmin-2000, y=bbox_grid$ymax-1000, label="Map-within-map<br>layout"), 
     hjust=0, size=2.5, fill="transparent", label.colour = NA, colour="#252525", family="Avenir Book"
   ) +
   coord_sf(crs=27700, datum=NA)+
@@ -910,42 +942,44 @@ gridmap <- grid |>
   theme(axis.title.x = element_blank(), axis.title.y = element_blank())
 
 
+gridmap <- ggplot() +
+  geom_tile(
+    data =  plot_data_temp |>  filter(o_bor==d_bor),
+    aes(x = bbox_grid$xmin + .5 * width, y = bbox_grid$ymin + .5 * height),
+    height = height*1.055, width = width*1.055, 
+    fill="transparent", alpha=.4, linewidth=.1, colour="#525252",
+  ) +
+  
+  geom_sf(data=plot_data_temp %>% filter(o_bor!=d_bor), 
+          fill="#d9d9d9", alpha=0.9, linewidth=0)+
+  geom_sf(data=plot_data_temp  %>% filter(bor_focus==1), fill="#bdbdbd",  colour="#ffffff", linewidth=0.01)+
+  geom_sf(data=rivers_facet, alpha=.6, linewidth=0.1) +
 
+  geom_text(data=plot_data_temp %>% filter(bor_focus==1), 
+          aes(x=bbox_grid$xmax, y=bbox_grid$ymin, label=abbreviate(o_bor,3)), 
+          colour="#252525", alpha=0.9, size=2.5, show.legend=FALSE, 
+          hjust="right", vjust="bottom")+
+  coord_sf(crs=st_crs(plot_data_temp), datum=NA)+
+  guides(fill=FALSE)+
+  facet_grid(-d_row~d_col, shrink=FALSE)+
+  scale_fill_distiller(palette="Blues", direction=1)+
+  theme(
+    panel.spacing=unit(-0.05, "lines"),
+    axis.title.x=element_blank(),axis.title.y=element_blank(),
+    strip.text.x = element_blank(), strip.text.y = element_blank(),
+    plot.margin = margin(t = 0, r = 0, b = 0, l = 0, unit = "pt")
+  )
 
-
-plot <- (real + gridmap) / d_od_local  + plot_layout(heights=c(.5,1))
-
-ggsave(filename=here("figs", "05", "map_map.png"), plot=plot,width=6, height=2.4, dpi=600)
-
-#ggsave(filename=here("figs", "05", "od_map.png"), plot=d_od_local,width=6, height=6.7, dpi=600)
+plot <- (real + gridmap)  + plot_layout(widths=c(.8,1))
+ggsave(filename=here("figs", "05", "map_map.png"), plot=plot,width=7, height=3.2, dpi=600)
 ggsave(filename=here("figs", "05", "od_map.png"), plot=d_od_local,width=6, height=4.6, dpi=600)
 
 
-#################################################
-#       D A T A.  A N A L Y S I S
-#################################################
-nodes_d <- od_pairs |> 
-  group_by(d_bor, occ_type) |> 
-  summarise(
-    count = sum(count),
-    is_prof = first(is_prof)
-  ) |> 
-  ungroup() |>  
-  rename(la = d_bor) |> 
-  mutate(type="jobs")
+#-----------------------------------------
+# 3. Techniques graphics
+#-----------------------------------------
 
-nodes_o <- od_pairs |> 
-  group_by(o_bor, occ_type) |> 
-  summarise(
-    count = sum(count),
-    is_prof = first(is_prof)
-  ) |> 
-  ungroup() |>  
-  rename(la = o_bor) |> 
-  mutate(type="workers")
-
-nodes  <- bind_rows(nodes_o, nodes_d)
-
+# 3.1 displacement vectors ----------------
 
 grid <- make_grid(london_boroughs, n_row, n_col) |> 
   inner_join(solution)
@@ -973,8 +1007,6 @@ trajectories <- lon_geogs |>
   ) |>
   select(trajectory) |>
   unnest(cols = trajectory)
-
-solution1 <- 
   
 ggplot() +
   geom_sf(
@@ -1052,24 +1084,40 @@ plot <- solution1 + solution2
 ggsave(filename=here("figs", "05", "displacements.png"), plot=plot,width=8, height=3.4, dpi=300)
 
 
+# 3.2 nodes summary map ----------------
 
-nodes  <- bind_rows(nodes_o, nodes_d) |> 
-  mutate(prof=is_prof, non_prof=commutes-is_prof) |> 
-  select(-c(commutes, is_prof)) |> 
-  pivot_longer(cols=c(prof, non_prof), names_to="is_prof", values_to="count") |> 
-  mutate(is_prof = is_prof == "prof")
+nodes_d <- od_pairs |>
+  group_by(d_bor, occ_type) |>
+  summarise(count = sum(count), is_prof = first(is_prof)) |>
+  ungroup() |>
+  rename(la = d_bor) |>
+  mutate(type="jobs")
 
- 
-t <- nodes |> 
-  mutate(
-    is_prof = factor(if_else(is_prof, "professional", "non-professional"), levels = c("professional", "non-professional")),
-    type = factor(type, levels = c("workers", "jobs")),
-  ) |> 
-  select(type, is_prof) |> 
-  unique() 
+nodes_o <- od_pairs |>
+  group_by(o_bor, occ_type) |>
+  summarise(count = sum(count), is_prof = first(is_prof)) |>
+  ungroup() |>
+  rename(la = o_bor) |>
+  mutate(type="workers")
 
-rivers_facet <- t |> 
-  add_column(river_grid |> as_tibble()) |> st_as_sf()  
+nodes  <- bind_rows(nodes_o, nodes_d)
+
+# nodes  <- bind_rows(nodes_o, nodes_d) |> 
+#   mutate(prof=is_prof, non_prof=count-is_prof) |> 
+#   select(-c(count, is_prof)) |> 
+#   pivot_longer(cols=c(prof, non_prof), names_to="is_prof", values_to="count") |> 
+#   mutate(is_prof = is_prof == "prof")
+
+# t <- nodes |> 
+#   mutate(
+#     is_prof = factor(if_else(is_prof, "professional", "non-professional"), levels = c("professional", "non-professional")),
+#     type = factor(type, levels = c("workers", "jobs")),
+#   ) |> 
+#   select(type, is_prof) |> 
+#   unique() 
+
+# rivers_facet <- t |> 
+#   add_column(river_grid |> as_tibble()) |> st_as_sf()  
 
 
 nodes_summary <- grid |>
@@ -1112,9 +1160,7 @@ plot <- nodes_summary + gridmap + plot_layout(widths=c(1,.6))
 ggsave(filename=here("figs", "05", "nodes_summary.png"), plot=plot,width=8.5, height=4.5, dpi=300)
 
 
-
-# Full summary by occupation
-
+# 3.3 Full occupation summary ----------------
 plot_data <- solution |>
   inner_join(nodes, by = c("area_name" = "la")) |>
   group_by(area_name) |>
@@ -1133,7 +1179,7 @@ plot_data <- solution |>
 bars <- plot_data |>
   filter(area_name %in% c("Wandsworth", "Westminster", "Bexley", "Hillingdon")) |>
   ggplot(aes(x = occ_type, y = count)) +
-  geom_col(aes(fill = is_prof), alpha = .3, width = 1) +
+  geom_col(aes(fill = is_prof), alpha = .4, width = 1) +
   # Compator : avg relative size per borough.
   geom_step(
     data = . %>%
@@ -1145,7 +1191,7 @@ bars <- plot_data |>
         occ_type = row_number() - .5,
         is_prof = if_else(occ_type == 9.5, TRUE, is_prof)
       ),
-    aes(x = occ_type, y = count, group = type, colour = is_prof), alpha = 1, linewidth = .25,
+    aes(x = occ_type, y = count, group = type, colour = is_prof), alpha = 1, linewidth = .15,
   ) +
   geom_hline(yintercept = 0, linewidth = .4, colour = "#ffffff") +
   # Annotate occ types.
@@ -1153,57 +1199,69 @@ bars <- plot_data |>
     data = . %>%
       filter(type == "jobs", area_name == "Westminster"),
     aes(x = occ_type, y = -1, label = word(str_replace_all(occ_name, "_", " "), 2)), fontface = "plain",
-    size = 3, hjust = 0, alpha = 1
+    size = 2.5, hjust = 0, alpha = 1
   ) +
   geom_text(
     data = . %>%
       filter(type == "jobs", area_name == "Bexley") %>%
       mutate(is_admin = occ_type == 4),
     aes(x = occ_type, y = 1, label = word(str_replace_all(occ_name, "_", " "), 2)), alpha = 1, fontface = "plain",
-    size = 3, hjust = 1
+    size = 2.5, hjust = 1
   ) +
   facet_wrap(~area_name, scales = "free", nrow = 1) +
   # Annotate explanation
   geom_text(
     data = . %>% filter(type == "jobs", area_name == "Bexley", occ_type == 6),
-    aes(x = 9.6, y = -1), fontface = "plain", label = "workers living \nin borough",
+    aes(x = 10.5, y = -1), fontface = "plain", label = "workers living \nin borough",
     size = 2.5, hjust = 0, alpha = 1
   ) +
   geom_segment(
     data = . %>% filter(type == "jobs", area_name == "Bexley", occ_type == 6),
-    aes(x = 10.5, y = -.4, xend = 10.5, yend = -1), linewidth = .2, arrow = arrow(length = unit(0.02, "npc"))
+    aes(x = 11.5, y = -.4, xend = 11.5, yend = -1), linewidth = .2, arrow = arrow(length = unit(0.02, "npc"))
   ) +
+  
+  geom_segment(
+    data = . %>% filter(type == "jobs", occ_type == 6),
+    aes(x = 11.5, y = -.4, xend = 11.5, yend = -1), linewidth = 0) +
+  
   geom_text(
     data = . %>% filter(type == "jobs", area_name == "Wandsworth", occ_type == 2),
-    aes(x = occ_type, y = -1), fontface = "italic", label = "worker-rich \nborough \nprof",
-    size = 2.5, hjust = 0, alpha = 1
+    x = 10.5, y = 0, fontface = "italic", label = "worker-rich \nborough", # \nprof",
+    size = 2.5, hjust = 0.5, alpha = 1
   ) +
-  geom_text(
+  # geom_text(
+  #   data = . %>% filter(type == "jobs", area_name == "Hillingdon", occ_type == 2),
+  #   aes(x = 4.8, y = -1), fontface = "italic", label = "balanced \nworkers",
+  #   size = 2.5, hjust = 0, alpha = 1
+  # ) +
+  # geom_text(
+  #   data = . %>% filter(type == "jobs", area_name == "Hillingdon", occ_type == 2),
+  #   aes(x = 4.8, y = 1), fontface = "italic", label = "balanced \njobs",
+  #   size = 2.5, hjust = 1, alpha = 1
+  # ) +
+  
+geom_text(
     data = . %>% filter(type == "jobs", area_name == "Hillingdon", occ_type == 2),
-    aes(x = 4.8, y = -1), fontface = "italic", label = "balanced \nworkers",
-    size = 2.5, hjust = 0, alpha = 1
+    aes(x = 10.5, y = 0), fontface = "italic", label = "balanced: \nworkers | jobs",
+    size = 2.5, hjust = .5, alpha = 1
   ) +
+  
+  # geom_text(
+  #   data = . %>% filter(type == "jobs", area_name == "Westminster", occ_type == 2),
+  #   x = 10.5, y = 1, fontface = "italic", label = "job-rich \nborough", # \nprof+admin",
+  #   size = 2.5, hjust = 1, alpha = 1
+  # ) +
   geom_text(
-    data = . %>% filter(type == "jobs", area_name == "Hillingdon", occ_type == 2),
-    aes(x = 4.8, y = 1), fontface = "italic", label = "balanced \njobs",
-    size = 2.5, hjust = 1, alpha = 1
-  ) +
-  geom_text(
-    data = . %>% filter(type == "jobs", area_name == "Westminster", occ_type == 2),
-    aes(x = occ_type, y = 1), fontface = "italic", label = "job-rich \nborough \nprof+admin",
-    size = 2.5, hjust = 1, alpha = 1
-  ) +
-  geom_text(
-    data = . %>% filter(type == "jobs", area_name == "Wandsworth", occ_type == 6),
-    aes(x = 9.6, y = 1), fontface = "plain", label = "jobs available \nin borough",
+    data = . %>% filter(type == "jobs", area_name == "Westminster", occ_type == 6),
+    aes(x = 10.5, y = 1), fontface = "plain", label = "jobs available \nin borough",
     size = 2.5, hjust = 1, alpha = 1
   ) +
   annotate("text", x=10, y=1, label="") +
   geom_segment(
-    data = . %>% filter(type == "jobs", area_name == "Wandsworth", occ_type == 6),
-    aes(x = 10.5, y = .4, xend = 10.5, yend = 1), linewidth = .2, arrow = arrow(length = unit(0.02, "npc"))
+    data = . %>% filter(type == "jobs", area_name == "Westminster", occ_type == 6),
+    aes(x = 11.5, y = .4, xend = 11.5, yend = 1), linewidth = .2, arrow = arrow(length = unit(0.02, "npc"))
   ) +
-  labs(caption = "bars: occupation classes | filled: bor-scaled counts") +
+  #labs(caption = "bars: occupation classes | filled: bor-scaled counts") +
   scale_y_continuous(limits = c(-1, 1)) +
   scale_fill_manual(values = c("#08306b", "#67000d"), guide = "none") +
   scale_colour_manual(values = c("#08306b", "#67000d"), guide = "none") +
@@ -1220,16 +1278,18 @@ ggsave(filename=here("figs", "05", "nodes_bars.png"), plot=bars,width=6.5, heigh
 
 u <- t |>  inner_join(plot_data |> select(area_name, row, col) |> unique(), by=c("area_name"="area_name"))
 
+# 3.4 Full occupation summary + geog ----------------
+
 real <- plot_data |>
   ggplot(aes(x = occ_type, y = count)) +
-  geom_tile(aes(x = 6, y = 0), height = 2.1, width = 11.5, linewidth = .08, fill = "transparent", colour="#616161") +
-  geom_col(aes(fill = is_prof), alpha = .3, width = 1) +
+  geom_tile(aes(x = 6, y = 0), height = 2.1, width = 11.5, linewidth = .03, fill = "transparent", colour="#525252") +
+  geom_col(aes(fill = is_prof), alpha = .4, width = 1) +
   
-  geom_col(data = . %>% filter(area_name %in% c("Westminster", "City of London", "Camden", "Tower Hamlets"), type=="jobs"),
-           aes(fill = is_prof), alpha = .3, width = 1) +
-  
-  geom_col(data = . %>% filter(area_name %in% c("Richmond upon Thames", "Wandsworth", "Barnet", "Haringey", "Merton", "Ealing"), type=="workers"),
-           aes(fill = is_prof), alpha = .3, width = 1) +
+  # geom_col(data = . %>% filter(area_name %in% c("Westminster", "City of London", "Camden", "Tower Hamlets"), type=="jobs"),
+  #          aes(fill = is_prof), alpha = .3, width = 1) +
+  # 
+  # geom_col(data = . %>% filter(area_name %in% c("Richmond upon Thames", "Wandsworth", "Barnet", "Haringey", "Merton", "Ealing"), type=="workers"),
+  #          aes(fill = is_prof), alpha = .3, width = 1) +
   
   # Compator : avg relative size per borough.
   geom_step(
@@ -1242,38 +1302,38 @@ real <- plot_data |>
         occ_type = row_number() - .5,
         is_prof = if_else(occ_type == 9.5, TRUE, is_prof)
       ),
-    aes(x = occ_type, y = count, group = type, colour = is_prof), alpha = 1, linewidth = .25,
+    aes(x = occ_type, y = count, group = type, colour = is_prof), alpha = 1, linewidth = .15,
   ) +
-  geom_step(
-    data = . %>%
-      group_by(area_name, type) %>%
-      arrange(occ_type) %>%
-      group_modify(~ add_row(., .after = 9)) %>%
-      mutate(
-        across(row:mean, ~ if_else(is.na(.x), nth(.x, 2), .x)),
-        occ_type = row_number() - .5,
-        is_prof = if_else(occ_type == 9.5, TRUE, is_prof)
-      ) %>% 
-      filter(area_name %in% c("Westminster", "City of London", "Camden", "Tower Hamlets"), type=="jobs"),
-    aes(x = occ_type, y = count, group = type, colour = is_prof), alpha = 1, linewidth = .4,
-  ) +
+  # geom_step(
+  #   data = . %>%
+  #     group_by(area_name, type) %>%
+  #     arrange(occ_type) %>%
+  #     group_modify(~ add_row(., .after = 9)) %>%
+  #     mutate(
+  #       across(row:mean, ~ if_else(is.na(.x), nth(.x, 2), .x)),
+  #       occ_type = row_number() - .5,
+  #       is_prof = if_else(occ_type == 9.5, TRUE, is_prof)
+  #     ) %>% 
+  #     filter(area_name %in% c("Westminster", "City of London", "Camden", "Tower Hamlets"), type=="jobs"),
+  #   aes(x = occ_type, y = count, group = type, colour = is_prof), alpha = 1, linewidth = .4,
+  # ) +
+  # 
   
+  # geom_step(
+  #   data = . %>%
+  #     group_by(area_name, type) %>%
+  #     arrange(occ_type) %>%
+  #     group_modify(~ add_row(., .after = 9)) %>%
+  #     mutate(
+  #       across(row:mean, ~ if_else(is.na(.x), nth(.x, 2), .x)),
+  #       occ_type = row_number() - .5,
+  #       is_prof = if_else(occ_type == 9.5, TRUE, is_prof)
+  #     ) %>% 
+  #     filter(area_name %in% c("Richmond upon Thames", "Wandsworth", "Barnet", "Haringey", "Merton", "Ealing"), type=="workers"),
+  #   aes(x = occ_type, y = count, group = type, colour = is_prof), alpha = 1, linewidth = .4,
+  # ) +
   
-  geom_step(
-    data = . %>%
-      group_by(area_name, type) %>%
-      arrange(occ_type) %>%
-      group_modify(~ add_row(., .after = 9)) %>%
-      mutate(
-        across(row:mean, ~ if_else(is.na(.x), nth(.x, 2), .x)),
-        occ_type = row_number() - .5,
-        is_prof = if_else(occ_type == 9.5, TRUE, is_prof)
-      ) %>% 
-      filter(area_name %in% c("Richmond upon Thames", "Wandsworth", "Barnet", "Haringey", "Merton", "Ealing"), type=="workers"),
-    aes(x = occ_type, y = count, group = type, colour = is_prof), alpha = 1, linewidth = .4,
-  ) +
-  
-  geom_hline(yintercept = 0, linewidth = .5, colour = "#ffffff") +
+  geom_hline(yintercept = 0, linewidth = .3, colour = "#ffffff") +
   
   
   geom_text(
@@ -1289,18 +1349,19 @@ real <- plot_data |>
   #   height = 2, width = 11.5, linewidth = .1, fill = "#eeeeee", colour = "#eeeeee", 
   # ) +
   
+  # 
+  # geom_text(
+  #   data=tibble(row=5, col=7), 
+  #   aes(x = 6, y = -1),
+  #   label=str_wrap("Job-rich: right-pointing bars (outlined)",15), 
+  #   vjust="middle", hjust="left", size=2.2) +
+  # 
+  # geom_text(
+  #   data=tibble(row=3, col=2), 
+  #   aes(x = 6, y = -1),
+  #   label=str_wrap("Worker-rich: left-pointing bars (outlined)",15), 
+  #   vjust="middle", hjust="left", size=2.2) +
   
-  geom_text(
-    data=tibble(row=5, col=7), 
-    aes(x = 6, y = -1),
-    label=str_wrap("Job-rich: right-pointing bars (outlined)",15), 
-    vjust="middle", hjust="left", size=2.2) +
-  
-  geom_text(
-    data=tibble(row=3, col=2), 
-    aes(x = 6, y = -1),
-    label=str_wrap("Worker-rich: left-pointing bars (outlined)",15), 
-    vjust="middle", hjust="left", size=2.2) +
   facet_grid(-row ~ col) +
   
   scale_y_continuous(limits = c(-1.05, 1.05)) +
@@ -1314,18 +1375,7 @@ real <- plot_data |>
     plot.caption = element_text(size = 9, colour = "#636363", face = "italic", hjust = 1), 
   )
 
-
-
-plot_data |>
-  ggplot(aes(x = occ_type, y = count)) +
-  geom_col(aes(fill = is_prof), alpha = .5, width = 1) +
-  geom_hline(yintercept = 0, linewidth = .4, colour = "#ffffff") +
-  facet_grid(-row ~ col) +
-  scale_y_continuous(limits = c(-1, 1)) +
-  scale_fill_manual(values = c("#08306b", "#67000d"), guide = "none") +
-  coord_flip()
-
-
+real
 
 # Line-up
 do_lineup <- function(data, col_offset) {
@@ -1370,87 +1420,85 @@ ggsave(filename=here("figs", "05", "nodes_gridmap.png"), plot=real,width=5.5, he
 
 
 
+# 3.5 OD against exp model 1 ----------------
 
-
-plot_data <- edges |> mutate(non_prof = commutes-is_prof) |> 
-  rename(prof = is_prof) |>
-  ungroup() |>
-  mutate(global_prof = sum(prof) / sum(prof + non_prof)) |>
-  group_by(d_bor) |>
-  mutate(
-    count = prof + non_prof, 
-    obs = prof, 
-    exp = (global_prof * count), 
-    resid = (obs - exp) / (exp^.7)
-    ) |>
-  ungroup() |>
-  left_join(grid |> select(area_name), by = c("o_bor" = "area_name")) |>
-  mutate(
-    bor_label = if_else(o_bor == d_bor, d_bor, ""),
-    bor_focus = o_bor == d_bor
-  ) |>
-  st_as_sf()
+# plot_data <- edges |> mutate(non_prof = commutes-is_prof) |> 
+#   rename(prof = is_prof) |>
+#   ungroup() |>
+#   mutate(global_prof = sum(prof) / sum(prof + non_prof)) |>
+#   group_by(d_bor) |>
+#   mutate(
+#     count = prof + non_prof, 
+#     obs = prof, 
+#     exp = (global_prof * count), 
+#     resid = (obs - exp) / (exp^.7)
+#     ) |>
+#   ungroup() |>
+#   left_join(grid |> select(area_name), by = c("o_bor" = "area_name")) |>
+#   mutate(
+#     bor_label = if_else(o_bor == d_bor, d_bor, ""),
+#     bor_focus = o_bor == d_bor
+#   ) |>
+#   st_as_sf()
+# 
+# bbox_grid <- st_bbox(grid)
+# width <- bbox_grid$xmax - bbox_grid$xmin
+# height <- bbox_grid$ymax - bbox_grid$ymin
+# 
+# range_resid <- max(abs(plot_data$resid))
+# 
+# plot <- plot_data |> 
+#   ggplot() +
+#   geom_tile(
+#     data = . %>% filter(bor_focus),
+#     aes(x = bbox_grid$xmin + .5 * width, y = bbox_grid$ymin + .5 * height),
+#     height = height * 1.02, width = width * 1.02, linewidth = .1, fill = "transparent", colour = "#525252"
+#     ) +
+#   geom_sf(aes(fill = resid), colour = "#ffffff", size = 0.15, alpha = 1) +
+#   geom_sf(data = . %>% filter(bor_focus), fill = "transparent", colour = "#525252", size = 0.1) +
+#   # geom_text(
+#   #   data = plot_data %>% filter(bor_focus),
+#   #   aes(x = o_x, y = o_y, label = str_extract(o_bor, "^.{1}")),
+#   #   colour = "#525252", alpha = 1, size = 2,
+#   #   hjust = "centre", vjust = "middle", family="Avenir Black"
+#   # ) +
+#   geom_text(
+#     data = plot_data %>% filter(bor_focus),
+#     aes(x = bbox_grid$xmax, y = bbox_grid$ymin, label = abbreviate(o_bor, 3)),
+#     colour = "#252525", alpha = 0.9, size = 3.5,
+#     hjust = "right", vjust = "bottom"
+#   ) +
+#   coord_sf(crs = st_crs(plot_data), datum = NA) +
+#   labs(x="", y="") +
+#   facet_grid(-d_row ~ d_col, shrink = FALSE) +
+#   labs(
+#     fill = "",
+#     caption = "exp: prof vs. non-prof job flows distribute uniformly within borough<br> <span style = 'color: #67001f;'> more professional  </span> | <span style = 'color: #053061;'> more non-professional </span> <br> dark colour: large number commutes + difference from exp"
+#   ) +
+#   scale_fill_distiller(
+#     palette = "RdBu", 
+#     direction = -1, 
+#     breaks = c(-range_resid, 0, range_resid), 
+#     labels = c("non-prof", "avg", "prof"), 
+#     limits = c(-range_resid, range_resid),
+#     guide="none"
+#     ) +
+#   theme(
+#     panel.spacing = unit(-0.1, "lines"),
+#     strip.text.x = element_blank(), strip.text.y = element_blank(),
+#     plot.caption = element_markdown(hjust = 1, margin = margin(1, 1, 10, 1), size=10, colour="#000000"), 
+#     plot.title = element_text(hjust = .5, margin = margin(1, 1, 2, 1), size=14),
+#     legend.position = "right", legend.margin = margin(5, 0, 0, 0),
+#     legend.key.size = unit(.6, "cm")
+#   )
+# 
+# 
 
 bbox_grid <- st_bbox(grid)
 width <- bbox_grid$xmax - bbox_grid$xmin
 height <- bbox_grid$ymax - bbox_grid$ymin
 
 range_resid <- max(abs(plot_data$resid))
-
-plot <- plot_data |> 
-  ggplot() +
-  geom_tile(
-    data = . %>% filter(bor_focus),
-    aes(x = bbox_grid$xmin + .5 * width, y = bbox_grid$ymin + .5 * height),
-    height = height * 1.02, width = width * 1.02, linewidth = .1, fill = "transparent", colour = "#616161"
-    ) +
-  geom_sf(aes(fill = resid), colour = "#616161", size = 0.15, alpha = 0.9) +
-  geom_sf(data = . %>% filter(bor_focus), fill = "transparent", colour = "#373737", size = 0.3) +
-  geom_text(
-    data = plot_data %>% filter(bor_focus),
-    aes(x = o_x, y = o_y, label = str_extract(o_bor, "^.{1}")),
-    colour = "#252525", alpha = 0.9, size = 2.1,
-    hjust = "centre", vjust = "middle"
-  ) +
-  geom_text(
-    data = plot_data %>% filter(bor_focus),
-    aes(x = bbox_grid$xmax, y = bbox_grid$ymin, label = abbreviate(o_bor, 3)),
-    colour = "#252525", alpha = 0.9, size = 3.5,
-    hjust = "right", vjust = "bottom"
-  ) +
-  coord_sf(crs = st_crs(plot_data), datum = NA) +
-  labs(x="", y="") +
-  facet_grid(-d_row ~ d_col, shrink = FALSE) +
-  labs(
-    fill = "",
-    caption = "exp: prof vs. non-prof job flows distribute uniformly within borough<br> <span style = 'color: #67001f;'> more professional  </span> | <span style = 'color: #053061;'> more non-professional </span> <br> dark colour: large number commutes + difference from exp"
-  ) +
-  scale_fill_distiller(
-    palette = "RdBu", 
-    direction = -1, 
-    breaks = c(-range_resid, 0, range_resid), 
-    labels = c("non-prof", "avg", "prof"), 
-    limits = c(-range_resid, range_resid),
-    guide="none"
-    ) +
-  theme(
-    panel.spacing = unit(-0.1, "lines"),
-    strip.text.x = element_blank(), strip.text.y = element_blank(),
-    plot.caption = element_markdown(hjust = 1, margin = margin(1, 1, 10, 1), size=10, colour="#000000"), 
-    plot.title = element_text(hjust = .5, margin = margin(1, 1, 2, 1), size=14),
-    legend.position = "right", legend.margin = margin(5, 0, 0, 0),
-    legend.key.size = unit(.6, "cm")
-  )
-
-
-
-bbox_grid <- st_bbox(grid)
-width <- bbox_grid$xmax - bbox_grid$xmin
-height <- bbox_grid$ymax - bbox_grid$ymin
-
-range_resid <- max(abs(plot_data$resid))
-
-
 
 plot_data <- edges |> mutate(non_prof = commutes-is_prof) |> 
   rename(prof = is_prof) |>
@@ -1458,7 +1506,7 @@ plot_data <- edges |> mutate(non_prof = commutes-is_prof) |>
   mutate(local_prof = sum(prof) / sum(prof + non_prof)) |> 
   group_by(d_bor) |>
   mutate(
-    #local_prof = sum(prof) / sum(prof + non_prof),
+    local_prof = sum(prof) / sum(prof + non_prof),
     count = prof + non_prof, 
     obs = prof, 
     exp = (local_prof * count), 
@@ -1474,77 +1522,32 @@ plot_data <- edges |> mutate(non_prof = commutes-is_prof) |>
 
 range_resid <- max(abs(plot_data$resid))
 
+rivers_facet <- plot_data_temp |> st_drop_geometry() |> 
+  filter(o_bor==d_bor) |> 
+  mutate(od_pair=paste0(o_bor," - ", d_bor)) |> 
+  select(od_pair, d_row, d_col) |> 
+  add_column(river_grid |> as_tibble()) |> st_as_sf()
+
+
 plot <- plot_data |> 
   ggplot() +
-  geom_tile(
-    data = . %>% filter(bor_focus),
-    aes(x = bbox_grid$xmin + .52 * width, y = bbox_grid$ymin + .57 * height),
-    height = height * 1.2, width = width * 1.1, linewidth = .1, fill = "transparent", colour = "#616161"
-  ) +
-  geom_sf(aes(fill = resid), colour = "#616161", size = 0.15, alpha = 0.9) +
-  geom_sf(data = . %>% filter(bor_focus), fill = "transparent", colour = "#373737", size = 0.3) +
+    geom_tile(
+      data = . %>% filter(bor_focus),
+      aes(x = bbox_grid$xmin + .5 * width, y = bbox_grid$ymin + .5 * height),
+      height = height * 1.02, width = width * 1.02, linewidth = .1, fill = "transparent", colour = "#525252"
+      ) +
+  geom_sf(aes(fill = resid), colour = "#ffffff", size = 0.15, alpha = 1) +
+  geom_sf(data = . %>% filter(bor_focus), fill = "transparent", colour = "#525252", size = 0.1) +
   geom_text(
-    data = plot_data %>% filter(bor_focus),
-    aes(x = o_x, y = o_y, label = str_extract(o_bor, "^.{1}")),
-    colour = "#252525", alpha = 1, size = 2.1,
-    hjust = "centre", vjust = "middle"
-  ) +
-  geom_text(
-    data = plot_data %>% filter(bor_focus),
-    aes(x = bbox_grid$xmax + .05*width, y = bbox_grid$ymin, label = abbreviate(o_bor, 3)),
-    colour = "#252525", alpha = 1, size = 3.2,
-    hjust = "right", vjust = "bottom"
-  ) +
-  geom_sf(data=rivers_facet, colour="#252525", alpha=.6, linewidth=0.4) +
+        data = plot_data %>% filter(bor_focus),
+        aes(x = bbox_grid$xmax, y = bbox_grid$ymin, label = abbreviate(o_bor, 3)),
+        colour = "#252525", alpha = 0.8, size = 3.5,
+        hjust = "right", vjust = "bottom"
+      ) +
+  
+  geom_sf(data=rivers_facet, colour="#525252", alpha=.6, linewidth=0.2) +
   coord_sf(crs = st_crs(plot_data), datum = NA) +
-  labs(x="", y="") +
-  
-  # geom_tile(
-  #   data =  tibble(d_row=c(8,8), d_col=c(1,2)),
-  #   aes(x = bbox_grid$xmin + .52 * width, y = bbox_grid$ymin + .57 * height),
-  #   height = height * 1.2, width = width * 1.1, linewidth = .8, fill = "#eeeeee", colour = "#eeeeee", 
-  # ) +
-  
-  # geom_text(
-  #   data=tibble(d_row=8, d_col=1), 
-  #   aes(x=bbox_grid$xmax-.49*width, bbox_grid$ymax-.55*height),
-  #   label=str_wrap(
-  #     "exp: prof vs. non-prof job flows distribute uniformly within borough"
-  #     ,20), 
-  #   vjust="middle", hjust="centre", size=1.8) +
-geom_richtext(
-  data=tibble(d_row=8, d_col=1), 
-  aes(x=bbox_grid$xmax+.0*width, bbox_grid$ymax),
-  label= "exp is that<br>prof vs. non-prof <br>uniformly dist<br>across London", 
-  vjust="top", hjust="right", size=2.2, fill="transparent", label.colour = NA, family="Avenir Next") +  
-
-  geom_richtext(
-    data=tibble(d_row=8, d_col=2),
-    aes(x=bbox_grid$xmin-.0*width, bbox_grid$ymax),
-    label=
-      "origin has more<br> <span style = 'color: #67001f;'>professional  </span> <br> <span style = 'color: #053061;'>non-professional</span><br>than exp", 
-    hjust="left", vjust="top", size=2.2, fill="transparent", label.colour = NA, family="Avenir Next") +
-  
-  # geom_richtext(
-  #   data=tibble(d_row=5, d_col=7),
-  #   aes(x=bbox_grid$xmin, bbox_grid$ymax-.55*height),
-  #   label=
-  #     "job-rich boroughs <br> <span style = 'color: #67001f;'> > prof</span>: south west <br> <span style = 'color: #053061;'> > non-prof</span>: east",
-  #   hjust="left", size=2, fill="transparent", label.colour = NA, family="Avenir Next") +
-
-  # geom_text(
-  #   data=tibble(d_row=7, d_col=1), 
-  #   aes(x=bbox_grid$xmax-.52*width, bbox_grid$ymax-.55*height),
-  #   label=str_wrap(
-  #     "dark colour: large number commutes + difference from exp"
-  #     ,20), 
-  #   vjust="middle", hjust="centre", size=1.5) +
-  
   facet_grid(-d_row ~ d_col, shrink = FALSE) +
-  labs(
-    fill = "",
-    #caption = "exp: prof vs. non-prof job flows distribute uniformly within borough<br> <span style = 'color: #67001f;'> more professional  </span> | <span style = 'color: #053061;'> more non-professional</span> <br> dark colour: large number commutes + difference from exp"
-  ) +
   scale_fill_distiller(
     palette = "RdBu", 
     direction = -1, 
@@ -1554,14 +1557,89 @@ geom_richtext(
     guide="none"
   ) +
   theme(
+    axis.title.x=element_blank(), axis.title.y = element_blank(), 
     panel.spacing = unit(-0.1, "lines"),
     strip.text.x = element_blank(), strip.text.y = element_blank(),
-    plot.caption = element_markdown(hjust = 1, margin = margin(1, 1, 10, 1), size=10, colour="#000000"), 
-    plot.title = element_text(hjust = .5, margin = margin(1, 1, 2, 1), size=14),
-    legend.position = "right", legend.margin = margin(5, 0, 0, 0),
-    legend.key.size = unit(.6, "cm")
   )
 
+ggsave(filename=here("figs", "05", "edges_odmap_model2.png"), plot=plot,width=7, height=5.4, dpi=500)
+
+# Load in as image to annotate.
+img <- image_read(here("figs", "05", "edges_odmap_model2.png")) |> 
+  image_fill('none') |> 
+  as.raster()
+
+aspect <- 27/35
+
+exp1 <- "% professional jobs in a<br> sampled OD pair <br>
+~ London total (51%)"
+
+exp2 <- "% professional jobs in a<br> sampled OD pair <br>
+~ dest borough total <br>(29%-74%)"
+
+note1 <- "commutes into central London<br> boroughs
+are <span style = 'color: #67001f;'>**more professional**</span><br> than expected"
+
+note1 <- "into central London boroughs<br> 
+commutes from Wnd, RuT, KaC<br> <span style = 'color: #67001f;'>**more professional**</span><br> than expected"
+
+
+note2 <- "commutes into outer London<br> boroughs
+are <span style = 'color: #053061;'>**more non-**</span><br><span style = 'color: #053061;'>**professional**</span> than expected"
+
+note2 <- "into central London boroughs<br> 
+commutes from Nwh, WlF, BaD<br> <span style = 'color: #053061;'>**more non-professional**</span><br> than expected"
+
+
+note1 <- "commutes into central London<br> boroughs
+are <span style = 'color: #67001f;'>**more professional**</span><br> than expected"
+
+note2 <- "commutes into outer London<br> boroughs
+are <span style = 'color: #053061;'>**more non-**</span><br><span style = 'color: #053061;'>**professional**</span> than expected"
+
+
+
+"Vehicle types other than cars <br> <span style = 'color: #b2182b; font-face:'Avenir Heavy''>over-represented</span> in inner London<br> crashes"
+
+plot <- ggplot() +
+  annotation_raster(img, 0, 1, 0, 1*aspect) +
+  # annotate("richtext", label= "Expectation: commutes by occupation<br> **uniformly** distributed",
+  #          x=-0.01, y=.73, fill = NA, label.color = NA, size=2.9, hjust="left", family="Avenir"
+  #    ) +
+  annotate("richtext", label= "Expectation: commutes by occupation<br> **depend** on destination",
+           x=-0.01, y=.73, fill = NA, label.color = NA, size=2.9, hjust="left", family="Avenir"
+     ) +
+  
+  # annotate("richtext", label=exp1,
+  #          x=0, y=.65, fill = NA, label.color = NA, size=2.5, hjust="left", family="Avenir Book"
+  # ) +
+  
+  annotate("richtext", label=exp2,
+           x=0, y=.65, fill = NA, label.color = NA, size=2.5, hjust="left", family="Avenir Book"
+  ) +
+  
+  annotate("richtext", label=note1,
+           x=0.75, y=.43, fill = NA, label.color = NA, size=2.3, hjust="left", family="Avenir"
+  ) +
+  
+  # annotate("richtext", label=note2,
+  #          x=0.75, y=.25, fill = NA, label.color = NA, size=2.3, hjust="left", family="Avenir"
+  # ) +
+  annotate("richtext", label=note2,
+           x=0.75, y=.243, fill = NA, label.color = NA, size=2.3, hjust="left", family="Avenir"
+  ) +
+  
+  
+  scale_x_continuous(limits=c(-0.05, 1.2)) +
+  scale_y_continuous(limits=c(0, 1)) +
+  theme(
+    axis.text = element_blank(),
+    axis.line = element_blank(),
+    axis.title.x = element_blank(),
+    axis.title.y = element_blank()
+  )
+
+ggsave(filename=here("figs", "05", "test.png"), plot=plot,width=7, height=6, dpi=500) 
 
 ggsave(filename=here("figs", "05", "edges_odmap.png"), plot=plot,width=7, height=6, dpi=500)
 ggsave(filename=here("figs", "05", "edges_odmap_within.png"), plot=plot,width=7, height=6, dpi=500)

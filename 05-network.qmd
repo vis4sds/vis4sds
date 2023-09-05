@@ -13,8 +13,8 @@ By the end of this chapter you should gain the following knowledge and practical
 
 ## Knowledge
 
-- [x] Understand the special structure and vocabulary used to represent network data.
-- [x] Appreciate the strengths, weaknesses and trade-offs of network visualizations and of incorporating geographic context.
+- [ ] Understand the special structure and vocabulary used to represent network data.
+- [ ] Appreciate the strengths, weaknesses and trade-offs of network visualizations and of incorporating geographic context.
 
 :::
 
@@ -23,7 +23,7 @@ By the end of this chapter you should gain the following knowledge and practical
 
 ## Practical skills
 
-- [x] Write `ggplot2` specifications to analyse spatial network origin-destination data.
+- [ ] Write `ggplot2` specifications to analyse spatial network origin-destination data.
 
 :::
 
@@ -118,7 +118,7 @@ Whilst using colour lightness rather than line width to show flow magnitude is a
 ```{r}
 #| label: fig-matrices
 #| out.width: 100%
-#| fig-cap: "Origin-destination matrices ordered according to borough size on number of jobs. **TO DO: keep same OD on local?**"
+#| fig-cap: "Origin-destination matrices ordered according to borough size on number of jobs."
 #| echo: false
 #| eval: true
 #| warning: false
@@ -149,7 +149,7 @@ OD maps extend this idea by displaying *all cells* of the OD matrix with a geogr
 ```{r}
 #| label: fig-map-map
 #| out.width: 100%
-#| fig-cap: "Map-witin-map layout required for generating OD maps. The approximate spatial arrangement is generated with the [gridmappr](https://www.roger-beecham.com/gridmappr/index.html) package. **TODO: annotate refernce cell, origin/destination cell info.**"
+#| fig-cap: "Map-witin-map layout required for generating OD maps. The approximate spatial arrangement is generated with the [gridmappr](https://www.roger-beecham.com/gridmappr/index.html) package [@beecham_gridmappr_2023]."
 #| echo: false
 #| eval: true
 #| warning: false
@@ -167,7 +167,7 @@ In the destination-focussed example in @fig-odmap, each larger (reference) cell 
 ```{r}
 #| label: fig-odmap
 #| out.width: 100%
-#| fig-cap: "Destination-focussed OD map of commutes between London boroughs with local scaling. **TODO: annotate with observations, remove grey background?**"
+#| fig-cap: "Destination-focussed OD map of commutes between London boroughs with local scaling."
 #| echo: false
 #| eval: true
 #| warning: false
@@ -230,7 +230,7 @@ A `.csv` file containing Census travel-to-work data in London has been stored in
 od_pairs <- read_csv(here("data", "london_ttw.csv"))
 ```
 
-In order to generate an approximate geographic arrangement of London boroughs we will use the [`gridmappr`](https://www.roger-beecham.com/gridmappr/index.html) R package. The development version can be downloaded with:
+In order to generate an approximate geographic arrangement of London boroughs we will use the [`gridmappr`](https://www.roger-beecham.com/gridmappr/index.html) R package [@beecham_gridmappr_2023]. The development version can be downloaded with:
 
 ```{r}
 #| echo: true
@@ -298,7 +298,7 @@ kbl(nodes) |> column_spec(2, extra_css = "font-family:  Monospace") |>
 
 ### Gridmap layout
 
-We will analyse over the nodes and edges (flows) data by laying out data graphics with a geo-spatial arrangement. Such arrangements can be automatically created using the [`gridmappr`](https://www.roger-beecham.com/gridmappr/index.html) R package. Given a set of point locations the package creates a two-dimensional grid of user-specified dimensions and allocates points to the grid such that the distance between points in geographic and grid space is minimised. The main function to call is `points_to_grid()`.  This takes a tibble of geographic points and returns grid cell positions (*row* and *column* identifiers). In the code below an 8x8 grid is used. The allocation is also constrained by a *compactness* parameter which determines the extent to which points are allocated to cells in the centre ($compactness = 1$), edges ($0$) or scaled geographic location ($0.5$) within the grid.
+We will analyse over the nodes and edges (flows) data by laying out data graphics with a geo-spatial arrangement. Such arrangements can be automatically created using the [`gridmappr`](https://www.roger-beecham.com/gridmappr/index.html) R package [@beecham_gridmappr_2023]. Given a set of point locations the package creates a two-dimensional grid of user-specified dimensions and allocates points to the grid such that the distance between points in geographic and grid space is minimised. The main function to call is `points_to_grid()`.  This takes a tibble of geographic points and returns grid cell positions (*row* and *column* identifiers). In the code below an 8x8 grid is used. The allocation is also constrained by a *compactness* parameter which determines the extent to which points are allocated to cells in the centre ($compactness = 1$), edges ($0$) or scaled geographic location ($0.5$) within the grid.
 
 ```{r}
 #| echo: true
@@ -498,7 +498,7 @@ The ggplot2 spec:
 ```{r}
 #| label: fig-nodes-gridmap
 #| out.width: 100%
-#| fig-cap: "Workers and jobs in London boroughs by full occupation classes. **TO DO: change annotations and bars with contstnt lightness**"
+#| fig-cap: "Workers and jobs in London boroughs by full occupation classes."
 #| echo: false
 #| eval: true
 #| warning: false
@@ -534,7 +534,7 @@ We've identified differences in where professional jobs and workers are located 
 ```{r}
 #| label: fig-edges-odmap
 #| out.width: 100%
-#| fig-cap: "Commutes between London boroughs: difference maps by occupation type assuming *professional* and *non-professional* distribute uniformly across London. **TODO: Make gridlines lighter, annotations larger**"
+#| fig-cap: "Commutes between London boroughs: difference maps by occupation type assuming *professional* and *non-professional* distribute uniformly across London."
 #| echo: false
 #| eval: true
 #| warning: false
@@ -628,7 +628,7 @@ Once the data staging and `ggplot2` code for the OD map is generated, it is very
 ```{r}
 #| label: fig-edges-odmap-borough
 #| out.width: 100%
-#| fig-cap: "Commutes between London boroughs: difference maps by occupation type assuming *professional* and *non-professional* distribute uniformly within boroughs. **TODO: annotate with key observations**"
+#| fig-cap: "Commutes between London boroughs: difference maps by occupation type assuming *professional* and *non-professional* distribute uniformly within boroughs."
 #| echo: false
 #| eval: true
 #| warning: false

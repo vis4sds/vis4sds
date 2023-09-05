@@ -53,15 +53,15 @@ Data graphics take numerous forms and are used in many different ways by scienti
 * Generate an aesthetic response, encouraging people to engage with the data or question.
 
 
-Given these characteristics consider the data graphic below (@fig-wp-map), which presents an analysis of 2016 US Presidential Election, or the *Peaks and Valleys of Trump and Clinton's Support*. The map is reproduced from an article in the [The Washington Post](https://www.washingtonpost.com/graphics/politics/2016-election/election-results-from-coast-to-coast/). Included in the bottom margin is a choropleth map coloured according to party majority, more standard practice for reporting county-level voting.
+Given these characteristics consider the data graphic below (@fig-wp-map), which presents an analysis of 2016 US Presidential Election, or the *Peaks and Valleys of Trump and Clinton's Support*. The map is reproduced from an article in the [The Washington Post](https://www.washingtonpost.com/graphics/politics/2016-election/election-results-from-coast-to-coast/) [@gamio_how_2016]. Included in the bottom margin is a choropleth map coloured according to party majority, more standard practice for reporting county-level voting.
 
-The Washington Post graphic is clearly *data rich*, encoding many more data items than does the standard choropleth. It is not simply the data density that makes the graphic successful; there are careful design choices that help *support comparison* and emphasise *complex structure*. By varying the height of triangles according to the number of votes cast, the thickness according to whether or not the result for Trump/Clinton was a landslide and rotating the map 90 degrees, the very obvious differences between metropolitan, densely populated coastal counties that voted emphatically for Clinton and the vast number of suburban, provincial town and rural counties (everywhere else) that voted Trump, are exposed.
+@gamio_how_2016's graphic is clearly *data rich*, encoding many more data items than does the standard choropleth. It is not simply the data density that makes the graphic successful; there are careful design choices that help *support comparison* and emphasise *complex structure*. By varying the height of triangles according to the number of votes cast, the thickness according to whether or not the result for Trump/Clinton was a landslide and rotating the map 90 degrees, the very obvious differences between metropolitan, densely populated coastal counties that voted emphatically for Clinton and the vast number of suburban, provincial town and rural counties (everywhere else) that voted Trump, are exposed.
 
 ```{r}
 #| label: fig-wp-map
 #| echo: false
 #| out.width: 100%
-#| fig-cap: "Map of 2016 US presidential election results. Note that for copyright reasons this is a re-implementation of the original [Washington Post piece](https://www.washingtonpost.com/graphics/politics/2016-election/election-results-from-coast-to-coast/) in ggplot2. **TODO: reduce font size in annotations slightly**"
+#| fig-cap: "Map of 2016 US presidential election results. Note that for copyright reasons this is a re-implementation in ggplot2 of @gamio_how_2016's original, which appeared in [The Washington Post piece](https://www.washingtonpost.com/graphics/politics/2016-election/election-results-from-coast-to-coast/)."
 knitr::include_graphics("figs/03/wp_long.png", error = FALSE)
 ```
 <!-- ![Map of 2016 US presidential election results. Note that for copyright reasons this is a re-implementation of the original [Washington Post piece](https://www.washingtonpost.com/graphics/politics/2016-election/election-results-from-coast-to-coast/) in `ggplot2`.](figs/03/wp_long.png){#fig-wp-map width=100% fig-align="center"} -->
@@ -226,7 +226,7 @@ To illustrate this, we can use Munzner's ranking of channels to evaluate the Was
 
 ```{r}
 #| label: wp-eval-size
-#| tbl-cap: "Encoding effectiveness for Washington Post graphic that emphasises *vote margin and size* of counties using triangle marks."
+#| tbl-cap: "Encoding effectiveness for Gamio and Keating's (2016) Washington Post graphic that emphasises *vote margin and size* of counties using triangle marks."
 #| echo: false
 #| eval: true
 #| out.width: 100%
@@ -263,7 +263,7 @@ Implicit in the discussion above, and when making design decisions, is the impor
 
 ```{r}
 #| label: fig-wp-swing
-#| fig-cap: "Map of swing in 2016 US presidential election results. Note that for copyright reasons this is a re-implementation of the original [Washington Post piece](https://www.washingtonpost.com/graphics/politics/2016-election/election-results-from-coast-to-coast/) in ggplot2."
+#| fig-cap: "Map of swing in 2016 US presidential election results. Note that for copyright reasons this is a re-implementation in ggplot2 of @gamio_how_2016's original, which appeared in [The Washington Post piece](https://www.washingtonpost.com/graphics/politics/2016-election/election-results-from-coast-to-coast/)."
 #| echo: false
 #| out.width: 100%
 

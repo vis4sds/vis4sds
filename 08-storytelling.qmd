@@ -68,7 +68,7 @@ Perhaps the most high-profile examples through the Covid-19 pandemic of data gra
 ```{r}
 #| label: fig-ft-vis
 #| out.width: 95%
-#| fig-cap: "[John Burn-Murdoch](https://www.ft.com/john-burn-murdoch)'s international comparison of deaths, as it appeared on [twitter](https://twitter.com/jburnmurdoch/status/1241820210455285760). This is an approximate ggplot2 re-implementation of the original Financial Times graphic."
+#| fig-cap: "[John Burn-Murdoch](https://www.ft.com/john-burn-murdoch)'s international comparison of deaths, as explained in @ft_coronavirus_2020. This is an approximate ggplot2 re-implementation of the original Financial Times graphic."
 #| echo: false
 #| eval: true
 include_graphics("figs/08/cum_deaths_full", error = FALSE)
@@ -88,13 +88,13 @@ It is possible to see each of these goals informing the graphic. Comparison betw
 You might be interested to know that most [Financial Times graphics](https://www.ft.com/graphics) are built using ggplot2. A presentation in which John Burn-Mudoch makes the case for ggplot2 for Data Journalism [from this link](https://johnburnmurdoch.github.io/slides/r-ggplot/#/).
 :::
 
-An interesting design alternative that supports between country comparison is [Aatish Bhatia](https://aatishb.com)'s [Covid Trends](https://aatishb.com/covidtrends/) chart (@fig-covid-trends). A double log scale is used and growth rates in new cases are presented on the y-axis with total case numbers, rather than time elapsed, plotted along the x-axis. Whilst the introduction of a double log scale might be judged to increase difficulty, actually this design narrows or simplifies the reader's visual judgement to looking at the thing that we are most interested in: comparison of country growth rates against the two day doubling (annotated with the diagonal). The chart is also accompanied with an excellent [explanatory video](https://www.hippocraticpost.com/covid-19-update/how-to-tell-if-were-beating-covid-19/), in which many of the characteristics of visual data stories enumerated by @roth_cartographic_2020 can be identified.
+An interesting design alternative that supports between country comparison is @bhatia_covidtrends_2020's [Covid Trends](https://aatishb.com/covidtrends/) chart (@fig-covid-trends). A double log scale is used and growth rates in new cases are presented on the y-axis with total case numbers, rather than time elapsed, plotted along the x-axis. Whilst the introduction of a double log scale might be judged to increase difficulty, actually this design narrows or simplifies the reader's visual judgement to looking at the thing that we are most interested in: comparison of country growth rates against the two day doubling (annotated with the diagonal). The chart is also accompanied with an excellent [explanatory video](https://www.hippocraticpost.com/covid-19-update/how-to-tell-if-were-beating-covid-19/), in which many of the characteristics of visual data stories enumerated by @roth_cartographic_2020 can be identified.
 
 
 ```{r}
 #| label: fig-covid-trends
 #| out.width: 80%
-#| fig-cap: "[Aatish Bhatia](https://aatishb.com)'s [Covid Trends](https://aatishb.com/covidtrends/) chart. [Source](https://github.com/aatishb/covidtrends#credits). This is an approximate ggplot2 re-implementation of a static from the original webpage."
+#| fig-cap: "[Covid Trends](https://aatishb.com/covidtrends/) chart [@bhatia_covidtrends_2020]. This is an approximate ggplot2 re-implementation of a static from the original webpage."
 #| echo: false
 #| eval: true
 
@@ -108,7 +108,7 @@ According to @roth_cartographic_2020, visual data stories are often explanatory.
 ```{r}
 #| label: fig-lambrechts-connected
 #| out.width: 95%
-#| fig-cap: "Static image from a data story written by @flourish_masters_2021, demonstrating how connected scatterplots can be used to analyse changes in hospitalisations and deaths. **TO DO: Request permission to include screenshot.**"
+#| fig-cap: "Screenshot from a data story written by @flourish_masters_2021, demonstrating how connected scatterplots can be used to analyse changes in hospitalisations and deaths. The screenshot is reprinted, with permission, from *Flourish*."
 #| echo: false
 #| eval: true
 
@@ -121,13 +121,13 @@ For a more involved design exposition of connected scatterplots, see [Danny Dorl
 For an example of guided design exposition for explaining complex designs in [analysis of Covid-19 cases data](https://twitter.com/rJBeecham/status/1317019462453895168), also see @beecham_on_2021, which develops ways of showing simultaneously absolute and relative change in cases, with geographic context.
 :::
 
-@fig-ft-anim, again from Financial Times, is another example of how animation can be used to build *intuition*. The main objective is to demonstrate how different 2020 is in terms of admissions to intensive care compared to a normal year. This was in response to claims that Covid-19 behaves much like seasonal flu; to this extent the graphic is also quite *political*. Each year from 2013-14 is added to the chart and the y-axis rescaled to reflect the new numbers. This helps build expectation around normal variability in a similar way to the [hypothetical outcome plots](https://medium.com/hci-design-at-uw/hypothetical-outcomes-plots-experiencing-the-uncertain-b9ea60d7c740) [@hullman_hypothetical_2015] covered in the previous chapter.  The expectation is then roundly debunked by the introduction of the 2020-21 line in red, with animated rescaling of the y-axis used for further emphasis.
+@fig-ft-anim, again from Financial Times [@ft_flu_2021], is another example of how animation can be used to build *intuition*. The main objective is to demonstrate how different 2020 is in terms of admissions to intensive care compared to a normal year. This was in response to claims that Covid-19 behaves much like seasonal flu; to this extent the graphic is also quite *political*. Each year from 2013-14 is added to the chart and the y-axis rescaled to reflect the new numbers. This helps build expectation around normal variability in a similar way to the [hypothetical outcome plots](https://medium.com/hci-design-at-uw/hypothetical-outcomes-plots-experiencing-the-uncertain-b9ea60d7c740) [@hullman_hypothetical_2015] covered in the previous chapter.  The expectation is then roundly debunked by the introduction of the 2020-21 line in red, with animated rescaling of the y-axis used for further emphasis.
 
 
 ```{r}
 #| label: fig-ft-anim
 #| out.width: 100%
-#| fig-cap: "[John Burn-Murdoch](https://www.ft.com/john-burn-murdoch)'s animated rescaling [via twitter](https://twitter.com/jburnmurdoch/status/1347200811303055364) demonstrating how different in terms of intensive care admissions 2020/21 is to a standard flu season. These are frames from an approximate ggplot2 re-implementation of the original Financial Times graphic. "
+#| fig-cap: "[John Burn-Murdoch](https://www.ft.com/john-burn-murdoch)'s animated rescaling [@ft_flu_2021] demonstrating how different in terms of intensive care admissions 2020/21 is to a standard flu season. These are frames from an approximate ggplot2 re-implementation of the original Financial Times graphic. "
 #| echo: false
 #| eval: true
 
@@ -136,18 +136,16 @@ include_graphics("figs/08/flu_years.png", error = FALSE)
 
 ### Political
 
-@fig-ft-vaccine presents a final example of [visual narrative](https://twitter.com/jburnmurdoch/status/1382013080448724994) from Financial Times with an obviously political purpose. The graphic was created in response to claims from the UK's Prime Minister that it is largely restrictions rather than vaccination that has reduced infection rates in the country. Interesting here is how annotation and *visual saliency* is used to direct how the graphic is perceived. If the graphic was only annotated  with points in time when lockdown and vaccination was initiated, it would invite us to make judgements about the effects of these two events on infectious rates. That the graphic makes highly salient annotations labelling the (unmeasurable) effect of *lockdown* and *vaccine* is an interesting addition. There is little room for ambiguity.
+@fig-ft-vaccine presents a final example of [visual narrative](https://twitter.com/jburnmurdoch/status/1382013080448724994) from Financial Times [@burnmurdoch_vaccines_2021] with an obviously political purpose. The graphic was created in response to claims from the UK's Prime Minister that it is largely restrictions rather than vaccination that has reduced infection rates in the country. Interesting here is how annotation and *visual saliency* is used to direct how the graphic is perceived. If the graphic was only annotated  with points in time when lockdown and vaccination was initiated, it would invite us to make judgements about the effects of these two events on infectious rates. That the graphic makes highly salient annotations labelling the (unmeasurable) effect of *lockdown* and *vaccine* is an interesting addition. There is little room for ambiguity.
 
-This sort of presentation, labelling the chart with an unmeasurable effect, may risk graphical integrity (see @tufte_visual_1983's [lie factor](https://infovis-wiki.net/wiki/Lie_Factor)). In a keynote given at IEEE VIS 2020 [@burnmurdoch_beliv_2020], John Burn Murdoch, who created this and the other Financial Times graphics, reflected on his experiences generating data stories early in the pandemic --  that the way in which the FT's data graphics were interpreted, and misinterpreted, varied depending on the prior expectations and political beliefs of those consuming them. The chart labelling in this case might have been added to signal more directly the evidence-based argument that was being made -- to amplify the conclusion believed to be supported by the data.  
-
-
+This sort of presentation, labelling the chart with an unmeasurable effect, may risk graphical integrity (see @tufte_visual_1983's [lie factor](https://infovis-wiki.net/wiki/Lie_Factor)). In a keynote given at IEEE VIS 2020 [@burnmurdoch_beliv_2020], John Burn Murdoch, who created this and the other Financial Times graphics, reflected on his experiences generating data stories early in the pandemic -- that the way in which the Financial Times's data graphics were interpreted, and misinterpreted, varied depending on the prior expectations and political beliefs of those consuming them. The chart labelling in this case might have been added to signal more directly the evidence-based argument that was being made -- to amplify the conclusion believed to be supported by the data.  
 
 Clearly all data analysis is heavily informed by the values, prejudices, motivations and incentives of those undertaking them. As demonstrated by @roth_cartographic_2020's characteristics of data storytelling, these individual factors are necessary to communicate effectively. An interesting question, then, is around how integrity and trust is designed into a data analysis. Perhaps in the case of the Financial Times data journalists, this trust is established over time, through a portfolio of data analysis work that is considered, communicated transparently and with humility.
 
 ```{r}
 #| label: fig-ft-vaccine
 #| out.width: 100%
-#| fig-cap: "[John Burn-Murdoch](https://www.ft.com/john-burn-murdoch)'s analysis evaluating the role of lockdown and the vaccine. An approximate ggplot2 re-implementation of the original Financial Times graphic."
+#| fig-cap: "Data graphic by @burnmurdoch_vaccines_2021, presenting an argument for the role of vaccines in reducing Covid cases, hospital admissions and deaths. An approximate ggplot2 re-implementation of the original Financial Times graphic. Note that a slightly different smoothing function may have been used in the original graphic, especially for the cases data."
 #| echo: false
 #| eval: true
 
@@ -163,12 +161,12 @@ The annotations in @fig-ft-vaccine have heavy saliency thanks to the parsimoniou
 
 ## Techniques
 
-The technical element demonstrates how to design plots deliberatively with annotations in ggplot2. We will recreate a glyphmap type graphic that originally appeared in [The Washington Post](https://www.washingtonpost.com/nation/2020/05/24/coronavirus-rural-america-outbreaks/?arc404=true) to tell a story of growth in Covid-19 cases by US county. The graphic is presented in @fig-wp. Each US county is represented as a line encoded by daily growth rates in new cases between 3rd May and 26th May 2020.  Lines are positioned at the geographic centre of each county. 
+The technical element demonstrates how to design plots deliberatively with annotations in ggplot2. We will recreate a glyphmap type graphic that originally appeared in [The Washington Post](https://www.washingtonpost.com/nation/2020/05/24/coronavirus-rural-america-outbreaks/?arc404=true) [@thebault_reis_covid-19s_2020] to tell a story of growth in Covid-19 cases by US county. The graphic is presented in @fig-wp. Each US county is represented as a line encoded by daily growth rates in new cases between 3rd May and 26th May 2020.  Lines are positioned at the geographic centre of each county. 
 
 ```{r}
 #| label: fig-wp
 #| out.width: 100%
-#| fig-cap: "Glyphmap design displaying growth in COVID-19 cases by US county, based on the design by Thebault and Hauslohner, original in [The Washington Post](https://www.washingtonpost.com/nation/2020/05/24/coronavirus-rural-america-outbreaks/?arc404=true)."
+#| fig-cap: "Glyphmap design displaying growth in COVID-19 cases by US county, based on the design by @thebault_reis_covid-19s_2020, originally in [The Washington Post](https://www.washingtonpost.com/nation/2020/05/24/coronavirus-rural-america-outbreaks/?arc404=true)."
 #| echo: false
 #| eval: true
 
@@ -186,7 +184,7 @@ Without the careful integration of annotations and non-standard legends, @fig-wp
 * Download the [08-template.qmd](./files/08-template.qmd) file and save it to your `vis4sds` project.
 * Open your `vis4sds` project in RStudio and load the template file by clicking `File` > `Open File ...` > `08-template.qmd`.
 
-The template file lists the required packages -- `tidyverse` and `sf`. The data were collected using [Kieran Healy](https://kieranhealy.org/)'s [`covdata`](https://kjhealy.github.io/covdata/) package [@healy_covdata_2020], attributing  the [county-level cumulative cases dataset](https://github.com/nytimes/covid-19-data) released and maintained by data journalists at The New York Times [see @nyt_coronavirus_2021].
+The template file lists the required packages -- `tidyverse` and `sf`. The data were collected using the [`covdata`](https://kjhealy.github.io/covdata/) package [@healy_covdata_2020], attributing  the [county-level cumulative cases dataset](https://github.com/nytimes/covid-19-data) released and maintained by data journalists at The New York Times [see @nyt_coronavirus_2021].
 
 The template provides access to a version of this dataset that is 'staged' for charting. For this cases are filtered on the dates covered by the Washington Post graphic (3rd to 25th May); counties whose daily case counts were $\geq20$ cases on 3rd May are identified; calculated daily growth rates are anchored to case counts on 3rd May; calculated 'end' growth rates and daily counts for each county are calculated (those recorded on 25th May); and finally a binned growth rate variable identifying counties with daily case counts on 25rd May that were $\leq2\times$, $\geq2\times$, $\geq4\times$,  $\geq7\times$ the daily case counts measured on 3rd May. Also there is a `state_boundaries` dataset to download, which contains `geometry` data for each US state, collected from [US Census Bureau](https://www.census.gov/geographies/mapping-files/time-series/geo/carto-boundary-file.html) as well as coordinate variables describing the geographic centroid of each state. The [Albers Equal Area](https://en.wikipedia.org/wiki/Albers_projection) projection is used.
 

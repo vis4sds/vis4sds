@@ -1,3 +1,13 @@
+n_row <- 8
+n_col <- 8
+pts <- london_boroughs |>
+  st_drop_geometry() |>
+  select(area_name, x = easting, y = northing)
+solution <- points_to_grid(pts, n_row, n_col, compactness = .6)
+grid <- make_grid(london_boroughs, n_row, n_col)
+grid <- grid |>
+  inner_join(solution)
+
 x = st_as_binary(st_sfc(st_point(0:1), st_point(5:6)))
 st_as_sfc(x)
 
@@ -34,8 +44,6 @@ river_grid <- grid |> filter(area_name == "Havering") |> st_coordinates() |> as_
   st_as_sf(coords = c("x", "y"), crs = "epsg:27700") |>
   st_combine() %>% st_cast("LINESTRING")
   
-
-
 grid |> 
   ggplot() +
   geom_sf() +

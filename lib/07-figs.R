@@ -566,7 +566,7 @@ source(here("lib", "spoke_helpers.R"))
 p_hex <- map_data_hex |> 
   ggplot()+
   geom_sf(aes(fill=sig_type, alpha=is_sig, colour=sig_type), linewidth=0.1, alpha=.3)+
-  geom_sf(data=. %>% group_by(RGN19CD) %>% summarise(), fill="transparent", linewidth=0.25)+
+  geom_sf(data=. %>% group_by(RGN19CD) %>% summarise(), fill="transparent", linewidth=0.35)+
   coord_sf(datum=NA)+
   # Greater.
   geom_spoke(
@@ -737,10 +737,10 @@ p_real2 <- map_data_real |>
 
 
 
-plot <- p_real2 + p_hex + plot_layout(widths=c(1, .95))
+plot <- p_real2 + p_hex + plot_layout(widths=c(1, .98))
 
 
-ggsave(filename=here("figs", "07", "geog-severity-2.png"), plot=plot,width=9, height=6, dpi=300)
+ggsave(filename=here("figs", "07", "geog-severity-2.png"), plot=plot,width=9.1, height=6, dpi=300)
 
 
 # 2.4 Mapped multipe testing  ------------------------
