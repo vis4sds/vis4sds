@@ -176,7 +176,7 @@ The annotations in @fig-ft-vaccine have heavy saliency thanks to the parsimoniou
 
 ## Techniques
 
-The technical element demonstrates how to design plots deliberatively with annotations in ggplot2. We will recreate a glyphmap type graphic that originally appeared in The Washington Post[^`https://www.washingtonpost.com/nation/2020/05/24/coronavirus-rural-america-outbreaks/?arc404=true`] [@thebault_reis_covid-19s_2020] to tell a story of growth in Covid-19 cases by US county. The graphic is presented in @fig-wp. Each US county is represented as a line encoded by daily growth rates in new cases between 3rd May and 26th May 2020.  Lines are positioned at the geographic centre of each county. 
+The technical element demonstrates how to design plots deliberatively with annotations in ggplot2. We will recreate a glyphmap type graphic that originally appeared in The Washington Post^[`https://www.washingtonpost.com/nation/2020/05/24/coronavirus-rural-america-outbreaks/?arc404=true`] [@thebault_reis_covid-19s_2020] to tell a story of growth in Covid-19 cases by US county. The graphic is presented in @fig-wp. Each US county is represented as a line encoded by daily growth rates in new cases between 3rd May and 26th May 2020.  Lines are positioned at the geographic centre of each county. 
 
 ```{r}
 #| label: fig-wp
@@ -199,7 +199,7 @@ Without the careful integration of annotations and non-standard legends, @fig-wp
 * Download the [08-template.qmd](./files/08-template.qmd) file and save it to your `vis4sds` project.
 * Open your `vis4sds` project in RStudio and load the template file by clicking `File` > `Open File ...` > `08-template.qmd`.
 
-The template file lists the required packages -- `tidyverse` and `sf`. The data were collected using the [`covdata`](https://kjhealy.github.io/covdata/) package [@healy_covdata_2020], attributing  the [county-level cumulative cases dataset](https://github.com/nytimes/covid-19-data) released and maintained by data journalists at The New York Times [see @nyt_coronavirus_2021].
+The template file lists the required packages -- `tidyverse` and `sf`. The data were collected using the [`covdata`](https://kjhealy.github.io/covdata/) package [@healy_covdata_2020], attributing  the county-level cumulative cases dataset maintained by data journalists at @nyt_coronavirus_2021.
 
 The template provides access to a version of this dataset that is 'staged' for charting. For this cases are filtered on the dates covered by the Washington Post graphic (3rd to 25th May); counties whose daily case counts were $\geq20$ cases on 3rd May are identified; calculated daily growth rates are anchored to case counts on 3rd May; calculated 'end' growth rates and daily counts for each county are calculated (those recorded on 25th May); and finally a binned growth rate variable identifying counties with daily case counts on 25rd May that were $\leq2\times$, $\geq2\times$, $\geq4\times$,  $\geq7\times$ the daily case counts measured on 3rd May. Also there is a `state_boundaries` dataset to download, which contains `geometry` data for each US state, collected from [US Census Bureau](https://www.census.gov/geographies/mapping-files/time-series/geo/carto-boundary-file.html) as well as coordinate variables describing the geographic centroid of each state. The [Albers Equal Area](https://en.wikipedia.org/wiki/Albers_projection) projection is used.
 
@@ -346,7 +346,7 @@ county_data |>
 
 ### Build custom legend
 
-Since @fig-wp is a non-standard data graphic coded in a more low-level way with `geom_segment()`, it is useful to accompany it with a more expressive legend. We therefore build our own legend from scratch, using the geographic space of the plot as our canvas.
+Since @fig-wp is a custom data graphic coded in a somewhat low-level way with `geom_segment()`, it is useful to accompany it with a more expressive legend. We therefore build our own legend from scratch, using the geographic space of the plot as our canvas.
 
 ::: {#fig-legends}
 
@@ -388,7 +388,7 @@ width <- bbox$xmax-bbox$xmin
 height <- bbox$ymax-bbox$ymin
 ```
 
-We then create a dataset for the top right legend displaying the different categories of growth rate (@fig-wp-growth-legend). Counties filtered by their different growth rates were identified manually. As you will see shortly we use exactly the same *encoding* as the main graphic for the example legend lines, but rather than positioning these selected counties in their real geographic position, we override their x- and y- location so that the lines appear in a margin to the top right of the graphic. This is achieved in the `mutate()`, where we set x-position to start at the right quarter of the graphic (`bbox$xmax-.25*width`) and y-position to start slightly above the top of the graphic `bbox$ymax+.05*height`. `case_rate` is set to a constant as we don't want line width to vary and also a manually created `label` variable.
+We then create a dataset for the top right legend displaying the different categories of growth rate  -- @fig-wp-growth-legend. Counties filtered by their different growth rates were identified manually. As you will see shortly we use exactly the same *encoding* as the main graphic for the example legend lines, but rather than positioning these selected counties in their real geographic position, we override their x- and y- location so that the lines appear in a margin to the top right of the graphic. This is achieved in the `mutate()`, where we set x-position to start at the right quarter of the graphic (`bbox$xmax-.25*width`) and y-position to start slightly above the top of the graphic `bbox$ymax+.05*height`. `case_rate` is set to a constant as we don't want line width to vary and also a manually created `label` variable.
 
 ```{r}
 #| echo: true
@@ -415,7 +415,7 @@ legend_growth <- county_data |>
 
 
 
-A separate dataset is also created for drawing the top left legend (@fig-wp-case-legend), showing different case rates relative to population size. In the `mutate()` we set x-position to start towards the left of the graphic (`bbox$xmax-.88*width`) and y-position to start slightly above the top of the graphic `bbox$ymax+.05*height`. We want to draw three lines corresponding to a low, medium and high growth rate and so `pivot_longer()` to duplicate the daily case data over rows. Each line needs to be drawn next to one another and this is achieved with the `offset_day` variable,  a multiple applied to the geographic `width` of US used later in the ggplot2 specification.
+A separate dataset is also created for drawing the top left legend -- @fig-wp-case-legend, showing different case rates relative to population size. In the `mutate()` we set x-position to start towards the left of the graphic (`bbox$xmax-.88*width`) and y-position to start slightly above the top of the graphic `bbox$ymax+.05*height`. We want to draw three lines corresponding to a low, medium and high growth rate and so `pivot_longer()` to duplicate the daily case data over rows. Each line needs to be drawn next to one another and this is achieved with the `offset_day` variable,  a multiple applied to the geographic `width` of US used later in the ggplot2 specification.
 
 ```{r}
 #| echo: true
