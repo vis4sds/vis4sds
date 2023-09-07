@@ -121,7 +121,7 @@ To do this, a reasonably broad set of data processing and analysis procedures is
 5.  data modelling (Chapters [-@sec-explore], [-@sec-model], [-@sec-uncertainty]);
 6.  and the "science about data science" (All chapters)
 
-There is already an impressive set of open resources practically introducing how to do modern Data Science [@wickham_r_2017], Visualization [@healy_data_2018], model building [@ismay_moderndive_2020; @kuhn_tidy_2023] and Geographic Analysis [@lovelace_geocomputation_2019]. What makes this book different is the emphasis on *doing* applied data science throughout. We will be identifying problems when gathering data, discovering patterns (some may even be spurious) through exploratory analysis, claiming knowledge under uncertainty as we generate models from observed patterns and making selective and subjective decisions as we communicate and tell stories with data.
+There is already an impressive set of open resources practically introducing how to do modern data analysis [@wickham_r_2017], visualization [@healy_data_2018], model building [@ismay_moderndive_2020; @kuhn_tidy_2023] and geographic analysis [@lovelace_geocomputation_2019]. What makes this book different is the emphasis on *doing* applied data science throughout. We will be identifying problems when gathering data, discovering patterns (some may even be spurious) through exploratory analysis, claiming knowledge under uncertainty as we generate models from observed patterns and making selective and subjective decisions as we communicate and tell stories with data.
 
 ### How vis4sds?
 
@@ -166,6 +166,7 @@ Readers of this book might already have some familiarity with R and the [RStudio
 #| echo: false
 #| label: fig-rstudio
 #| fig-cap: "The RStudio IDE"
+#| out.width: 100%
 knitr::include_graphics("figs/01/rstudio_annotate.png", error = FALSE)
 ```
 
@@ -236,7 +237,7 @@ So let's install it.
 install.packages("sf")
 ```
 
-And now it's installed, why not bring up some documentation on one of its function, [`st_contains()`](https://r-spatial.github.io/sf/reference/geos_binary_pred.html), by typing `?<function-name>` into the Console.
+And now it's installed, why not bring up some documentation on one of its functions, [`st_contains()`](https://r-spatial.github.io/sf/reference/geos_binary_pred.html), by typing `?<function-name>` into the Console.
 
 ```{r}
 #| echo: true
@@ -249,7 +250,7 @@ Since you've downloaded the package but not made it available to your session, y
 ```{r}
 #| echo: true
 #| eval: false
-> Error in .helpForCall(topicExpr, parent.frame()) : 
+> Error in .helpForCall(topicExpr, parent.frame()) :
   no methods for ‘st_contains’ and no documentation for it as a function
 ```
 
@@ -301,6 +302,7 @@ A quick anatomy of `.qmd` files :
 #| echo: false
 #| label: fig-quarto-annotate
 #| fig-cap: "The anatomy of `.qmd` files"
+#| out.width: 100%
 knitr::include_graphics("figs/01/quarto.png", error = FALSE)
 ```
 
@@ -315,7 +317,7 @@ The [YAML](https://en.wikipedia.org/wiki/YAML) section of a `.qmd` file controls
     format: html
     ---
 
-Quarto files are rendered with the *Render* button, annotated in the Figure above. This starts [`pandoc`](https://pandoc.org/) and executes all the code chunks and outputs in the case above an `.html` file. The file can be converted to many different output formats via [pandoc](https://pandoc.org/).
+Quarto files are rendered with the *Render* button, annotated in @fig-quarto-annotate above. This starts [`pandoc`](https://pandoc.org/) and executes all the code chunks and outputs in the case above an `.html` file. The file can be converted to many different output formats via `pandoc`).
 
 -   Render the [01-template.qmd]() file for this chapter by clicking the *Render* button.
 
@@ -412,6 +414,7 @@ RStudio Projects resolve these problems. Whenever you load an RStudio Project, `
 #| echo: false
 #| label: fig-studio-project
 #| fig-cap: "Creating an RStudio Project"
+#| out.width: 100%
 knitr::include_graphics("figs/01/rstudio_project.png", error = FALSE)
 ```
 
@@ -441,13 +444,13 @@ vis4sds\
 
 ## Conclusions
 
-Visual data analysis approaches are necessary for exploring complex patterns in data and to make and communicate claims under uncertainty. This is especially true of social data science applications. Datasets are repurposed for research often for the first time; contain complex structure and geo-spatial relations that cannot be easily captured by statistical summaries alone; and, consequently, where the types of questions that can be asked and the techniques deployed to answer them cannot be specified in advance. This is demonstrated in the book as we explore (Chapters [-@sec-explore] and [-@sec-network]), model under uncertainty (Chapter [-@sec-model]) and communicate (Chapters [-@sec-uncertainty] and [-@sec-storytelling]) with various social science datasets. All technical activity is completed in R, making use of tools and software libraries that form part of the R ecosystem: the `tidyverse` for doing modern data science and Quarto for helping to author reproducible research documents.
+Visual data analysis approaches are necessary for exploring complex patterns in data and to make and communicate claims under uncertainty. This is especially true of social data science applications, where datasets are repurposed for research often for the first time; contain complex structure and geo-spatial relations that cannot be easily captured by statistical summaries alone; and, consequently, where the types of questions that can be asked and the techniques deployed to answer them cannot be specified in advance. This is demonstrated in the book as we explore (Chapters [-@sec-explore] and [-@sec-network]), model under uncertainty (Chapter [-@sec-model]) and communicate (Chapters [-@sec-uncertainty] and [-@sec-storytelling]) with various social science datasets. All technical activity in the book is completed in R, making use of tools and software libraries that form part of the R ecosystem: the `tidyverse` for doing modern data science and Quarto for helping to author reproducible research documents.
 
 <!-- We will work with both new, large-scale behavioural datasets, as well as more traditional, administrative datasets located within various social science domains. We will do so using the statistical programming environment `R`, making use of tools and software libraries that form part of the `R` ecosystem: the `tidyverse` for doing modern data science and Quarto for authoring reproducible research projects. -->
 
 ## Further Reading
 
-A paper that introduces modern data analysis and Data Science in a direct way, eschewing much of the hype:
+A paper that introduces modern data analysis and data science in a direct way, eschewing much of the hype:
 
 * Donoho, D. 2017. “50 Years of Data Science” *Journal of Computational and Graphical Statistics*, 26(6): 745--66. doi: [10.1080/10618600.2017.13847340](https://doi.org/10.1080/10618600.2017.13847340).
 

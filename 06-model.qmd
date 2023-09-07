@@ -33,7 +33,7 @@ By the end of this chapter you should gain the following knowledge and practical
 
 ## Introduction
 
-So far the analysis presented in this book has been data-driven. Having described data in a consistent way ([@sec-data]), visual analysis approaches  have been applied to expose structure in datasets, informed by established visualization guidelines. Chapters [-@sec-explore] and [-@sec-network] involved model building, but these were largely value-free models based on limited prior theory. This chapter is presented as a worked data analysis. We attend to a well-known  dataset with a more explicit and theoretically-informed motivation. 
+So far the analysis presented in this book has been data-driven. Having described data in a consistent way ([@sec-data]), visual analysis approaches  have been applied to expose structure in datasets, informed by established visualization guidelines. Chapters [-@sec-explore] and [-@sec-network] involved model building, but these were largely value-free models based on limited prior theory. This chapter is presented as a worked data analysis. We attend to a well-known  dataset with a more explicit and theoretically-informed motivation.
 
 The chapter explores variation in voting behaviour in the UK's 2016 referendum on leaving the EU. You might remember that whilst there was a slight majority for Leave (c. 52%), the vote varied between different parts of the country. There were many theories and explanations offered for why particular places voted the way they did, often related to the demographic composition of those areas. We will explore whether the sorts of compositional demographic factors discussed vary systematically with area-level Leave voting. Using regression frameworks, we will model the relative effect of each of these compositional factors in structuring variation in the vote and construct data graphics that allow these models and parameters to be considered and evaluated in detail.
 
@@ -122,7 +122,7 @@ include_graphics("figs/06/scatters.png", error = FALSE)
 ```
 
 
-It is of course possible, and likely, that there is autocorrelation in many of the compositional characteristics of constituencies and Leave voting. Parallel coordinate plots may help visually explore this multivariate space. Whereas in scatterplots, observations are represented as points located in x- and y- axes that are orthogonal, in a parallel coordinate plot axes are parallel and the values of an observation encoded via a line connecting the multiple parallel axes. In @fig-pcps each of the thin lines is a constituency coloured according to whether the constituency voted majority Remain (red) or Leave (blue). The first variable encoded is the size of the Leave vote and variables are then ordered according to linear association with Leave. Note that we have reversed the polarity of variables such as *degree-educated* and *professional* so that we expect more Leave (blue lines) towards the right locations of the parallel axes. That the blue and red lines are reasonably separated suggests that there is autocorrelation across many of the demographics characteristics in constituencies voting differenly for Leave and Remain.
+It is of course possible, and likely, that there is autocorrelation in many of the compositional characteristics of constituencies and Leave voting. Parallel coordinate plots may help visually explore this multivariate space. Whereas in scatterplots, observations are represented as points located in x- and y- axes that are orthogonal, in a parallel coordinate plot axes are parallel and the values of an observation encoded via a line connecting the multiple parallel axes. In @fig-pcps each of the thin lines is a constituency coloured according to whether the constituency voted majority Remain (red) or Leave (blue). The first variable encoded is the size of the Leave vote and variables are then ordered according to linear association with Leave. Note that we have reversed the polarity of variables such as *degree-educated* and *professional* so that we expect more Leave (blue lines) towards the right locations of the parallel axes. That the blue and red lines are reasonably separated suggests that there is autocorrelation across many of the demographics characteristics in constituencies voting differently for Leave and Remain.
 
 <!-- Although they enable some aspects of association between multiple variables to be encoded, parallel coordinate plots have several deficiencies;  -->
 
@@ -215,7 +215,7 @@ Given the spirit of this book, you might have wondered about the reasonably abbr
 
 <!-- The new expected values for Leave derived from the multivariate model are much closer to those observed in the data; the model  accounts for a reasonably large share (c.76%) of variation in constituency-level Leave voting. However, our analysis becomes more interesting when we start to explore and characterise model *bias*: any underlying structure to the observations that are less well accounted for by the model. -->
 
-Our analysis becomes more interesting when we start to explore and characterise model *bias*: any underlying structure to the observations that are less well accounted for by the model. 
+Our analysis becomes more interesting when we start to explore and characterise model *bias*: any underlying structure to the observations that are less well accounted for by the model.
 
 For area-level regression models such as ours, it is usual for residuals to exhibit some spatial autocorrelation structure. For certain parts of a country a model will overestimate an outcome given the relationship implied by associations between explanatory and outcome variables; for other parts the outcome will be underestimated. This might occur due to:
 
@@ -333,19 +333,19 @@ Explanatory variables describing the demographic composition of constituencies a
 ```{r}
 #| echo: true
 #| eval: false
-# z-score transform explanatory variables before model 
+# z-score transform explanatory variables before model
 # specification.
-cons_data |> 
+cons_data |>
   mutate(
     across(
-      .cols=c(younger:heavy_industry), 
+      .cols=c(younger:heavy_industry),
       .fns=~(.x-mean(.x))/sd(.x)
       )
   )
   <some-model-specification-code>
 ```
 
-In @fig-scatters and @fig-pcps associations between candidate explanatory variables and Leave are explored using scatterplots and parallel coordinate plots respectively. To avoid cluttering this section, documented code for reproducing these plots is in the [06-template.qmd]() file for this chapter.
+In @fig-scatters and @fig-pcps associations between candidate explanatory variables and Leave are explored using scatterplots and parallel coordinate plots respectively. To avoid cluttering this section, documented code for reproducing these plots is in the [06-template.qmd](./files/06-template.qmd) file for this chapter.
 
 
 ::: {.callout-tip icon="false"}
@@ -366,10 +366,10 @@ The most straightforward way of specifying a linear regression model is with the
 #| echo: true
 #| eval: false
 
-model <- cons_data |> 
+model <- cons_data |>
   mutate(
     across(
-      .cols=c(younger:heavy_industry), 
+      .cols=c(younger:heavy_industry),
       .fns=~(.x-mean(.x))/sd(.x)
       )
   ) %>%
@@ -409,7 +409,7 @@ tidy(model)
 #   1 (Intercept)   0.521    0.00290     180.  0
 # 2 degree       -0.0883   0.00290     -30.5 5.67e-126
 
-# glance() returns a single row containing summaries of 
+# glance() returns a single row containing summaries of
 # model fit.
 glance(model)
 # # A tibble: 1 × 12
@@ -418,7 +418,7 @@ glance(model)
 #   1     0.596         0.595 0.0728      928. 5.67e-126     1   760. -1514. -1501.
 # # ℹ 3 more variables: deviance <dbl>, df.residual <int>, nobs <int>
 
-# augment() returns a data frame of residuals and predictions 
+# augment() returns a data frame of residuals and predictions
 # (fitted values) for the model realisation.
 augment(model)
 # # A tibble: 632 × 8
@@ -438,14 +438,14 @@ Example code:
 ```{r}
 #| echo: true
 #| eval: false
-single_model_fits <- cons_data |> 
+single_model_fits <- cons_data |>
   mutate(across(c(younger:heavy_industry), ~(.x-mean(.x))/sd(.x))) |>
   pivot_longer(
-    cols=younger:heavy_industry, 
+    cols=younger:heavy_industry,
     names_to="expl_var", values_to="z_score"
     ) |>
   # Nest to generate list-column by expl_var.
-  nest(data=-expl_var) |> 
+  nest(data=-expl_var) |>
   mutate(
     # Use map() to iterate over the list of datasets.
     model = map(data, ~lm(leave ~ z_score, data = .x)),
@@ -459,9 +459,9 @@ single_model_fits <- cons_data |>
 
 single_model_fits |>
   # Unnest output from glance.
-  unnest(cols = fits) |>  
+  unnest(cols = fits) |>
   # Remove other list-columns.
-  select(-c(data, model)) 
+  select(-c(data, model))
 
 # # A tibble: 10 × 15
 # expl_var  r.squared adj.r.squared  sigma statistic   p.value    df logLik    AIC
@@ -497,9 +497,9 @@ The code for @fig-outputs:
 ```{r}
 #| echo: true
 #| eval: false
-model <- cons_data |> 
+model <- cons_data |>
   mutate(across(c(younger:heavy_industry), ~(.x-mean(.x))/sd(.x))) %>%
-  lm(leave ~ 
+  lm(leave ~
     degree + eu_born + white  + no_car + not_good_health + heavy_industry,
      data=.)
 
@@ -529,7 +529,7 @@ To include a fixed effect (FE) term on region, the `region` variable is simply a
 ```{r}
 #| echo: true
 #| eval: false
-cons_data |> 
+cons_data |>
   mutate(
     across(c(younger:heavy_industry), ~(.x-mean(.x))/sd(.x)),
     region=factor(region)) %>%
@@ -565,7 +565,7 @@ We want our model to represent a dummy for every region and so we add `-1` to th
 ```{r}
 #| echo: true
 #| eval: false
-cons_data |> 
+cons_data |>
   mutate(
     across(c(younger:heavy_industry), ~(.x-mean(.x))/sd(.x)),
     region=factor(region)) %>%
@@ -586,7 +586,7 @@ To include an Interaction on region, we need to set a variable that will be used
 ```{r}
 #| echo: true
 #| eval: false
-model <- cons_data |> 
+model <- cons_data |>
   mutate(
     across(c(younger:heavy_industry), ~(.x-mean(.x))/sd(.x)),
     region=as.factor(region), cons=1) %>%
@@ -646,7 +646,7 @@ First generate a model object and extract residuals from it, again making use of
 ```{r}
 #| echo: true
 #| eval: false
-model <- cons_data |> 
+model <- cons_data |>
   select(-c(population, population_density)) |>
   mutate(
     across(c(younger:heavy_industry), ~(.x-mean(.x))/sd(.x)),
@@ -710,7 +710,7 @@ The plot specification:
 
 1. *Data*: `inner_join` the permuted data on the simple features file containing the hexagon cartogram boundaries (`cons_hex`). To generate the lineup we `facet_wrap()` on the permutation `id`. By default ggplot2 will draw facets in a particular order -- determined either by the numeric or alphabetical order of the facet variable's values, or by an order determined by a factor variable. Each time we plot the lineups we want the order in which the real and decoy plots are drawn to vary. Therefore we convert `id` to a factor variable and shuffle the levels (the ordering) around, using the `sample()` function on a recorded vector of permutation IDs (`ids`) before piping to `ggplot()`. Note that we also record the maximum absolute value of the residuals to ensure that they are coloured symmetrically on $0$ (`max_resid`). Finally, you may notice there are two `geom_sf()` calls in the plot specification. The second draws regional boundary outlines across each plot. This is achieved by collapsing the hex data on region (using `group_by()` and `summarise()`).
 2. *Encoding*: hexagons are filled according to the residual values (`fill=.resid`).
-3. *Marks*: `geom_sf()` for drawing the hexagon outlines. The first `geom_sf` colours each constituency on its residual value. The second does not encode any data values -- notice there is no `aes()` -- and is for drawing the regional outlines.   
+3. *Marks*: `geom_sf()` for drawing the hexagon outlines. The first `geom_sf` colours each constituency on its residual value. The second does not encode any data values -- notice there is no `aes()` -- and is for drawing the regional outlines.
 4. *Facets*: `facet_wrap()` on `region` in order to display coefficients estimated separately for each region.
 5. *Scale*: `scale_fill_distiller()` for  ColorBrewer scheme, diverging using the RdBu palette, with `limits` set to `max_resid` to make the scheme centred on $0$.
 6. *Setting*: The `linewidth` parameter of the hexagon outlines is varied so that the regional outlines in the second call to `geom_sf()` appear more salient. Also here, a transparent `fill` to ensure that the regional outlines do not occlude the encoded residuals.

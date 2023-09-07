@@ -13,22 +13,22 @@ By the end of this chapter you should gain the following knowledge and practical
 ::: {.callout-note icon=false}
 
 ## Knowledge outcomes
-  - [ ] An appreciation of how data graphics can support exploratory data analysis (EDA) workflows.
+  - [ ] An appreciation of how data graphics can support exploratory data analysis (EDA).
   - [ ] The main chart types, their benefits and drawbacks, for summarising variation within- and between- variables.
-  - [ ] Three strategies for effecting *comparison* in EDA: juxtaposition, superposition and direct encoding [@gleicher_visual_2011].
+  - [ ] Three strategies for effecting comparison in EDA: juxtaposition, superposition and direct encoding [@gleicher_visual_2011].
 :::
 
 ::: {.callout-note icon=false}
 
 ## Skills outcomes
   - [ ] ggplot2 specifications that use visual channels -- colour and layout -- to support comparison.
-  - [ ] `tidyverse`-style code for computing model-expected values, and piped to ggplot2 for  exploratory analysis.
+  - [ ] `tidyverse`-style code for computing model-expected values, piped to ggplot2 for  exploratory analysis.
 :::
 
 
 ## Introduction
 
-Exploratory Data Analysis (EDA) is an approach to analysis that aims to expose the properties and structure of a dataset, and from here suggest directions for analytic inquiry. In an EDA, relationships are quickly inferred, anomalies labelled, data-generating processes (models) suggested and evaluated. EDA relies heavily on visual approaches to analysis; it is common to generate many dozens of often throwaway data graphics when exploring a dataset for the first time.
+Exploratory Data Analysis (EDA) is an approach to analysis that aims to expose the properties and structure of a dataset, and from here suggest directions for analytic inquiry. In an EDA relationships are quickly inferred, anomalies labelled, data-generating processes (models) suggested and evaluated. EDA relies heavily on visual approaches to analysis; it is common to generate many dozens of often throwaway data graphics when exploring a dataset for the first time.
 
 This chapter demonstrates how the concepts and principles introduced previously, of data types and their visual encoding, can be applied to support EDA. It does so by analysing [STATS19](https://data.gov.uk/dataset/cb7ae6f0-4be6-4935-9277-47e5ce24a11f/road-safety-data), a dataset containing detailed information on every reported road traffic crash in Great Britain that resulted in personal injury. STATS19 is highly detailed, with many categorical variables. The chapter starts by revisiting commonly used chart types for summarising  within-variable variation and between-variable co-variation in a dataset. It then focuses more directly on the STATS19 case, and how detailed comparison across many categorical variables can be effected using colour, layout and statistical computation.
 
@@ -41,11 +41,11 @@ This chapter demonstrates how the concepts and principles introduced previously,
 >
 > John Tukey -->
 
-In Exploratory Data Analysis (EDA), graphical and statistical summaries are used to build knowledge and understanding of a dataset. The goal of EDA is to infer relationships, identify anomalies and test new ideas and hypotheses; it is a knowlegde-building activity. Rather than a formal set of techniques, EDA should be considered an *outlook* to analysis. It aims to reveal properties, patterns and relationships in a dataset, and from there expectations, codified via models, to be further investigated in context via more targeted data graphics and statistics.
+In Exploratory Data Analysis (EDA), graphical and statistical summaries are used to build knowledge and understanding of a dataset. The goal of EDA is to infer relationships, identify anomalies and test new ideas and hypotheses; it is a knowledge-building activity. Rather than a formal set of techniques, EDA should be considered a sort of outlook to analysis. It aims to reveal properties, patterns and relationships in a dataset, and from there expectations, codified via models, to be further investigated in context via more targeted data graphics and statistics.
 
-The early stages of an EDA may be very data-driven. Datasets are described abstractly according to their measurement level and corresponding data graphics and summary statistics suggested from these descriptions (e.g. @tbl-variable-types-explore). As knowledge and understanding of the dataset increases, researchers might apply more targeted theory and prior knowledge when developing and evaluating *models*.
+The early stages of an EDA may be very data-driven. Datasets are described abstractly according to their measurement level and corresponding data graphics and summary statistics suggested from these descriptions (e.g. @tbl-variable-types-explore). As knowledge and understanding of the dataset increases, researchers might apply more targeted theory and prior knowledge when developing and evaluating models.
 
-Visual approaches play an important role in both these stages of analysis. For example, when first examining variables according to their shape and location (e.g. @tbl-variable-types-explore) data graphics help identify patterns that statistical summaries miss; such as whether variables are multi-modal, the extent and direction of outliers. When more specialised models are proposed graphical summaries can add important detail around where, and by how much, the observed data depart from the model.  It is for this reason that data visualization is seen as intrinsic to EDA [@tukey_exploratory_1977].
+Visual approaches play an important role in both these stages of analysis. For example, when first examining variables according to their shape and location (e.g. @tbl-variable-types-explore) data graphics help identify patterns that statistical summaries miss, such as whether variables are multi-modal, the extent and direction of outliers. When more specialised models are proposed graphical summaries can add important detail around where, and by how much, the observed data depart from the model.  It is for this reason that data visualization is seen as intrinsic to EDA [@tukey_exploratory_1977].
 
 <!-- @wickham_r_2017 identify two initial questions that an EDA should address:
 
@@ -56,7 +56,7 @@ When summarising within-variable variation, we are interested in a variable's sp
 
 ```{r}
 #| label: tbl-variable-types-explore
-#| tbl-cap: "A breakdown of statistical and graphical summaries performed in EDA based on a variable's measurement type."
+#| tbl-cap: "A breakdown of statistical and graphical summaries performed in EDA based on a variable measurement types."
 #| echo: false
 #| eval: true
 
@@ -105,27 +105,27 @@ include_graphics("figs/04/univariate-plots.png", error = FALSE)
 ```
 <!-- ![Univariate plots of dispersion.](figs/04/univariate-plots.svg){#fig-univariate-continuous width=100% fig-align="center"} -->
 
-In the left-most column is a *strip-plot*. Every observation is displayed as a dot and mapped to `y-position`, with transparency and a random horizontal perturbation applied to resolve occlusion due to overlapping observations. Although strip-plots scale poorly, the advantage is that all observations are displayed without needing to impose some aggregation. It is possible to visually identify the *location* of the distribution -- denser dots towards the youngest ages  (c.20 years) -- but also that there is spread across the age values.
+In the left-most column is a *strip-plot*. Every observation is displayed as a dot and mapped to `y-position`, with transparency and a random horizontal perturbation applied to resolve occlusion due to overlapping observations. Although strip-plots scale poorly, the advantage is that all observations are displayed without needing to impose some aggregation. It is possible to visually identify the 'location' of the distribution -- denser dots towards the youngest ages  (c.20 years) -- but also that there is spread across the age values.
 
-*Histograms* partition observations into equal-range bins and observations in each bin are counted. These counts are encoded on an aligned scale using bar length. Increasing the size of the bins increases the resolution of the graphical summary. If reasonable decisions are made around choice of bin, histograms give distributions a shape that is expressive. It is easy to identify the location of a distribution, to see that it is unimodal. Different from the strip-plot, the histogram shows that despite the heavy spread, the distribution of `casualty_age` is right-skewed, and we'd expect this given the location of the mean (36 years) relative to the median (30 years).
+*Histograms* partition observations into equal-range bins and observations in each bin are counted. These counts are encoded on an aligned scale using bar length. Increasing the size of the bins increases the resolution of the graphical summary. If reasonable decisions are made around choice of bin, histograms give distributions a shape that is expressive. It is easy to identify the location of a distribution, to see that it is uni - bi- or multi-modal. Different from the strip-plot, the histogram shows that despite the heavy spread, the distribution of `casualty_age` is right-skewed, and we'd expect this given the location of the mean (36 years) relative to the median (30 years).
 
- A problem with histograms is the potential for discontinuities and artificial edge-effects around the bins. *Density plots* overcome this and can be thought of as smoothed histograms. They show the [probability density function](https://en.wikipedia.org/wiki/Probability_density_function) of a variable -- the relative amount of probability attached to each value of `casualty_age`. From glancing at the density plots an overall shape to the distribution can be immediately derived. It is also possible to infer statistical properties: the mode of the distribution, the peak density; the mean and median, by sort of visual averaging and approximating the midpoint of the area under the curve.
+ A problem with histograms is the potential for discontinuities and artificial edge-effects around the bins. *Density plots* overcome this and can be thought of as smoothed histograms. They show the probability density function of a variable -- the relative amount of probability attached to each value of `casualty_age`. From glancing at the density plots an overall shape to the distribution can be immediately derived. It is also possible to infer statistical properties: the mode of the distribution, the peak density, the mean and median by sort of visual averaging and approximating the midpoint of the area under the curve.
 
  <!-- Density plots are better suited to datasets that contain a reasonably large number of observations. -->
 
-Finally, *boxplots* [@mcgill_variations_1978] encode these statistical properties  directly. The box is the interquartile range ($IQR$) of the `casualty_age` variable, the vertical line splitting the box is the median, and the whiskers are placed at observations $\leq 1.5*IQR$. Whilst we lose important information around the shape of a distribution, box-plots are space-efficient and useful for comparing many distributions at once.
+Finally, *boxplots* [@mcgill_variations_1978] encode these statistical properties  directly. The box is the interquartile range (IQR) of the `casualty_age` variable, the vertical line splitting the box is the median, and the whiskers are placed at observations $\leq 1.5*$IQR. Whilst we lose important information around the shape of a distribution, boxplots are space-efficient and useful for comparing many distributions at once.
 
 
 
 
 ::: {.callout-note}
-Since the average age of pedestrian road casualties is surprisingly low, it may be instructive to explore the distribution of `casualty_age` conditioning on another variable and differentiating between variable values using colour. @fig-boxplots-class displays boxplots and density plots of the location and spread in `casualty_age` by vehicle and `casualty_class` for all crashes involving pedestrians. A noteworthy pattern is that riders of bicycles and motorcycles tend to be younger than the pedestrians they are contacting with, whereas for buses, taxis, HGVs and cars the reverse is true. Pedestrians involved in crashes with cars are especially skewed towards the younger ages.
+Since the average age of pedestrian road casualties is surprisingly low, it may be instructive to explore the distribution of `casualty_age` conditioning on another variable and differentiating between variable values using colour. @fig-boxplots-class displays boxplots and density plots of the location and spread in `casualty_age` by vehicle and individual involved for all crashes involving pedestrians. A noteworthy pattern is that riders of bicycles and motorcycles tend to be younger than the pedestrians they are contacting with, whereas for buses, taxis, HGVs and cars the reverse is true. Pedestrians involved in crashes with cars are especially skewed towards the younger ages.
 
 <!-- Although less space efficient, the density plots display richer information around the nature of the driver-pedestrian age distributions. -->
 
 ```{r}
 #| label: fig-boxplots-class
-#| fig-cap: "Boxplots of casualty age by vehicle type and class."
+#| fig-cap: "Boxplots of casualty age by vehicle and individual type (driver or pedestrian)."
 #| echo: false
 #| eval: true
 #| out.width: "100%"
@@ -136,10 +136,10 @@ include_graphics("figs/04/boxplot-by-class.png", error = FALSE)
 
 #### Between-variable variation {-}
 
-The previous chapter included several scatterplots for exploring associations in electoral voting behaviour. Scatterplots are used to check whether the association between variables is linear, but also to make inferences about the direction and intensity of linear correlation between variables -- the extent to which values in one variable depend on the values of another -- and also around the nature of variation between variables -- the extent to which variation in one variable depends on another, or [heteroscedasticity](https://en.wikipedia.org/wiki/Heteroscedasticity). Although other chart types for displaying bivariate data exist, empirical studies in Information Visualization have demonstrated that aggregate correlation statistics can be reliably estimated from scatterplots [@rensink_perception_2010; @harrison_ranking_2014; @kay_beyond_2016; @correll_regression_2017].
+The previous chapter included several scatterplots for exploring associations in electoral voting behaviour. Scatterplots are used to check whether the association between variables is linear, but also to make inferences about the direction and intensity of linear correlation between variables -- the extent to which values in one variable depend on the values of another -- and the nature of variation between variables -- the extent to which variation in one variable depends on another, or *heteroskedasticity*.  In an EDA it is common to quickly compare associations between many quantitive variables in a dataset using scatterplot matrices or, less often, parallel coordinate plots. There are few variables in the STATS19 dataset measured on a continuous scale, but in Chapter [-@sec-model] we will use both when building  models that attempt to formally structure and explain between-variable covariation, again on an electoral voting dataset.
 
-There are few variables in the STATS19 dataset measured on a continuous scale. In an EDA it is common to quickly compare associations between many quantitive variables in a dataset using [scatterplot matrices](https://en.wikipedia.org/wiki/Scatter_plot#Scatter_plot_matrices) or alternatively [parallel coordinate plots](https://en.wikipedia.org/wiki/Parallel_coordinates). We will use both in Chapter  [-@sec-model] when building  models that attempt to formally structure and explain between-variable covariation, again on an electoral voting use case.
 
+<!-- There are few variables in the STATS19 dataset measured on a continuous scale, and so no .  -->
 
 <!-- There are few variables in the STATS19 dataset measured on a continuous scale, but based on the analysis above, we may wish to explore more directly whether an association exists between the age of pedestrians and drivers for pedestrian-vehicle crashes. The scatterplots in @fig-scatters-type show that no obvious linear association exists. -->
 
@@ -163,20 +163,20 @@ It is common in an EDA to quickly compare associations between many quantitive v
 
 #### Within-variable variation {-}
 
-For categorical variables, within-variable variation is judged on how relative frequencies distribute across the variable's categories.  Bar charts are commonly used, with length an efficient visual channel for encoding frequencies. When analysing variation across several categories it is useful to flip bar charts on their side so that category labels are arranged horizontally for ease of reading and, unless there is a natural ordering, arrange the bars in descending order based on their frequency. This demonstrated in @fig-bars, which shows frequencies of vehicles involved in pedestrian casualties.
+For categorical variables, within-variable variation is judged on how relative frequencies distribute across the variable's categories.  Bar charts are commonly used, with length an efficient visual channel for encoding frequencies. When analysing variation across several categories it is useful to flip bar charts on their side so that category labels are arranged horizontally for ease of reading and, unless there is a natural ordering, arrange the bars in descending order based on their frequency. This is demonstrated in @fig-bars, which shows the frequencies with which different vehicles types are involved in pedestrian casualties.
 
 ```{r}
 #| label: fig-bars
 #| fig-cap: "Bars displaying crash frequencies by vehicle type."
 #| echo: false
 #| eval: true
-
+#| out.width: 100%
 include_graphics("figs/04/bars.png", error = FALSE)
 ```
 <!-- ![Bars displaying crash frequencies by vehicle type.](figs/04/bars.svg){#fig-bars width=100% fig-align="center"} -->
 
 <!-- Bar charts are effective at conveying frequencies  where the number of categories is reasonably small. -->
-For summarising frequencies across many categories alternative chart types that minimise non-data-ink, such as [Cleveland dot plots](https://en.wikipedia.org/wiki/Dot_plot_(statistics)) may be appropriate. The left plot in @fig-dots-heatmap displays pedestrian crash counts for boroughs in London, ordered by crash frequency, grouped by whether boroughs are in inner- or outer- London and coloured according to whether crashes took place on weekdays or weekends. Lines connecting dots emphasise the differences in absolute numbers between time periods. Although a consistent pattern is of greater crash counts during  weekdays, the gap is less obvious four outer London boroughs; there may be in relative terms many more pedestrian crashes occurring in central London boroughs during weekdays. The third graphic is a heatmap with the same ordering and grouping of boroughs, but with columns coloured according to crash frequencies by vehicle type, further grouped by weekday and weekend times.  Remembering @munzner_visualization_2014's ordering of visual channels, we trade-off some precision in estimation when encoding frequencies in heatmaps. A greater difficulty, irrespective of encoding channel, comes from the dominance of cars and weekdays; variation between vehicle types and time periods outside of this is almost imperceptible.
+For summarising frequencies across many categories alternative chart types that minimise non-data-ink, such as Cleveland dot plots, may be appropriate. The left plot in @fig-dots-heatmap displays pedestrian crash counts for boroughs in London, ordered by crash frequency, grouped by whether boroughs are in inner- or outer- London and coloured on whether crashes took place on weekdays or weekends. Lines connecting dots emphasise the differences in absolute numbers between time periods. Although a consistent pattern is of greater crash counts during  weekdays, the gap is less obvious four outer London boroughs; there may be in relative terms many more pedestrian crashes occurring in central London boroughs during weekdays. The second graphic is a heatmap with the same ordering and grouping of boroughs, but with columns coloured according to crash frequencies by vehicle type, further grouped by weekday and weekend times.  Remembering @munzner_visualization_2014's ordering of visual channels, we trade-off some precision in estimation when encoding frequencies in heatmaps. A greater difficulty, irrespective of encoding channel, comes from the dominance of cars and weekdays; variation between vehicle types and time periods outside of this is almost imperceptible.
 
 
 ```{r}
@@ -184,7 +184,7 @@ For summarising frequencies across many categories alternative chart types that 
 #| fig-cap: "[Cleveland dot plots](https://en.wikipedia.org/wiki/Dot_plot_(statistics)) and heatmaps summarising crash frequencies by London borough, period of day and vehicle type."
 #| echo: false
 #| eval: true
-
+#| out.width: 100%
 include_graphics("figs/04/borough-freqs.png", error = FALSE)
 ```
 
@@ -223,14 +223,14 @@ In @fig-dots-heatmap we began to make between-category comparison; we asked whet
 #| fig-cap: "Bars and mosaic plot displaying association between vehicle type and injury severity."
 #| echo: false
 #| eval: true
-
+#| out.width: 100%
 include_graphics("figs/04/bars-assoc.png", error = FALSE)
 ```
 
 
 First, stacked bars are ordered by frequency, distinguishing time period using colour lightness.   Cars are by far the dominant travel mode, contributing the largest number of crashes resulting in injury to pedestrians. Whether or not pedestrian injuries involving cars occur relatively more on weekends than other modes is not clear from the left-most chart. Length encodes absolute crash counts effectively but relative comparison on time periods between vehicle types is challenging. In standardised bars the absolute length of bars is fixed and bars are split according to proportional weekday / weekend crashes (middle). The plot is also annotated according to the *expected proportion* of weekday crashes if crashes occurred by time period independently of vehicle type (22%). This encoding shows pedestrian crashes involving taxis occur in much greater frequency than would be expected at weekends, whilst the reverse is true of crashes involving vans, bikes and HGVs. However, we lose a sense of the absolute numbers involved.
 
-Failing to encode absolute number -- the amount of information in support of some observed pattern -- is a problem in EDA. Since proportional summaries are agnostic to sample size, they can induce false discoveries, overemphasising patterns that may be unlikely to replicate in out-of-sample tests. It is sometimes desirable, then, to update standardised bar charts so that they are weighted by frequency: to make more visually salient those categories that occur more often and visually downweight those that occur less often. This is possible using mosaic plots [@friendly_mosaic_1992]. Bar widths and heights are allowed to vary; so bar area is proportional to absolute number of observations and bars are further subdivided for relative comparison across category values.  Mosaic plots are useful tools for exploratory analysis. That they are space-efficient and regularly sized, means they can be flexibly laid out for comparison.
+Failing to encode absolute number -- the amount of information in support of some observed pattern -- is a problem in EDA. Since proportional summaries are agnostic to sample size, they can induce false discoveries, overemphasising patterns that may be unlikely to replicate in out-of-sample tests. It is sometimes desirable, then, to update standardised bar charts so that they are weighted by frequency: to make more visually salient those categories that occur more often and visually downweight those that occur less often. This is possible using mosaic plots [@friendly_mosaic_1992; @jeppson_generalized_2023]. Bar widths and heights are allowed to vary; so bar area is proportional to absolute number of observations and bars are further subdivided for relative comparison across category values.  Mosaic plots are useful tools for exploratory analysis. That they are space-efficient and regularly sized, means they can be flexibly laid out for comparison.
 
 
 <!-- For combinations that are rare, for example bicycle-pedestrian casualties, it take only a small number observations in a particular direction to change the KSI rate.  -->
@@ -238,7 +238,7 @@ Failing to encode absolute number -- the amount of information in support of som
 
 
 ::: {.callout-note}
-The mosaic plot in @fig-bars-vehicle-injury was generated using the [`ggmosaic`](https://haleyjeppson.github.io/ggmosaic/) package, an extension to ggplot2.
+The mosaic plot in @fig-bars-vehicle-injury was generated using the [`ggmosaic`](https://haleyjeppson.github.io/ggmosaic/) package, an extension to ggplot2 [@jeppson_generalized_2023].
 :::
 
 <!-- #### Computing relative and absolute differences {-}
@@ -282,25 +282,24 @@ The benefit for EDA is that the signed-scores are very quick and easy to compute
 
 #### Encoding variation from expectation {-}
 
-The heatmap in @fig-dots-heatmap is hampered by the dominating effect of cars and weekdays. Any additional structure by time period and vehicle type in boroughs outside of this is visually unintelligible. An alternative approach could be to colour cells according to some relevant effect size statistic: for example, differences in the proportion of weekend crashes occurring in any vehicle-type and borough combination against the global average proportion, or expectation, of 22% of crashes occurring on weekends. Diminishing sample sizes in certain borough-vehicle type combinations nevertheless means such an encoding risks overstating large proportional effects based on negligible differences in absolute crash frequencies.
+The heatmap in @fig-dots-heatmap is hampered by the dominating effect of cars and weekdays. Any additional structure by time period and vehicle type in boroughs outside of this is visually unintelligible. An alternative approach could be to colour cells according to some relevant effect size statistic: for example, differences in the proportion of weekend crashes occurring in any vehicle-type and borough combination against the global average proportion, or expectation, of 22% of crashes occurring on weekends. A problem with this approach is that at this more disaggregated level, sample sizes become quite small. Large proportional differences could be encoded using colour that are nevertheless based on negligible differences in absolute crash frequencies.
 
 There are measures of effect size sensitive both to absolute and relative differences from expectation. Signed chi-score residuals [@visalingam_signed_1981], for example, represent expected values as *counts* separately for each category combination in a dataset -- in this case, pedestrian crashes recorded in a borough in a stated time period involving a stated vehicle type. Observed counts ($O_i ... O_n$) are then compared to expected counts ($E_i ... E_n$) as below:
 
 $\chi=\frac{O_i - E_i}{\sqrt{E_i}}$
 
-The way in which differences between observed and expected values (residuals) are standardised in the denominator is important. If the denominator was simply the raw expected value, the residuals would express the proportional difference between each observation and its expected value. The denominator is instead transformed using the square root ($\sqrt{E_i}$), which has the effect of inflating smaller expected values and squashing larger expected values in the denominator, thereby giving greater saliency to differences from expectation that are large in both relative and absolute number.
+The way in which differences between observed and expected values (residuals) are standardised in the denominator is important. If the denominator was simply the raw expected value, the residuals would express the proportional difference between each observation and its expected count value. The denominator is instead transformed using the square root ($\sqrt{E_i}$), which has the effect of inflating smaller expected values and squashing larger expected values in the denominator, thereby giving added saliency to differences from expectation that are also large in absolute number.
 
-@fig-borough-freqs-resids updates the heatmaps with signed residuals encoded using a [diverging colour scheme](https://web.natur.cuni.cz/~langhamr/lectures/vtfg1/mapinfo_2/barvy/colors.html#diverging) [@brewer_beyond_1998] -- red for cells with greater crash counts than expected, blue for cells with fewer crash counts than expected. The assumption in the first heatmap is that crash counts by borough distribute independently of vehicle type. Laying out the heatmap such that inner and outer London boroughs are grouped for comparison is instructive: fewer than expected crashes in inner London are recorded for cars; greater than expected for all other vehicle types but especially taxis and bicycles. This pattern is strongest (largest residuals) for very central boroughs, where pedestrian crash frequencies are also likely to be highest and where cars are comparatively less dominant as a travel mode. For almost all boroughs, again especially central London boroughs, there is a clear pattern of modes other than cars, taxis and buses overrepresented amongst crashes occurring on weekdays, again reflecting the transport dynamics of the city.
+@fig-borough-freqs-resids updates the heatmaps with signed residuals encoded using a diverging colour scheme [@brewer_beyond_1998] -- red for cells with greater crash counts than expected, blue for cells with fewer crash counts than expected. The assumption in the first heatmap is that crash counts by borough distribute independently of vehicle type. Laying out the heatmap such that inner and outer London boroughs are grouped for comparison is instructive: fewer than expected crashes in inner London are recorded for cars; greater than expected for all other vehicle types but especially taxis and bicycles. This pattern is strongest (largest residuals) for very central boroughs, where pedestrian crash frequencies are also likely to be highest and where cars are comparatively less dominant as a travel mode. For almost all boroughs, again especially central London boroughs, there is a clear pattern of modes other than cars, taxis and buses overrepresented amongst crashes occurring on weekdays, again reflecting the transport dynamics of the city.
 
 
 ```{r}
 #| label: fig-borough-freqs-resids
 #| out.width: 95%
-#| fig-cap: "Heatmaps of crashes by period of week and vehicle type for London Boroughs."
+#| fig-cap: "Heatmaps of crashes by vehicle type and period of week for London Boroughs."
 #| echo: false
 #| eval: true
 #| warning: false
-
 include_graphics("figs/04/borough-freqs-resids.png", error = FALSE)
 ```
 
@@ -311,7 +310,7 @@ The discussion of Risk Ratios (RRs) was reasonably abbreviated. RRs are interpre
 
 ### Strategies for supporting comparison
 
-A key role for data graphics in EDA is in supporting comparison. Three strategies typically deployed are *juxtaposition*, *superposition* and *direct encoding* [see @gleicher_visual_2011]. @tbl-comparison-strategies defines each and identifies how they can be implemented in ggplot2.
+A key role for data graphics in EDA is in supporting comparison. Three strategies typically deployed are *juxtaposition*, *superposition* and *direct encoding* [see @gleicher_visual_2011]. @tbl-comparison-strategies defines each and identifies how they can be implemented in ggplot2. You will see these implementations being variously deployed as the book progresses.
 
 <!-- * *Juxtaposition*: Laying the data items to be compared side-by-side.
 * *Superposition*: Laying the data items to be compared on top of each other on the same coordinate space.
@@ -346,11 +345,15 @@ strategies <- tibble::tibble(
 kbl(strategies,  caption = "Implementing Gleicher et al.'s (2011) three comparison strategies in ggplot2.", protect_latex = TRUE, escape=FALSE) |> column_spec(2, extra_css = "font-family:  Monospace; font-size: 90%") |> column_spec(c(1,3), extra_css = "font-size: 90%") |> row_spec(0, extra_css = "border-bottom: 1px solid;")
 ```
 
-As with most visualization design, each involves trade-offs and so careful decision-making. In @fig-dots-heatmap dotplots representing counts of weekend and weekday crashes are *superposed* on the same coordinate space, with connecting lines added to emphasise difference. This strategy is fine where two categories of similar orders of magnitude are compared, but if instead all eight vehicle types were to be encoded in the same way, superposed with categories differentiated using colour and a dominating modal category (cars), the plot would be substantially more challenging to process. In @fig-borough-freqs-resids, comparison by vehicle type is instead effected using direct encoding -- residuals coloured above or below an expectation. Notice also the use of *containment*, *juxtaposition* and *layout* in both plots. By containing frequencies for inner- and outer- London  boroughs in separate, juxtaposed plots, and within each laying out plot elements top-to-bottom on frequency, the systematic differences in the composition of vehicle types involved in crashes between inner- and outer- London can be inferred.
+As with most visualization design, each involves trade-offs and so careful decision-making. In @fig-dots-heatmap dotplots representing counts of weekend and weekday crashes are *superposed* on the same coordinate space, with connecting lines added to emphasise difference. This strategy is fine where two categories of similar orders of magnitude are compared, but if instead all eight vehicle types were to be encoded with categories differentiated using colour, the plot would be substantially more challenging to process. In @fig-borough-freqs-resids, comparison by vehicle type is instead effected using direct encoding -- residuals coloured above or below an expectation. Notice also the use of *containment*, *juxtaposition* and *layout* in both plots. By containing frequencies for inner- and outer- London  boroughs in separate juxtaposed plots, and within each laying out plot elements top-to-bottom on frequency, the systematic differences in the composition of vehicle types involved in crashes between inner- and outer- London can be inferred.
 
 #### Comparison and layout {-}
 
-Layout is an extremely important property in visual data analysis. Judiciously laid out data graphics can help explore and test complex patterns that would be difficult to capture through numerical summaries alone. In @fig-spatial-layout mosaic plots of crash frequencies (bar height) and relative number of weekday/weekend crashes (dark bar width) are presented for each borough in London, with plots for vehicle type juxtaposed side-by-side for comparison. Rather than laying out boroughs top-to-bottom on frequency, boroughs are given an approximate spatial arrangement, generated using the [`gridmappr`](https://www.roger-beecham.com/gridmappr/index.html) package [@beecham_gridmappr_2023]. This arrangement enables several patterns to be quickly inferred. From it, we can observe that pedestrian crashes involving  motorcycles generally occur more in central London boroughs; those involving cars occur in greater relative number during weekends, especially so for those that take place in central London boroughs;
+<!-- The heatmaps in @fig-borough-freqs-resids would be much less effective were some default alphabetical ordering of boroughs used.  -->
+
+Layout is an extremely important mechanism for enabling comparison. The heatmaps in @fig-borough-freqs-resids, for example, would be much less effective were some default alphabetical ordering of boroughs used. This applies especially when exploring geography. Spatial relations are highly complex and notoriously difficult to model. It would be difficult to imagine how the sorts of comparisons in the Washington Post graphics in the previous chapter (@fig-wp-map and @fig-wp-swing) could be made without using graphical methods, laying out the peak and line marks with a geographic arrangement in this case.
+
+@fig-spatial-layout borrows the earlier mosaic plot design to study crash frequencies (bar height) and relative number of weekday/weekend crashes (dark bar width), with frequencies compared between London boroughs. Rather than laying out boroughs top-to-bottom on frequency, boroughs are given an approximate spatial arrangement, generated using the `gridmappr` [@beecham_gridmappr_2023] R package. This arrangement enables several patterns to be quickly inferred. We can observe that pedestrian crashes involving  motorcycles generally occur more in central London boroughs; those involving cars occur in greater relative number during weekends, especially so for those that take place in central London boroughs;
  and, different from other vehicle types, pedestrian crashes involving cars occur in similarly large numbers in outer London boroughs (Barnet, Croydon) as inner London boroughs such as Westminster.
 
 <!-- Alternatively we could directly encode difference from expectation by centring the dark bars and varying the widths according to how much the relative number of weekend crashes is above (oriented to right) or below (oriented to left) this expectation (middle plot). The latter approach helps highlight boroughs that are different from the London average: the more dark blue the more atypical that borough is. The largest differences from expectation are in Westminster, with crashes involving vans, motorcycles and bicycles overrepresented amongst weekdays. Finally, if we are to compare across all 33 London boroughs we may chose to reduce some of the detail in the graphic and focus on a subset of vehicle types. As vehicle type is a categorical nominal variable it may also be sensible to encode that variable using colour hue to help associate vehicle types between boroughs.
@@ -396,7 +399,7 @@ include_graphics("figs/04/mosaic_boroughs_spatial.svg", error = FALSE)
 
 ```{r}
 #| label: fig-spatial-layout
-#| fig-cap: "Mosaic plots of vehicle type and period for London Boroughs with geo-spatial arrangement."
+#| fig-cap: "Mosaic plots of vehicle type and period for London Boroughs with approximate spatial arrangement."
 #| echo: false
 #| eval: true
 #| out.width: 95%
@@ -408,13 +411,13 @@ include_graphics("figs/04/grids_vehicle.png", error = FALSE)
 
 ## Techniques
 
-The technical element to this chapter continues with the STATS19 road crash data. Rather than a how-to guide for generating exploratory analysis plots in R, the section aims to demonstrate a workflow for exploratory visual data analysis:
+The technical element to this chapter continues with the STATS19 dataset. Rather than a how-to guide for generating exploratory analysis plots in R, the section aims to demonstrate a workflow for exploratory visual data analysis:
 
 1. Expose pattern
 2. Model an expectation derived from pattern
 3. Show deviation from expectation
 
-It does so by exploring the characteristics of individuals involved in pedestrian crashes, with a special focus on inequalities. Research suggests those living in more deprived neighbourhoods are at elevated risk of road crash injury than those living in less-deprived areas [@tortosa_cycling_2021]. A follow-up question is around the characteristics of those involved in crashes. To what extent do drivers share demographic characteristics with the pedestrians they crash into, and does this vary in expected ways by the location in which crashes take place?
+It does so by exploring the characteristics of individuals involved in pedestrian crashes, with a special focus on inequalities. Research suggests those living in more deprived neighbourhoods are at elevated risk of road crash injury than those living in less-deprived areas [@tortosa_cycling_2021]. A follow-up question is around the characteristics of those involved in crashes: To what extent do drivers share demographic characteristics with the pedestrians they crash into, and does this vary by the location in which crashes take place?
 
 
 ### Import
@@ -422,15 +425,15 @@ It does so by exploring the characteristics of individuals involved in pedestria
 * Download the [04-template.qmd](./files/04-template.qmd) file for this chapter and save it to your `vis4sds` project.
 * Open your `vis4sds` project in RStudio and load the template file by clicking `File` > `Open File ...` > `04-template.qmd`.
 
-The presented analysis is based on that published in @beecham_vis_2022 and investigates vehicle–pedestrian crashes in STATS19 between 2010 and 2019, where the Indeces of Multiple Deprivation (IMD) class of the pedestrian, driver and crash location is recorded.
+The presented analysis is based on that published in @beecham_vis_2022 and investigates vehicle–pedestrian crashes in STATS19 between 2010 and 2019, where the Index of Multiple Deprivation (IMD) class of the pedestrian, driver and crash location is recorded.
 
-STATS19 is a form used by the police to record road crashes that result in injury. Raw data are released by the Department for Transport, but can be also accessed via the [`stats19`](https://docs.ropensci.org/stats19/) R package. The data are organised into three tables:
+STATS19 is a form used by the police to record road crashes that result in injury. Raw data are released by the Department for Transport, but can be also accessed via the [`stats19`](https://docs.ropensci.org/stats19/) R package [@lovelace_stats19_2019]. The data are organised into three tables:
 
 * *Accidents* (or *Crashes*): Each observation is a recorded road crash with a unique identifier (`accident_index`), date (`date`), time (`time`) and location (`longitude`, `latitude`). Many other characteristics associated with the crashes are also stored in this table.
 * *Casualties*: Each observation is a recorded casualty that resulted from a road crash. The *Crashes* and *Casualties* data can be linked via the `accident_index` variable. As well as `casualty_severity` (`Slight`, `Serious`, `Fatal`), information on casualty demographics and other characteristics is stored in this table.
 * *Vehicles*: Each observation is a vehicle involved in a crash. Again *Vehicles* can be linked with *Crashes* and *Casualties* via the `accident_index` variable. As well as the vehicle type and manoeuvre being made, information on driver characteristics is recorded in this table.
 
-An [`.fst`](https://www.fstpackage.org/) dataset that uses these three tables to record pedestrian crashes with associated casualty and driver characteristics has been stored in the book's accompanying [data repository](https://github.com/vis4sds/data).
+An [`.fst`](https://www.fstpackage.org/) dataset that uses these three tables to record pedestrian crashes with associated casualty and driver characteristics has been stored in the book's accompanying [data repository](https://github.com/vis4sds/data)^[`https://github.com/vis4sds/data`].
 
 <!-- There are some simplifications and assumptions made when generating this linked dataset, detailed in the template file. -->
 
@@ -440,7 +443,7 @@ An [`.fst`](https://www.fstpackage.org/) dataset that uses these three tables to
 
 ### Sample
 
-The focus of our analysis is inequalities in the characteristics of those involved in pedestrian crashes. There is only high-level information on these characteristics in the STATS19 dataset. However, the [Indices of Multiple Deprivation](https://www.gov.uk/government/statistics/english-indices-of-deprivation-2019) [@noble_english_2019] quintile of the small area neighbourhood in which casualties and drivers live is recorded, and we have separately derived the IMD quintile of the neighbourhood in which crashes took place.
+The focus of our analysis is inequalities in the characteristics of those involved in pedestrian crashes. There is only high-level information on these characteristics in the STATS19 dataset. However, the Index of Multiple Deprivation [@noble_english_2019] quintile of the small area neighbourhood in which casualties and drivers live is recorded, and we have separately derived the IMD quintile of the neighbourhood in which crashes took place.
 
 Not all recorded crashes contain this information and we first create a new dataset -- `ped_veh_complete` -- identifying those linked crashes where the full IMD data are recorded:
 
@@ -613,7 +616,7 @@ A consequence of the heavy concentration of crash counts, and thus colour, in th
 ```{r}
 #| label: fig-imd-driver-cas
 #| fig-cap: "Pedestrian casualties by IMD quintile of pedestrian and driver. "
-#| out.width: 85%
+#| out.width: 83%
 #| echo: false
 #| eval: true
 #| warning: false
@@ -623,7 +626,7 @@ include_graphics("figs/04/imd_driver_cas.png", error = FALSE)
 
 
 
-The observed-versus-expected plot highlights the largest positive residuals are in and around the diagonals and the largest negative residuals are those furthest from the diagonals: we see higher crash frequencies between drivers and pedestrians living in the same or similar IMD quintiles and fewer between those in different quintiles than would be expected given no association between pedestrian-driver IMD characteristics. That the bottom left cell -- high-deprivation-driver + high-deprivation-pedestrian -- is dark red can be understood when remembering that signed chi-scores emphasise effect sizes that are large in absolute as well as relative number. Not only is there an association between the characteristics of drivers and casualties, but larger crash counts are recorded in locations containing the highest deprivation and so residuals here are large. The largest positive residuals are nevertheless recorded in the top right of the heatmap  -- and this is more surprising. Against an expectation of no association between the IMD characteristics of drivers and pedestrians, there is a particularly high number of crashes between drivers and pedestrians living in neighbourhoods containing the lowest deprivation. An alternative phrasing: the IMD characteristics of those involved in pedestrian crashes are most narrow between drivers and pedestrians who live in the lowest deprivation quintiles.
+The observed-versus-expected plot highlights the largest positive residuals are in the diagonals and the largest negative residuals are those furthest from the diagonals: we see higher crash frequencies between drivers and pedestrians living in the same or similar IMD quintiles and fewer between those in different quintiles than would be expected given no association between pedestrian-driver IMD characteristics. That the bottom left cell -- high-deprivation-driver + high-deprivation-pedestrian -- is dark red can be understood when remembering that signed chi-scores emphasise effect sizes that are large in absolute as well as relative number. Not only is there an association between the characteristics of drivers and casualties, but larger crash counts are recorded in locations containing the highest deprivation and so residuals here are large. The largest positive residuals are nevertheless recorded in the top right of the heatmap  -- and this is more surprising. Against an expectation of no association between the IMD characteristics of drivers and pedestrians, there is a particularly high number of crashes between drivers and pedestrians living in neighbourhoods containing the lowest deprivation. An alternative phrasing: the IMD characteristics of those involved in pedestrian crashes are most narrow between drivers and pedestrians who live in the lowest deprivation quintiles.
 
 The code:
 
@@ -671,15 +674,15 @@ The ggplot2 spec for @fig-imd-driver-cas:
 ## Task
 You will see that data preparation with `dplyr` plays an important role in constructing data graphics in ggplot2. Whilst the code to create `model_data` may seem somewhat cumbersome,  you will find yourself reusing these data processing templates.
 
-Now that you have seen how observed, expected and residual values can be derived for cells of a heatmap, can you recreate the left-most heatmap in @fig-borough-freqs-resids displaying differences from expectation in the number of pedestrian crashes by London borough, assuming that crashes distribute by borough independently of vehicle type?
+Now that you have seen how observed, expected and residual values can be derived for cells of a heatmap, can you recreate the heatmap in the left column of @fig-borough-freqs-resids displaying differences from expectation in the number of pedestrian crashes by London borough, assuming that crashes distribute by borough independently of vehicle type?
 :::
 
 
 ### Model and residual: Pass 2
 
-An obvious confounding factor, neglected in the analysis above, is the IMD class of the *location* in which crashes occur. To explore this, we can  condition (or facet) on the IMD class of crash location, laying out the faceted plot left-to-right on the ordered IMD classes. Eyeballing this graphic of observed counts (@fig-imd-driver-cas-crash) we see again the association between IMD characteristics for crashes occurring in the least deprived quintile and elsewhere slightly more ‘mixing’. Few pedestrians living outside the most deprived quintile are involved in crashes that occur in that quintile. Given the dominating pattern is of crashes occurring in the most deprived quintiles, however, it is difficult to see too much variation from the diagonal cell in the less-deprived quintiles. An easy adjustment would be to apply a local colour scale for each faceted plot and compare relative 'leakage' from the diagonal for each deprivation level of crash location. The more interesting question, however, is whether this known association between pedestrian and driver characteristics is stronger for certain driver-pedestrian-location combinations than others: that is, net of the dominant pattern in @fig-imd-driver-cas-crash, in which cells are there greater or fewer crash counts?
+An obvious confounding factor, neglected in the analysis above, is the IMD class of the *location* in which crashes occur. To explore this, we can  condition (or facet) on the IMD class of crash location, laying out the faceted plot left-to-right on the ordered IMD classes. Eyeballing this graphic of observed counts (@fig-imd-driver-cas-crash) we see again the association between IMD characteristics for crashes occurring in the least deprived quintile and elsewhere slightly more ‘mixing’. Few pedestrians living outside the most deprived quintile are involved in crashes that occur in that quintile. Given the dominating pattern is of crashes occurring in the most deprived quintiles, however, it is difficult to see too much variation from the diagonal cell in the less-deprived quintiles. An easy adjustment would be to apply a local colour scale for each faceted plot and compare relative 'leakage' from the diagonal for each IMD crash location. The more interesting question, however, is whether this known association between pedestrian and driver characteristics is stronger for certain driver-pedestrian-location combinations than others: that is, net of the dominant pattern in the top row of @fig-imd-driver-cas-crash, in which cells are there greater or fewer crash counts?
 
-The concept that we are exploring is whether crash counts vary depending on how different are the IMD characteristics of pedestrians and drivers from those of the locations in which crashes occur. We calculate a new variable measuring this distance: 'geodemographic distance', the euclidean distance between the IMD class of the driver-pedestrian-crash location, treating the IMD class as a continuous variable ranging from 1 to 5. The second row of @fig-imd-driver-cas-crash encodes this directly. We then specify a Poisson regression model, modelling crash counts in each driver-pedestrian-crash location cell as a function of geodemographic distance for that cell. Since the range of the crash count varies systematically by IMD class, the model is extended with with a group-level intercept term that varies on the IMD class of the crash location. If regression modelling frameworks are new to you, don't worry about the specifics. The residuals from this regression model are expressed in the same way as in the signed-chi-score model and show whether there are greater or fewer crash counts in any pedestrian-driver-location combination than would be expected given the amount of geodemographic difference between individuals and locations involved. Our expectation is that crash counts vary inversely with geodemographic distance. In EDA, we are not overly concerned with confirming this to be the case; instead we use our data graphics to explore where in the distribution, and by how much, the observed data depart from this expectation.
+The concept that we are exploring is whether crash counts vary depending on how different are the IMD characteristics of pedestrians and drivers from those of the locations in which crashes occur. We calculate a new variable measuring this distance: 'geodemographic distance', the euclidean distance between the IMD class of the driver-pedestrian-crash location, treating the IMD class as a continuous variable ranging from 1 to 5. The second row of @fig-imd-driver-cas-crash encodes this directly. We then specify a Poisson regression model, modelling crash counts in each driver-pedestrian-crash location cell as a function of geodemographic distance for that cell. Since the range of the crash count varies systematically by IMD class, the model is extended with with a group-level intercept term that varies on the IMD class of the crash location. If regression modelling frameworks are new to you, don't worry about the specifics. More important is our interpretation and analysis of the residuals. These residuals values are expressed in the same way as in the signed-chi-score model and show whether there are greater or fewer crash counts in any pedestrian-driver-location combination than would be expected given the amount of geodemographic difference between individuals and locations involved. Our expectation is that crash counts vary inversely with geodemographic distance. In EDA, we are not overly concerned with confirming this to be the case; instead we use our data graphics to explore where in the distribution, and by how much, the observed data depart from this expectation.
 
 ```{r}
 #| label: fig-imd-driver-cas-crash
@@ -705,7 +708,7 @@ The vertical block of red in the left column of the left-most matrix (crashes oc
 * Show deviation from expectation -->
 
 
-The modelling is somewhat involved -- a more gentle introduction to model-based visual analysis appears in Chapters [-@sec-model] and [-@sec-uncertainty] -- but the code for generating the model and graphics in @fig-imd-driver-cas-crash is:
+The modelling is somewhat involved -- a more gentle introduction to model-based visual analysis appears in Chapters [-@sec-model] and [-@sec-uncertainty] -- but code for generating the model and graphics in @fig-imd-driver-cas-crash:
 
 ```{r}
 #| echo: true
@@ -777,7 +780,7 @@ For discussion of exploratory analysis and visual methods in modern data analysi
 
 * Hullman, J. and Gelman, A. 2021. "Designing for Interactive Exploratory Data Analysis Requires Theories of Graphical Inference" *Harvard Data Science Review*, 3(3). doi: [10.1162/99608f92.3ab8a587](https://doi.org/10.1162/99608f92.3ab8a587).
 
-Further discussion with implemented examples:
+Further discussion with implemented examples for road safety analysis:
 
 * Beecham, R., and R. Lovelace. 2023. “A Framework for Inserting Visually-Supported Inferences into Geographical Analysis Workflow: Application to Road Safety Research” *Geographical Analysis*, 55: 344--366. doi: [10.1111/gean.12338](https://doi.org/10.1111/gean.12338).
 

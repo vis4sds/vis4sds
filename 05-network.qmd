@@ -372,7 +372,7 @@ trajectories <- lon_geogs |>
 # Plot displacement vectors.
 ggplot() +
   geom_sf(
-    data = lon_geogs |> 
+    data = lon_geogs |>
     mutate(type = factor(type, levels = c("real", "grid"))),
     aes(fill = type, colour = type), linewidth = .2
     ) +
@@ -550,22 +550,22 @@ The code:
 ```{r}
 #| echo: true
 #| eval: false
-edges <- od_pairs |> 
-  group_by(o_bor, d_bor)  |>  
+edges <- od_pairs |>
+  group_by(o_bor, d_bor)  |>
   summarise(
     commutes = sum(count),
     is_prof = sum(count[is_prof]),
     prop_prof= is_prof/commutes
-    ) |>  
-  left_join(grid, by=c("o_bor"="area_name")) |> st_drop_geometry() |>  select(-geom) |> 
-  rename(o_x=x, o_y=y, o_col=col, o_row=row) |> 
-  left_join(grid, by=c("d_bor"="area_name")) |> st_drop_geometry() |>  select(-geom) |> 
+    ) |>
+  left_join(grid, by=c("o_bor"="area_name")) |> st_drop_geometry() |>  select(-geom) |>
+  rename(o_x=x, o_y=y, o_col=col, o_row=row) |>
+  left_join(grid, by=c("d_bor"="area_name")) |> st_drop_geometry() |>  select(-geom) |>
   rename(d_x=x, d_y=y, d_col=col, d_row=row)
 
 
-plot_data <- edges |> 
+plot_data <- edges |>
   mutate(
-    non_prof = commutes-is_prof, 
+    non_prof = commutes-is_prof,
     prof = is_prof,
     global_prof = sum(prof) / sum(prof + non_prof),
     count = prof + non_prof,
