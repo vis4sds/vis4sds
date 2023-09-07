@@ -427,7 +427,7 @@ Note
 </div>
 </div>
 </div>
-<p>It is of course possible, and likely, that there is autocorrelation in many of the compositional characteristics of constituencies and Leave voting. Parallel coordinate plots may help visually explore this multivariate space. Whereas in scatterplots, observations are represented as points located in x- and y- axes that are orthogonal, in a parallel coordinate plot axes are parallel and the values of an observation encoded via a line connecting the multiple parallel axes. In <a href="#fig-pcps">Figure&nbsp;<span>6.3</span></a> each of the thin lines is a constituency coloured according to whether the constituency voted majority Remain (red) or Leave (blue). The first variable encoded is the size of the Leave vote and variables are then ordered according to linear association with Leave. Note that we have reversed the polarity of variables such as <em>degree-educated</em> and <em>professional</em> so that we expect more Leave (blue lines) towards the right locations of the parallel axes. That the blue and red lines are reasonably separated suggests that there is autocorrelation across many of the demographics characteristics in constituencies voting differenly for Leave and Remain.</p>
+<p>It is of course possible, and likely, that there is autocorrelation in many of the compositional characteristics of constituencies and Leave voting. Parallel coordinate plots may help visually explore this multivariate space. Whereas in scatterplots, observations are represented as points located in x- and y- axes that are orthogonal, in a parallel coordinate plot axes are parallel and the values of an observation encoded via a line connecting the multiple parallel axes. In <a href="#fig-pcps">Figure&nbsp;<span>6.3</span></a> each of the thin lines is a constituency coloured according to whether the constituency voted majority Remain (red) or Leave (blue). The first variable encoded is the size of the Leave vote and variables are then ordered according to linear association with Leave. Note that we have reversed the polarity of variables such as <em>degree-educated</em> and <em>professional</em> so that we expect more Leave (blue lines) towards the right locations of the parallel axes. That the blue and red lines are reasonably separated suggests that there is autocorrelation across many of the demographics characteristics in constituencies voting differently for Leave and Remain.</p>
 <!-- Although they enable some aspects of association between multiple variables to be encoded, parallel coordinate plots have several deficiencies;  -->
 <div class="cell">
 <div class="cell-output-display">
@@ -596,18 +596,18 @@ Given the spirit of this book, you might have wondered about the reasonably abbr
 <p>The template file lists the required packages: <code>tidyverse</code>, <code>sf</code> and <code>tidymodels</code> for extracting model outputs. The processed data with selected 2011 Census demographics can be loaded from the book’s accompanying data repository. In this folder is also a <code>.geojson</code> file containing a hexagon cartogram of UK parliamentary constituencies, derived from Open-Innovations’ <a href="https://open-innovations.org/projects/hexmaps/hexjson.html">HexJSON</a> format.</p>
 <p>Explanatory variables describing the demographic composition of constituencies are expressed as proportions. In order to support comparison in the multivariate models they are z-score transformed. Here, the distance between observed values for each 2011 Census variable is expressed in standard deviation units from the mean across constituencies for that variable. Our approach is to perform this transformation to each explanatory variable before piping into the model specification. This is achieved with <code>across()</code>. The first argument is the set of columns you would like the same function to be applied to and the second is the function you would like to apply. Remembering that <code>mutate()</code> works over columns of a data frame, and that a single column of a dataframe is a vector of values, the notation <code>.x</code> is used to access each element of the columns being worked across.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># z-score transform explanatory variables before model </span></span>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># z-score transform explanatory variables before model</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># specification.</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>cons_data <span class="sc">|&gt;</span> </span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>cons_data <span class="sc">|&gt;</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">.cols=</span><span class="fu">c</span>(younger<span class="sc">:</span>heavy_industry), </span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">.cols=</span><span class="fu">c</span>(younger<span class="sc">:</span>heavy_industry),</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">.fns=</span><span class="sc">~</span>(.x<span class="sc">-</span><span class="fu">mean</span>(.x))<span class="sc">/</span><span class="fu">sd</span>(.x)</span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>      )</span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="sc">&lt;</span>some<span class="sc">-</span>model<span class="sc">-</span>specification<span class="sc">-</span>code<span class="sc">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>In <a href="#fig-scatters">Figure&nbsp;<span>6.2</span></a> and <a href="#fig-pcps">Figure&nbsp;<span>6.3</span></a> associations between candidate explanatory variables and Leave are explored using scatterplots and parallel coordinate plots respectively. To avoid cluttering this section, documented code for reproducing these plots is in the <a href="">06-template.qmd</a> file for this chapter.</p>
+<p>In <a href="#fig-scatters">Figure&nbsp;<span>6.2</span></a> and <a href="#fig-pcps">Figure&nbsp;<span>6.3</span></a> associations between candidate explanatory variables and Leave are explored using scatterplots and parallel coordinate plots respectively. To avoid cluttering this section, documented code for reproducing these plots is in the <a href="./files/06-template.qmd">06-template.qmd</a> file for this chapter.</p>
 <div class="callout-tip callout callout-style-default no-icon callout-captioned">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -626,10 +626,10 @@ Task
 <span class="header-section-number">6.3.2</span> Model tidily</h3>
 <p>The most straightforward way of specifying a linear regression model is with the <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> function and <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> to extract regression coefficients.</p>
 <div class="cell">
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">cons_data</span> <span class="op">|&gt;</span> </span>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">cons_data</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">mutate</span><span class="op">(</span></span>
 <span>    <span class="fu">across</span><span class="op">(</span></span>
-<span>      .cols<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">younger</span><span class="op">:</span><span class="va">heavy_industry</span><span class="op">)</span>, </span>
+<span>      .cols<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">younger</span><span class="op">:</span><span class="va">heavy_industry</span><span class="op">)</span>,</span>
 <span>      .fns<span class="op">=</span><span class="op">~</span><span class="op">(</span><span class="va">.x</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">.x</span><span class="op">)</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">.x</span><span class="op">)</span></span>
 <span>      <span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op">%&gt;%</span></span>
@@ -664,7 +664,7 @@ Task
 <span><span class="co">#   1 (Intercept)   0.521    0.00290     180.  0</span></span>
 <span><span class="co"># 2 degree       -0.0883   0.00290     -30.5 5.67e-126</span></span>
 <span></span>
-<span><span class="co"># glance() returns a single row containing summaries of </span></span>
+<span><span class="co"># glance() returns a single row containing summaries of</span></span>
 <span><span class="co"># model fit.</span></span>
 <span><span class="fu">glance</span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span>
 <span><span class="co"># # A tibble: 1 × 12</span></span>
@@ -673,7 +673,7 @@ Task
 <span><span class="co">#   1     0.596         0.595 0.0728      928. 5.67e-126     1   760. -1514. -1501.</span></span>
 <span><span class="co"># # ℹ 3 more variables: deviance &lt;dbl&gt;, df.residual &lt;int&gt;, nobs &lt;int&gt;</span></span>
 <span></span>
-<span><span class="co"># augment() returns a data frame of residuals and predictions </span></span>
+<span><span class="co"># augment() returns a data frame of residuals and predictions</span></span>
 <span><span class="co"># (fitted values) for the model realisation.</span></span>
 <span><span class="fu">augment</span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span>
 <span><span class="co"># # A tibble: 632 × 8</span></span>
@@ -688,14 +688,14 @@ Task
 <p>The advantage of generating model diagnostics and outputs that are tidy is that this eases the process of working with many model realisations. This is a common requirement for modern data analysis, where statistical inferences are made empirically from resampling. For example, we may wish to generate single-variable linear regression models separately for each candidate explanatory variable. We could, for example, use these outputs to annotate the scatterplots in <a href="#fig-scatters">Figure&nbsp;<span>6.2</span></a> by their regression line and colour observations according to their residual values, distance from the regression line. These models can be generated with reasonably little code by making use of <code>broom</code> and a style of <a href="https://adv-r.hadley.nz/fp.html">functional programming</a> in R, which is supported by the <code>purrr</code> package.</p>
 <p>Example code:</p>
 <div class="cell">
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">single_model_fits</span> <span class="op">&lt;-</span> <span class="va">cons_data</span> <span class="op">|&gt;</span> </span>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">single_model_fits</span> <span class="op">&lt;-</span> <span class="va">cons_data</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">mutate</span><span class="op">(</span><span class="fu">across</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">younger</span><span class="op">:</span><span class="va">heavy_industry</span><span class="op">)</span>, <span class="op">~</span><span class="op">(</span><span class="va">.x</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">.x</span><span class="op">)</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">.x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">pivot_longer</span><span class="op">(</span></span>
-<span>    cols<span class="op">=</span><span class="va">younger</span><span class="op">:</span><span class="va">heavy_industry</span>, </span>
+<span>    cols<span class="op">=</span><span class="va">younger</span><span class="op">:</span><span class="va">heavy_industry</span>,</span>
 <span>    names_to<span class="op">=</span><span class="st">"expl_var"</span>, values_to<span class="op">=</span><span class="st">"z_score"</span></span>
 <span>    <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="co"># Nest to generate list-column by expl_var.</span></span>
-<span>  <span class="fu">nest</span><span class="op">(</span>data<span class="op">=</span><span class="op">-</span><span class="va">expl_var</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">nest</span><span class="op">(</span>data<span class="op">=</span><span class="op">-</span><span class="va">expl_var</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">mutate</span><span class="op">(</span></span>
 <span>    <span class="co"># Use map() to iterate over the list of datasets.</span></span>
 <span>    model <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">data</span>, <span class="op">~</span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">leave</span> <span class="op">~</span> <span class="va">z_score</span>, data <span class="op">=</span> <span class="va">.x</span><span class="op">)</span><span class="op">)</span>,</span>
@@ -709,9 +709,9 @@ Task
 <span></span>
 <span><span class="va">single_model_fits</span> <span class="op">|&gt;</span></span>
 <span>  <span class="co"># Unnest output from glance.</span></span>
-<span>  <span class="fu">unnest</span><span class="op">(</span>cols <span class="op">=</span> <span class="va">fits</span><span class="op">)</span> <span class="op">|&gt;</span>  </span>
+<span>  <span class="fu">unnest</span><span class="op">(</span>cols <span class="op">=</span> <span class="va">fits</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="co"># Remove other list-columns.</span></span>
-<span>  <span class="fu">select</span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">model</span><span class="op">)</span><span class="op">)</span> </span>
+<span>  <span class="fu">select</span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">model</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># # A tibble: 10 × 15</span></span>
 <span><span class="co"># expl_var  r.squared adj.r.squared  sigma statistic   p.value    df logLik    AIC</span></span>
@@ -744,9 +744,9 @@ Task
 <p>In <a href="#fig-outputs">Figure&nbsp;<span>6.4</span></a> estimated regression coefficient models are plotted from a multivariate model, annotated with 95% Confidence Intervals. The ggplot specification is reasonably straightforward.</p>
 <p>The code for <a href="#fig-outputs">Figure&nbsp;<span>6.4</span></a>:</p>
 <div class="cell">
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">cons_data</span> <span class="op">|&gt;</span> </span>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">cons_data</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">mutate</span><span class="op">(</span><span class="fu">across</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">younger</span><span class="op">:</span><span class="va">heavy_industry</span><span class="op">)</span>, <span class="op">~</span><span class="op">(</span><span class="va">.x</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">.x</span><span class="op">)</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">.x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">leave</span> <span class="op">~</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">leave</span> <span class="op">~</span></span>
 <span>    <span class="va">degree</span> <span class="op">+</span> <span class="va">eu_born</span> <span class="op">+</span> <span class="va">white</span>  <span class="op">+</span> <span class="va">no_car</span> <span class="op">+</span> <span class="va">not_good_health</span> <span class="op">+</span> <span class="va">heavy_industry</span>,</span>
 <span>     data<span class="op">=</span><span class="va">.</span><span class="op">)</span></span>
 <span></span>
@@ -774,7 +774,7 @@ Task
 <span class="header-section-number">6.3.4</span> Extended model terms</h3>
 <p>To include a fixed effect (FE) term on region, the <code>region</code> variable is simply added as a variable to <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code>. However, we must convert it to a factor variable (this has the effect of creating dummies on each value of <code>region</code>). Default behaviour within <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> is to hold back a reference value of region with FE regression coefficients describing the effect on the outcome of a constituency located in a given region relative to the reference region. So the reference region (intercept) in the model below is East Midlands – the first in the factor to appear alphabetically. The signed coefficient estimates for regions identifies whether, after controlling for variation in demographics, the Leave vote for a particular region is expected to be higher or lower than this.</p>
 <div class="cell">
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">cons_data</span> <span class="op">|&gt;</span> </span>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">cons_data</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">mutate</span><span class="op">(</span></span>
 <span>    <span class="fu">across</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">younger</span><span class="op">:</span><span class="va">heavy_industry</span><span class="op">)</span>, <span class="op">~</span><span class="op">(</span><span class="va">.x</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">.x</span><span class="op">)</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">.x</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>    region<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">region</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
@@ -806,7 +806,7 @@ Task
 </div>
 <p>We want our model to represent a dummy for every region and so we add <code>-1</code> to the specification. Doing this removes the intercept (reference region), making <span class="math inline">R^2</span> is no longer meaningful.</p>
 <div class="cell">
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">cons_data</span> <span class="op">|&gt;</span> </span>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">cons_data</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">mutate</span><span class="op">(</span></span>
 <span>    <span class="fu">across</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">younger</span><span class="op">:</span><span class="va">heavy_industry</span><span class="op">)</span>, <span class="op">~</span><span class="op">(</span><span class="va">.x</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">.x</span><span class="op">)</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">.x</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>    region<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">region</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
@@ -823,7 +823,7 @@ Task
 </div>
 <p>To include an Interaction on region, we need to set a variable that will be used to represent these regional constants (<code>cons</code>), and the Interaction is added with the notation <code>:</code>.</p>
 <div class="cell">
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">cons_data</span> <span class="op">|&gt;</span> </span>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">cons_data</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">mutate</span><span class="op">(</span></span>
 <span>    <span class="fu">across</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">younger</span><span class="op">:</span><span class="va">heavy_industry</span><span class="op">)</span>, <span class="op">~</span><span class="op">(</span><span class="va">.x</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">.x</span><span class="op">)</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">.x</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>    region<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="va">region</span><span class="op">)</span>, cons<span class="op">=</span><span class="fl">1</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
@@ -874,7 +874,7 @@ Task
 </div>
 <p>First generate a model object and extract residuals from it, again making use of <code>nest()</code>, <code>map()</code> and <code>augment()</code>:</p>
 <div class="cell">
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">cons_data</span> <span class="op">|&gt;</span> </span>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="va">cons_data</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">select</span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">population</span>, <span class="va">population_density</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">mutate</span><span class="op">(</span></span>
 <span>    <span class="fu">across</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">younger</span><span class="op">:</span><span class="va">heavy_industry</span><span class="op">)</span>, <span class="op">~</span><span class="op">(</span><span class="va">.x</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">.x</span><span class="op">)</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">.x</span><span class="op">)</span><span class="op">)</span>,</span>
@@ -932,8 +932,7 @@ Task
 <li>
 <em>Encoding</em>: hexagons are filled according to the residual values (<code>fill=.resid</code>).</li>
 <li>
-<em>Marks</em>: <code>geom_sf()</code> for drawing the hexagon outlines. The first <code>geom_sf</code> colours each constituency on its residual value. The second does not encode any data values – notice there is no <code>aes()</code> – and is for drawing the regional outlines.<br>
-</li>
+<em>Marks</em>: <code>geom_sf()</code> for drawing the hexagon outlines. The first <code>geom_sf</code> colours each constituency on its residual value. The second does not encode any data values – notice there is no <code>aes()</code> – and is for drawing the regional outlines.</li>
 <li>
 <em>Facets</em>: <code>facet_wrap()</code> on <code>region</code> in order to display coefficients estimated separately for each region.</li>
 <li>

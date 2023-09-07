@@ -305,7 +305,7 @@ Data vocabulary
 <span class="header-section-number">2.2</span> Concepts</h2>
 <section id="data-frames" class="level3" data-number="2.2.1"><h3 data-number="2.2.1" class="anchored" data-anchor-id="data-frames">
 <span class="header-section-number">2.2.1</span> Data frames</h3>
-<p>Throughout this book we will work with <a href="http://adv-r.had.co.nz/Data-structures.html#data-frames">data frames</a>. These are spreadsheet-like representations where rows are observations and columns are variables. In an R data frame, variables are <a href="http://adv-r.had.co.nz/Data-structures.html#vectors">vectors</a> that must be of equal length. Where observations have missing values for certain variables the missing values must be substituted with something, usually with <code>NA</code> or similar. This constraint can cause difficulties. For example, when working with variables that contain many values of different length for an observation. In these cases we create a special class of column, a <a href="https://jennybc.github.io/purrr-tutorial/ls13_list-columns.html"><code>list-column</code></a>. Organising data according to this simple structure – rows as observations, columns as variables – is especially useful for applying analysis templates typical of the <code>tidyverse</code> ecosystem.</p>
+<p>Throughout this book we will work with data frames. These are spreadsheet-like representations where rows are observations and columns are variables. In an R data frame, variables are vectors that must be of equal length. Where observations have missing values for certain variables the missing values must be substituted with something, usually with <code>NA</code> or similar. This constraint can cause difficulties. For example, when working with variables that contain many values of different length for an observation. In these cases we create a special class of column, a <a href="https://jennybc.github.io/purrr-tutorial/ls13_list-columns.html"><code>list-column</code></a>. Organising data according to this simple structure – rows as observations, columns as variables – is especially useful for applying analysis templates typical of the <code>tidyverse</code> ecosystem.</p>
 </section><section id="types-of-variable" class="level3" data-number="2.2.2"><h3 data-number="2.2.2" class="anchored" data-anchor-id="types-of-variable">
 <span class="header-section-number">2.2.2</span> Types of variable</h3>
 <p>A familiar classification for describing variables is that developed by <span class="citation" data-cites="stevens_on_1946">Stevens (<a href="references.html#ref-stevens_on_1946" role="doc-biblioref">1946</a>)</span> when considering the level of measurement of a variable. <span class="citation" data-cites="stevens_on_1946">Stevens (<a href="references.html#ref-stevens_on_1946" role="doc-biblioref">1946</a>)</span> organises variables into two classes: variables that describe <em>categories</em> of things and variables that describe <em>measurements</em> of things.</p>
@@ -415,7 +415,7 @@ Task
 </div>
 </section><section id="types-of-observation" class="level3" data-number="2.2.3"><h3 data-number="2.2.3" class="anchored" data-anchor-id="types-of-observation">
 <span class="header-section-number">2.2.3</span> Types of observation</h3>
-<p>Observations either together form an entire population or a sample that we expect is representative of a target population. In social data science applications we often work with datasets that are so-called population-level. The <a href="(https://www.citibikenyc.com/system-data)">Citibike dataset</a> is a complete, population-level dataset in that every journey made through the scheme is recorded. Whether or not this is truly a population-level dataset, however, depends on the analysis purpose. When analysing trips made by Citibike users are we interested only in describing use within Citibike ? Or are we taking the patterns observed through our analysis to make claims and inferences about New York cycling more generally? If the latter, then there are problems as the level of detail we have on our sample is pretty trivial compared to traditional, actively-collected datasets, where data collection activities are designed with a target population in mind. It may therefore be difficult to gauge how representative Citibike users and Citibike cycling is of New York’s general cycling population. The flipside is that so-called passively-collected data may not suffer from the same problems such as non-response bias and social-desirability bias as traditional, actively-collected data.</p>
+<p>Observations either together form an entire population or a sample that we expect is representative of a target population. In social data science applications we often work with datasets that are so-called population-level. The <a href="(https://www.citibikenyc.com/system-data)">Citibike dataset</a> is a complete, population-level dataset in that every journey made through the scheme is recorded. Whether or not this is truly a population-level dataset, however, depends on the analysis purpose. When analysing trips made by Citibike users are we interested only in describing use within Citibike? Or are we taking the patterns observed through our analysis to make claims and inferences about New York cycling more generally? If the latter, then there are problems as the level of detail we have on our sample is pretty trivial compared to traditional, actively-collected datasets, where data collection activities are designed with a target population in mind. It may therefore be difficult to gauge how representative Citibike users and Citibike cycling is of New York’s general cycling population. The flipside is that so-called passively-collected data may not suffer from the same problems such as non-response bias and social-desirability bias as traditional, actively-collected data.</p>
 </section><section id="tidy-data" class="level3" data-number="2.2.4"><h3 data-number="2.2.4" class="anchored" data-anchor-id="tidy-data">
 <span class="header-section-number">2.2.4</span> Tidy data</h3>
 <p>Throughout the book we will work with data frames organised such that columns always and only refer to variables and rows always and only refer to observations. This arrangement, called <em>tidy</em> <span class="citation" data-cites="wickham_tidy_2014">(<a href="references.html#ref-wickham_tidy_2014" role="doc-biblioref">Wickham 2014</a>)</span>, has two key advantages. First, if data are arranged in this tidy form then it is easier to apply and re-use tools for wrangling them due to data having the same underlying structure. Second, placing variables into columns, with each column containing a vector of values, means that we can take advantage of R’s vectorised functions for transforming data. This is demonstrated in the technical element of the chapter.</p>
@@ -777,7 +777,7 @@ Imagine that the `gapminder` dataset reported values of `cases` separately by ge
 </ul>
 <section id="import" class="level3" data-number="2.3.1"><h3 data-number="2.3.1" class="anchored" data-anchor-id="import">
 <span class="header-section-number">2.3.1</span> Import</h3>
-<p>In the template file there is documentation on how to setup your R session with key packages – <code>tidyverse</code> , <code>fst</code>, <code>lubridate</code>, <code>sf</code>. The data were collected using the <a href="https://github.com/ropensci/bikedata"><code>bikedata</code></a> package. A subset of data from New York’s bikeshare scheme, <a href="https://www.citibikenyc.com/">Citibike</a>, were collected for this chapter and can be downloaded from the book’s accompanying <a href="https://github.com/vis4sds/data">data repository</a>. Instructions for doing so are in the <a href="./files/02-template.qmd"><code>02-template.qmd</code></a> file.</p>
+<p>In the template file there is documentation on how to setup your R session with key packages – <code>tidyverse</code> , <code>fst</code>, <code>lubridate</code>, <code>sf</code>. The data were collected using the <a href="https://github.com/ropensci/bikedata"><code>bikedata</code></a> package. A subset of data from New York’s bikeshare scheme, <a href="https://www.citibikenyc.com/">Citibike</a>, were collected for this chapter and can be downloaded from the book’s accompanying <a href="https://github.com/vis4sds/data">data repository</a><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. Instructions for doing so are in the <a href="./files/02-template.qmd"><code>02-template.qmd</code></a> file.</p>
 <!-- -- and also the [`bikedata`](https://github.com/ropensci/bikedata) package for accessing bikeshare data. -->
 <!-- Available via the `bikedata` package are trip and occupancy data for a number of bikeshare schemes (as below). We will work with data from New York's [Citibike](https://www.citibikenyc.com/) scheme for June 2020. A list of all cities covered by the `bikedata` package is below: -->
 <p>The code for reading in these data may be familiar to most readers. The <a href="https://here.r-lib.org/"><code>here</code></a> package, which reliably creates paths relative to a project’s root, is used to pass as a parameter to <code>read_csv()</code> and <code>read_fst()</code> the locations at which the New York trips and stations data are stored. Notice that we use <em>assignment</em> (<code>&lt;-</code>), so data are loaded as objects and appear in the Environment pane of your RStudio window.</p>
@@ -805,7 +805,7 @@ Note
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-view-annotate" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figs/02/view.png" class="img-fluid figure-img" width="1933"></p>
+<figure class="figure"><p><img src="figs/02/view.png" class="img-fluid figure-img" style="width:100.0%"></p>
 <p></p><figcaption aria-hidden="true" class="figure-caption">Figure 2.1: <code>ny_trips</code> and <code>ny_stations</code> as they appear when calling <code><a href="https://rdrr.io/r/utils/View.html">View()</a></code>.</figcaption><p></p>
 </figure>
 </div>
@@ -903,7 +903,7 @@ Note
 </div>
 </div>
 </div>
-<p><code>dplyr</code> functions are designed to be chained together – you will see this shortly as we explore the New York bikeshare data. This chaining of functions can be achieved using the <em>pipe</em> operator (<code>|&gt;</code>). Pipes are mechanims for passing information in a program. They take the output of a set of code (a <code>dplyr</code> specification) and make it the input of the next set (another <code>dplyr</code> specification). Pipes can be easily applied to <code>dplyr</code> functions and the functions of all packages that form the <code>tidyverse</code>. We mentioned in <a href="01-intro.html"><span>Chapter&nbsp;1</span></a> that ggplot2 provides a framework for specifying a <em>layered grammar of graphics</em> (more on this in <a href="03-visual.html"><span>Chapter&nbsp;3</span></a>). Together with the pipe operator, <code>dplyr</code> supports a <em>layered grammar of data manipulation</em>. You will see this throughout the book as we develop and re-use code templates for performing some data manipulation that is then piped to a ggplot2 specification for visual analysis.</p>
+<p><code>dplyr</code> functions are designed to be chained together – you will see this shortly as we explore the New York bikeshare data. This chaining of functions can be achieved using the <em>pipe</em> operator (<code>|&gt;</code>). Pipes are mechanisms for passing information in a program. They take the output of a set of code (a <code>dplyr</code> specification) and make it the input of the next set (another <code>dplyr</code> specification). Pipes can be easily applied to <code>dplyr</code> functions and the functions of all packages that form the <code>tidyverse</code>. We mentioned in <a href="01-intro.html"><span>Chapter&nbsp;1</span></a> that ggplot2 provides a framework for specifying a <em>layered grammar of graphics</em> (more on this in <a href="03-visual.html"><span>Chapter&nbsp;3</span></a>). Together with the pipe operator, <code>dplyr</code> supports a <em>layered grammar of data manipulation</em>. You will see this throughout the book as we develop and re-use code templates for performing some data manipulation that is then piped to a ggplot2 specification for visual analysis.</p>
 </section><section id="count-and-summarise-over-rows" class="level4 unnumbered"><h4 class="unnumbered anchored" data-anchor-id="count-and-summarise-over-rows">
 <code>count()</code> and <code>summarise()</code> over rows</h4>
 <p>Let’s use and combine some <code>dplyr</code> functions to generate statistical summaries of the New York bikeshare data. First we’ll count the number of trips made in June 2020 by <code>user_type</code>, a variable distinguishing casual users from those formally registered to use the scheme (<code>Customer</code> vs.&nbsp;<code>Subscriber</code> cyclists). <code>dplyr</code> has a convenience function for counting, so we could run the code below, also in the <a href="./files/02-template.qmd"><code>02-template.qmd</code></a> for this chapter.</p>
@@ -962,7 +962,7 @@ Note
 <span><span class="co">## 2 Customer   152796         43.3            23.1        383.         1.02    46982.</span></span>
 <span><span class="co">## # … with abbreviated variable name ¹​max_duration</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>As each line is commented you hopefully get a sense of what is happening in the code above. You will notice that <code>dplyr</code> functions read like verbs. With the code laid out as above – each <code>dplyr</code> verb occupying a single line, separated by a pipe (<code>|&gt;</code>) – the code can be understood with a cursory glance. Once you are familiar with <code>dplyr</code> it becomes very easy to read, write, re-use and share code in this way.</p>
+<p>As each line is commented you hopefully get a sense of what is happening in the code above. You will notice that <code>dplyr</code> functions read like verbs. With the code laid out as above – each <code>dplyr</code> verb occupying a single line, separated by a pipe (<code>|&gt;</code>) – the code can be understood at a glance. Once you are familiar with <code>dplyr</code> it becomes very easy to read, write, re-use and share code in this way.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="tbl-aggregate-functions" class="anchored">
@@ -1013,7 +1013,7 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Remembering that pipes (<code>|&gt;</code>) take the output of a set of code and make it the input of the next set, you will notice separate lines for each call to the pipe operator. This is good practice for supporting readability of your code, and for debugging and learning how your data is affected by each line of code. Especially if <code>dplyr</code> is new to you, we recommend you run each line of code separated by a pipe (<code>|&gt;</code>) in the Console and observe how the dataset is changed.</p>
+<p>Remembering that pipes take the output of a set of code and make it the input of the next set, you will notice separate lines for each call to the pipe operator. This is good practice for supporting readability of your code, and for debugging and learning how your data is affected by each line of code. Especially if <code>dplyr</code> is new to you, we recommend you run each line of code separated by a pipe (<code>|&gt;</code>) in the Console and observe how the dataset is changed.</p>
 </div>
 </div>
 </section><section id="manipulate-dates-with-lubridate" class="level4 unnumbered"><h4 class="unnumbered anchored" data-anchor-id="manipulate-dates-with-lubridate">Manipulate dates with <a href="https://lubridate.tidyverse.org/"><code>lubridate</code></a>
@@ -1048,11 +1048,11 @@ Note
 <p>Whether or not to store derived data frames, like the newly assigned <code>ny_temporal</code>, in a session is not an easy decision. You should avoid cluttering the Environment pane with many data objects. Often when generating charts it is necessary to create these sorts of derived tables as input data to ggplot2. Adding derived data frames to the RStudio Environment pane each time an exploratory plot is created risks an unhelpfully large number of such tables. A general rule: if the derived data frame is to be used more than three times in a data analysis or is computationally intensive, create and assign it (<code>&lt;-</code>) as a named object.</p>
 </div>
 </div>
-<p>In <a href="#fig-plot-temporal">Figure&nbsp;<span>2.2</span></a> these derived data are plotted. Code for creating this data graphic is in the template file. The plot demonstrates a familiar weekday-weekend pattern of usage. Trip frequencies peak in the morning and evening rush hours during weekdays and mid/late-morning and afternoon during weekends, with the weekday afternoon peak much larger than the morning peak. There are obvious differences in the type of trips made by subscribers versus customers – the temporal signature for subscribers appears to match more closely what one would expect of commuting behaviour.</p>
+<p>In <a href="#fig-plot-temporal">Figure&nbsp;<span>2.2</span></a> these derived data are plotted. Code for creating this data graphic is in the template file. The plot demonstrates a familiar weekday-weekend pattern of usage. Trip frequencies peak in the morning and evening rush hours during weekdays and mid/late-morning and afternoon during weekends, with the weekday afternoon peak much larger than the morning peak. There are obvious differences in the type of trips made by subscribers versus customers – the temporal signature for subscribers appears to match slightly more closely what one would expect of commuting behaviour.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-plot-temporal" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figs/02/hod_dow.png" class="img-fluid figure-img" width="2250"></p>
+<figure class="figure"><p><img src="figs/02/hod_dow.png" class="img-fluid figure-img" style="width:100.0%"></p>
 <p></p><figcaption aria-hidden="true" class="figure-caption">Figure 2.2: Line charts generated with ggplot2. Plot data computed using <code>dplyr</code> and <code>lubridate</code>.</figcaption><p></p>
 </figure>
 </div>
@@ -1151,7 +1151,7 @@ Note
 </div>
 </div>
 <!-- ![Histograms generated with ggplot2. Plot data computed using `dplyr` and `lubridate`](figs/02/dist.svg){#fig-plot-dist width=100% fig-align="center"} -->
-<p>From the newly created distance variable, we can calculate the average (mean) trip distance for the 500,000 sampled trips – 1.6km. This might seem very short, but remember that these are straight-line distances between pairs of docking stations. Ideally we would calculate network distances derived from cycle trajectories. A separate reason, discovered when generating a histogram on the <code>dist</code> variable, is that there are a large number of trips that start and end at the same docking station. Initially these might seem to be unsuccessful hires – people failing to undock a bike for example. We could investigate this further by paying attention to the docking stations at which same origin-destination trips occur, as in the code block below.</p>
+<p>From the newly created distance variable, we can calculate the average (mean) trip distance for the 500,000 sampled trips – 1.6km. This might seem very short, but remember that these are straight-line distances between pairs of docking stations. Ideally we would calculate distances derived from cycle trajectories. A separate reason, discovered when generating a histogram on the <code>dist</code> variable, is that there are a large number of trips that start and end at the same docking station. Initially these might seem to be unsuccessful hires – people failing to undock a bike for example. We could investigate this further by paying attention to the docking stations at which same origin-destination trips occur, as in the code block below.</p>
 <div class="cell">
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ny_trips</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">start_station_id</span><span class="op">==</span><span class="va">end_station_id</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -1176,7 +1176,7 @@ Note
 <span><span class="co">## 10 ny2006             782 Central Park S &amp; 6 Ave</span></span>
 <span><span class="co">## # … with 948 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The top 10 docking stations are either in parks, near parks or located along the river. This coupled with the fact that same origin-destination trips occur in much greater relative number for casual users, associated with discretionary leisure-oriented cycling, than regular users (customers vs subscribers) is further evidence that these are valid trips. Note also the different shapes in the distribution of distances for trips cycled by subscribers and customers (<a href="#fig-plot-dist">Figure&nbsp;<span>2.3</span></a>), again suggesting these groups may use Citibike in different ways.</p>
+<p>The top 10 docking stations are either in parks, near parks or located along the river. This, coupled with the fact that same origin-destination trips occur in much greater relative number for casual users, associated with discretionary leisure-oriented cycling, than regular users (customers vs subscribers) is further evidence that these are valid trips. Note also the different shapes in the distribution of distances for trips cycled by subscribers and customers (<a href="#fig-plot-dist">Figure&nbsp;<span>2.3</span></a>), again suggesting these groups may use Citibike in different ways.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-plot-dist" class="quarto-figure quarto-figure-center anchored">
@@ -1228,7 +1228,6 @@ Note
 </div>
 </div>
 </div>
-<!-- ![Line charts generated with ggplot2. Plot data computed using `dplyr` and `lubridate`.](figs/02/speeds.svg){#fig-plot-speeds width=100% fig-align="center"} -->
 </section></section><section id="tidy" class="level3" data-number="2.3.3"><h3 data-number="2.3.3" class="anchored" data-anchor-id="tidy">
 <span class="header-section-number">2.3.3</span> Tidy</h3>
 
@@ -1279,7 +1278,7 @@ Note
 <li>
 <code>count</code>: count of trips for observation type</li>
 <li>
-<code>dist</code>: total straight-line distance in kms (cumulative) of trips for observation type</li>
+<code>dist</code>: total straight-line distance in km (cumulative) of trips for observation type</li>
 <li>
 <code>duration</code>: total duration in minutes (cumulative) of trips for observation type</li>
 </ul>
@@ -1498,7 +1497,10 @@ Task
 </ul>
 
 
-</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section><section class="footnotes footnotes-end-of-document" role="doc-endnotes"><hr>
+<ol>
+<li id="fn1" role="doc-endnote"><p><code>https://github.com/vis4sds/data</code><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const icon = "";
   const anchorJS = new window.AnchorJS();
