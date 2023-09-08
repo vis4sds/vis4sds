@@ -61,7 +61,7 @@ Given these characteristics consider the data graphic below (@fig-wp-map), which
 #| label: fig-wp-map
 #| echo: false
 #| out.width: 100%
-#| fig-cap: "Map of 2016 US presidential election results. Note that for copyright reasons this is a re-implementation in ggplot2 of @gamio_how_2016's original, which appeared in The Washington Post."
+#| fig-cap: "Map of 2016 US presidential election results. Note that for copyright reasons this is a re-implementation in ggplot2 of @gamio_how_2016's original, which appeared in The Washington Post. Code for reproducing the graphic from this link^[`https://vis4sds.github.io/vis4sds/`]."
 knitr::include_graphics("figs/03/wp_long.png", error = FALSE)
 ```
 <!-- ![Map of 2016 US presidential election results. Note that for copyright reasons this is a re-implementation of the original [Washington Post piece](https://www.washingtonpost.com/graphics/politics/2016-election/election-results-from-coast-to-coast/) in `ggplot2`.](figs/03/wp_long.png){#fig-wp-map width=100% fig-align="center"} -->
@@ -263,7 +263,7 @@ Implicit in the discussion above, and when making design decisions, is the impor
 
 ```{r}
 #| label: fig-wp-swing
-#| fig-cap: "Map of swing in 2016 US presidential election results. Note that for copyright reasons this is a re-implementation in ggplot2 of @gamio_how_2016's original, which appeared in The Washington Post."
+#| fig-cap: "Map of swing in 2016 US presidential election results. Note that for copyright reasons this is a re-implementation in ggplot2 of @gamio_how_2016's original, which appeared in The Washington Post. Code for reproducing the graphic from this link^[`https://vis4sds.github.io/vis4sds/`]."
 #| echo: false
 #| out.width: 100%
 
