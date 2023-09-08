@@ -313,7 +313,7 @@ Watch [Miriah Meyer's](https://www.cs.utah.edu/~miriah/) TEDx talk, *Information
 <div class="cell-output-display">
 <div id="fig-wp-map" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="figs/03/wp_long.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 3.1: Map of 2016 US presidential election results. Note that for copyright reasons this is a re-implementation in ggplot2 of <span class="citation" data-cites="gamio_how_2016">Gamio and Keating (<a href="references.html#ref-gamio_how_2016" role="doc-biblioref">2016</a>)</span>’s original, which appeared in The Washington Post.</figcaption><p></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 3.1: Map of 2016 US presidential election results. Note that for copyright reasons this is a re-implementation in ggplot2 of <span class="citation" data-cites="gamio_how_2016">Gamio and Keating (<a href="references.html#ref-gamio_how_2016" role="doc-biblioref">2016</a>)</span>’s original, which appeared in The Washington Post. Code for reproducing the graphic from this link<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</figcaption><p></p>
 </figure>
 </div>
 </div>
@@ -532,7 +532,7 @@ Visualization design and trade-offs
 <div class="cell-output-display">
 <div id="fig-wp-swing" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="figs/03/wp_spoke.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 3.5: Map of swing in 2016 US presidential election results. Note that for copyright reasons this is a re-implementation in ggplot2 of <span class="citation" data-cites="gamio_how_2016">Gamio and Keating (<a href="references.html#ref-gamio_how_2016" role="doc-biblioref">2016</a>)</span>’s original, which appeared in The Washington Post.</figcaption><p></p>
+<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 3.5: Map of swing in 2016 US presidential election results. Note that for copyright reasons this is a re-implementation in ggplot2 of <span class="citation" data-cites="gamio_how_2016">Gamio and Keating (<a href="references.html#ref-gamio_how_2016" role="doc-biblioref">2016</a>)</span>’s original, which appeared in The Washington Post. Code for reproducing the graphic from this link<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>.</figcaption><p></p>
 </figure>
 </div>
 </div>
@@ -732,7 +732,7 @@ On colour
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>There are very many considerations when using colour to support visual data analysis and communication – more than we have space for in this chapter. Lisa Charotte-Rost’s <a href="https://blog.datawrapper.de/colorguide/">Guide to Colours in Data Visualization</a><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> is an excellent outline of the decision-space.</p>
+<p>There are very many considerations when using colour to support visual data analysis and communication – more than we have space for in this chapter. Lisa Charotte-Rost’s <a href="https://blog.datawrapper.de/colorguide/">Guide to Colours in Data Visualization</a><a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> is an excellent outline of the decision-space.</p>
 </div>
 </div>
 </section></section><section id="sec-techniques" class="level2" data-number="3.3"><h2 data-number="3.3" class="anchored" data-anchor-id="sec-techniques">
@@ -746,7 +746,7 @@ On colour
 <span class="header-section-number">3.3.1</span> Import</h3>
 <p>The template file lists the required packages – <code>tidyverse</code>, <code>sf</code> and also <a href="https://cran.r-project.org/web/packages/parlitools/index.html"><code>parlitools</code></a>. Installing <code>parlitools</code> brings down the 2019 UK General Election dataset, along with other constituency-level datasets. Loading it with <code><a href="https://docs.evanodell.com/parlitools">library(parlitools)</a></code> makes these data available to your R session.</p>
 <p>The data frame containing 2019 UK General Election data is called <code>bes_2019</code>. This stores results data released by House of Commons Library <span class="citation" data-cites="uberoi_general_2020">(<a href="references.html#ref-uberoi_general_2020" role="doc-biblioref">Uberoi, Baker, and Cracknell 2020</a>)</span>. We can get a quick overview with a call to <code>glimpse(&lt;dataset-name&gt;)</code>. <code>bes_2019</code> contains 650 rows, one for each parliamentary constituency, and 118 columns. Contained in the columns are variables reporting vote numbers and shares for the main political parties for 2019 and 2017 General Elections, as well as names and codes (<code>ID</code>s) for each constituency and the county, region and country in which they are contained.</p>
-<p>The technical component replicates some of the visual data analysis in <span class="citation" data-cites="beecham_using_2020">Beecham (<a href="references.html#ref-beecham_using_2020" role="doc-biblioref">2020</a>)</span>. For this we need to calculate an additional variable: Butler Swing <span class="citation" data-cites="butler_why_1990">(<a href="references.html#ref-butler_why_1990" role="doc-biblioref">Butler and Van Beek 1990</a>)</span>, the average change in share of the vote won by two parties contesting successive elections. Code for calculating this variable, named <code>swing_con_lab</code>, is in the <a href="./files/03-template.qmd">03-template.qmd</a>. The only other dataset to load is a <code>.geojson</code> file containing simplified geometries of constituencies, collected originally from <a href="https://geoportal.statistics.gov.uk/">ONS Open Geography Portal</a><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. This is a special class of data frame containing a Simple Features <span class="citation" data-cites="pebesma_simple_2018">(<a href="references.html#ref-pebesma_simple_2018" role="doc-biblioref">Pebesma 2018</a>)</span> <code>geometry</code> column.</p>
+<p>The technical component replicates some of the visual data analysis in <span class="citation" data-cites="beecham_using_2020">Beecham (<a href="references.html#ref-beecham_using_2020" role="doc-biblioref">2020</a>)</span>. For this we need to calculate an additional variable: Butler Swing <span class="citation" data-cites="butler_why_1990">(<a href="references.html#ref-butler_why_1990" role="doc-biblioref">Butler and Van Beek 1990</a>)</span>, the average change in share of the vote won by two parties contesting successive elections. Code for calculating this variable, named <code>swing_con_lab</code>, is in the <a href="./files/03-template.qmd">03-template.qmd</a>. The only other dataset to load is a <code>.geojson</code> file containing simplified geometries of constituencies, collected originally from <a href="https://geoportal.statistics.gov.uk/">ONS Open Geography Portal</a><a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>. This is a special class of data frame containing a Simple Features <span class="citation" data-cites="pebesma_simple_2018">(<a href="references.html#ref-pebesma_simple_2018" role="doc-biblioref">Pebesma 2018</a>)</span> <code>geometry</code> column.</p>
 <!-- Although initially intuitive, the measure takes a little interpretation. A Swing to the Conservatives, which we observe most often in this dataset, could happen in three ways:
 
 1. An increase in Conservative vote share and a decrease in Labour vote share.
@@ -1259,8 +1259,10 @@ PositionCenterSpoke <-
 
 </section><section class="footnotes footnotes-end-of-document" role="doc-endnotes"><hr>
 <ol>
-<li id="fn1" role="doc-endnote"><p><code>https://blog.datawrapper.de/colorguide/</code><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2" role="doc-endnote"><p><code>https://geoportal.statistics.gov.uk/</code><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1" role="doc-endnote"><p><code>https://vis4sds.github.io/vis4sds/</code><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2" role="doc-endnote"><p><code>https://vis4sds.github.io/vis4sds/</code><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3" role="doc-endnote"><p><code>https://blog.datawrapper.de/colorguide/</code><a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4" role="doc-endnote"><p><code>https://geoportal.statistics.gov.uk/</code><a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const icon = "";
