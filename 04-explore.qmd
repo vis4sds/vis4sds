@@ -201,19 +201,6 @@ Remembering @munzner_visualization_2014's ordering of visual channels, Cleveland
 
 The table presents counts by injury severity for pedestrians only; so these are pedestrians being hit by cars, vans, bicycles etc. Injury severity is either *slight* or serious/fatal (*KSI*). -->
 
-```{r}
-#| label: tbl-vehicle-severity
-#| tbl-cap: "Pedestrian casualties by vehicle involved and injury severity."
-#| echo: false
-#| eval: false
-#| warning: false
-#| out.width: 90%
-
-readr::read_csv(here::here("files","csv","vehicle_severity_cross.csv")) |>
-  kbl(caption = "Pedestrian casualties by vehicle involved and injury severity.") |>
-  row_spec(9, bold=T) |> column_spec(4,bold = T) |> kable_minimal() |> column_spec(2:4, extra_css = "font-family:  Monospace")
-```
-
 
 
 In @fig-dots-heatmap we began to make between-category comparison; we asked whether there are relatively greater or fewer crashes by time period or vehicle type in certain boroughs than others. There are chart types that explicitly support these sorts of analysis tasks. @fig-bars-vehicle-injury compares pedestrian crash frequencies in London by vehicle type involved and whether the crash occurred on weekdays or weekends.
@@ -257,19 +244,6 @@ Expected values are calculated in the same way as the standard [chi-square stati
 
 So for an observed value ($O_i$), $C_i$ is its column total; $R_i$ is its row total; and $GT$ is the grand total. Below is this table updated with expected values and signed-chi-scores. A score $>0$ means that casualty counts for that injury type and vehicle is greater than expected; a score $<0$ means casualty counts for that injury type and vehicle is less than expected. The signed chi-square residuals have mathematical properties and can be interpreted as any standard score. They are assumed to have a mean $\sim1$ and standard deviation of $\sim0$. Residuals are therefore analogous to standard deviation units from the expected mean.
 
-
-```{r}
-#| label: tbl-vehicle-severity-resids
-#| tbl-cap: "Pedestrian casualties by vehicle involved and injury severity: contingency table with signed chi-scores."
-#| echo: false
-#| eval: true
-#| warning: false
-
-readr::read_csv(here::here("files","csv","vehicle_period_cross_resids.csv")) |>
-  kbl(caption = "Pedestrian casualties by vehicle involved and weekday / weekend: contingency table with signed chi-scores.") |>
-  row_spec(9, bold=T) |> column_spec(4,bold = T)|>
-  add_header_above(c(" ", "Observed" = 3, "Expected" = 2, "Signed chi-scores"=2)) |> column_spec(2:8, extra_css = "font-family:  Monospace") |> kable_minimal()
-```
 
 The benefit for EDA is that the signed-scores are very quick and easy to compute and can be derived from frequency tables without applying heavy prior knowledge. They help to identify and locate anomalies in individual data values in a way that is sensitive to both absolute and relative numbers. They are often used in cartographic design to emphasise spatial units that deviate from expectation [refs]. -->
 
