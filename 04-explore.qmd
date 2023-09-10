@@ -3,7 +3,6 @@
 ```{r}
 #| echo: false
 library(knitr)
-library(here)
 library(kableExtra)
 library(fontawesome)
 ```
@@ -383,20 +382,12 @@ include_graphics("figs/04/mosaic_boroughs_model_alpha.svg", error = FALSE)
 ```
 
 
+<!-- 
+#### Semi-geographic orderings {-} 
 
-#### Semi-geographic orderings {-} -->
+The alphabetical *layout* of boroughs helps with look-up-type tasks, but since we have already identified that patterns of pedestrian injuries by vehicle type varies by central-inner-outer London, we could further support this comparison by laying out the mosaic plots with a spatial arrangement, as in @fig-spatial-layout. This 'map' clearly looks different from standard maps of London that use a precise geographic arrangement. When studying social phenomena, high  levels of precision are not always needed. Relaxing geography frees up space to introduce richer, more complex designs. In the layout in @fig-spatial-layout, taken from [AfterTheFlood](https://github.com/aftertheflood/londonsquared), each borough is represented as a square of regular size and arranged in its approximate geographic position, allowing the central-inner-outer London distinctions to be made more effectively. 
+ -->
 
-<!-- The alphabetical *layout* of boroughs helps with look-up-type tasks, but since we have already identified that patterns of pedestrian injuries by vehicle type varies by central-inner-outer London, we could further support this comparison by laying out the mosaic plots with a spatial arrangement, as in @fig-spatial-layout. This 'map' clearly looks different from standard maps of London that use a precise geographic arrangement. When studying social phenomena, high  levels of precision are not always needed. Relaxing geography frees up space to introduce richer, more complex designs. In the layout in @fig-spatial-layout, taken from [AfterTheFlood](https://github.com/aftertheflood/londonsquared), each borough is represented as a square of regular size and arranged in its approximate geographic position, allowing the central-inner-outer London distinctions to be made more effectively. -->
-
-<!-- ```{r}
-#| label: fig-spatial-layout
-#| fig-cap: "Mosaic plots of vehicle type and injury severity for London Boroughs with spatial arrangement."
-#| echo: false
-#| eval: true
-#| warning: false
-
-include_graphics("figs/04/mosaic_boroughs_spatial.svg", error = FALSE)
-``` -->
 
 ```{r}
 #| label: fig-spatial-layout
