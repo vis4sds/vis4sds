@@ -15,7 +15,7 @@ By the end of this chapter you should gain the following knowledge and practical
 ## Knowledge outcomes
   - [ ] An appreciation of how data graphics can support exploratory data analysis (EDA).
   - [ ] The main chart types, their benefits and drawbacks, for summarising variation within- and between- variables.
-  - [ ] Three strategies for effecting comparison in EDA: juxtaposition, superposition and direct encoding [@gleicher_visual_2011].
+  - [ ] Three strategies for effecting comparison in EDA: juxtaposition, superposition and explicit encoding [@gleicher_visual_2011].
 :::
 
 ::: {.callout-note icon=false}
@@ -119,7 +119,7 @@ Finally, *boxplots* [@mcgill_variations_1978] encode these statistical propertie
 
 
 ::: {.callout-note}
-Since the average age of pedestrian road casualties is surprisingly low, it may be instructive to explore the distribution of `casualty_age` conditioning on another variable and differentiating between variable values using colour. @fig-boxplots-class displays boxplots and density plots of the location and spread in `casualty_age` by vehicle and individual involved for all crashes involving pedestrians. A noteworthy pattern is that riders of bicycles and motorcycles tend to be younger than the pedestrians they are contacting with, whereas for buses, taxis, HGVs and cars the reverse is true. Pedestrians involved in crashes with cars are especially skewed towards the younger ages.
+Since the average age of pedestrian road casualties is surprisingly low, it may be instructive to explore the distribution of `casualty_age` conditioning on another variable and differentiating between variable values using colour. @fig-boxplots-class displays boxplots and density plots of the location and spread in `casualty_age` by vehicle and individual involved for all crashes involving pedestrians. A noteworthy pattern is that riders of bicycles and motorcycles tend to be younger than the pedestrians they collide with, whereas for buses, taxis, HGVs and cars the reverse is true. Pedestrians involved in crashes with cars are especially skewed towards the younger ages.
 
 <!-- Although less space efficient, the density plots display richer information around the nature of the driver-pedestrian age distributions. -->
 
@@ -310,7 +310,7 @@ The discussion of Risk Ratios (RRs) was reasonably abbreviated. RRs are interpre
 
 ### Strategies for supporting comparison
 
-A key role for data graphics in EDA is in supporting comparison. Three strategies typically deployed are *juxtaposition*, *superposition* and *direct encoding* [see @gleicher_visual_2011]. @tbl-comparison-strategies defines each and identifies how they can be implemented in ggplot2. You will see these implementations being variously deployed as the book progresses.
+A key role for data graphics in EDA is in supporting comparison. Three strategies typically deployed are *juxtaposition*, *superposition* and *explicit encoding* [see @gleicher_visual_2011]. @tbl-comparison-strategies defines each and identifies how they can be implemented in ggplot2. You will see these implementations being variously deployed as the book progresses.
 
 <!-- * *Juxtaposition*: Laying the data items to be compared side-by-side.
 * *Superposition*: Laying the data items to be compared on top of each other on the same coordinate space.
@@ -327,7 +327,7 @@ strategies <- tibble::tibble(
     "Juxtaposition",
     "Juxtaposition",
     "Superposition",
-    "Direct encoding"),
+    "Explicit encoding"),
   Function = c(
     "faceting",
     "patchwork cowplot pkg",
@@ -338,14 +338,14 @@ strategies <- tibble::tibble(
     "Create separate plots in rows and/or columns by conditioning on a categorical variable. Each plot has same encoding and coordinate space.",
     "Flexibly arrange plots of different data type, encoding and coordinate space",
     "Layering marks on top of each other. Marks may be of different data types but must share the same coordinate space.",
-    "No strategy specialised to direct encoding. Often variables cross 0, so diverging schemes, or graphics with clearly annotated and symbolised thresholds are used."
+    "No strategy specialised to explicit encoding. Often variables cross 0, so diverging schemes, or graphics with clearly annotated and symbolised thresholds are used."
     )
 )
 
 kbl(strategies,  caption = "Implementing Gleicher et al.'s (2011) three comparison strategies in ggplot2.", protect_latex = TRUE, escape=FALSE) |> column_spec(2, extra_css = "font-family:  Monospace; font-size: 90%") |> column_spec(c(1,3), extra_css = "font-size: 90%") |> row_spec(0, extra_css = "border-bottom: 1px solid;")
 ```
 
-As with most visualization design, each involves trade-offs and so careful decision-making. In @fig-dots-heatmap dotplots representing counts of weekend and weekday crashes are *superposed* on the same coordinate space, with connecting lines added to emphasise difference. This strategy is fine where two categories of similar orders of magnitude are compared, but if instead all eight vehicle types were to be encoded with categories differentiated using colour, the plot would be substantially more challenging to process. In @fig-borough-freqs-resids, comparison by vehicle type is instead effected using direct encoding -- residuals coloured above or below an expectation. Notice also the use of *containment*, *juxtaposition* and *layout* in both plots. By containing frequencies for inner- and outer- London  boroughs in separate juxtaposed plots, and within each laying out plot elements top-to-bottom on frequency, the systematic differences in the composition of vehicle types involved in crashes between inner- and outer- London can be inferred.
+As with most visualization design, each involves trade-offs and so careful decision-making. In @fig-dots-heatmap dotplots representing counts of weekend and weekday crashes are *superposed* on the same coordinate space, with connecting lines added to emphasise difference. This strategy is fine where two categories of similar orders of magnitude are compared, but if instead all eight vehicle types were to be encoded with categories differentiated using colour, the plot would be substantially more challenging to process. In @fig-borough-freqs-resids, comparison by vehicle type is instead effected using explicit encoding -- residuals coloured above or below an expectation. Notice also the use of *containment*, *juxtaposition* and *layout* in both plots. By containing frequencies for inner- and outer- London  boroughs in separate juxtaposed plots, and within each laying out plot elements top-to-bottom on frequency, the systematic differences in the composition of vehicle types involved in crashes between inner- and outer- London can be inferred.
 
 #### Comparison and layout {-}
 
@@ -353,7 +353,7 @@ As with most visualization design, each involves trade-offs and so careful decis
 
 Layout is an extremely important mechanism for enabling comparison. The heatmaps in @fig-borough-freqs-resids, for example, would be much less effective were some default alphabetical ordering of boroughs used. This applies especially when exploring geography. Spatial relations are highly complex and notoriously difficult to model. It would be difficult to imagine how the sorts of comparisons in the Washington Post graphics in the previous chapter (@fig-wp-map and @fig-wp-swing) could be made without using graphical methods, laying out the peak and line marks with a geographic arrangement in this case.
 
-@fig-spatial-layout borrows the earlier mosaic plot design to study crash frequencies (bar height) and relative number of weekday/weekend crashes (dark bar width), with frequencies compared between London boroughs. Rather than laying out boroughs top-to-bottom on frequency, boroughs are given an approximate spatial arrangement, generated using the `gridmappr` [@beecham_gridmappr_2023] R package. This arrangement enables several patterns to be quickly inferred. We can observe that pedestrian crashes involving  motorcycles generally occur more in central London boroughs; those involving cars occur in greater relative number during weekends, especially so for those that take place in central London boroughs;
+@fig-spatial-layout borrows the earlier mosaic plot design to study crash frequencies (bar height) and relative number of weekday/weekend crashes (dark bar width), with frequencies compared between London boroughs. Rather than laying out boroughs top-to-bottom on frequency, boroughs are given an approximate spatial arrangement. This is generated using the `gridmappr` [@beecham_gridmappr_2023] R package, which we describe and explore properly in @sec-network. This arrangement enables several patterns to be quickly inferred. We can observe that pedestrian crashes involving  motorcycles generally occur more in central London boroughs; those involving cars occur in greater relative number during weekends, especially so for those that take place in central London boroughs;
  and, different from other vehicle types, pedestrian crashes involving cars occur in similarly large numbers in outer London boroughs (Barnet, Croydon) as inner London boroughs such as Westminster.
 
 <!-- Alternatively we could directly encode difference from expectation by centring the dark bars and varying the widths according to how much the relative number of weekend crashes is above (oriented to right) or below (oriented to left) this expectation (middle plot). The latter approach helps highlight boroughs that are different from the London average: the more dark blue the more atypical that borough is. The largest differences from expectation are in Westminster, with crashes involving vans, motorcycles and bicycles overrepresented amongst weekdays. Finally, if we are to compare across all 33 London boroughs we may chose to reduce some of the detail in the graphic and focus on a subset of vehicle types. As vehicle type is a categorical nominal variable it may also be sensible to encode that variable using colour hue to help associate vehicle types between boroughs.
@@ -668,7 +668,7 @@ The ggplot2 spec for @fig-imd-driver-cas:
 1. *Data*: We create a staged dataset for plotting. Observed values for each cell of the heatmap are computed, along with row and column marginals for calculating expected values. We assume that crash frequencies distribute independently of IMD class, and so derive expected values for each cell of the heatmap ($E_{ij}$) from its corresponding column ($C_i$), row ($R_j$) maginals and the grand total of crashes ($GT$):  $E_i = \frac{C_i \times R_i}{GT}$. The graphics in the right margin of  @fig-imd-driver-cas show how expectation is spread in this way. You will notice that `group_by()` does some heavy lifting to arrive at these row, column and cell-level totals.  The way in which the signed chi-score residuals are calculated in the final `group_by()` follows that described earlier in the chapter.
 2. *Encoding*: Cells of the heatmap are arranged in `x` and `y` on the IMD class of pedestrians and drivers and filled according to signed chi-score residuals. .
 3. *Marks*: `geom_tile()` for drawing cells of the heatmap.
-4. *Scale*: `scale_fill_distiller()` for continuous [ColorBrewer](https://colorbrewer2.org/#type=sequential&scheme=BuGn&n=3) scheme, diverging using the `RdBu` palette. To make the scheme centred on 0, the maximum absolute residual value in `model_data` is used.
+4. *Scale*: `scale_fill_distiller()` for continuous [ColorBrewer](https://colorbrewer2.org/#type=sequential&scheme=BuGn&n=3) [@harrower_colorbrewerorg_2003], diverging using the `RdBu` palette. To make the scheme centred on 0, the maximum absolute residual value in `model_data` is used.
 
 ::: {.callout-tip icon="false"}
 ## Task
@@ -759,13 +759,34 @@ model_data |>
 ```
 
 ::: {.callout-tip icon="false"}
-## Task
-**TODO:** Add in task here asking to recreate a plot that uses layout for comparison (maybe looking at comparing injuries by age, urban-rural, conditions). Show plot image and construct from here.
+## Task: Design challenge
+
+<!-- This technical section was quite specialised visually-informed informing model development, but -->
+
+Key to developing data graphics in any exploratory anaysis is proficiency in implementing strategies for comparison (e.g. @tbl-comparison-strategies). @fig-age-imd-light makes use of juxtaposition (top graphic), superposition + explicit encoding (bottom graphic) to compare pedestrian casualties taking place in daylight/darkness and against the age of pedestrians injured and the IMD class of the crash location.  
+
+As expected from the analysis at the start of this chapter, there is a peak in youger adults being injured in pedestrian road crashes.  For crashes taking place in darkness, this peak is less extreme and shifts to slightly 'older' young adult ages. 
+
+In total, 71% of recorded pedestrian crashes occur in daylight. The bottom graphic uses this proportion to explicitly encode an *expected* number of daylight crashes at each age group -- e.g. if one were to randomly select an age and deprivation grouping, we would expect 71% of crashes to occur in daylight. This addition helps expose that there are slightly more crashes recorded in darkness for crashes taking place in mid-deprivation locations and involving younger and middle-age pedestrians. A more subtle pattern is of slightly fewer crashes in darkness than expected in older adults.
+
+```{r}
+#| label: fig-age-imd-light
+#| fig-cap: "Pedestrian casualties by age of pedestrian, IMD quintile of crash location and level of darkness."
+#| out.width: 100%
+#| echo: false
+#| eval: true
+#| warning: false
+
+include_graphics("figs/04/age_light_imd.png", error = FALSE)
+```
+
+Try writing some `dplyr` and ggplot2 code to generate data graphics similar to @fig-age-imd-light, or perhaps using the same layout and plot grammar but conditioning on some other category of interest in the `ped_veh` dataset. You will want to consider how the variables (`age_of_casualty`, `crash_quintile`, `light_conditions`) are mapped to visual channels via position, colour and spatial region (juxtaposition). 
+
 :::
 
 ## Conclusions
 
-Exploratory data analysis (EDA) is an approach to analysis that aims to amplify knowledge and understanding of a dataset. The idea is to explore structure, and data-driven hypotheses, by quickly generating many often throwaway statistical and graphical summaries. In this chapter we discussed chart types for exposing distributions and relationships in a dataset, depending on data type. We also showed that EDA is not model-free. Data graphics help us to see dominant patterns and from here formulate expectations that are to be modelled. Different from so-called confirmatory data analysis, however, in an EDA the goal of model-building is not “to identify whether the model fits or not […] but rather to understand in what ways the fitted model departs from the data” [ @gelman_exploratory_2004]. We covered visualization approaches to supporting comparison between data and expectation using juxtaposition, superimposition and direct encoding [@gleicher_visual_2011]. The chapter did not provide an exhaustive survey of EDA approaches, and certainly not an exhaustive set of chart types and model formulations for exposing distributions and relationships. By linking the chapter closely to the STATS19 dataset, we learnt a workflow for EDA that is common to most effective data analysis and communication activity:
+Exploratory data analysis (EDA) is an approach to analysis that aims to amplify knowledge and understanding of a dataset. The idea is to explore structure, and data-driven hypotheses, by quickly generating many often throwaway statistical and graphical summaries. In this chapter we discussed chart types for exposing distributions and relationships in a dataset, depending on data type. We also showed that EDA is not model-free. Data graphics help us to see dominant patterns and from here formulate expectations that are to be modelled. Different from so-called confirmatory data analysis, however, in an EDA the goal of model-building is not “to identify whether the model fits or not […] but rather to understand in what ways the fitted model departs from the data” [ @gelman_exploratory_2004]. We covered visualization approaches to supporting comparison between data and expectation using juxtaposition, superimposition and explicit encoding [@gleicher_visual_2011]. The chapter did not provide an exhaustive survey of EDA approaches, and certainly not an exhaustive set of chart types and model formulations for exposing distributions and relationships. By linking the chapter closely to the STATS19 dataset, we learnt a workflow for EDA that is common to most effective data analysis and communication activity:
 
 1. Expose pattern
 2. Model an expectation derived from pattern

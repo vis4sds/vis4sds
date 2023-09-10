@@ -543,18 +543,18 @@ plot <- ggplot() +
   
   annotate("text", 
            label=str_wrap("central job-rich boroughs draw workers from across London", 30),
-           x=.7, y=.9, size=2.5, hjust="left", family="Avenir Book") +
+           x=.7, y=.92, size=2.3, hjust="left", family="Avenir Book") +
   annotate(
     geom = "curve",
     x = .63, xend = .69,
-    y = .85, yend = .9,
+    y = .85, yend = .92,
     curvature = -.3,
     angle = 135, size=.1
   ) +
   
   annotate("text", 
            label=str_wrap("outer London boroughs have more self-contained labour markets",40),
-           x=.575, y=-.03, size=2.5, hjust="right", family="Avenir Book") +
+           x=.575, y=-.03, size=2.3, hjust="right", family="Avenir Book") +
   annotate(
     geom = "curve",
     x = .585, xend = .585,
@@ -1422,76 +1422,76 @@ ggsave(filename=here("figs", "05", "nodes_gridmap.png"), plot=real,width=5.5, he
 
 # 3.5 OD against exp model 1 ----------------
 
-# plot_data <- edges |> mutate(non_prof = commutes-is_prof) |> 
-#   rename(prof = is_prof) |>
-#   ungroup() |>
-#   mutate(global_prof = sum(prof) / sum(prof + non_prof)) |>
-#   group_by(d_bor) |>
-#   mutate(
-#     count = prof + non_prof, 
-#     obs = prof, 
-#     exp = (global_prof * count), 
-#     resid = (obs - exp) / (exp^.7)
-#     ) |>
-#   ungroup() |>
-#   left_join(grid |> select(area_name), by = c("o_bor" = "area_name")) |>
-#   mutate(
-#     bor_label = if_else(o_bor == d_bor, d_bor, ""),
-#     bor_focus = o_bor == d_bor
-#   ) |>
-#   st_as_sf()
-# 
-# bbox_grid <- st_bbox(grid)
-# width <- bbox_grid$xmax - bbox_grid$xmin
-# height <- bbox_grid$ymax - bbox_grid$ymin
-# 
-# range_resid <- max(abs(plot_data$resid))
-# 
-# plot <- plot_data |> 
-#   ggplot() +
-#   geom_tile(
-#     data = . %>% filter(bor_focus),
-#     aes(x = bbox_grid$xmin + .5 * width, y = bbox_grid$ymin + .5 * height),
-#     height = height * 1.02, width = width * 1.02, linewidth = .1, fill = "transparent", colour = "#525252"
-#     ) +
-#   geom_sf(aes(fill = resid), colour = "#ffffff", size = 0.15, alpha = 1) +
-#   geom_sf(data = . %>% filter(bor_focus), fill = "transparent", colour = "#525252", size = 0.1) +
-#   # geom_text(
-#   #   data = plot_data %>% filter(bor_focus),
-#   #   aes(x = o_x, y = o_y, label = str_extract(o_bor, "^.{1}")),
-#   #   colour = "#525252", alpha = 1, size = 2,
-#   #   hjust = "centre", vjust = "middle", family="Avenir Black"
-#   # ) +
-#   geom_text(
-#     data = plot_data %>% filter(bor_focus),
-#     aes(x = bbox_grid$xmax, y = bbox_grid$ymin, label = abbreviate(o_bor, 3)),
-#     colour = "#252525", alpha = 0.9, size = 3.5,
-#     hjust = "right", vjust = "bottom"
-#   ) +
-#   coord_sf(crs = st_crs(plot_data), datum = NA) +
-#   labs(x="", y="") +
-#   facet_grid(-d_row ~ d_col, shrink = FALSE) +
-#   labs(
-#     fill = "",
-#     caption = "exp: prof vs. non-prof job flows distribute uniformly within borough<br> <span style = 'color: #67001f;'> more professional  </span> | <span style = 'color: #053061;'> more non-professional </span> <br> dark colour: large number commutes + difference from exp"
-#   ) +
-#   scale_fill_distiller(
-#     palette = "RdBu", 
-#     direction = -1, 
-#     breaks = c(-range_resid, 0, range_resid), 
-#     labels = c("non-prof", "avg", "prof"), 
-#     limits = c(-range_resid, range_resid),
-#     guide="none"
-#     ) +
-#   theme(
-#     panel.spacing = unit(-0.1, "lines"),
-#     strip.text.x = element_blank(), strip.text.y = element_blank(),
-#     plot.caption = element_markdown(hjust = 1, margin = margin(1, 1, 10, 1), size=10, colour="#000000"), 
-#     plot.title = element_text(hjust = .5, margin = margin(1, 1, 2, 1), size=14),
-#     legend.position = "right", legend.margin = margin(5, 0, 0, 0),
-#     legend.key.size = unit(.6, "cm")
-#   )
-# 
+plot_data <- edges |> mutate(non_prof = commutes-is_prof) |>
+  rename(prof = is_prof) |>
+  ungroup() |>
+  mutate(global_prof = sum(prof) / sum(prof + non_prof)) |>
+  group_by(d_bor) |>
+  mutate(
+    count = prof + non_prof,
+    obs = prof,
+    exp = (global_prof * count),
+    resid = (obs - exp) / (exp^.7)
+    ) |>
+  ungroup() |>
+  left_join(grid |> select(area_name), by = c("o_bor" = "area_name")) |>
+  mutate(
+    bor_label = if_else(o_bor == d_bor, d_bor, ""),
+    bor_focus = o_bor == d_bor
+  ) |>
+  st_as_sf()
+
+bbox_grid <- st_bbox(grid)
+width <- bbox_grid$xmax - bbox_grid$xmin
+height <- bbox_grid$ymax - bbox_grid$ymin
+
+range_resid <- max(abs(plot_data$resid))
+
+plot <- plot_data |>
+  ggplot() +
+  geom_tile(
+    data = . %>% filter(bor_focus),
+    aes(x = bbox_grid$xmin + .5 * width, y = bbox_grid$ymin + .5 * height),
+    height = height * 1.02, width = width * 1.02, linewidth = .1, fill = "transparent", colour = "#525252"
+    ) +
+  geom_sf(aes(fill = resid), colour = "#ffffff", size = 0.15, alpha = 1) +
+  geom_sf(data = . %>% filter(bor_focus), fill = "transparent", colour = "#525252", size = 0.1) +
+  # geom_text(
+  #   data = plot_data %>% filter(bor_focus),
+  #   aes(x = o_x, y = o_y, label = str_extract(o_bor, "^.{1}")),
+  #   colour = "#525252", alpha = 1, size = 2,
+  #   hjust = "centre", vjust = "middle", family="Avenir Black"
+  # ) +
+  geom_text(
+    data = plot_data %>% filter(bor_focus),
+    aes(x = bbox_grid$xmax, y = bbox_grid$ymin, label = abbreviate(o_bor, 3)),
+    colour = "#252525", alpha = 0.9, size = 3.5,
+    hjust = "right", vjust = "bottom"
+  ) +
+  coord_sf(crs = st_crs(plot_data), datum = NA) +
+  labs(x="", y="") +
+  facet_grid(-d_row ~ d_col, shrink = FALSE) +
+  labs(
+    fill = "",
+    caption = "exp: prof vs. non-prof job flows distribute uniformly within borough<br> <span style = 'color: #67001f;'> more professional  </span> | <span style = 'color: #053061;'> more non-professional </span> <br> dark colour: large number commutes + difference from exp"
+  ) +
+  scale_fill_distiller(
+    palette = "RdBu",
+    direction = -1,
+    breaks = c(-range_resid, 0, range_resid),
+    labels = c("non-prof", "avg", "prof"),
+    limits = c(-range_resid, range_resid),
+    guide="none"
+    ) +
+  theme(
+    panel.spacing = unit(-0.1, "lines"),
+    strip.text.x = element_blank(), strip.text.y = element_blank(),
+    plot.caption = element_markdown(hjust = 1, margin = margin(1, 1, 10, 1), size=10, colour="#000000"),
+    plot.title = element_text(hjust = .5, margin = margin(1, 1, 2, 1), size=14),
+    legend.position = "right", legend.margin = margin(5, 0, 0, 0),
+    legend.key.size = unit(.6, "cm")
+  )
+
 # 
 
 bbox_grid <- st_bbox(grid)
@@ -1597,36 +1597,29 @@ are <span style = 'color: #67001f;'>**more professional**</span><br> than expect
 note2 <- "commutes into outer London<br> boroughs
 are <span style = 'color: #053061;'>**more non-**</span><br><span style = 'color: #053061;'>**professional**</span> than expected"
 
-
-
-"Vehicle types other than cars <br> <span style = 'color: #b2182b; font-face:'Avenir Heavy''>over-represented</span> in inner London<br> crashes"
-
 plot <- ggplot() +
   annotation_raster(img, 0, 1, 0, 1*aspect) +
-  # annotate("richtext", label= "Expectation: commutes by occupation<br> **uniformly** distributed",
-  #          x=-0.01, y=.73, fill = NA, label.color = NA, size=2.9, hjust="left", family="Avenir"
-  #    ) +
-  annotate("richtext", label= "Expectation: commutes by occupation<br> **depend** on destination",
+  annotate("richtext", label= "Expectation: commutes by occupation<br> *uniformly* distributed",
            x=-0.01, y=.73, fill = NA, label.color = NA, size=2.9, hjust="left", family="Avenir"
      ) +
+  # annotate("richtext", label= "Expectation: commutes by occupation<br> *depend* on destination",
+  #          x=-0.01, y=.73, fill = NA, label.color = NA, size=2.5, hjust="left", family="Avenir"
+  #    ) +
+
   
-  # annotate("richtext", label=exp1,
-  #          x=0, y=.65, fill = NA, label.color = NA, size=2.5, hjust="left", family="Avenir Book"
-  # ) +
-  
-  annotate("richtext", label=exp2,
-           x=0, y=.65, fill = NA, label.color = NA, size=2.5, hjust="left", family="Avenir Book"
+  annotate("richtext", label=exp1,
+           x=0, y=.65, fill = NA, label.color = NA, size=2.2, hjust="left", family="Avenir Book"
   ) +
   
   annotate("richtext", label=note1,
-           x=0.75, y=.43, fill = NA, label.color = NA, size=2.3, hjust="left", family="Avenir"
+           x=0.75, y=.43, fill = NA, label.color = NA, size=2, hjust="left", family="Avenir"
   ) +
   
   # annotate("richtext", label=note2,
   #          x=0.75, y=.25, fill = NA, label.color = NA, size=2.3, hjust="left", family="Avenir"
   # ) +
   annotate("richtext", label=note2,
-           x=0.75, y=.243, fill = NA, label.color = NA, size=2.3, hjust="left", family="Avenir"
+           x=0.75, y=.243, fill = NA, label.color = NA, size=2, hjust="left", family="Avenir"
   ) +
   
   
@@ -1643,1080 +1636,5 @@ ggsave(filename=here("figs", "05", "test.png"), plot=plot,width=7, height=6, dpi
 
 ggsave(filename=here("figs", "05", "edges_odmap.png"), plot=plot,width=7, height=6, dpi=500)
 ggsave(filename=here("figs", "05", "edges_odmap_within.png"), plot=plot,width=7, height=6, dpi=500)
-
-
-
-nodes_d <- od_pairs_borough %>% 
-  group_by(la_2) %>% 
-  summarise(
-    across(c(all:other), sum)
-  ) %>% 
-  ungroup %>% 
-  rename(bor = la_2) %>% 
-  mutate(
-    type="destination", 
-    public_transport=train+bus+light_rail, 
-    car=car_driver+car_passenger,
-    active=bicycle+foot
-  ) %>% 
-  select(-c(other, car_driver, car_passenger, train, bus, light_rail, 
-           taxi, motorbike, other, from_home,  bicycle, foot))
-
-nodes_o <- od_pairs_borough %>% 
-  group_by(la_1) %>% 
-  summarise(
-    across(c(all:other), sum)
-  ) %>% 
-  ungroup %>% 
-  rename(bor = la_1) %>% 
-  mutate(
-    type="origin", 
-    public_transport=train+bus+light_rail, 
-    car=car_driver+car_passenger,
-    active=bicycle+foot
-  ) %>% 
-  select(-c(other, car_driver, car_passenger, train, bus, light_rail, 
-           taxi, motorbike, other, from_home,  bicycle, foot)
-         )
-
-nodes  <- nodes_o %>% rbind(nodes_d) 
-
-bor_orders <- nodes %>% 
-  filter(type=="destination") %>%  
-  arrange(-all) %>% pull(bor)
-
-# pt #4daf4a - green, active #377eb8 - blue, car #e41a1c - red
-# green - #006d2c, red - #a50f15, blue - #08519c
-
-bars <- nodes %>% 
-  left_join(grid_real_sf %>% st_drop_geometry() %>% select(authority, BOR), by=c("bor"="authority")) %>% 
-  pivot_longer(cols=c(active, public_transport, car), names_to="mode", values_to="count") %>% 
-  mutate(bor=factor(bor, levels=bor_orders)) %>% 
-  ggplot() +
-  geom_col(aes(x=bor, y=count, fill=mode)) +
-  #scale_fill_manual(values=c("#377eb8","#e41a1c", "#4daf4a"))+
-  scale_fill_manual(values=c("#2171b5","#cb181d", "#238b45"))+
-  guides(fill=FALSE)+
-  labs(x="", y="count") +
-  facet_wrap(~type, nrow=2)+
-  coord_flip() 
-
-
-bars <- nodes %>% 
-  left_join(grid_real_sf %>% st_drop_geometry() %>% select(authority, BOR), by=c("bor"="authority")) %>% 
-  pivot_longer(cols=c(active, public_transport, car), names_to="mode", values_to="count") %>% 
-  mutate(bor=factor(bor, levels=bor_orders)) %>% 
-  ggplot() +
-  geom_col(aes(x=bor, y=count, fill=mode)) +
-  #scale_fill_manual(values=c("#377eb8","#e41a1c", "#4daf4a"))+
-  scale_fill_manual(values=c("#2171b5","#cb181d", "#238b45"))+
-  guides(fill=FALSE)+
-  labs(x="", y="count") +
-  facet_wrap(~type, ncol=2)+
-  theme(axis.text.x = element_text(angle=90))
-
-bars_filled <- nodes %>% 
-  pivot_longer(cols=c(active, public_transport, car), names_to="mode", values_to="count") %>% 
-  mutate(bor=factor(bor, levels=bor_orders)) %>% 
-  ggplot() +
-  geom_col(aes(x=bor, y=count, fill=mode), position="fill") +
-  scale_fill_manual(values=c("#2171b5","#cb181d", "#238b45"))+
-  labs(x="", y="count") +
-  facet_wrap(~type, nrow=2)+
-  theme(legend.position="right",
-        axis.text.x = element_blank(), axis.text.y = element_blank(), 
-        axis.title.y = element_blank(), axis.title.x = element_blank()) +
-  coord_flip()
-
-bars_filled <- nodes %>% 
-  pivot_longer(cols=c(active, public_transport, car), names_to="mode", values_to="count") %>% 
-  mutate(bor=factor(bor, levels=bor_orders)) %>% 
-  ggplot() +
-  geom_col(aes(x=bor, y=count, fill=mode), position="fill") +
-  scale_fill_manual(values=c("#2171b5","#cb181d", "#238b45"))+
-  labs(x="", y="count") +
-  facet_wrap(~type, ncol=2)+
-  theme(
-        axis.text.x = element_blank(), axis.text.y = element_blank(), 
-        axis.title.y = element_blank(), axis.title.x = element_blank()) 
-
-plot <- bars + bars_filled + (dest_plot/origin_plot)+ plot_layout(widths=c(.3,.25,.45)) +
-  plot_annotation(
-    title="Frequencies of commutes into- (destination) and out of- (origin) London boroughs by travel mode",
-    subtitle="--Bars, filled bars (showing proportion by mode) and relaxed spatial arrangement",
-    caption="2011 Census data accessed via `pct` package"
-  )
-
-
-library(ggmosaic)
-
-dest_origin_plot <- nodes %>% 
-  left_join(grid_real_sf %>% st_drop_geometry() %>% filter(type=="grid") %>% 
-                      select(authority, BOR,x,y),by=c("bor"="authority")) %>% 
-  pivot_longer(cols=c(active, public_transport, car), names_to="mode", values_to="count") %>% 
-  mutate(type_abbr=str_sub(type,1,1)) %>% 
-  group_by(bor) %>%
-  mutate(bor_total=sum(count)) %>% 
-  group_by(bor,type) %>% 
-  mutate(type_total=sum(count)) %>% 
-  ggplot() +
-  geom_col(aes(x=type_abbr, y=count/bor_total, fill=mode))+
-  geom_text(data=. %>% filter(mode=="active", type=="destination"), aes(x=1.5, y=1, label=BOR), vjust="top", hjust="centre")+
-  geom_text(data=. %>% filter(mode=="active", type=="destination"), aes(x=1.4, y=.85, label="dest"), vjust="top", hjust="right", size=3, family="Roboto Light")+
-  geom_text(data=. %>% filter(mode=="active", type=="origin"), aes(x=1.6, y=.85, label="origin"), vjust="top", hjust="left", size=3, family="Roboto Light")+
-  scale_fill_manual(values=c("#2171b5","#cb181d", "#238b45"))+
-  scale_alpha_continuous(range=c(.4,1))+
-  facet_grid(y~x)+
-  guides(fill=FALSE, alpha=FALSE)+
-  theme(
-    panel.spacing.y=unit(.2, "lines"), panel.spacing.x=unit(.2, "lines"), 
-    panel.background = element_rect(fill="#ffffff", colour="#ffffff"),
-    axis.title.x = element_blank(),axis.title.y = element_blank(),
-    axis.text.x=element_blank(), axis.text.y = element_blank(),
-    strip.text.x=element_blank(), strip.text.y = element_blank(),
-    panel.grid=element_blank(),
-  )
-  
-
-
-dest_plot <- nodes %>% 
-  filter(type=="destination") %>% 
-  left_join(grid_real_sf %>% st_drop_geometry() %>% filter(type=="grid") %>% 
-              select(authority, BOR,x,y),by=c("bor"="authority")) %>% 
-  pivot_longer(cols=c(active, public_transport, car), names_to="mode", values_to="count") %>% 
-  group_by(bor,type) %>% 
-  mutate(total_commutes=sum(count)) %>% 
-  ggplot() +
-  geom_col(aes(x=0, y=count, fill=mode, alpha=total_commutes), position="fill")+
-  geom_text(data=. %>% filter(mode=="active"), aes(x=0, y=.5, label=BOR))+
-  scale_fill_manual(values=c("#2171b5","#cb181d", "#238b45"))+
-  scale_alpha_continuous(range=c(.4,1))+
-  facet_grid(y~x)+
-  labs(subtitle="destination")+
-  guides(fill=FALSE, alpha=FALSE)+
-  theme(
-    panel.spacing.y=unit(-.1, "lines"), panel.spacing.x=unit(-.2, "lines"), 
-    axis.title.x = element_blank(),axis.title.y = element_blank(),
-    axis.text.x=element_blank(), axis.text.y = element_blank(),
-    strip.text.x=element_blank(), strip.text.y = element_blank(),
-    panel.grid=element_blank()
-  )
-
-origin_plot <- nodes %>% 
-  filter(type=="origin") %>% 
-  left_join(grid_real_sf %>% st_drop_geometry() %>% filter(type=="grid") %>% 
-              select(authority, BOR,x,y),by=c("bor"="authority")) %>% 
-  pivot_longer(cols=c(active, public_transport, car), names_to="mode", values_to="count") %>% 
-  group_by(bor,type) %>% 
-  mutate(total_commutes=sum(count)) %>% 
-  ggplot() +
-  geom_col(aes(x=0, y=count, fill=mode, alpha=total_commutes), position="fill")+
-  geom_text(data=. %>% filter(mode=="active"), aes(x=0, y=.5, label=BOR))+
-  scale_fill_manual(values=c("#2171b5","#cb181d", "#238b45"))+
-  scale_alpha_continuous(range=c(.4,1))+
-  guides(fill=FALSE, alpha=FALSE)+
-  labs(subtitle="origin")+
-  facet_grid(y~x)+
-  theme(
-    panel.spacing.y=unit(-.1, "lines"), panel.spacing.x=unit(-.2, "lines"), 
-    axis.title.x = element_blank(),axis.title.y = element_blank(),
-    axis.text.x=element_blank(), axis.text.y = element_blank(),
-    strip.text.x=element_blank(), strip.text.y = element_blank(),
-    panel.grid=element_blank()
-  )
-
-ggsave(filename="./static/class/05-class_files/mode-plots.png", plot=plot,width=16, height=12, dpi=300)
-
-plot <- bars / bars_filled / (dest_plot|origin_plot)+ plot_layout(heights=c(.35,.15,.5)) +
-  plot_annotation(
-    title="Frequencies of commutes into- (destination) and out of- (origin) London boroughs by travel mode",
-    subtitle="--Bars, filled bars (showing proportion by mode) and relaxed spatial arrangement",
-    caption="2011 Census data accessed via `pct` package"
-  )
-
-ggsave(filename="./static/class/05-class_files/mode-plots.png", plot=plot,width=12, height=13, dpi=300)
-
-
-
-
-layout <- "
-AAAAAAAA
-BBBBBBBB
-#CCCCCC#"
-
-
-plot <- bars + bars_filled + dest_origin_plot + plot_layout(design = layout, heights=c(.2,.1,.7)) +
-  plot_annotation(
-    title="Frequencies of commutes into- (destination) and out of- (origin) London boroughs by travel mode",
-    subtitle="--Bars, filled bars (showing proportion by mode) and relaxed spatial arrangement",
-    caption="2011 Census data accessed via `pct` package"
-  )
-
-ggsave(filename="./static/class/05-class_files/mode-plots.png", plot=plot,width=12, height=13, dpi=300)
-
-
-
-# Temporary plot object of data joined to geom_sf geometries. DO map so geometries join on origin.
-plot_data_temp <- grid_real_sf %>% filter(type=="grid") %>% right_join(edges, by=c("authority"="o_bor")) %>% 
-  mutate(o_bor=authority) %>% 
-  rename(o_fx=x, o_fy=y) %>% 
-  left_join(grid_real_sf %>% filter(type=="grid") %>% st_drop_geometry() %>% select(authority,x,y), by=c("d_bor"="authority")) %>%
-  rename(d_fx=x, d_fy=y) 
-
-# Identify borough in focus (edit this to switch between D-OD and O-DO matrix).
-plot_data_temp <- plot_data_temp %>% mutate(bor_label=if_else(o_bor==d_bor,d_bor,""),
-                                            bor_focus=if_else(o_bor==d_bor,1,0))
-
-# width
-width <- plot_data_temp %>% summarise(width=max(east)-min(east))  %>% pull(width)
-# height
-height <- plot_data_temp %>% summarise(height=max(north)-min(north)) %>% pull(height)
-
-#373737
-#ffffff
-bbox_grid <- st_bbox(grid_real_sf %>% filter(type=="grid"))
-
-
-
-d_od_global_pt <- ggplot()+
-  geom_sf(data=plot_data_temp %>% 
-            mutate(count=public_transport),# count=if_else(o_bor==d_bor,0,count)), 
-aes(fill=count), colour="#616161", size=0.15, alpha=0.9)+
-  geom_sf(data=plot_data_temp  %>% filter(bor_focus==1), fill="transparent",  colour="#373737", size=0.3)+
-  geom_text(data=plot_data_temp %>% filter(bor_focus==1), 
-            aes(x=east, y=north, label=str_sub(BOR,1,1)), 
-            colour="#252525", alpha=0.9, size=2, show.legend=FALSE, family="Roboto Condensed", 
-            hjust="centre", vjust="middle")+
-  geom_text(data=plot_data_temp %>% filter(bor_focus==1), 
-            aes(x=bbox_grid$xmax, y=bbox_grid$ymin, label=BOR), 
-            colour="#252525", alpha=0.6, size=2, show.legend=FALSE, family="Roboto Condensed", 
-            hjust="right", vjust="bottom")+
-  coord_sf(crs=st_crs(plot_data_temp), datum=NA)+
-  guides(fill=FALSE)+
-  labs(
-    title="public transport: large cells: destinations; small cells; origins")+
-  facet_grid(d_fy~d_fx, shrink=FALSE)+
-  scale_fill_distiller(palette="Greens", direction=1)+
-  theme(
-    panel.spacing=unit(0.1, "lines"),
-    #legend.position="right",
-    axis.title.x=element_blank(),axis.title.y=element_blank(),
-    strip.text.x = element_blank(), strip.text.y = element_blank(),
-    legend.key = element_rect(size=1),
-    plot.title = element_text(size = 8),
-    legend.title = element_text(size = 6),
-    legend.text = element_text(size = 0),
-    legend.key.size = unit(.5,"line"),
-    panel.background = element_rect(fill="#ffffff", colour="#ffffff")
-  )
-
-
-d_od_global_active <- ggplot()+
-  geom_sf(data=plot_data_temp %>% 
-            mutate(count=active), #count=if_else(o_bor==d_bor,0,count)), 
-          aes(fill=count), colour="#616161", size=0.15, alpha=0.9)+
-  geom_sf(data=plot_data_temp  %>% filter(bor_focus==1), fill="transparent",  colour="#373737", size=0.3)+
-  geom_text(data=plot_data_temp %>% filter(bor_focus==1), 
-            aes(x=east, y=north, label=str_sub(BOR,1,1)), 
-            colour="#ffffff", alpha=0.9, size=2, show.legend=FALSE, family="Roboto Condensed", 
-            hjust="centre", vjust="middle")+
-  geom_text(data=plot_data_temp %>% filter(bor_focus==1), 
-            aes(x=bbox_grid$xmax, y=bbox_grid$ymin, label=BOR), 
-            colour="#252525", alpha=0.6, size=2, show.legend=FALSE, family="Roboto Condensed", 
-            hjust="right", vjust="bottom")+
-  coord_sf(crs=st_crs(plot_data_temp), datum=NA)+
-  guides(fill=FALSE)+
-  labs(
-    title="foot+bike: large cells: destinations; small cells; origins")+
-  facet_grid(d_fy~d_fx, shrink=FALSE)+
-  scale_fill_distiller(palette="Blues", direction=1)+
-  theme(
-    panel.spacing=unit(0.1, "lines"),
-    #legend.position="right",
-    axis.title.x=element_blank(),axis.title.y=element_blank(),
-    strip.text.x = element_blank(), strip.text.y = element_blank(),
-    legend.key = element_rect(size=1),
-    plot.title = element_text(size = 8),
-    legend.title = element_text(size = 6),
-    legend.text = element_text(size = 0),
-    legend.key.size = unit(.5,"line"),
-    panel.background = element_rect(fill="#ffffff", colour="#ffffff")
-  )
-
-d_od_global_car <- ggplot()+
-  geom_sf(data=plot_data_temp %>% 
-            mutate(count=car),# count=if_else(o_bor==d_bor,0,count)), 
-          aes(fill=count), colour="#616161", size=0.15, alpha=0.9)+
-  geom_sf(data=plot_data_temp  %>% filter(bor_focus==1), fill="transparent",  colour="#373737", size=0.3)+
-  geom_text(data=plot_data_temp %>% filter(bor_focus==1), 
-            aes(x=east, y=north, label=str_sub(BOR,1,1)), 
-            colour="#ffffff", alpha=0.9, size=2, show.legend=FALSE, family="Roboto Condensed", 
-            hjust="centre", vjust="middle")+
-  geom_text(data=plot_data_temp %>% filter(bor_focus==1), 
-            aes(x=bbox_grid$xmax, y=bbox_grid$ymin, label=BOR), 
-            colour="#252525", alpha=0.6, size=2, show.legend=FALSE, family="Roboto Condensed", 
-            hjust="right", vjust="bottom")+
-  coord_sf(crs=st_crs(plot_data_temp), datum=NA)+
-  guides(fill=FALSE)+
-  labs(
-    title="Car: large cells: destinations; small cells; origins")+
-  facet_grid(d_fy~d_fx, shrink=FALSE)+
-  scale_fill_distiller(palette="Reds", direction=1)+
-  theme(
-    panel.spacing=unit(0.1, "lines"),
-    #legend.position="right",
-    axis.title.x=element_blank(),axis.title.y=element_blank(),
-    strip.text.x = element_blank(), strip.text.y = element_blank(),
-    legend.key = element_rect(size=1),
-    plot.title = element_text(size = 8),
-    legend.title = element_text(size = 6),
-    legend.text = element_text(size = 0),
-    legend.key.size = unit(.5,"line"),
-    panel.background = element_rect(fill="#ffffff", colour="#ffffff")
-  )
-
-d_od_local_pt <- ggplot()+
-  geom_sf(data=plot_data_temp %>% 
-            group_by(d_bor) %>% 
-            mutate(count=public_transport,# count=if_else(o_bor==d_bor,0,count),
-                   count_rescaled=(count-min(count))/(max(count)-min(count))), 
-          aes(fill=count_rescaled), colour="#616161", size=0.15, alpha=0.9)+
-  geom_sf(data=plot_data_temp  %>% filter(bor_focus==1), fill="transparent",  colour="#373737", size=0.3)+
-  geom_text(data=plot_data_temp %>% filter(bor_focus==1), 
-            aes(x=east, y=north, label=str_sub(BOR,1,1)), 
-            colour="#ffffff", alpha=0.9, size=2, show.legend=FALSE, family="Roboto Condensed", 
-            hjust="centre", vjust="middle")+
-  geom_text(data=plot_data_temp %>% filter(bor_focus==1), 
-            aes(x=bbox_grid$xmax, y=bbox_grid$ymin, label=BOR), 
-            colour="#252525", alpha=0.6, size=2, show.legend=FALSE, family="Roboto Condensed", 
-            hjust="right", vjust="bottom")+
-  coord_sf(crs=st_crs(plot_data_temp), datum=NA)+
-  guides(fill=FALSE)+
-  labs(
-    title="public transport: large cells: destinations; small cells; origins")+
-  facet_grid(d_fy~d_fx, shrink=FALSE)+
-  scale_fill_distiller(palette="Greens", direction=1)+
-  theme(
-    panel.spacing=unit(0.1, "lines"),
-    #legend.position="right",
-    axis.title.x=element_blank(),axis.title.y=element_blank(),
-    strip.text.x = element_blank(), strip.text.y = element_blank(),
-    legend.key = element_rect(size=1),
-    plot.title = element_text(size = 8),
-    legend.title = element_text(size = 6),
-    legend.text = element_text(size = 0),
-    legend.key.size = unit(.5,"line"),
-    panel.background = element_rect(fill="#ffffff", colour="#ffffff")
-  )
-
-
-d_od_global_active <- ggplot()+
-  geom_sf(data=plot_data_temp %>% 
-            mutate(count=active), #count=if_else(o_bor==d_bor,0,count)), 
-                   aes(fill=count), colour="#616161", size=0.15, alpha=0.9)+
-  geom_sf(data=plot_data_temp  %>% filter(bor_focus==1), fill="transparent",  colour="#373737", size=0.3)+
-  geom_text(data=plot_data_temp %>% filter(bor_focus==1), 
-            aes(x=east, y=north, label=str_sub(BOR,1,1)), 
-            colour="#252525", alpha=0.9, size=2, show.legend=FALSE, family="Roboto Condensed", 
-            hjust="centre", vjust="middle")+
-  geom_text(data=plot_data_temp %>% filter(bor_focus==1), 
-            aes(x=bbox_grid$xmax, y=bbox_grid$ymin, label=BOR), 
-            colour="#252525", alpha=0.6, size=2, show.legend=FALSE, family="Roboto Condensed", 
-            hjust="right", vjust="bottom")+
-  coord_sf(crs=st_crs(plot_data_temp), datum=NA)+
-  guides(fill=FALSE)+
-  labs(
-    title="foot+bike: large cells: destinations; small cells; origins")+
-  facet_grid(d_fy~d_fx, shrink=FALSE)+
-  scale_fill_distiller(palette="Blues", direction=1)+
-  theme(
-    panel.spacing=unit(0.1, "lines"),
-    #legend.position="right",
-    axis.title.x=element_blank(),axis.title.y=element_blank(),
-    strip.text.x = element_blank(), strip.text.y = element_blank(),
-    legend.key = element_rect(size=1),
-    plot.title = element_text(size = 8),
-    legend.title = element_text(size = 6),
-    legend.text = element_text(size = 0),
-    legend.key.size = unit(.5,"line"),
-    panel.background = element_rect(fill="#ffffff", colour="#ffffff")
-  )
-
-d_od_local_active <- ggplot()+
-  geom_sf(data=plot_data_temp %>% 
-            mutate(count=active) %>% # count=if_else(o_bor==d_bor,0,count)) %>% 
-            group_by(d_bor) %>% 
-            mutate(count_rescaled=(count-min(count))/(max(count)-min(count))), aes(fill=count_rescaled), colour="#616161", size=0.15, alpha=0.9)+
-  geom_sf(data=plot_data_temp  %>% filter(bor_focus==1), fill="transparent",  colour="#373737", size=0.3)+
-  geom_text(data=plot_data_temp %>% filter(bor_focus==1), 
-            aes(x=east, y=north, label=str_sub(BOR,1,1)), 
-            colour="#ffffff", alpha=0.9, size=2, show.legend=FALSE, family="Roboto Condensed", 
-            hjust="centre", vjust="middle")+
-  geom_text(data=plot_data_temp %>% filter(bor_focus==1), 
-            aes(x=bbox_grid$xmax, y=bbox_grid$ymin, label=BOR), 
-            colour="#252525", alpha=0.6, size=2, show.legend=FALSE, family="Roboto Condensed", 
-            hjust="right", vjust="bottom")+
-  coord_sf(crs=st_crs(plot_data_temp), datum=NA)+
-  guides(fill=FALSE)+
-  labs(
-    title="foot+bike: large cells: destinations; small cells; origins")+
-  facet_grid(d_fy~d_fx, shrink=FALSE)+
-  scale_fill_distiller(palette="Blues", direction=1)+
-  theme(
-    panel.spacing=unit(0.1, "lines"),
-    #legend.position="right",
-    axis.title.x=element_blank(),axis.title.y=element_blank(),
-    strip.text.x = element_blank(), strip.text.y = element_blank(),
-    legend.key = element_rect(size=1),
-    plot.title = element_text(size = 8),
-    legend.title = element_text(size = 6),
-    legend.text = element_text(size = 0),
-    legend.key.size = unit(.5,"line"),
-    panel.background = element_rect(fill="#ffffff", colour="#ffffff")
-  )
-
-d_od_global_car <- ggplot()+
-  geom_sf(data=plot_data_temp %>% 
-            mutate(count=car),# count=if_else(o_bor==d_bor,0,count)), 
-          aes(fill=count), colour="#616161", size=0.15, alpha=0.9)+
-  geom_sf(data=plot_data_temp  %>% filter(bor_focus==1), fill="transparent",  colour="#373737", size=0.3)+
-  geom_text(data=plot_data_temp %>% filter(bor_focus==1), 
-            aes(x=east, y=north, label=str_sub(BOR,1,1)), 
-            colour="#252525", alpha=0.9, size=2, show.legend=FALSE, family="Roboto Condensed", 
-            hjust="centre", vjust="middle")+
-  geom_text(data=plot_data_temp %>% filter(bor_focus==1), 
-            aes(x=bbox_grid$xmax, y=bbox_grid$ymin, label=BOR), 
-            colour="#252525", alpha=0.6, size=2, show.legend=FALSE, family="Roboto Condensed", 
-            hjust="right", vjust="bottom")+
-  coord_sf(crs=st_crs(plot_data_temp), datum=NA)+
-  guides(fill=FALSE)+
-  labs(
-    title="Car: large cells: destinations; small cells; origins")+
-  facet_grid(d_fy~d_fx, shrink=FALSE)+
-  scale_fill_distiller(palette="Reds", direction=1)+
-  theme(
-    panel.spacing=unit(0.1, "lines"),
-    #legend.position="right",
-    axis.title.x=element_blank(),axis.title.y=element_blank(),
-    strip.text.x = element_blank(), strip.text.y = element_blank(),
-    legend.key = element_rect(size=1),
-    plot.title = element_text(size = 8),
-    legend.title = element_text(size = 6),
-    legend.text = element_text(size = 0),
-    legend.key.size = unit(.5,"line"),
-    panel.background = element_rect(fill="#ffffff", colour="#ffffff")
-  )
-
-
-
-d_od_local_car <- ggplot()+
-  geom_sf(data=plot_data_temp %>% 
-            mutate(count=car)#, count=if_else(o_bor==d_bor,0,count)) 
-          %>%  group_by(d_bor) %>% 
-            group_by(d_bor) %>% 
-            mutate(count_rescaled=(count-min(count))/(max(count)-min(count))), 
-          aes(fill=count_rescaled), colour="#616161", size=0.15, alpha=0.9)+
-  geom_sf(data=plot_data_temp  %>% filter(bor_focus==1), fill="transparent",  colour="#373737", size=0.3)+
-  geom_text(data=plot_data_temp %>% filter(bor_focus==1), 
-            aes(x=east, y=north, label=str_sub(BOR,1,1)), 
-            colour="#ffffff", alpha=0.9, size=2, show.legend=FALSE, family="Roboto Condensed", 
-            hjust="centre", vjust="middle")+
-  geom_text(data=plot_data_temp %>% filter(bor_focus==1), 
-            aes(x=bbox_grid$xmax, y=bbox_grid$ymin, label=BOR), 
-            colour="#252525", alpha=0.6, size=2, show.legend=FALSE, family="Roboto Condensed", 
-            hjust="right", vjust="bottom")+
-  coord_sf(crs=st_crs(plot_data_temp), datum=NA)+
-  guides(fill=FALSE)+
-  labs(
-    title="Car: large cells: destinations; small cells; origins")+
-  facet_grid(d_fy~d_fx, shrink=FALSE)+
-  scale_fill_distiller(palette="Reds", direction=1)+
-  theme(
-    panel.spacing=unit(0.1, "lines"),
-    #legend.position="right",
-    axis.title.x=element_blank(),axis.title.y=element_blank(),
-    strip.text.x = element_blank(), strip.text.y = element_blank(),
-    legend.key = element_rect(size=1),
-    plot.title = element_text(size = 8),
-    legend.title = element_text(size = 6),
-    legend.text = element_text(size = 0),
-    legend.key.size = unit(.5,"line"),
-    panel.background = element_rect(fill="#ffffff", colour="#ffffff")
-  )
-
-# Temporary plot object of data joined to geom_sf geometries. DO map so geometries join on origin.
-plot_data_temp <- grid_real_sf %>% filter(type=="grid") %>% right_join(edges, by=c("authority"="d_bor")) %>% 
-  mutate(d_bor=authority) %>% 
-  rename(d_fx=x, d_fy=y) %>% 
-  left_join(grid_real_sf %>% filter(type=="grid") %>% st_drop_geometry() %>% select(authority,x,y), by=c("o_bor"="authority")) %>%
-  rename(o_fx=x, o_fy=y) 
-
-# Identify borough in focus (edit this to switch between D-OD and O-DO matrix).
-plot_data_temp <- plot_data_temp %>% mutate(bor_label=if_else(o_bor==d_bor,o_bor,""),
-                                            bor_focus=if_else(o_bor==d_bor,1,0))
-
-
-
-o_od_global_pt <- ggplot()+
-  geom_sf(data=plot_data_temp %>% 
-            mutate(count=public_transport),#, count=if_else(o_bor==d_bor,0,count)), 
-                   aes(fill=count), colour="#616161", size=0.15, alpha=0.9)+
-  geom_sf(data=plot_data_temp  %>% filter(bor_focus==1), fill="transparent",  colour="#373737", size=0.3)+
-  geom_text(data=plot_data_temp %>% filter(bor_focus==1), 
-            aes(x=east, y=north, label=str_sub(BOR,1,1)), 
-            colour="#252525", alpha=0.9, size=2, show.legend=FALSE, family="Roboto Condensed", 
-            hjust="centre", vjust="middle")+
-  geom_text(data=plot_data_temp %>% filter(bor_focus==1), 
-            aes(x=bbox_grid$xmax, y=bbox_grid$ymin, label=BOR), 
-            colour="#252525", alpha=0.6, size=2, show.legend=FALSE, family="Roboto Condensed", 
-            hjust="right", vjust="bottom")+
-  coord_sf(crs=st_crs(plot_data_temp), datum=NA)+
-  guides(fill=FALSE)+
-  labs(
-    title="public transport: large cells: origins; small cells; destinations")+
-  facet_grid(o_fy~o_fx, shrink=FALSE)+
-  scale_fill_distiller(palette="Greens", direction=1)+
-  theme(
-    panel.spacing=unit(0.1, "lines"),
-    #legend.position="right",
-    axis.title.x=element_blank(),axis.title.y=element_blank(),
-    strip.text.x = element_blank(), strip.text.y = element_blank(),
-    legend.key = element_rect(size=1),
-    plot.title = element_text(size = 8),
-    legend.title = element_text(size = 6),
-    legend.text = element_text(size = 0),
-    legend.key.size = unit(.5,"line"),
-    panel.background = element_rect(fill="#ffffff", colour="#ffffff")
-  )
-
-
-o_od_local_pt <- ggplot()+
-  geom_sf(data=plot_data_temp %>% 
-            mutate(count=public_transport, count=if_else(o_bor==d_bor,0,count)) %>% 
-            group_by(o_bor) %>% 
-            mutate(count_rescaled=(count-min(count))/(max(count)-min(count))), 
-          aes(fill=count_rescaled), colour="#616161", size=0.15, alpha=0.9)+
-  geom_sf(data=plot_data_temp  %>% filter(bor_focus==1), fill="transparent",  colour="#373737", size=0.3)+
-  geom_text(data=plot_data_temp %>% filter(bor_focus==1), 
-            aes(x=east, y=north, label=str_sub(BOR,1,1)), 
-            colour="#252525", alpha=0.9, size=2, show.legend=FALSE, family="Roboto Condensed", 
-            hjust="centre", vjust="middle")+
-  geom_text(data=plot_data_temp %>% filter(bor_focus==1), 
-            aes(x=bbox_grid$xmax, y=bbox_grid$ymin, label=BOR), 
-            colour="#252525", alpha=0.6, size=2, show.legend=FALSE, family="Roboto Condensed", 
-            hjust="right", vjust="bottom")+
-  coord_sf(crs=st_crs(plot_data_temp), datum=NA)+
-  guides(fill=FALSE)+
-  labs(
-    title="public transport: large cells: origins; small cells; destinations")+
-  facet_grid(o_fy~o_fx, shrink=FALSE)+
-  scale_fill_distiller(palette="Greens", direction=1)+
-  theme(
-    panel.spacing=unit(0.1, "lines"),
-    #legend.position="right",
-    axis.title.x=element_blank(),axis.title.y=element_blank(),
-    strip.text.x = element_blank(), strip.text.y = element_blank(),
-    legend.key = element_rect(size=1),
-    plot.title = element_text(size = 8),
-    legend.title = element_text(size = 6),
-    legend.text = element_text(size = 0),
-    legend.key.size = unit(.5,"line"),
-    panel.background = element_rect(fill="#ffffff", colour="#ffffff")
-  )
-
-
-o_od_global_active <- ggplot()+
-  geom_sf(data=plot_data_temp %>% 
-            mutate(count=active), # count=if_else(o_bor==d_bor,0,count)), 
-          aes(fill=count), colour="#616161", size=0.15, alpha=0.9)+
-  geom_sf(data=plot_data_temp  %>% filter(bor_focus==1), fill="transparent",  colour="#373737", size=0.3)+
-  geom_text(data=plot_data_temp %>% filter(bor_focus==1), 
-            aes(x=east, y=north, label=str_sub(BOR,1,1)), 
-            colour="#ffffff", alpha=0.9, size=2, show.legend=FALSE, family="Roboto Condensed", 
-            hjust="centre", vjust="middle")+
-  geom_text(data=plot_data_temp %>% filter(bor_focus==1), 
-            aes(x=bbox_grid$xmax, y=bbox_grid$ymin, label=BOR), 
-            colour="#252525", alpha=0.6, size=2, show.legend=FALSE, family="Roboto Condensed", 
-            hjust="right", vjust="bottom")+
-  coord_sf(crs=st_crs(plot_data_temp), datum=NA)+
-  guides(fill=FALSE)+
-  labs(
-    title="foot+bike: large cells: origins; small cells; destinations")+
-  facet_grid(o_fy~o_fx, shrink=FALSE)+
-  scale_fill_distiller(palette="Blues", direction=1)+
-  theme(
-    panel.spacing=unit(0.1, "lines"),
-    #legend.position="right",
-    axis.title.x=element_blank(),axis.title.y=element_blank(),
-    strip.text.x = element_blank(), strip.text.y = element_blank(),
-    legend.key = element_rect(size=1),
-    plot.title = element_text(size = 8),
-    legend.title = element_text(size = 6),
-    legend.text = element_text(size = 0),
-    legend.key.size = unit(.5,"line"),
-    panel.background = element_rect(fill="#ffffff", colour="#ffffff")
-  )
-
-o_od_local_active <- ggplot()+
-  geom_sf(data=plot_data_temp %>% 
-            mutate(count=active) %>%  #, count=if_else(o_bor==d_bor,0,count)) %>% 
-            group_by(o_bor) %>% 
-            mutate(count_rescaled=(count-min(count))/(max(count)-min(count))), 
-          aes(fill=count_rescaled), colour="#616161", size=0.15, alpha=0.9)+
-  geom_sf(data=plot_data_temp  %>% filter(bor_focus==1), fill="transparent",  colour="#373737", size=0.3)+
-  geom_text(data=plot_data_temp %>% filter(bor_focus==1), 
-            aes(x=east, y=north, label=str_sub(BOR,1,1)), 
-            colour="#ffffff", alpha=0.9, size=2, show.legend=FALSE, family="Roboto Condensed", 
-            hjust="centre", vjust="middle")+
-  geom_text(data=plot_data_temp %>% filter(bor_focus==1), 
-            aes(x=bbox_grid$xmax, y=bbox_grid$ymin, label=BOR), 
-            colour="#252525", alpha=0.6, size=2, show.legend=FALSE, family="Roboto Condensed", 
-            hjust="right", vjust="bottom")+
-  coord_sf(crs=st_crs(plot_data_temp), datum=NA)+
-  guides(fill=FALSE)+
-  labs(
-    title="foot+bike: large cells: origins; small cells; destinations")+
-  facet_grid(o_fy~o_fx, shrink=FALSE)+
-  scale_fill_distiller(palette="Blues", direction=1)+
-  theme(
-    panel.spacing=unit(0.1, "lines"),
-    #legend.position="right",
-    axis.title.x=element_blank(),axis.title.y=element_blank(),
-    strip.text.x = element_blank(), strip.text.y = element_blank(),
-    legend.key = element_rect(size=1),
-    plot.title = element_text(size = 8),
-    legend.title = element_text(size = 6),
-    legend.text = element_text(size = 0),
-    legend.key.size = unit(.5,"line"),
-    panel.background = element_rect(fill="#ffffff", colour="#ffffff")
-  )
-
-
-
-o_od_global_car <- ggplot()+
-  geom_sf(data=plot_data_temp %>% 
-            mutate(count=car), #count=if_else(o_bor==d_bor,0,count)), 
-          aes(fill=count), colour="#616161", size=0.15, alpha=0.9)+
-  geom_sf(data=plot_data_temp  %>% filter(bor_focus==1), fill="transparent",  colour="#373737", size=0.3)+
-  geom_text(data=plot_data_temp %>% filter(bor_focus==1), 
-            aes(x=east, y=north, label=str_sub(BOR,1,1)), 
-            colour="#ffffff", alpha=0.9, size=2, show.legend=FALSE, family="Roboto Condensed", 
-            hjust="centre", vjust="middle")+
-  geom_text(data=plot_data_temp %>% filter(bor_focus==1), 
-            aes(x=bbox_grid$xmax, y=bbox_grid$ymin, label=BOR), 
-            colour="#252525", alpha=0.6, size=2, show.legend=FALSE, family="Roboto Condensed", 
-            hjust="right", vjust="bottom")+
-  coord_sf(crs=st_crs(plot_data_temp), datum=NA)+
-  guides(fill=FALSE)+
-  labs(
-    title="Car: large cells: origins; small cells; destinations")+
-  facet_grid(o_fy~o_fx, shrink=FALSE)+
-  scale_fill_distiller(palette="Reds", direction=1)+
-  theme(
-    panel.spacing=unit(0.1, "lines"),
-    #legend.position="right",
-    axis.title.x=element_blank(),axis.title.y=element_blank(),
-    strip.text.x = element_blank(), strip.text.y = element_blank(),
-    legend.key = element_rect(size=1),
-    plot.title = element_text(size = 8),
-    legend.title = element_text(size = 6),
-    legend.text = element_text(size = 0),
-    legend.key.size = unit(.5,"line"),
-    panel.background = element_rect(fill="#ffffff", colour="#ffffff")
-  )
-
-o_od_local_car <- ggplot()+
-  geom_sf(data=plot_data_temp %>% 
-            mutate(count=car) %>%  #, count=if_else(o_bor==d_bor,0,count)) %>% 
-          group_by(o_bor) %>% 
-            mutate(count_rescaled=(count-min(count))/(max(count)-min(count))),
-          aes(fill=count_rescaled), colour="#616161", size=0.15, alpha=0.9)+
-  geom_sf(data=plot_data_temp  %>% filter(bor_focus==1), fill="transparent",  colour="#373737", size=0.3)+
-  geom_text(data=plot_data_temp %>% filter(bor_focus==1), 
-            aes(x=east, y=north, label=str_sub(BOR,1,1)), 
-            colour="#ffffff", alpha=0.9, size=2, show.legend=FALSE, family="Roboto Condensed", 
-            hjust="centre", vjust="middle")+
-  geom_text(data=plot_data_temp %>% filter(bor_focus==1), 
-            aes(x=bbox_grid$xmax, y=bbox_grid$ymin, label=BOR), 
-            colour="#252525", alpha=0.6, size=2, show.legend=FALSE, family="Roboto Condensed", 
-            hjust="right", vjust="bottom")+
-  coord_sf(crs=st_crs(plot_data_temp), datum=NA)+
-  guides(fill=FALSE)+
-  labs(
-    title="Car: large cells: origins; small cells; destinations")+
-  facet_grid(o_fy~o_fx, shrink=FALSE)+
-  scale_fill_distiller(palette="Reds", direction=1)+
-  theme(
-    panel.spacing=unit(0.1, "lines"),
-    #legend.position="right",
-    axis.title.x=element_blank(),axis.title.y=element_blank(),
-    strip.text.x = element_blank(), strip.text.y = element_blank(),
-    legend.key = element_rect(size=1),
-    plot.title = element_text(size = 8),
-    legend.title = element_text(size = 6),
-    legend.text = element_text(size = 0),
-    legend.key.size = unit(.5,"line"),
-    panel.background = element_rect(fill="#ffffff", colour="#ffffff")
-  )
-
-plot <- 
-(d_od_global_pt | o_od_global_pt)/
-(d_od_global_active | o_od_global_active)/
-(d_od_global_car | o_od_global_car) +
-  plot_annotation(
-    title="OD maps of commutes into- and out of- London boroughs separately by travel mode: Global colour scaling is used",
-    subtitle="--The left column focuses on destinations (D-OD map); the right on origins (O-OD map)",
-    caption="2011 Census data accessed via `pct` package"
-  )
-
-ggsave(filename="./static/class/05-class_files/od-maps-mode.png", plot=plot,width=10, height=13, dpi=300)
-
-
-
-plot <- 
-  (d_od_local_pt | o_od_local_pt)/
-  (d_od_local_active | o_od_local_active)/
-  (d_od_local_car | o_od_local_car) +
-  plot_annotation(
-    title="OD maps of commutes into- and out of- London boroughs separately by travel mode: Local colour scaling is used",
-    subtitle="--The left column focuses on destinations (D-OD map); the right on origins (O-OD map)",
-    caption="2011 Census data accessed via `pct` package"
-  )
-
-
-ggsave(filename="./static/class/05-class_files/od-maps-mode-local.png", plot=plot,width=10, height=13, dpi=300)
-
-ggplot()+
-  geom_sf(data=plot_data_temp %>% 
-            mutate(count=car, count=if_else(o_bor==d_bor,0,count)), aes(fill=count), colour="#616161", size=0.15, alpha=0.9)+
-  geom_sf(data=plot_data_temp  %>% filter(bor_focus==1), fill="transparent",  colour="#373737", size=0.3)+
-  geom_text(data=plot_data_temp %>% filter(bor_focus==1), 
-            aes(x=east, y=north, label=str_sub(BOR,1,1)), 
-            colour="#252525", alpha=0.9, size=2, show.legend=FALSE, family="Roboto Condensed", 
-            hjust="centre", vjust="middle")+
-  geom_text(data=plot_data_temp %>% filter(bor_focus==1), 
-            aes(x=bbox_grid$xmax, y=bbox_grid$ymin, label=BOR), 
-            colour="#252525", alpha=0.6, size=2, show.legend=FALSE, family="Roboto Condensed", 
-            hjust="right", vjust="bottom")+
-  coord_sf(crs=st_crs(plot_data_temp), datum=NA)+
-  guides(fill=FALSE)+
-  labs(caption="global scaling by destination borough: same OD excluded")+
-  facet_grid(d_fy~d_fx, shrink=FALSE)+
-  scale_fill_distiller(palette="Reds", direction=1)+
-  theme(
-    panel.spacing=unit(0.1, "lines"),
-    legend.position="bottom",
-    axis.title.x=element_blank(),axis.title.y=element_blank(),
-    strip.text.x = element_blank(), strip.text.y = element_blank(),
-    plot.caption = element_text(size = 7),
-    panel.background = element_rect(fill="#ffffff", colour="#ffffff")
-  )
-
-
-ggplot()+
-  geom_sf(data=plot_data_temp %>% 
-            mutate(count=active, count=if_else(o_bor==d_bor,0,count)), aes(fill=count), colour="#616161", size=0.15, alpha=0.9)+
-  geom_sf(data=plot_data_temp  %>% filter(bor_focus==1), fill="transparent",  colour="#373737", size=0.3)+
-  geom_text(data=plot_data_temp %>% filter(bor_focus==1), 
-            aes(x=east, y=north, label=str_sub(BOR,1,1)), 
-            colour="#252525", alpha=0.9, size=2, show.legend=FALSE, family="Roboto Condensed", 
-            hjust="centre", vjust="middle")+
-  geom_text(data=plot_data_temp %>% filter(bor_focus==1), 
-            aes(x=bbox_grid$xmax, y=bbox_grid$ymin, label=BOR), 
-            colour="#252525", alpha=0.6, size=2, show.legend=FALSE, family="Roboto Condensed", 
-            hjust="right", vjust="bottom")+
-  coord_sf(crs=st_crs(plot_data_temp), datum=NA)+
-  guides(fill=FALSE)+
-  labs(caption="global scaling by destination borough: same OD excluded")+
-  facet_grid(d_fy~d_fx, shrink=FALSE)+
-  scale_fill_distiller(palette="Blues", direction=1)+
-  theme(
-    panel.spacing=unit(0.1, "lines"),
-    legend.position="bottom",
-    axis.title.x=element_blank(),axis.title.y=element_blank(),
-    strip.text.x = element_blank(), strip.text.y = element_blank(),
-    plot.caption = element_text(size = 7),
-    panel.background = element_rect(fill="#ffffff", colour="#ffffff")
-  )
-
-d_od_global_local <- plot_data_temp %>%
-  group_by(d_bor) %>% 
-  mutate(
-    count=public_transport, count=if_else(o_bor==d_bor,0,count), 
-    count_rescaled=(count-min(count))/(max(count)-min(count))) %>% ungroup %>% 
-  ggplot()+
-  geom_sf(aes(fill=count_rescaled), colour="#616161", size=0.15, alpha=0.9)+
-  geom_sf(data=plot_data_temp  %>% filter(bor_focus==1), fill="transparent",  colour="#373737", size=0.3)+
-  geom_text(data=plot_data_temp %>% filter(bor_focus==1), 
-            aes(x=east, y=north, label=str_sub(BOR,1,1)), 
-            colour="#252525", alpha=0.9, size=2, show.legend=FALSE, family="Roboto Condensed", 
-            hjust="centre", vjust="middle")+
-  geom_text(data=plot_data_temp %>% filter(bor_focus==1), 
-            aes(x=bbox_grid$xmax, y=bbox_grid$ymin, label=BOR), 
-            colour="#252525", alpha=0.6, size=2, show.legend=FALSE, family="Roboto Condensed", 
-            hjust="right", vjust="bottom")+
-  coord_sf(crs=st_crs(plot_data_temp), datum=NA)+
-  guides(fill=FALSE)+
-  labs(caption="local scaling by destination borough: same OD excluded")+
-  facet_grid(d_fy~d_fx, shrink=FALSE)+
-  scale_fill_distiller(palette="Greens", direction=1)+
-  theme(
-    panel.spacing=unit(0.1, "lines"),
-    legend.position="bottom",
-    axis.title.x=element_blank(),axis.title.y=element_blank(),
-    strip.text.x = element_blank(), strip.text.y = element_blank(),
-    plot.caption = element_text(size = 7),
-    panel.background = element_rect(fill="#ffffff", colour="#ffffff")
-  )
-
-
-plot_data_temp %>%
-  group_by(d_bor) %>% 
-  mutate(
-    count=car, count=if_else(o_bor==d_bor,0,count), 
-    count_rescaled=(count-min(count))/(max(count)-min(count))) %>% ungroup %>% 
-  ggplot()+
-  geom_sf(aes(fill=count_rescaled), colour="#616161", size=0.15, alpha=0.9)+
-  geom_sf(data=plot_data_temp  %>% filter(bor_focus==1), fill="transparent",  colour="#373737", size=0.3)+
-  geom_text(data=plot_data_temp %>% filter(bor_focus==1), 
-            aes(x=east, y=north, label=str_sub(BOR,1,1)), 
-            colour="#252525", alpha=0.9, size=2, show.legend=FALSE, family="Roboto Condensed", 
-            hjust="centre", vjust="middle")+
-  geom_text(data=plot_data_temp %>% filter(bor_focus==1), 
-            aes(x=bbox_grid$xmax, y=bbox_grid$ymin, label=BOR), 
-            colour="#252525", alpha=0.6, size=2, show.legend=FALSE, family="Roboto Condensed", 
-            hjust="right", vjust="bottom")+
-  coord_sf(crs=st_crs(plot_data_temp), datum=NA)+
-  guides(fill=FALSE)+
-  labs(caption="local scaling by destination borough: same OD excluded")+
-  facet_grid(d_fy~d_fx, shrink=FALSE)+
-  scale_fill_distiller(palette="Reds", direction=1)+
-  theme(
-    panel.spacing=unit(0.1, "lines"),
-    legend.position="bottom",
-    axis.title.x=element_blank(),axis.title.y=element_blank(),
-    strip.text.x = element_blank(), strip.text.y = element_blank(),
-    plot.caption = element_text(size = 7),
-    panel.background = element_rect(fill="#ffffff", colour="#ffffff")
-  )
-
-
-plot_data_temp %>%
-  group_by(d_bor) %>% 
-  mutate(
-    count=active, count=if_else(o_bor==d_bor,0,count), 
-    count_rescaled=(count-min(count))/(max(count)-min(count))) %>% ungroup %>% 
-  ggplot()+
-  geom_sf(aes(fill=count_rescaled), colour="#616161", size=0.15, alpha=0.9)+
-  geom_sf(data=plot_data_temp  %>% filter(bor_focus==1), fill="transparent",  colour="#373737", size=0.3)+
-  geom_text(data=plot_data_temp %>% filter(bor_focus==1), 
-            aes(x=east, y=north, label=str_sub(BOR,1,1)), 
-            colour="#252525", alpha=0.9, size=2, show.legend=FALSE, family="Roboto Condensed", 
-            hjust="centre", vjust="middle")+
-  geom_text(data=plot_data_temp %>% filter(bor_focus==1), 
-            aes(x=bbox_grid$xmax, y=bbox_grid$ymin, label=BOR), 
-            colour="#252525", alpha=0.6, size=2, show.legend=FALSE, family="Roboto Condensed", 
-            hjust="right", vjust="bottom")+
-  coord_sf(crs=st_crs(plot_data_temp), datum=NA)+
-  guides(fill=FALSE)+
-  labs(caption="local scaling by destination borough: same OD excluded")+
-  facet_grid(d_fy~d_fx, shrink=FALSE)+
-  scale_fill_distiller(palette="Blues", direction=1)+
-  theme(
-    panel.spacing=unit(0.1, "lines"),
-    legend.position="bottom",
-    axis.title.x=element_blank(),axis.title.y=element_blank(),
-    strip.text.x = element_blank(), strip.text.y = element_blank(),
-    plot.caption = element_text(size = 7),
-    panel.background = element_rect(fill="#ffffff", colour="#ffffff")
-  )
-
-
-########### HOMEWORK ################
-
-# Temporary plot object of data joined to geom_sf geometries. 
-# DO map so geometries join on origin.
-plot_data_temp <- grid_real_sf %>% filter(type=="grid") %>% right_join(edges, by=c("authority"="o_bor")) %>% 
-  mutate(o_bor=authority) %>% 
-  rename(o_fx=x, o_fy=y) %>% 
-  left_join(grid_real_sf %>% filter(type=="grid") %>% st_drop_geometry() %>% select(authority,x,y), by=c("d_bor"="authority")) %>%
-  rename(d_fx=x, d_fy=y) %>% 
-  # Identify borough in focus (edit this to switch between D-OD and O-DO matrix).
-  mutate(bor_label=if_else(o_bor==d_bor,d_bor,""),
-         bor_focus=if_else(o_bor==d_bor,1,0))
-
-# width
-width <- plot_data_temp %>% summarise(width=max(east)-min(east))  %>% pull(width)
-# height
-height <- plot_data_temp %>% summarise(height=max(north)-min(north)) %>% pull(height)
-
-bbox_grid <- st_bbox(grid_real_sf %>% filter(type=="grid"))
-
-d_od_global_pt <- ggplot()+
-  geom_sf(data=plot_data_temp %>% 
-            mutate(count=public_transport), 
-          aes(fill=count), colour="#616161", size=0.15)+
-  geom_sf(data=plot_data_temp  %>% filter(bor_focus==1), fill="transparent",  colour="#373737", size=0.3)+
-  geom_text(data=plot_data_temp %>% filter(bor_focus==1), 
-            aes(x=east, y=north, label=str_sub(BOR,1,1)), 
-            colour="#ffffff", alpha=1.0, size=2, show.legend=FALSE, family="Roboto Condensed", 
-            hjust="centre", vjust="middle")+
-  geom_text(data=plot_data_temp %>% filter(bor_focus==1), 
-            aes(x=bbox_grid$xmax, y=bbox_grid$ymin, label=BOR), 
-            colour="#252525", alpha=0.6, size=2, show.legend=FALSE, family="Roboto Condensed", 
-            hjust="right", vjust="bottom")+
-  coord_sf(crs=st_crs(plot_data_temp), datum=NA)+
-  guides(fill=FALSE)+
-  labs(
-    title="public transport: large cells: destinations; small cells; origins",
-    subtitle="global scaling")+
-  facet_grid(d_fy~d_fx, shrink=FALSE)+
-  scale_fill_distiller(palette="Greens", direction=1)+
-  theme(
-    panel.spacing=unit(0.1, "lines"),
-    #legend.position="right",
-    axis.title.x=element_blank(),axis.title.y=element_blank(),
-    strip.text.x = element_blank(), strip.text.y = element_blank(),
-    legend.key = element_rect(size=1),
-    plot.title = element_text(size = 8),
-    plot.subtitle = element_text(size = 7),
-    legend.title = element_text(size = 6),
-    legend.text = element_text(size = 0),
-    legend.key.size = unit(.5,"line"),
-    panel.background = element_rect(fill="#ffffff", colour="#ffffff")
-  )
-
-d_od_local_pt <- ggplot()+
-  geom_sf(data=plot_data_temp %>% 
-            group_by(d_bor) %>% 
-            mutate(count=public_transport,# count=if_else(o_bor==d_bor,0,count),
-                   count_rescaled=(count-min(count))/(max(count)-min(count))), 
-          aes(fill=count_rescaled), colour="#616161", size=0.15)+
-  geom_sf(data=plot_data_temp  %>% filter(bor_focus==1), fill="transparent",  colour="#373737", size=0.3)+
-  geom_text(data=plot_data_temp %>% filter(bor_focus==1), 
-            aes(x=east, y=north, label=str_sub(BOR,1,1)), 
-            colour="#ffffff", size=2, show.legend=FALSE, family="Roboto Condensed", 
-            hjust="centre", vjust="middle")+
-  geom_text(data=plot_data_temp %>% filter(bor_focus==1), 
-            aes(x=bbox_grid$xmax, y=bbox_grid$ymin, label=BOR), 
-            colour="#252525", alpha=0.6, size=2, show.legend=FALSE, family="Roboto Condensed", 
-            hjust="right", vjust="bottom")+
-  coord_sf(crs=st_crs(plot_data_temp), datum=NA)+
-  guides(fill=FALSE)+
-  labs(
-    title="public transport: large cells: destinations; small cells; origins",
-    subtitle="local scaling")+
-  facet_grid(d_fy~d_fx, shrink=FALSE)+
-  scale_fill_distiller(palette="Greens", direction=1)+
-  theme(
-    panel.spacing=unit(0.1, "lines"),
-    #legend.position="right",
-    axis.title.x=element_blank(),axis.title.y=element_blank(),
-    strip.text.x = element_blank(), strip.text.y = element_blank(),
-    legend.key = element_rect(size=1),
-    plot.title = element_text(size = 8),
-    plot.subtitle = element_text(size = 7),
-    legend.title = element_text(size = 6),
-    legend.text = element_text(size = 0),
-    legend.key.size = unit(.5,"line"),
-    panel.background = element_rect(fill="#ffffff", colour="#ffffff")
-  )
-
-
-
-# Temporary plot object of data joined to geom_sf geometries. DO map so geometries join on origin.
-plot_data_temp <- grid_real_sf %>% filter(type=="grid") %>% right_join(edges, by=c("authority"="d_bor")) %>% 
-  mutate(d_bor=authority) %>% 
-  rename(d_fx=x, d_fy=y) %>% 
-  left_join(grid_real_sf %>% filter(type=="grid") %>% st_drop_geometry() %>% select(authority,x,y), by=c("o_bor"="authority")) %>%
-  rename(o_fx=x, o_fy=y) 
-
-# Identify borough in focus (edit this to switch between D-OD and O-DO matrix).
-plot_data_temp <- plot_data_temp %>% mutate(bor_label=if_else(o_bor==d_bor,o_bor,""),
-                                            bor_focus=if_else(o_bor==d_bor,1,0))
-
-
-
-o_od_global_pt <- ggplot()+
-  geom_sf(data=plot_data_temp %>% 
-            mutate(count=public_transport),#, count=if_else(o_bor==d_bor,0,count)), 
-          aes(fill=count), colour="#616161", size=0.15)+
-  geom_sf(data=plot_data_temp  %>% filter(bor_focus==1), fill="transparent",  colour="#373737", size=0.3)+
-  geom_text(data=plot_data_temp %>% filter(bor_focus==1), 
-            aes(x=east, y=north, label=str_sub(BOR,1,1)), 
-            colour="#ffffff", size=2, show.legend=FALSE, family="Roboto Condensed", 
-            hjust="centre", vjust="middle")+
-  geom_text(data=plot_data_temp %>% filter(bor_focus==1), 
-            aes(x=bbox_grid$xmax, y=bbox_grid$ymin, label=BOR), 
-            colour="#252525", alpha=0.6, size=2, show.legend=FALSE, family="Roboto Condensed", 
-            hjust="right", vjust="bottom")+
-  coord_sf(crs=st_crs(plot_data_temp), datum=NA)+
-  guides(fill=FALSE)+
-  labs(
-    title="public transport: large cells: origins; small cells; destinations",
-    subtitle="global scaling")+
-  facet_grid(o_fy~o_fx, shrink=FALSE)+
-  scale_fill_distiller(palette="Greens", direction=1)+
-  theme(
-    panel.spacing=unit(0.1, "lines"),
-    #legend.position="right",
-    axis.title.x=element_blank(),axis.title.y=element_blank(),
-    strip.text.x = element_blank(), strip.text.y = element_blank(),
-    legend.key = element_rect(size=1),
-    plot.title = element_text(size = 8),
-    plot.subtitle = element_text(size = 8),
-    legend.title = element_text(size = 6),
-    legend.text = element_text(size = 0),
-    legend.key.size = unit(.5,"line"),
-    panel.background = element_rect(fill="#ffffff", colour="#ffffff")
-  )
-
-
-o_od_local_pt <- ggplot()+
-  geom_sf(data=plot_data_temp %>% 
-            mutate(count=public_transport, count=if_else(o_bor==d_bor,0,count)) %>% 
-            group_by(o_bor) %>% 
-            mutate(count_rescaled=(count-min(count))/(max(count)-min(count))), 
-          aes(fill=count_rescaled), colour="#616161", size=0.15)+
-  geom_sf(data=plot_data_temp  %>% filter(bor_focus==1), fill="transparent",  colour="#373737", size=0.3)+
-  geom_text(data=plot_data_temp %>% filter(bor_focus==1), 
-            aes(x=east, y=north, label=str_sub(BOR,1,1)), 
-            colour="#ffffff", size=2, show.legend=FALSE, family="Roboto Condensed", 
-            hjust="centre", vjust="middle")+
-  geom_text(data=plot_data_temp %>% filter(bor_focus==1), 
-            aes(x=bbox_grid$xmax, y=bbox_grid$ymin, label=BOR), 
-            colour="#252525", alpha=0.6, size=2, show.legend=FALSE, family="Roboto Condensed", 
-            hjust="right", vjust="bottom")+
-  coord_sf(crs=st_crs(plot_data_temp), datum=NA)+
-  guides(fill=FALSE)+
-  labs(
-    title="public transport: large cells: origins; small cells; destinations",
-  subtitle="local scaling")+
-  facet_grid(o_fy~o_fx, shrink=FALSE)+
-  scale_fill_distiller(palette="Greens", direction=1)+
-  theme(
-    panel.spacing=unit(0.1, "lines"),
-    #legend.position="right",
-    axis.title.x=element_blank(),axis.title.y=element_blank(),
-    strip.text.x = element_blank(), strip.text.y = element_blank(),
-    legend.key = element_rect(size=1),
-    plot.title = element_text(size = 8),
-    plot.subtitle = element_text(size = 7),
-    legend.title = element_text(size = 6),
-    legend.text = element_text(size = 0),
-    legend.key.size = unit(.5,"line"),
-    panel.background = element_rect(fill="#ffffff", colour="#ffffff")
-  )
-
-plot <- 
-  d_od_global_pt + o_od_global_pt +
-  d_od_local_pt + o_od_local_pt +
-  plot_annotation(
-    subtitle="OD maps of commutes into- and out of- London boroughs using public transport",
-    caption="2011 Census data accessed via `pct` package"
-  )+plot_layout(ncol=1)
-
-ggsave(filename="./static/class/05-class_files/od-maps-mode-homework.png", plot=plot,width=5, height=17, dpi=300)
-
 
 

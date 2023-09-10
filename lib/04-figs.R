@@ -1076,7 +1076,7 @@ plot <- ped_veh |>
   labs(x="proportion complete", y="IMD crash location") +
   theme(legend.title = element_blank(), legend.position = "right")
 
-ggsave(filename= here("figs", "04", "completeness.png"), plot=plot,width=8, height=2.6, dpi=300)  
+ggsave(filename= here("figs", "04", "completeness.png"), plot=plot,width=6.2, height=2.7, dpi=300)  
 
 
 # 3.3 Plot freqs -----------------
@@ -1118,10 +1118,12 @@ freqs <- ped_veh_complete |>
   facet_wrap(~type)
 
 
-plot_imd_driver <- plot_data |> 
+plot_imd_driver <- ped_veh_complete |> 
+  # inner_join(imd |> select(lsoa_code, total_pop), by=c("lsoa_of_accident_location"="lsoa_code"))  |>
+  select(driver_quintile, casualty_quintile) |> unique() |> 
   ggplot(aes(x=casualty_quintile, y=driver_quintile)) +
   #geom_tile(aes(fill=observed), fill="transparent", colour="#707070", size=.1) +
-  geom_tile(fill="#003c8f", colour="#ffffff", size=.5, alpha=.5) +
+  geom_tile(fill="#d9d9d9", colour="#ffffff", size=.5) +
   annotate("text", x=5,y=0.2, label="least", hjust=.5, size=3) +
   annotate("segment", x=.5, y = 5.7, xend = 5.2, yend = 5.7,
            arrow = arrow(type = "closed", length = unit(0.02, "npc")), linewidth=.15) +
@@ -1596,724 +1598,99 @@ plot <- plot_imd_driver_area_obs / plot_demog_dists / plot_imd_driver_area_model
 
 ggsave(filename= here("figs", "04", "model_imd_location.png"), plot=plot,width=8.3, height=6.4, dpi=500) 
 
+# ----------- Design challenge 
 
-# plot_imd_driver_area_obs_local <- ped_veh |> 
-#   filter(
-#     !is.na(casualty_imd_decile), !is.na(driver_imd_decile),
-#     casualty_imd_decile!="Data missing or out of range", 
-#     driver_imd_decile!="Data missing or out of range") |>  
-#   group_by(crash_quintile, casualty_imd_quintile, driver_imd_quintile) |> 
-#   mutate(
-#     observed=n()
-#   ) |> 
-#   group_by(crash_quintile) |> 
-#   mutate(
-#     total_crash_quintile=n(),
-#     observed_max=max(observed),
-#     observed_rescaled=observed/observed_max
-#   ) |> ungroup() |> 
-#   ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
-#   geom_tile(aes(fill=observed_rescaled), colour="#707070", size=.2) +
-#   scale_fill_distiller(palette="Blues", direction=1) +
-#   facet_wrap(~crash_quintile, nrow=1) +
-#   theme_v_gds() +
-#   labs(x="IMD quintile of casualty", y="IMD quintile of driver", subtitle="Observed - local scaling") +
-#   theme(axis.text.x=element_blank(), axis.text.y = element_blank(), 
-#         axis.title.x = element_blank(), axis.title.y = element_blank())
-# 
-# plot <- plot_imd_driver_area_obs_local + plot_annotation(title="Pedestrian casualties by IMD quintile of homeplace of pedestrian and driver",
-#                                                        subtitle="--Grouped and compared by IMD quintile of crash location",
-#                                                        caption="Stats19 data accessed via `stats19` package",
-#                                                        theme = theme_v_gds())
-# 
-# ggsave(filename="./static/class/04-class_files/imd-driver-cas-crash-local.png", plot=plot,width=9, height=4, dpi=300)
+# p1 <- ped_veh |> 
+#   filter(age_of_casualty > 0, sex_of_casualty != "Data missing or out of range", light_conditions != "Data missing or out of range") |> 
+#   mutate(is_daylight=
+#            factor(if_else(light_conditions == "Daylight", "daylight", "dark"), 
+#                   levels=c("dark", "daylight"))) |> 
+#   group_by(age_of_casualty, is_daylight, sex_of_casualty) |> 
+#   summarise(count=n()) |> ungroup() |> 
+#   ggplot(aes(x=age_of_casualty, y=count, fill=is_daylight)) +
+#   geom_col(colour="#000000", linewidth=.1) +
+#   facet_grid(is_daylight~sex_of_casualty, space="free_y", scales="free_y", labeller=labeller(c("daylight", "dark"))) +
+#   scale_fill_manual(values=c("#000000", "#ffffff"), guide="none") +
+#   scale_fill_manual(values=c("#c6dbef", "#08519c"), guide="none")+
+#   labs(y="crash count in thousands", x="casualty age") +
+#   scale_y_continuous(
+#     breaks=c(0:4*1000), 
+#     labels = scales::comma_format(scale = .001)) 
 
 
-
-# plot_driver_area_resid <-  plot_data |> 
-#   ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
-#   geom_tile(aes(fill=resid), colour="#707070", size=.2) +
-#   scale_fill_distiller(
-#     palette="PRGn", direction=1, 
-#     limits=c(-max(plot_data$max_resid), max(plot_data$max_resid))
-#     )+
-#   facet_wrap(~crash_quintile, nrow=1) +
-#   theme_v_gds() +
-#   labs(subtitle="Obs vs Exp", x="Null: distribute in cells independently of crash location") +
-#   theme(
-#     axis.text.x=element_blank(), axis.text.y = element_blank(), axis.title.y = element_blank(),
-#     axis.title.x = element_text(size=10, hjust=1, family="Roboto Condensed Light")
-#     ) +
-#   coord_equal()
-#   
-# 
-# 
-# plot_driver_area_exp <-  plot_data |> 
-#   group_by(crash_quintile) |> 
-#   mutate(expected_rescaled=expected/max(expected)) |> 
-#   ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
-#   geom_tile(aes(fill=expected), colour="#707070", size=.2) +
-#   scale_fill_distiller(palette="Blues", direction=1) +
-#   facet_wrap(~crash_quintile, nrow=1) +
-#   theme_v_gds() +
-#   guides(fill=FALSE) +
-#   labs(subtitle="Expected", x="") +
-#   theme(
-#     axis.text.x=element_blank(), axis.text.y = element_blank(), axis.title.y = element_blank(),
-#     axis.title.x = element_text(size=10, hjust=1, family="Roboto Condensed Light")
-#   ) +
-#   coord_equal()
-
-# plot_driver_area_row_total <-  plot_data |> 
-#   group_by(crash_quintile) |> 
-#   mutate(expected_rescaled=expected/max(expected)) |> 
-#   ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
-#   geom_tile(aes(fill=row_total), colour="#707070", size=.2) +
-#   scale_fill_distiller(palette="Blues", direction=1) +
-#   facet_wrap(~crash_quintile, nrow=1) +
-#   theme_v_gds() +
-#   labs(subtitle="Row marginals", x="") +
-#   guides(fill=FALSE) +
-#   theme(
-#     axis.text.x=element_blank(), axis.text.y = element_blank(), axis.title.y = element_blank(),
-#     axis.title.x = element_text(size=10, hjust=1, family="Roboto Condensed Light")
-#   ) +
-#   coord_equal()
-# 
-# 
-# plot_driver_area_col_total <-  plot_data |> 
-#   group_by(crash_quintile) |> 
-#   mutate(expected_rescaled=expected/max(expected)) |> 
-#   ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
-#   geom_tile(aes(fill=col_total), colour="#707070", size=.2) +
-#   scale_fill_distiller(palette="Blues", direction=1) +
-#   facet_wrap(~crash_quintile, nrow=1) +
-#   theme_v_gds() +
-#   labs(subtitle="Col marginals", x="") +
-#   guides(fill=FALSE) +
-#   theme(
-#     axis.text.x=element_blank(), axis.text.y = element_blank(), axis.title.y = element_blank(),
-#     axis.title.x = element_text(size=10, hjust=1, family="Roboto Condensed Light")
-#   ) +
-# coord_equal()
+p1 <- ped_veh |>
+  filter(age_of_casualty > 0, crash_quintile != "Data missing or out of range", light_conditions != "Data missing or out of range") |>
+  mutate(is_daylight=
+           factor(if_else(light_conditions == "Daylight", "daylight", "dark"),
+                  levels=c("dark", "daylight"))) |>
+  group_by(age_of_casualty, is_daylight, crash_quintile) |>
+  summarise(count=n()) |> ungroup() |>
+  ggplot(aes(x=age_of_casualty, y=count, fill=is_daylight)) +
+  geom_col(linewidth=0, width=1) +
+  facet_grid(is_daylight~crash_quintile, space="free_y", scales="free_y", labeller=labeller(c("daylight", "dark"))) +
+  scale_fill_manual(values=c("#000000", "#bdbdbd"), guide="none") +
+  scale_fill_manual(values=c("#08519c", "#c6dbef"), guide="none")+
+  scale_colour_manual(values=c("#08519c", "#c6dbef"), guide="none")+
+  labs(y="crash count in hundreds", x="casualty age") +
+  scale_y_continuous(
+    breaks=c(c(2,4,6,8,10)*100),
+    labels = scales::comma_format(scale = .01))
 
 
-  
-# plot <- plot_imd_driver_area_obs + plot_driver_area_resid + plot_spacer()+theme_v_gds() +
-#   plot_driver_area_exp + plot_driver_area_row_total + plot_driver_area_col_total +  plot_layout(nrow=6) +
-#   plot_layout(heights=c(1,1,.1,.8,.8,.8)) +
-#   plot_annotation(title="Pedestrian casualties by IMD quintile of homeplace of pedestrian and driver",
-#                   subtitle="--Grouped and compared by IMD quintile of crash location",
-#                   caption="Stats19 data accessed via `stats19` package",
-#                   theme = theme_v_gds())
-# 
-# 
-# ggsave(filename="./static/class/04-class_files/imd-driver-cas-crash.png", plot=plot,width=9, height=14, dpi=300)
-
-
-# demog_distances <- ped_veh_complete |>
-#   mutate(
-#     across(
-#       c(casualty_quintile, driver_quintile, crash_quintile),
-#       .fns=list(num=~as.numeric(factor(., levels=c(c("1 most deprived", "2 more deprived", "3 mid deprived", "4 less deprived", "5 least deprived")))))
-#     ),
-#     demog_dist=sqrt(
-#        (casualty_quintile_num-driver_quintile_num)^2 +
-#         (casualty_quintile_num-crash_quintile_num)^2 +
-#         (driver_quintile_num-crash_quintile_num)^2
-#     )
-#   ) |>
-#   group_by(demog_dist, casualty_quintile, driver_quintile, crash_quintile) |>
-#   summarise(crash_count=n()) |>  ungroup() |>
-#   # We want to know how often each demographic distance *occurs*.
-#   group_by(demog_dist, casualty_quintile, driver_quintile, crash_quintile) |>
-#   mutate(occurrences=n()) |> ungroup() |>
-#   mutate(total_crashes=sum(crash_count)) |>
-#   # Then for each demographic distance, compute counts and bin probabilities
-#   # that are to be spread out to cells of matrix (so we devide by number of times that those distances exist).
-#   group_by(demog_dist) |>
-#   mutate(crash_count_dist=sum(crash_count), occurrences=sum(occurrences), bin_prob=(crash_count_dist/total_crashes)/occurrences) |> ungroup() |>
-#   # For expected counts we need to weight according to size of quintile (crashes). But as there is an association between geodemographic distance
-#   # and counts, we need to additionally weight according to the sum of the bin probabilities.
-#   group_by(crash_quintile) |>
-#   mutate(prop=sum(crash_count)/total_crashes, weight=prop/sum(bin_prob)) |> ungroup()
-# 
-# 
-# # So we can estimate the probability of crashes occurring in each bin, weighting
-# # on the number of times those bins appear overall. These are our *global probabilities*.
-# demog_distances |> select(demog_dist, crash_count, occurrences, bin_prob, weight) |> unique
-# 
-# # Our expected counts assume that counts are a function of demographic distance,
-# # but *not* the IMD class in which they occur. That is, expected counts distribute
-# # by geodemographic distance independently of the geodemographic quintile in which the
-# # crash occurred.
-# # For each cell in the matrix we arrive at a bin probability or likelihood.
-# # However, we need to *weight* according to the relative size of each quintile in terms of crashes and sum of geographic distance.
-# plot_data <-  ped_veh |>
-#   filter(
-#     !is.na(casualty_imd_decile), !is.na(driver_imd_decile),
-#     casualty_imd_decile!="Data missing or out of range",
-#     driver_imd_decile!="Data missing or out of range", !is.na(crash_quintile)) |>
-#   left_join(demog_distances) |>
-#   mutate(
-#     grand_total=n(),
-#     row_total=bin_prob,
-#   ) |> ungroup |>
-#   group_by(crash_quintile) |>
-#   mutate(col_total=n()) |> ungroup |>
-#   group_by(casualty_imd_quintile, driver_imd_quintile, crash_quintile) |>
-#   summarise(
-#     col_total=first(weight),
-#     observed=n(),
-#     row_total=first(row_total),
-#     col_total=first(col_total),
-#     grand_total=first(grand_total),
-#     #expected=(row_total/first(occurrences)*col_total)/grand_total,
-#     expected=(row_total*col_total)/grand_total,
-#     expected=(row_total*col_total)*grand_total,
-#     #expected=(row_total/first(occurrences)*col_total)/grand_total,
-#     resid=(observed-expected)/sqrt(expected),
-#     # Censor extreme effect sizes.
-#     resid_censored=if_else(resid<0, pmax(resid, -40), pmin(resid, 40)),
-#     occurrences=first(occurrences),
-#     distance=first(demog_dist),
-#     bin_prob=first(bin_prob),
-#     #prop=first(crash_prop),
-#     #crash_prop_adj=first(crash_prop_adj)
-#   )  |> ungroup |>
-#   mutate(max_resid_censored=max(resid_censored), max_resid=max(resid))
-# 
-# plot_data |> summarise(expected=sum(expected), observed=sum(observed), bin_prob=sum(bin_prob))
-# 
-# plot_data |>
-#   group_by(crash_quintile) |>
-#   summarise(expected=sum(expected), observed=sum(observed), diff=observed-expected, bin_prob=sum(bin_prob))
-# 
-# 
-# plot_social_dist <- demog_distances |>
-#   ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
-#   geom_tile(aes(fill=demog_dist), colour="#707070", size=.2) +
-#   scale_fill_distiller(palette="Blues", direction=1) +
-#   facet_wrap(~crash_quintile, nrow=1) +
-#   guides(fill=FALSE) +
-#   labs(x="IMD quintile of casualty", y="IMD quintile of driver", subtitle="Geodemographic distance") +
-#   theme(axis.text.x=element_blank(), axis.text.y = element_blank(),
-#         axis.title.x = element_blank(), axis.title.y = element_blank()) +
-#   coord_equal()
-# 
-# 
-# plot_exp_dist <- plot_data |>
-#   ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
-#   geom_tile(aes(fill=expected), colour="#707070", size=.2) +
-#   scale_fill_distiller(palette="Blues", direction=1) +
-#   facet_wrap(~crash_quintile, nrow=1) +
-#   guides(fill=FALSE) +
-#   labs(x="IMD quintile of casualty", y="IMD quintile of driver", subtitle="Expected") +
-#   theme(axis.text.x=element_blank(), axis.text.y = element_blank(),
-#         axis.title.x = element_blank(), axis.title.y = element_blank()) +
-#   coord_equal()
-# 
-# plot_row_total_dist <- plot_data |>
-#   ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
-#   geom_tile(aes(fill=row_total), colour="#707070", size=.2) +
-#   scale_fill_distiller(palette="Blues", direction=1) +
-#   facet_wrap(~crash_quintile, nrow=1) +
-#   guides(fill=FALSE) +
-#   labs(x="IMD quintile of casualty", y="IMD quintile of driver", subtitle="Cell probabilities") +
-#   theme(axis.text.x=element_blank(), axis.text.y = element_blank(),
-#         axis.title.x = element_blank(), axis.title.y = element_blank()) +
-#   coord_equal()
-# 
-# plot_col_total_dist <- plot_data |>
-#   ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
-#   geom_tile(aes(fill=col_total), colour="#707070", size=.2) +
-#   scale_fill_distiller(palette="Blues", direction=1) +
-#   facet_wrap(~crash_quintile, nrow=1) +
-#   guides(fill=FALSE) +
-#   labs(x="IMD quintile of casualty", y="IMD quintile of driver", subtitle="Quintile sizes") +
-#   theme(axis.text.x=element_blank(), axis.text.y = element_blank(),
-#         axis.title.x = element_blank(), axis.title.y = element_blank()) +
-#   coord_equal()
-# 
-# plot_resid_dist <-  plot_data |>
-#   ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
-#   geom_tile(aes(fill=resid), colour="#707070", size=.2) +
-#   scale_fill_distiller(
-#     palette="PRGn", direction=1,
-#     limits=c(-max(plot_data$max_resid), max(plot_data$max_resid))
-#   )+
-#   facet_wrap(~crash_quintile, nrow=1) +
-#   labs(subtitle="Observed vs Expected", x="Null: distribute by 'geodemographic distance' independently of crash location") +
-#   theme(
-#     axis.text.x=element_blank(), axis.text.y = element_blank(), axis.title.y = element_blank(),
-#     axis.title.x = element_text(size=10, hjust=1, family="Roboto Condensed Light")
-#   ) +
-#   coord_equal()
-# 
-# 
-# plot <- plot_resid_dist + plot_spacer() +
-#   plot_exp_dist + plot_row_total_dist + plot_col_total_dist +  plot_layout(nrow=5) +
-#   plot_layout(heights=c(1,.1,.8,.8,.8)) +
-#   plot_annotation(title="Pedestrian casualties by IMD quintile of homeplace of pedestrian and driver",
-#                   subtitle="--Grouped and compared by IMD quintile of crash location",
-#                   caption="Stats19 data accessed via `stats19` package")
-# 
-# 
-# ggsave(filename="./static/class/04-class_files/imd-driver-cas-crash-dist-full.png", plot=plot,width=9, height=10, dpi=300)
-# 
-# plot_data <-  ped_veh |> 
-#   filter(
-#     !is.na(casualty_imd_decile), !is.na(driver_imd_decile),
-#     casualty_imd_decile!="Data missing or out of range", 
-#     driver_imd_decile!="Data missing or out of range", !is.na(crash_quintile)) |>   
-#   left_join(demog_distances) |> 
-#   mutate(
-#     grand_total=n()
-#   ) |> 
-#   group_by(ranked_dist) |> 
-#   mutate(row_total=n()) |> ungroup |> 
-#   group_by(crash_quintile) |> 
-#   mutate(col_total=n()) |> ungroup |> 
-#   group_by(casualty_imd_quintile, driver_imd_quintile, crash_quintile) |> 
-#   summarise(
-#     distance=first(ranked_dist),
-#     prop=first(crash_prop_dist),
-#     prop_adjusted=prop/ranked_occurrences,
-#     row_total=prop_adjusted,
-#     col_total=first(col_total),
-#     expected=prop_adjusted*col_total,
-#     observed=n(), 
-#     resid=(observed-expected)/sqrt(expected),
-#     # Censor extreme effect sizes.
-#     resid_censored=if_else(resid<0, pmax(resid, -40), pmin(resid, 40)),
-#     ranked_occurrences=first(ranked_occurrences),
-#   )  |> ungroup |> 
-#   mutate(max_resid_censored=max(resid_censored), max_resid=max(resid))
-# 
-# 
-# 
-# plot_exp_dist <- plot_data |> 
-#   ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
-#   geom_tile(aes(fill=expected), colour="#707070", size=.2) +
-#   scale_fill_distiller(palette="Blues", direction=1) +
-#   facet_wrap(~crash_quintile, nrow=1) +
-#   guides(fill=FALSE) +
-#   theme_v_gds() +
-#   labs(x="IMD quintile of casualty", y="IMD quintile of driver", subtitle="Expected") +
-#   theme(axis.text.x=element_blank(), axis.text.y = element_blank(), 
-#         axis.title.x = element_blank(), axis.title.y = element_blank()) +
-#   coord_equal()
-# 
-# 
-# plot_row_total_dist <- plot_data |> 
-#   ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
-#   geom_tile(aes(fill=row_total/ranked_occurrences), colour="#707070", size=.2) +
-#   scale_fill_distiller(palette="Blues", direction=1) +
-#   facet_wrap(~crash_quintile, nrow=1) +
-#   guides(fill=FALSE) +
-#   theme_v_gds() +
-#   labs(x="IMD quintile of casualty", y="IMD quintile of driver", subtitle="Row total") +
-#   theme(axis.text.x=element_blank(), axis.text.y = element_blank(), 
-#         axis.title.x = element_blank(), axis.title.y = element_blank()) +
-#   coord_equal()
-# 
-# 
-# plot_col_total_dist <- plot_data |> 
-#   ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
-#   geom_tile(aes(fill=col_total), colour="#707070", size=.2) +
-#   scale_fill_distiller(palette="Blues", direction=1) +
-#   facet_wrap(~crash_quintile, nrow=1) +
-#   guides(fill=FALSE) +
-#   theme_v_gds() +
-#   labs(x="IMD quintile of casualty", y="IMD quintile of driver", subtitle="Col total") +
-#   theme(axis.text.x=element_blank(), axis.text.y = element_blank(), 
-#         axis.title.x = element_blank(), axis.title.y = element_blank()) +
-#   coord_equal()
-# 
-# plot_resid_dist <-  plot_data |> 
-#   ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
-#   geom_tile(aes(fill=resid), colour="#707070", size=.2) +
-#   scale_fill_distiller(
-#     palette="PRGn", direction=1, 
-#     limits=c(-max(plot_data$max_resid), max(plot_data$max_resid))
-#   )+
-#   facet_wrap(~crash_quintile, nrow=1) +
-#   theme_v_gds() +
-#   labs(subtitle="Obs vs Exp", x="Null: no difference in proportional distribution in 'social distance' by crash location") +
-#   theme(
-#     axis.text.x=element_blank(), axis.text.y = element_blank(), axis.title.y = element_blank(),
-#     axis.title.x = element_text(size=10, hjust=1, family="Roboto Condensed Light")
-#   ) + 
-#   coord_equal()
-# 
-# 
-# plot_dist <- demog_distances |> 
-#   ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
-#   geom_tile(aes(fill=demog_dist), colour="#707070", size=.2) +
-#   scale_fill_distiller(palette="Blues", direction=1) +
-#   facet_wrap(~crash_quintile, nrow=1) +
-#   guides(fill=FALSE) +
-#   theme_v_gds() +
-#   labs(x="IMD quintile of casualty", y="IMD quintile of driver", subtitle="Demographic distance") +
-#   theme(axis.text.x=element_blank(), axis.text.y = element_blank(), 
-#         axis.title.x = element_blank(), axis.title.y = element_blank())
-# 
-# +
-#   coord_equal()
-# 
-# plot <- plot_dist + plot_annotation(title="IMD quintile of homeplace of pedestrian and driver, grouped by IMD class of crash location",
-#                                                          subtitle="--'Geodemographic distance' variable is mapped to each cell",
-#                                                          caption="Stats19 data accessed via `stats19` package",
-#                                                          theme = theme_v_gds())
-# 
-# ggsave(filename="./static/class/04-class_files/imd-geodemog-dist.png", plot=plot,width=9, height=3.2, dpi=300)
-# 
-# 
-# 
-# plot <- plot_imd_driver_area_obs + plot_resid_dist + plot_spacer()+theme_v_gds() +
-#   plot_exp_dist + plot_row_total_dist + plot_col_total_dist +  plot_layout(nrow=6) +
-#   plot_layout(heights=c(1,1,.1,.8,.8,.8)) +
-#   plot_annotation(title="Pedestrian casualties by IMD quintile of homeplace of pedestrian and driver",
-#                   subtitle="--Grouped and compared by IMD quintile of crash location",
-#                   caption="Stats19 data accessed via `stats19` package",
-#                   theme = theme_v_gds())
-# 
-# 
-# 
-# ggsave(filename="./static/class/04-class_files/imd-driver-cas-crash-dist-prop.png", plot=plot,width=9, height=14, dpi=300)
-# 
-# 
-# 
-
-# plot_imd_driver_area <- ped_veh |> 
-#   filter(
-#     !is.na(casualty_imd_decile), !is.na(driver_imd_decile),
-#     casualty_imd_decile!="Data missing or out of range", 
-#     driver_imd_decile!="Data missing or out of range", !is.na(crash_quintile)) |>   
-#   mutate(grand_total=n()) |> 
-#   group_by(casualty_imd_quintile, driver_imd_quintile) |> 
-#   mutate(row_total=n()) |> ungroup |> 
-#   group_by(crash_quintile) |> 
-#   mutate(col_total=n()) |> ungroup |> 
-#   group_by(casualty_imd_quintile, driver_imd_quintile, crash_quintile) |> 
-#   summarise(
-#     observed=n(), 
-#     row_total=first(row_total), 
-#     col_total=first(col_total),
-#     grand_total=first(grand_total),
-#     expected=(row_total*col_total)/grand_total,
-#     resid=(observed-expected)/sqrt(expected)
-#   ) |> 
-#   # Censor max values to 40.
-#   mutate(resid=if_else(resid>0, pmin(resid, 40), pmax(resid, -40))) |> 
-#   ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
-#   geom_tile(aes(fill=resid), colour="#707070", size=.2) +
-#   scale_fill_distiller(palette="PRGn", direction=1, limits=c(-40,40)) +
-#   facet_wrap(~crash_quintile, nrow=1) +
-#   theme_v_gds() +
-#   labs(x="IMD quintile of casualty", y="IMD quintile of driver", title="Obs vs Exp", subtitle="--Null: distribute in cells independently of crash location") +
-#   theme(axis.text.x=element_blank(), axis.text.y = element_blank(), 
-#         axis.title.x = element_blank(), axis.title.y = element_blank())+
-#   coord_equal()
-
-
-plot_layout(ncol=2, nrow=2, widths=c(1.5,5), heights = c(1,1)) +
-  plot_annotation(title="Pedestrian casualties by IMD quintile of homeplace of pedestrian and driver",
-                  subtitle="--Grouped and compared by IMD quintile of crash location",
-                  caption="Stats19 data accessed via `stats19` package",
-                  theme = theme_v_gds())
-
-
-ggsave(filename="./static/class/04-class_files/imd-driver-cas.png", plot=plot,width=12, height=7, dpi=300)
-
-
-######### March 3rd Revised cell probabilities
-
-
-demog_distances <- ped_veh |>
-  filter(
-    !is.na(casualty_imd_decile), !is.na(driver_imd_decile),
-    casualty_imd_decile!="Data missing or out of range",
-    driver_imd_decile!="Data missing or out of range", !is.na(crash_quintile)) |>
+p2 <- ped_veh |> 
+  filter(age_of_casualty > 0, crash_quintile != "Data missing or out of range", light_conditions != "Data missing or out of range") |> 
+  mutate(is_daylight=
+           factor(if_else(light_conditions == "Daylight", "daylight", "dark"), 
+                  levels=c("dark", "daylight"))) |>
+  group_by(age_of_casualty, is_daylight, crash_quintile) |> 
+  summarise(count=n()) |> ungroup() |>
+  pivot_wider(names_from = is_daylight, values_from = count) |> 
   mutate(
-    across(
-      c(casualty_imd_quintile, driver_imd_quintile, crash_quintile),
-      .fns=list(num=~as.numeric(factor(., levels=c(c("1 most deprived", "2 more deprived", "3 mid deprived", "4 less deprived", "5 least deprived")))))
-    ),
-    demog_dist=sqrt(
-      (casualty_imd_quintile_num-driver_imd_quintile_num)^2 +
-        (casualty_imd_quintile_num-crash_quintile_num)^2 +
-        (driver_imd_quintile_num-crash_quintile_num)^2
-    )
-  ) |>
-  group_by(demog_dist, casualty_imd_quintile, driver_imd_quintile, crash_quintile) |>
-  summarise(crash_count=n()) |>  ungroup() |>
-  # We want to know how often each demographic distance *occurs*.
-  group_by(demog_dist, casualty_imd_quintile, driver_imd_quintile, crash_quintile) |>
-  mutate(occurrences=n()) |> ungroup |>
-  mutate(total_crashes=sum(crash_count)) |>
-  # Then for each demographic distance, compute counts and bin probabilities
-  # that are to be spread out to cells of matrix (so we devide by number of times that those distances exist).
-  group_by(demog_dist) |>
-  mutate(crash_count_dist=sum(crash_count), occurrences=sum(occurrences), bin_prob=(crash_count_dist/total_crashes)/occurrences) |> ungroup() |>
-  # For expected counts we need to weight according to size of quintile (crashes). But as there is an association between geodemographic distance
-  # and counts, we need to additionally weight according to the sum of the bin probabilities.
-  group_by(crash_quintile) |>
-  mutate(prop=sum(crash_count)/total_crashes, weight=prop/sum(bin_prob)) |> ungroup()
-
-
-# So we can estimate the probability of crashes occurring in each bin, weighting
-# on the number of times those bins appear overall. These are our *global probabilities*.
-demog_distances |> select(demog_dist, crash_count, occurrences, bin_prob, weight) |> unique
-
-# Our expected counts assume that counts are a function of demographic distance,
-# but *not* the IMD class in which they occur. That is, expected counts distribute
-# by geodemographic distance independently of the geodemographic quintile in which the
-# crash occurred.
-# For each cell in the matrix we arrive at a bin probability or likelihood.
-# However, we need to *weight* according to the relative size of each quintile in terms of crashes and sum of geographic distance.
-plot_data <-  ped_veh |>
-  filter(
-    !is.na(casualty_imd_decile), !is.na(driver_imd_decile),
-    casualty_imd_decile!="Data missing or out of range",
-    driver_imd_decile!="Data missing or out of range", !is.na(crash_quintile)) |>
-  left_join(demog_distances) |>
-  mutate(
-    grand_total=n(),
-    row_total=bin_prob,
-  ) |> ungroup |>
-  group_by(crash_quintile) |>
-  mutate(col_total=n()) |> ungroup |>
-  group_by(casualty_imd_quintile, driver_imd_quintile, crash_quintile) |>
-  summarise(
-    col_total=first(weight),
-    observed=n(),
-    row_total=first(row_total),
-    col_total=first(col_total),
-    grand_total=first(grand_total),
-    #expected=(row_total/first(occurrences)*col_total)/grand_total,
-    expected=(row_total*col_total)/grand_total,
-    expected=(row_total*col_total)*grand_total,
-    #expected=(row_total/first(occurrences)*col_total)/grand_total,
-    resid=(observed-expected)/sqrt(expected),
-    # Censor extreme effect sizes.
-    resid_censored=if_else(resid<0, pmax(resid, -40), pmin(resid, 40)),
-    occurrences=first(occurrences),
-    distance=first(demog_dist),
-    bin_prob=first(bin_prob),
-    #prop=first(crash_prop),
-    #crash_prop_adj=first(crash_prop_adj)
-  )  |> ungroup |>
-  mutate(max_resid_censored=max(resid_censored), max_resid=max(resid))
-
-plot_data |> summarise(expected=sum(expected), observed=sum(observed), bin_prob=sum(bin_prob))
-
-plot_data |>
-  group_by(crash_quintile) |>
-  summarise(expected=sum(expected), observed=sum(observed), diff=observed-expected, bin_prob=sum(bin_prob))
-
-
-plot_social_dist <- demog_distances |>
-  ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
-  geom_tile(aes(fill=demog_dist), colour="#707070", size=.2) +
-  scale_fill_distiller(palette="Blues", direction=1) +
-  facet_wrap(~crash_quintile, nrow=1) +
-  guides(fill=FALSE) +
-  labs(x="IMD quintile of casualty", y="IMD quintile of driver", subtitle="Geodemographic distance") +
-  theme(axis.text.x=element_blank(), axis.text.y = element_blank(),
-        axis.title.x = element_blank(), axis.title.y = element_blank()) +
-  coord_equal()
-
-
-plot <- plot_social_dist +
-  plot_annotation(
-    title="Geodemographic distance between IMD quintile of homeplace of pedestrian, driver and crash location"
-  )
-
-
-ggsave(filename="./static/class/04-class_files/imd-geodemog-dist.png", plot=plot,width=11, height=3.4, dpi=300)
-
-
-
-
-plot_obs_dist <- plot_data |>
-  ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
-  geom_tile(aes(fill=observed), colour="#707070", size=.2) +
-  scale_fill_distiller(palette="Blues", direction=1) +
-  facet_wrap(~crash_quintile, nrow=1) +
-  #guides(fill=FALSE) +
-  labs(x="IMD quintile of casualty", y="IMD quintile of driver", subtitle="Observed") +
-  theme(axis.text.x=element_blank(), axis.text.y = element_blank(),
-        axis.title.x = element_blank(), axis.title.y = element_blank()) +
-  coord_equal()
-
-
-
-plot_exp_dist <- plot_data |>
-  ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
-  geom_tile(aes(fill=expected), colour="#707070", size=.2) +
-  scale_fill_distiller(palette="Blues", direction=1) +
-  facet_wrap(~crash_quintile, nrow=1) +
-  guides(fill=FALSE) +
-  labs(x="IMD quintile of casualty", y="IMD quintile of driver", subtitle="Expected") +
-  theme(axis.text.x=element_blank(), axis.text.y = element_blank(),
-        axis.title.x = element_blank(), axis.title.y = element_blank()) +
-  coord_equal()
-
-plot_row_total_dist <- plot_data |>
-  ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
-  geom_tile(aes(fill=row_total), colour="#707070", size=.2) +
-  scale_fill_distiller(palette="Blues", direction=1) +
-  facet_wrap(~crash_quintile, nrow=1) +
-  guides(fill=FALSE) +
-  labs(x="IMD quintile of casualty", y="IMD quintile of driver", subtitle="Cell probabilities") +
-  theme(axis.text.x=element_blank(), axis.text.y = element_blank(),
-        axis.title.x = element_blank(), axis.title.y = element_blank()) +
-  coord_equal()
-
-plot_col_total_dist <- plot_data |>
-  ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
-  geom_tile(aes(fill=col_total), colour="#707070", size=.2) +
-  scale_fill_distiller(palette="Blues", direction=1) +
-  facet_wrap(~crash_quintile, nrow=1) +
-  guides(fill=FALSE) +
-  labs(x="IMD quintile of casualty", y="IMD quintile of driver", subtitle="Quintile sizes") +
-  theme(axis.text.x=element_blank(), axis.text.y = element_blank(),
-        axis.title.x = element_blank(), axis.title.y = element_blank()) +
-  coord_equal()
-
-plot_resid_dist <-  plot_data |>
-  ggplot(aes(x=casualty_imd_quintile, y=driver_imd_quintile)) +
-  geom_tile(aes(fill=resid), colour="#707070", size=.2) +
-  scale_fill_distiller(
-    palette="PRGn", direction=1,
-    limits=c(-max(plot_data$max_resid), max(plot_data$max_resid))
-  )+
-  facet_wrap(~crash_quintile, nrow=1) +
-  labs(subtitle="Observed vs Expected", x="Null: distribute by 'geodemographic distance' independently of crash location") +
-  theme(
-    axis.text.x=element_blank(), axis.text.y = element_blank(), axis.title.y = element_blank(),
-    axis.title.x = element_text(size=10, hjust=1, family="Avenir Book")
-  ) +
-  coord_equal()
-
-
-plot <- plot_obs_dist + plot_resid_dist + plot_spacer() +
-  plot_exp_dist + plot_row_total_dist + plot_col_total_dist +  plot_layout(nrow=6) +
-  plot_layout(heights=c(1, 1,.1,.8,.8,.8)) +
-  plot_annotation(title="Pedestrian casualties by IMD quintile of homeplace of pedestrian and driver",
-                  subtitle="--Grouped and compared by IMD quintile of crash location",
-                  caption="Stats19 data accessed via `stats19` package")
-
-
-ggsave(filename="./static/class/04-class_files/imd-driver-cas-crash-dist-full.png", plot=plot,width=9, height=13, dpi=300)
-
-
-
-# Bring in adjustments
-t <- get_stats19_adjustments()
-u <- ped_veh |> 
-  left_join(
-    t |> select(accident_index, Casualty_Reference, Adjusted_Serious, Adjusted_Slight),
-    by=c("accident_index"="accident_index", "casualty_reference"="Casualty_Reference")
+    total_daylight=sum(daylight, na.rm=TRUE), 
+    prop_daylight=total_daylight/(sum(dark, na.rm=TRUE)+total_daylight),
+    expected_daylight=(daylight+dark)*prop_daylight
     ) |> 
-  mutate(
-    fatal=if_else(casualty_severity=="Fatal", 1,0),
-    ksi=fatal+Adjusted_Serious,
-    slight=Adjusted_Slight) |> 
-  select(-c(Adjusted_Slight, Adjusted_Serious))
-
-ggsave(filename="./static/class/04-class_files/ped-cas-year.png", plot=plot,width=9, height=4.5, dpi=300)
-
-
-freq_by_year <- u |>
-  mutate(
-    year=lubridate::year(date)
-  ) |>
-  group_by(year) |>
-  summarise(ksi=sum(ksi, na.rm=TRUE), slight=sum(slight, na.rm=TRUE))
-
-min_slight <- min(freq_by_year$slight)
-max_slight <- max(freq_by_year$slight)
-range_slight <- max_slight-min_slight
-
-plot_slight_year <- freq_by_year |>
-  ggplot(aes(x=year, y=slight)) +
-  geom_line(colour="#fee0d2", size=1.5) +
-  geom_label(aes(label=scales::comma(slight, accuracy=1)), label.size = 0, family="Roboto Condensed", fill="#eeeeee") +
-  scale_y_continuous(limits = c(min_slight-.05*range_slight,max_slight+.05*range_slight)) +
-  scale_x_continuous(breaks=seq(2009, 2020, 1), position="top")+
-  theme_v_gds()+
-  theme(axis.title.x = element_blank(), axis.title.y = element_blank(), axis.text.y = element_blank(),
-        panel.grid.major.y=element_blank(), panel.grid.minor.y = element_blank(), panel.grid.major.x = element_blank())
-
-  
-min_ksi <- min(freq_by_year$ksi)
-max_ksi <- max(freq_by_year$ksi)
-range_ksi <- max_ksi-min_ksi
-plot_ksi_year <- freq_by_year |>
-  ggplot(aes(x=year, y=ksi)) +
-  geom_line(colour="#de2d26", size=1.5) +
-  geom_label(aes(label=scales::comma(ksi, accuracy=1)), label.size = 0, family="Roboto Condensed",fill="#eeeeee" ) +
-  scale_y_continuous(limits = c(min_ksi,max_ksi+.85*range_ksi)) +
-  scale_x_continuous(breaks=seq(2009, 2020, 1))+
-  theme_v_gds()+
-  theme(axis.title.x = element_blank(), axis.title.y = element_blank(), axis.text = element_blank(),
-        panel.grid.major.y=element_blank(), panel.grid.minor.y = element_blank(), panel.grid.major.x = element_blank())
-
-
-plot <- 
-  plot_slight_year + plot_ksi_year + plot_layout(nrow=2) + 
-  plot_annotation(
-    title="Pedestrian casualties 2010-2019 by KSI (dark red) and slight (light red)",
-    subtitle="--Severity classification using DfT adjustment",
-    caption="Stats19 data accessed via `stats19` package",
-    theme = theme_v_gds())
+  pivot_longer(cols=c(dark, daylight), names_to="is_daylight", values_to="count") |> 
+  ggplot(aes(x=age_of_casualty, y=count)) +
+  geom_col(aes(fill=is_daylight, colour=is_daylight), linewidth=0, width=1) +
+  geom_line(aes(y=expected_daylight, group=crash_quintile), colour="#969696", linewidth=.4) +
+  geom_text(data=
+              . %>% filter(crash_quintile == "2 more deprived", age_of_casualty==30, is_daylight=="daylight"),
+            aes(x=45, y=1000), label="expected #\ndaylight crashes", hjust=0
+            ) +
+  geom_segment(data=
+                 . %>% filter(crash_quintile == "2 more deprived", age_of_casualty==30, is_daylight=="daylight"),
+               aes(x=42, y=1000, xend=21, yend=530), linewidth=.3
+               ) +
+  facet_wrap(~crash_quintile, labeller=labeller(c("daylight", "dark")), nrow=1) +
+  scale_fill_manual(values=c("#000000", "#bdbdbd"), guide="none") +
+  scale_fill_manual(values=c("#08519c", "#c6dbef"), guide="none")+
+  scale_colour_manual(values=c("#08519c", "#c6dbef"), guide="none")+
+  labs(y="crash count in hundreds", x="casualty age") +
+  scale_y_continuous(
+    breaks=c(c(4,8,12)*100), 
+    labels = scales::comma_format(scale = .01))
 
 
 
+# morning  <- hm("06:00")
+# night <- hm("20:00")
+# 
+# plot <- ped_veh |> 
+#   filter(age_of_casualty > 0, crash_quintile %in% `= "Data missing or out of range"`) |> 
+#   mutate(is_daytime=between(hm(time), morning, night)) |> 
+#   group_by(age_of_casualty, is_daytime, crash_quintile) |> 
+#   summarise(count=n()) |> ungroup() |> 
+#   ggplot(aes(x=age_of_casualty, y=count, fill=is_daytime)) +
+#   geom_col(linewidth=0, width=1) +
+#   facet_grid(is_daytime~crash_quintile, space="free_y", scales="free_y", labeller=labeller(c("daylight", "dark"))) +
+#   scale_fill_manual(values=c("#000000", "#bdbdbd"), guide="none") +
+#   labs(y="crash count in hundreds", x="casualty age") +
+#   scale_y_continuous(
+#     breaks=c(c(2,4,6,8,10)*100), 
+#     labels = scales::comma_format(scale = .01)) 
 
 
+plot <- p1 / p2 + plot_layout(heights=c(1,.8))
 
-mosaic <- vehicle_pedestrians |> group_by(casualty_severity) |> 
-  mutate(
-    vehicle_type=factor(vehicle_type, levels=vehicle_order),
-    severity=if_else(casualty_severity=="Slight", "Slight", "KSI")
-  ) |> ungroup |> 
-  select(vehicle_type, severity) |>
-  mutate(vehicle_type=fct_rev(vehicle_type)) |> 
-  ggplot() +
-  geom_mosaic(aes(x=product(vehicle_type), fill=severity, colour=severity, divider = "vspine"), offset = 0.008, alpha=1)+
-  scale_fill_manual(values=c("#de2d26","#fee0d2"))+
-  theme_v_gds() +
-  theme(panel.grid.major.y=element_blank(), panel.grid.minor = element_blank(), axis.text.x = element_blank(), axis.text.y = element_blank()) +
-  coord_flip()
-
-# annotate labels
-plot_data <- ggplot_build(mosaic)$data |> as.data.frame() |>
-  group_by(x__vehicle_type) |>
-  summarise(xmin=min(xmin),xmax=max(xmax), ymin=min(ymin),ymax=max(ymax),
-            count=sum(.wt))
-
-mosaic_plot <- mosaic + 
-  geom_text(
-    data=plot_data, 
-    aes(x=xmin+0.5*(xmax-xmin), y=ymin+0.5*(ymax-ymin),
-        label=x__vehicle_type, size=count), family= "Roboto Condensed Regular", alpha=0.5)+
-  scale_size(range = c(2, 13))+
-  guides(size=FALSE)+
-  theme_v_gds()+
-  theme(legend.position = "right", axis.text=element_blank())+
-  labs(y="prop severity", x="crash count", subtitle="mosaic plot")
-
-
-plot<- bar_freq + bar_prop + mosaic_plot + plot_layout(widths=c(1,1,1.1)) +
-  plot_annotation(title="Pedestrian casualties by severity and vehicle type",
-                  subtitle="-- Stats19 crashes 2010-2019",
-                  caption="Stats19 data accessed via `stats19` package",
-                  theme = theme_v_gds())
-
-
-ggsave(filename="./static/class/04-class_files/bars-assoc.png", plot=plot,width=11, height=4.5, dpi=300)
-
-#
+ggsave(here("figs", "04", "age_light_imd.png"), plot, dpi=500, width = 10, height=7)

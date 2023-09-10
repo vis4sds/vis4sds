@@ -35,7 +35,7 @@ All technical examples are implemented using the `R` programming environment; so
 
 ## Omissions and additions  {.unnumbered}
 
-There are certain omissions in the book, as well as certain additions, that might be surpising to those seasoned in reading data visualization books. We do not cover interactivity in data graphics and there is not a chapter dedicated to geospatial visualization, though numerous complex and novel geospatial visualizations (maps) do appear throughout. 
+There are certain omissions in the book, as well as certain additions, that might be surpising to those seasoned in reading data visualization books. We do not cover interactivity in data graphics and there is not a chapter dedicated to geospatial visualization, though numerous geospatial visualizations (maps) appear throughout to addresss particular analysis questions. 
 
 The reasons for this are principled as well as pragmatic.  The `R` programming environment is not well-suited to highly flexible, interactive data graphics. Even if it were, we would question the need for interaction in many of the real-world data analysis scenarios covered in this book. The lack of a dedicated geovisualization chapter will hopefully become clear by the end of Chapter 3. It is useful to apply the same theory, heuristics, and coding ideas to designing and evaluating maps as one would any other data graphic. 
 

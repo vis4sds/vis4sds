@@ -712,7 +712,7 @@ The plot specification:
 2. *Encoding*: hexagons are filled according to the residual values (`fill=.resid`).
 3. *Marks*: `geom_sf()` for drawing the hexagon outlines. The first `geom_sf` colours each constituency on its residual value. The second does not encode any data values -- notice there is no `aes()` -- and is for drawing the regional outlines.
 4. *Facets*: `facet_wrap()` on `region` in order to display coefficients estimated separately for each region.
-5. *Scale*: `scale_fill_distiller()` for  ColorBrewer scheme, diverging using the RdBu palette, with `limits` set to `max_resid` to make the scheme centred on $0$.
+5. *Scale*: `scale_fill_distiller()` for  ColorBrewer [@harrower_colorbrewerorg_2003] scheme, diverging using the RdBu palette, with `limits` set to `max_resid` to make the scheme centred on $0$.
 6. *Setting*: The `linewidth` parameter of the hexagon outlines is varied so that the regional outlines in the second call to `geom_sf()` appear more salient. Also here, a transparent `fill` to ensure that the regional outlines do not occlude the encoded residuals.
 
 ## Conclusion
