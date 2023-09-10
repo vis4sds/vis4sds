@@ -3,6 +3,7 @@
 ```{r}
 #| echo: false
 library(knitr)
+library(here)
 library(kableExtra)
 library(fontawesome)
 ```
