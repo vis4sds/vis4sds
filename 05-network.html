@@ -2,16 +2,22 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-0.9.637">
+<meta name="generator" content="quarto-1.3.450">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>Visualization for Social Data Science - 5&nbsp; Networks</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-span.underline{text-decoration: underline;}
-div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -38,43 +44,13 @@ pre.numberSource code > span > a:first-child::before
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
     padding: 0 4px; width: 4em;
-    color: #aaaaaa;
   }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
 div.sourceCode
   {   }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -94,7 +70,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet"><script id="quarto-search-options" type="application/json">{
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
@@ -110,7 +86,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit"
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
 }</script><script src="site_libs/kePrint-0.0.1/kePrint.js"></script><link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script><script>document.addEventListener("DOMContentLoaded", function () {
@@ -131,112 +108,129 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <body class="nav-sidebar floating">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }"><div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Networks</span></h1>
-      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
-        <i class="bi bi-chevron-right"></i>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./05-network.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Networks</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
       </button>
     </div>
   </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Visualization for Social Data Science</a> 
         <div class="sidebar-tools-main">
-    <a href="https://github.com/vis4sds/vis4sds/" title="Source Code" class="sidebar-tool px-1"><i class="bi bi-github"></i></a>
-    <a href="https://twitter.com/intent/tweet?url=%7Curl%7C" title="Twitter" class="sidebar-tool px-1"><i class="bi bi-twitter"></i></a>
+    <a href="https://github.com/vis4sds/vis4sds/" rel="" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <a href="https://twitter.com/intent/tweet?url=%7Curl%7C" rel="" title="Twitter" class="quarto-navigation-tool px-1" aria-label="Twitter"><i class="bi bi-twitter"></i></a>
 </div>
     </div>
       </div>
-      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="mt-2 flex-shrink-0 align-items-center">
         <div class="sidebar-search">
         <div id="quarto-search" class="" title="Search"></div>
         </div>
-      </div>
+        </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link">Preface</a>
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./01-intro.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></a>
+  <a href="./01-intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./02-data.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data Fundamentals</span></a>
+  <a href="./02-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data Fundamentals</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./03-visual.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Visualization Fundamentals</span></a>
+  <a href="./03-visual.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Visualization Fundamentals</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./04-explore.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Exploratory Data Analysis</span></a>
+  <a href="./04-explore.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Exploratory Data Analysis</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./05-network.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Networks</span></a>
+  <a href="./05-network.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Networks</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./06-model.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Models</span></a>
+  <a href="./06-model.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Models</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./07-uncertainty.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Uncertainty</span></a>
+  <a href="./07-uncertainty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Uncertainty</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./08-storytelling.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Data Storytelling</span></a>
+  <a href="./08-storytelling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Data Storytelling</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./references.html" class="sidebar-item-text sidebar-link">References</a>
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
   </div>
 </li>
     </ul>
 </div>
-</nav><!-- margin-sidebar --><div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc"><h2 id="toc-title">Table of contents</h2>
+</nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"> <span class="header-section-number">5.1</span> Introduction</a></li>
+<li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">5.1</span> Introduction</a></li>
   <li>
-<a href="#concepts" id="toc-concepts" class="nav-link" data-scroll-target="#concepts"> <span class="header-section-number">5.2</span> Concepts</a>
+<a href="#concepts" id="toc-concepts" class="nav-link" data-scroll-target="#concepts"><span class="header-section-number">5.2</span> Concepts</a>
   <ul class="collapse">
-<li><a href="#node-summary" id="toc-node-summary" class="nav-link" data-scroll-target="#node-summary"> <span class="header-section-number">5.2.1</span> Node summary</a></li>
-  <li><a href="#node-link-representations" id="toc-node-link-representations" class="nav-link" data-scroll-target="#node-link-representations"> <span class="header-section-number">5.2.2</span> Node-link representations</a></li>
-  <li><a href="#origin-destination-matrices" id="toc-origin-destination-matrices" class="nav-link" data-scroll-target="#origin-destination-matrices"> <span class="header-section-number">5.2.3</span> Origin-Destination matrices</a></li>
-  <li><a href="#origin-destination-maps" id="toc-origin-destination-maps" class="nav-link" data-scroll-target="#origin-destination-maps"> <span class="header-section-number">5.2.4</span> Origin-Destination maps</a></li>
+<li><a href="#node-summary" id="toc-node-summary" class="nav-link" data-scroll-target="#node-summary"><span class="header-section-number">5.2.1</span> Node summary</a></li>
+  <li><a href="#node-link-representations" id="toc-node-link-representations" class="nav-link" data-scroll-target="#node-link-representations"><span class="header-section-number">5.2.2</span> Node-link representations</a></li>
+  <li><a href="#origin-destination-matrices" id="toc-origin-destination-matrices" class="nav-link" data-scroll-target="#origin-destination-matrices"><span class="header-section-number">5.2.3</span> Origin-Destination matrices</a></li>
+  <li><a href="#origin-destination-maps" id="toc-origin-destination-maps" class="nav-link" data-scroll-target="#origin-destination-maps"><span class="header-section-number">5.2.4</span> Origin-Destination maps</a></li>
   </ul>
 </li>
   <li>
-<a href="#techniques" id="toc-techniques" class="nav-link" data-scroll-target="#techniques"> <span class="header-section-number">5.3</span> Techniques</a>
+<a href="#techniques" id="toc-techniques" class="nav-link" data-scroll-target="#techniques"><span class="header-section-number">5.3</span> Techniques</a>
   <ul class="collapse">
-<li><a href="#import" id="toc-import" class="nav-link" data-scroll-target="#import"> <span class="header-section-number">5.3.1</span> Import</a></li>
-  <li><a href="#gridmap-layout" id="toc-gridmap-layout" class="nav-link" data-scroll-target="#gridmap-layout"> <span class="header-section-number">5.3.2</span> Gridmap layout</a></li>
-  <li><a href="#analysing-over-the-nodes-boroughs" id="toc-analysing-over-the-nodes-boroughs" class="nav-link" data-scroll-target="#analysing-over-the-nodes-boroughs"> <span class="header-section-number">5.3.3</span> Analysing over the nodes (boroughs)</a></li>
-  <li><a href="#analysing-over-edges" id="toc-analysing-over-edges" class="nav-link" data-scroll-target="#analysing-over-edges"> <span class="header-section-number">5.3.4</span> Analysing over edges</a></li>
+<li><a href="#import" id="toc-import" class="nav-link" data-scroll-target="#import"><span class="header-section-number">5.3.1</span> Import</a></li>
+  <li><a href="#gridmap-layout" id="toc-gridmap-layout" class="nav-link" data-scroll-target="#gridmap-layout"><span class="header-section-number">5.3.2</span> Gridmap layout</a></li>
+  <li><a href="#analysing-over-the-nodes-boroughs" id="toc-analysing-over-the-nodes-boroughs" class="nav-link" data-scroll-target="#analysing-over-the-nodes-boroughs"><span class="header-section-number">5.3.3</span> Analysing over the nodes (boroughs)</a></li>
+  <li><a href="#analysing-over-edges" id="toc-analysing-over-edges" class="nav-link" data-scroll-target="#analysing-over-edges"><span class="header-section-number">5.3.4</span> Analysing over edges</a></li>
   </ul>
 </li>
-  <li><a href="#conclusions" id="toc-conclusions" class="nav-link" data-scroll-target="#conclusions"> <span class="header-section-number">5.4</span> Conclusions</a></li>
-  <li><a href="#further-reading" id="toc-further-reading" class="nav-link" data-scroll-target="#further-reading"> <span class="header-section-number">5.5</span> Further Reading</a></li>
+  <li><a href="#conclusions" id="toc-conclusions" class="nav-link" data-scroll-target="#conclusions"><span class="header-section-number">5.4</span> Conclusions</a></li>
+  <li><a href="#further-reading" id="toc-further-reading" class="nav-link" data-scroll-target="#further-reading"><span class="header-section-number">5.5</span> Further Reading</a></li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/vis4sds/vis4sds/edit/master/05-network.qmd" class="toc-action">Edit this page</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="sec-network" class="quarto-section-identifier d-none d-lg-block"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Networks</span></span></h1>
+<h1 class="title"><span id="sec-network" class="quarto-section-identifier"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Networks</span></span></h1>
 </div>
 
 
@@ -244,48 +238,43 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="quarto-title-meta">
 
     
+  
     
   </div>
   
 
-</header><div class="cell">
-
-</div>
-<p>By the end of this chapter you should gain the following knowledge and practical skills.</p>
-<div class="callout-note callout callout-style-default callout-captioned">
+</header><p>By the end of this chapter you should gain the following knowledge and practical skills.</p>
+<div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<div class="callout-caption-container flex-fill">
+<div class="callout-title-container flex-fill">
 Knowledge
 </div>
 </div>
 <div class="callout-body-container callout-body">
 <ul class="task-list">
 <li>
-<input type="checkbox" disabled="">
-Understand the special structure and vocabulary used to represent network data.</li>
+<input type="checkbox">Understand the special structure and vocabulary used to represent network data.</li>
 <li>
-<input type="checkbox" disabled="">
-Appreciate the strengths, weaknesses and trade-offs of network visualizations and of incorporating geographic context.</li>
+<input type="checkbox">Appreciate the strengths, weaknesses and trade-offs of network visualizations and of incorporating geographic context.</li>
 </ul>
 </div>
 </div>
-<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<div class="callout-caption-container flex-fill">
+<div class="callout-title-container flex-fill">
 Practical skills
 </div>
 </div>
 <div class="callout-body-container callout-body">
 <ul class="task-list">
 <li>
-<input type="checkbox" disabled="">
-Write <code>ggplot2</code> specifications to analyse spatial network origin-destination data.</li>
+<input type="checkbox">Write <code>ggplot2</code> specifications to analyse spatial network origin-destination data.</li>
 </ul>
 </div>
 </div>
@@ -303,8 +292,7 @@ Write <code>ggplot2</code> specifications to analyse spatial network origin-dest
 <div class="cell-output-display">
 <div id="fig-flows-bor" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="figs/05/flows-bor.png" class="img-fluid figure-img" style="width:90.0%"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 5.1: Barchart of jobs and workers contained in London boroughs.</figcaption><p></p>
-</figure>
+<figcaption class="figure-caption">Figure&nbsp;5.1: Barchart of jobs and workers contained in London boroughs.</figcaption></figure>
 </div>
 </div>
 </div>
@@ -317,8 +305,7 @@ Write <code>ggplot2</code> specifications to analyse spatial network origin-dest
 <div class="cell-output-display">
 <div id="fig-lines-geog" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="figs/05/flowlines.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 5.2: Flowlines with edges showing frequencies between London boroughs.</figcaption><p></p>
-</figure>
+<figcaption class="figure-caption">Figure&nbsp;5.2: Flowlines with edges showing frequencies between London boroughs.</figcaption></figure>
 </div>
 </div>
 </div>
@@ -331,8 +318,7 @@ Write <code>ggplot2</code> specifications to analyse spatial network origin-dest
 <div class="cell-output-display">
 <div id="fig-matrices" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="figs/05/matrices.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 5.3: Origin-destination matrices ordered according to borough size on number of jobs. A separate, local, colour scale is created for each destination borough.</figcaption><p></p>
-</figure>
+<figcaption class="figure-caption">Figure&nbsp;5.3: Origin-destination matrices ordered according to borough size on number of jobs. A separate, local, colour scale is created for each destination borough.</figcaption></figure>
 </div>
 </div>
 </div>
@@ -344,8 +330,7 @@ Write <code>ggplot2</code> specifications to analyse spatial network origin-dest
 <div class="cell-output-display">
 <div id="fig-reordered-matrix" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="figs/05/reordered_matrix.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 5.4: Origin-destination matrices: highlighted destination (Westminster) and origin (Hackney) with geospatial arrangement.</figcaption><p></p>
-</figure>
+<figcaption class="figure-caption">Figure&nbsp;5.4: Origin-destination matrices: highlighted destination (Westminster) and origin (Hackney) with geospatial arrangement.</figcaption></figure>
 </div>
 </div>
 </div>
@@ -354,8 +339,7 @@ Write <code>ggplot2</code> specifications to analyse spatial network origin-dest
 <div class="cell-output-display">
 <div id="fig-map-map" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="figs/05/map_map.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 5.5: Map-witin-map layout required for generating OD maps. The approximate spatial arrangement is generated with the <a href="https://www.roger-beecham.com/gridmappr/index.html">gridmappr</a> package <span class="citation" data-cites="beecham_gridmappr_2023">(<a href="references.html#ref-beecham_gridmappr_2023" role="doc-biblioref">Beecham 2023</a>)</span>.</figcaption><p></p>
-</figure>
+<figcaption class="figure-caption">Figure&nbsp;5.5: Map-witin-map layout required for generating OD maps. The approximate spatial arrangement is generated with the <a href="https://www.roger-beecham.com/gridmappr/index.html">gridmappr</a> package <span class="citation" data-cites="beecham_gridmappr_2023">(<a href="references.html#ref-beecham_gridmappr_2023" role="doc-biblioref">Beecham 2023</a>)</span>.</figcaption></figure>
 </div>
 </div>
 </div>
@@ -366,17 +350,16 @@ Write <code>ggplot2</code> specifications to analyse spatial network origin-dest
 <div class="cell-output-display">
 <div id="fig-odmap" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="figs/05/od_map.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 5.6: Destination-focussed OD map of commutes between London boroughs with local scaling.</figcaption><p></p>
-</figure>
+<figcaption class="figure-caption">Figure&nbsp;5.6: Destination-focussed OD map of commutes between London boroughs with local scaling.</figcaption></figure>
 </div>
 </div>
 </div>
-<div class="callout-tip callout callout-style-default no-icon callout-captioned">
+<div class="callout callout-style-default callout-tip no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
-<div class="callout-caption-container flex-fill">
+<div class="callout-title-container flex-fill">
 Task
 </div>
 </div>
@@ -419,90 +402,91 @@ The analysis above might give the impression that OD maps should be used in pref
 <div class="cell">
 <div class="cell-output-display">
 <div id="tbl-census-ods" class="anchored">
-
-<table>
-<caption>Table 5.1:  Census OD travel-to-work data: edges (OD flows) table. </caption>
- <thead><tr>
-<th style="text-align:left;border-bottom: 1px solid;"> o_bor </th>
-   <th style="text-align:left;border-bottom: 1px solid;"> d_bor </th>
-   <th style="text-align:left;border-bottom: 1px solid;"> occ_type </th>
-   <th style="text-align:left;border-bottom: 1px solid;"> count </th>
-   <th style="text-align:left;border-bottom: 1px solid;"> is_prof </th>
-  </tr></thead>
+<table data-quarto-postprocess="true" class="table table-sm table-striped small">
+<caption>Table&nbsp;5.1: Census OD travel-to-work data: edges (OD flows) table.</caption>
+<thead><tr class="header">
+<th data-quarto-table-cell-role="th" style="text-align: left; border-bottom: 1px solid;">o_bor</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; border-bottom: 1px solid;">d_bor</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; border-bottom: 1px solid;">occ_type</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; border-bottom: 1px solid;">count</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; border-bottom: 1px solid;">is_prof</th>
+</tr></thead>
 <tbody>
-<tr>
-<td style="text-align:left;width: 8em; "> Barnet </td>
-   <td style="text-align:left;width: 8em; "> Westminster </td>
-   <td style="text-align:left;width: 8em; "> 1_managers_senior </td>
-   <td style="text-align:left;width: 8em; "> 2733 </td>
-   <td style="text-align:left;width: 8em; font-family:  Monospace"> TRUE </td>
-  </tr>
-<tr>
-<td style="text-align:left;width: 8em; "> Barnet </td>
-   <td style="text-align:left;width: 8em; "> Westminster </td>
-   <td style="text-align:left;width: 8em; "> 2_professional </td>
-   <td style="text-align:left;width: 8em; "> 4055 </td>
-   <td style="text-align:left;width: 8em; font-family:  Monospace"> TRUE </td>
-  </tr>
-<tr>
-<td style="text-align:left;width: 8em; "> Barnet </td>
-   <td style="text-align:left;width: 8em; "> Westminster </td>
-   <td style="text-align:left;width: 8em; "> 3_associate_professional </td>
-   <td style="text-align:left;width: 8em; "> 2977 </td>
-   <td style="text-align:left;width: 8em; font-family:  Monospace"> TRUE </td>
-  </tr>
-<tr>
-<td style="text-align:left;width: 8em; "> Barnet </td>
-   <td style="text-align:left;width: 8em; "> Westminster </td>
-   <td style="text-align:left;width: 8em; "> 4_administrative </td>
-   <td style="text-align:left;width: 8em; "> 2674 </td>
-   <td style="text-align:left;width: 8em; font-family:  Monospace"> FALSE </td>
-  </tr>
-<tr>
-<td style="text-align:left;width: 8em; "> Barnet </td>
-   <td style="text-align:left;width: 8em; "> Westminster </td>
-   <td style="text-align:left;width: 8em; "> 5_trade </td>
-   <td style="text-align:left;width: 8em; "> 687 </td>
-   <td style="text-align:left;width: 8em; font-family:  Monospace"> FALSE </td>
-  </tr>
-<tr>
-<td style="text-align:left;width: 8em; "> Barnet </td>
-   <td style="text-align:left;width: 8em; "> Westminster </td>
-   <td style="text-align:left;width: 8em; "> 6_caring_leisure </td>
-   <td style="text-align:left;width: 8em; "> 755 </td>
-   <td style="text-align:left;width: 8em; font-family:  Monospace"> FALSE </td>
-  </tr>
-<tr>
-<td style="text-align:left;width: 8em; "> Barnet </td>
-   <td style="text-align:left;width: 8em; "> Westminster </td>
-   <td style="text-align:left;width: 8em; "> 7_sales_customer </td>
-   <td style="text-align:left;width: 8em; "> 1255 </td>
-   <td style="text-align:left;width: 8em; font-family:  Monospace"> FALSE </td>
-  </tr>
-<tr>
-<td style="text-align:left;width: 8em; "> Barnet </td>
-   <td style="text-align:left;width: 8em; "> Westminster </td>
-   <td style="text-align:left;width: 8em; "> 8_machine_operatives </td>
-   <td style="text-align:left;width: 8em; "> 257 </td>
-   <td style="text-align:left;width: 8em; font-family:  Monospace"> FALSE </td>
-  </tr>
-<tr>
-<td style="text-align:left;width: 8em; "> Barnet </td>
-   <td style="text-align:left;width: 8em; "> Westminster </td>
-   <td style="text-align:left;width: 8em; "> 9_elementary </td>
-   <td style="text-align:left;width: 8em; "> 1309 </td>
-   <td style="text-align:left;width: 8em; font-family:  Monospace"> FALSE </td>
-  </tr>
-<tr>
-<td style="text-align:left;width: 8em; "> ... </td>
-   <td style="text-align:left;width: 8em; "> ... </td>
-   <td style="text-align:left;width: 8em; "> ... </td>
-   <td style="text-align:left;width: 8em; "> ... </td>
-   <td style="text-align:left;width: 8em; font-family:  Monospace"> ... </td>
-  </tr>
+<tr class="odd">
+<td style="text-align: left; width: 8em;">Barnet</td>
+<td style="text-align: left; width: 8em;">Westminster</td>
+<td style="text-align: left; width: 8em;">1_managers_senior</td>
+<td style="text-align: left; width: 8em;">2733</td>
+<td style="text-align: left; width: 8em; font-family: Monospace;">TRUE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; width: 8em;">Barnet</td>
+<td style="text-align: left; width: 8em;">Westminster</td>
+<td style="text-align: left; width: 8em;">2_professional</td>
+<td style="text-align: left; width: 8em;">4055</td>
+<td style="text-align: left; width: 8em; font-family: Monospace;">TRUE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; width: 8em;">Barnet</td>
+<td style="text-align: left; width: 8em;">Westminster</td>
+<td style="text-align: left; width: 8em;">3_associate_professional</td>
+<td style="text-align: left; width: 8em;">2977</td>
+<td style="text-align: left; width: 8em; font-family: Monospace;">TRUE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; width: 8em;">Barnet</td>
+<td style="text-align: left; width: 8em;">Westminster</td>
+<td style="text-align: left; width: 8em;">4_administrative</td>
+<td style="text-align: left; width: 8em;">2674</td>
+<td style="text-align: left; width: 8em; font-family: Monospace;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; width: 8em;">Barnet</td>
+<td style="text-align: left; width: 8em;">Westminster</td>
+<td style="text-align: left; width: 8em;">5_trade</td>
+<td style="text-align: left; width: 8em;">687</td>
+<td style="text-align: left; width: 8em; font-family: Monospace;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; width: 8em;">Barnet</td>
+<td style="text-align: left; width: 8em;">Westminster</td>
+<td style="text-align: left; width: 8em;">6_caring_leisure</td>
+<td style="text-align: left; width: 8em;">755</td>
+<td style="text-align: left; width: 8em; font-family: Monospace;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; width: 8em;">Barnet</td>
+<td style="text-align: left; width: 8em;">Westminster</td>
+<td style="text-align: left; width: 8em;">7_sales_customer</td>
+<td style="text-align: left; width: 8em;">1255</td>
+<td style="text-align: left; width: 8em; font-family: Monospace;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; width: 8em;">Barnet</td>
+<td style="text-align: left; width: 8em;">Westminster</td>
+<td style="text-align: left; width: 8em;">8_machine_operatives</td>
+<td style="text-align: left; width: 8em;">257</td>
+<td style="text-align: left; width: 8em; font-family: Monospace;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; width: 8em;">Barnet</td>
+<td style="text-align: left; width: 8em;">Westminster</td>
+<td style="text-align: left; width: 8em;">9_elementary</td>
+<td style="text-align: left; width: 8em;">1309</td>
+<td style="text-align: left; width: 8em; font-family: Monospace;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; width: 8em;">...</td>
+<td style="text-align: left; width: 8em;">...</td>
+<td style="text-align: left; width: 8em;">...</td>
+<td style="text-align: left; width: 8em;">...</td>
+<td style="text-align: left; width: 8em; font-family: Monospace;">...</td>
+</tr>
 </tbody>
 </table>
 </div>
+
+
 </div>
 </div>
 <p>Nodes in the dataset are the 33 London boroughs. We can express commuters between these nodes in different ways, according to whether nodes are destinations or origins. In the code below, two tables are generated with OD data grouped by destination (<code>nodes_d</code>) and origin (<code>nodes_o</code>) and commuters into- and out of- boroughs counted respectively. These two data sets are then accumulated with <code>bind_rows()</code> and distinguished via the variable name <code>type</code>.</p>
@@ -526,85 +510,86 @@ The analysis above might give the impression that OD maps should be used in pref
 <div class="cell">
 <div class="cell-output-display">
 <div id="tbl-nodes-table" class="anchored">
-
-<table>
-<caption>Table 5.2:  Census OD travel-to-work data: nodes (boroughs) table. </caption>
- <thead><tr>
-<th style="text-align:left;border-bottom: 1px solid;"> local_authority </th>
-   <th style="text-align:left;border-bottom: 1px solid;"> is_prof </th>
-   <th style="text-align:left;border-bottom: 1px solid;"> count </th>
-   <th style="text-align:left;border-bottom: 1px solid;"> type </th>
-  </tr></thead>
+<table data-quarto-postprocess="true" class="table table-sm table-striped small">
+<caption>Table&nbsp;5.2: Census OD travel-to-work data: nodes (boroughs) table.</caption>
+<thead><tr class="header">
+<th data-quarto-table-cell-role="th" style="text-align: left; border-bottom: 1px solid;">local_authority</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; border-bottom: 1px solid;">is_prof</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; border-bottom: 1px solid;">count</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; border-bottom: 1px solid;">type</th>
+</tr></thead>
 <tbody>
-<tr>
-<td style="text-align:left;width: 55%; "> Barking and Dagenham </td>
-   <td style="text-align:left;font-family:  Monospacewidth: 15%; "> TRUE </td>
-   <td style="text-align:left;width: 15%; "> 3745 </td>
-   <td style="text-align:left;"> workers </td>
-  </tr>
-<tr>
-<td style="text-align:left;width: 55%; "> Barking and Dagenham </td>
-   <td style="text-align:left;font-family:  Monospacewidth: 15%; "> TRUE </td>
-   <td style="text-align:left;width: 15%; "> 7841 </td>
-   <td style="text-align:left;"> workers </td>
-  </tr>
-<tr>
-<td style="text-align:left;width: 55%; "> Barking and Dagenham </td>
-   <td style="text-align:left;font-family:  Monospacewidth: 15%; "> TRUE </td>
-   <td style="text-align:left;width: 15%; "> 5243 </td>
-   <td style="text-align:left;"> workers </td>
-  </tr>
-<tr>
-<td style="text-align:left;width: 55%; "> Barking and Dagenham </td>
-   <td style="text-align:left;font-family:  Monospacewidth: 15%; "> FALSE </td>
-   <td style="text-align:left;width: 15%; "> 8592 </td>
-   <td style="text-align:left;"> workers </td>
-  </tr>
-<tr>
-<td style="text-align:left;width: 55%; "> Barking and Dagenham </td>
-   <td style="text-align:left;font-family:  Monospacewidth: 15%; "> FALSE </td>
-   <td style="text-align:left;width: 15%; "> 3990 </td>
-   <td style="text-align:left;"> workers </td>
-  </tr>
-<tr>
-<td style="text-align:left;width: 55%; "> Barking and Dagenham </td>
-   <td style="text-align:left;font-family:  Monospacewidth: 15%; "> FALSE </td>
-   <td style="text-align:left;width: 15%; "> 6635 </td>
-   <td style="text-align:left;"> workers </td>
-  </tr>
-<tr>
-<td style="text-align:left;width: 55%; "> Barking and Dagenham </td>
-   <td style="text-align:left;font-family:  Monospacewidth: 15%; "> FALSE </td>
-   <td style="text-align:left;width: 15%; "> 5797 </td>
-   <td style="text-align:left;"> workers </td>
-  </tr>
-<tr>
-<td style="text-align:left;width: 55%; "> Barking and Dagenham </td>
-   <td style="text-align:left;font-family:  Monospacewidth: 15%; "> FALSE </td>
-   <td style="text-align:left;width: 15%; "> 4396 </td>
-   <td style="text-align:left;"> workers </td>
-  </tr>
-<tr>
-<td style="text-align:left;width: 55%; "> Barking and Dagenham </td>
-   <td style="text-align:left;font-family:  Monospacewidth: 15%; "> FALSE </td>
-   <td style="text-align:left;width: 15%; "> 7998 </td>
-   <td style="text-align:left;"> workers </td>
-  </tr>
-<tr>
-<td style="text-align:left;width: 55%; "> Barking and Dagenham </td>
-   <td style="text-align:left;font-family:  Monospacewidth: 15%; "> TRUE </td>
-   <td style="text-align:left;width: 15%; "> 2667 </td>
-   <td style="text-align:left;"> jobs </td>
-  </tr>
-<tr>
-<td style="text-align:left;width: 55%; "> ... </td>
-   <td style="text-align:left;font-family:  Monospacewidth: 15%; "> ... </td>
-   <td style="text-align:left;width: 15%; "> ... </td>
-   <td style="text-align:left;"> ... </td>
-  </tr>
+<tr class="odd">
+<td style="text-align: left; width: 55%;">Barking and Dagenham</td>
+<td style="text-align: left; font-family: Monospacewidth;">TRUE</td>
+<td style="text-align: left; width: 15%;">3745</td>
+<td style="text-align: left;">workers</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; width: 55%;">Barking and Dagenham</td>
+<td style="text-align: left; font-family: Monospacewidth;">TRUE</td>
+<td style="text-align: left; width: 15%;">7841</td>
+<td style="text-align: left;">workers</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; width: 55%;">Barking and Dagenham</td>
+<td style="text-align: left; font-family: Monospacewidth;">TRUE</td>
+<td style="text-align: left; width: 15%;">5243</td>
+<td style="text-align: left;">workers</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; width: 55%;">Barking and Dagenham</td>
+<td style="text-align: left; font-family: Monospacewidth;">FALSE</td>
+<td style="text-align: left; width: 15%;">8592</td>
+<td style="text-align: left;">workers</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; width: 55%;">Barking and Dagenham</td>
+<td style="text-align: left; font-family: Monospacewidth;">FALSE</td>
+<td style="text-align: left; width: 15%;">3990</td>
+<td style="text-align: left;">workers</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; width: 55%;">Barking and Dagenham</td>
+<td style="text-align: left; font-family: Monospacewidth;">FALSE</td>
+<td style="text-align: left; width: 15%;">6635</td>
+<td style="text-align: left;">workers</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; width: 55%;">Barking and Dagenham</td>
+<td style="text-align: left; font-family: Monospacewidth;">FALSE</td>
+<td style="text-align: left; width: 15%;">5797</td>
+<td style="text-align: left;">workers</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; width: 55%;">Barking and Dagenham</td>
+<td style="text-align: left; font-family: Monospacewidth;">FALSE</td>
+<td style="text-align: left; width: 15%;">4396</td>
+<td style="text-align: left;">workers</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; width: 55%;">Barking and Dagenham</td>
+<td style="text-align: left; font-family: Monospacewidth;">FALSE</td>
+<td style="text-align: left; width: 15%;">7998</td>
+<td style="text-align: left;">workers</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; width: 55%;">Barking and Dagenham</td>
+<td style="text-align: left; font-family: Monospacewidth;">TRUE</td>
+<td style="text-align: left; width: 15%;">2667</td>
+<td style="text-align: left;">jobs</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; width: 55%;">...</td>
+<td style="text-align: left; font-family: Monospacewidth;">...</td>
+<td style="text-align: left; width: 15%;">...</td>
+<td style="text-align: left;">...</td>
+</tr>
 </tbody>
 </table>
 </div>
+
+
 </div>
 </div>
 </section><section id="gridmap-layout" class="level3" data-number="5.3.2"><h3 data-number="5.3.2" class="anchored" data-anchor-id="gridmap-layout">
@@ -629,8 +614,7 @@ The analysis above might give the impression that OD maps should be used in pref
 <div class="cell-output-display">
 <div id="fig-displacements" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="figs/05/displacements.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 5.7: Displacement vectors showing distortion introduced by candidate gridmap layouts</figcaption><p></p>
-</figure>
+<figcaption class="figure-caption">Figure&nbsp;5.7: Displacement vectors showing distortion introduced by candidate gridmap layouts</figcaption></figure>
 </div>
 </div>
 </div>
@@ -687,8 +671,7 @@ The analysis above might give the impression that OD maps should be used in pref
 <div class="cell-output-display">
 <div id="fig-nodes-summary" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="figs/05/nodes_summary.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 5.8: Workers and jobs in London borough by occupation class. Bars counts are locally-scaled by borough.</figcaption><p></p>
-</figure>
+<figcaption class="figure-caption">Figure&nbsp;5.8: Workers and jobs in London borough by occupation class. Bars counts are locally-scaled by borough.</figcaption></figure>
 </div>
 </div>
 </div>
@@ -734,8 +717,7 @@ The analysis above might give the impression that OD maps should be used in pref
 <div class="cell-output-display">
 <div id="fig-nodes-bars" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="figs/05/nodes_bars.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 5.9: Workers and jobs in selected London boroughs by full occupation classes</figcaption><p></p>
-</figure>
+<figcaption class="figure-caption">Figure&nbsp;5.9: Workers and jobs in selected London boroughs by full occupation classes</figcaption></figure>
 </div>
 </div>
 </div>
@@ -784,8 +766,7 @@ The analysis above might give the impression that OD maps should be used in pref
 <div class="cell-output-display">
 <div id="fig-nodes-gridmap" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="figs/05/nodes_gridmap.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 5.10: Workers and jobs in London boroughs by full occupation classes.</figcaption><p></p>
-</figure>
+<figcaption class="figure-caption">Figure&nbsp;5.10: Workers and jobs in London boroughs by full occupation classes.</figcaption></figure>
 </div>
 </div>
 </div>
@@ -809,8 +790,7 @@ The analysis above might give the impression that OD maps should be used in pref
 <div class="cell-output-display">
 <div id="fig-edges-odmap" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="figs/05/edges_odmap.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 5.11: Commutes between London boroughs: difference maps by occupation type assuming <em>professional</em> and <em>non-professional</em> distribute uniformly across London.</figcaption><p></p>
-</figure>
+<figcaption class="figure-caption">Figure&nbsp;5.11: Commutes between London boroughs: difference maps by occupation type assuming <em>professional</em> and <em>non-professional</em> distribute uniformly across London.</figcaption></figure>
 </div>
 </div>
 </div>
@@ -891,7 +871,7 @@ The analysis above might give the impression that OD maps should be used in pref
 </ul>
 </li>
 <li>Marks: <code>geom_sf()</code> for drawing the small grid-cell maps; <code>geom_text()</code> for drawing the labels.</li>
-<li>Scale: <code>scale_fill_distiller()</code> for a diverging colour scheme using the ColorBrewer <code>RdBu</code> palette and made symmetrical on 0 by manually setting <code>limits()</code>.</li>
+<li>Scale: <code>scale_fill_distiller()</code> for a diverging colour scheme using the ColorBrewer <span class="citation" data-cites="harrower_colorbrewerorg_2003">(<a href="references.html#ref-harrower_colorbrewerorg_2003" role="doc-biblioref">Harrower and Brewer 2003</a>)</span> <code>RdBu</code> palette and made symmetrical on 0 by manually setting <code>limits()</code>.</li>
 <li>Facets: <code>facet_grid()</code> for effecting the map-within-map layout.</li>
 </ul>
 <p>Once the data staging and <code>ggplot2</code> code for the OD map is generated, it is very easy to adapt and extend the code to explore different assumptions and elements of the dataset. For example, the assumption of a uniform distribution across London in the relative number of commutes by occupation type is a flawed one since we know that there is some variation in the proportion of professional jobs available in each borough. In the City of London (CoL) 74% of jobs are professional whereas in Bexley (Bxl), Havering (Hvr) and Barking and Dagenham (BaD) that figure is c.30%. We can easily adapt the data staging code to instead generate local expectations for each destination borough by moving the assignment of <code>global_prof</code> into a <code>group_by()</code> on destination borough. The expectation is now that the relative number of professional commutes present in any OD pair should be proportionally equivalent to the number of professional jobs available at that OD pair’s reference, destination, borough. Colouring cells of the OD map according to this new quantity (<a href="#fig-edges-odmap-borough">Figure&nbsp;<span>5.12</span></a>) exposes patterns that relate to London’s social geography. Higher than expected <em>non-professional</em> workers from more affordable boroughs to the east of London and into job-rich boroughs in central London and a reverse pattern for origin boroughs supplying higher than expected <em>professional</em> workers.</p>
@@ -899,8 +879,7 @@ The analysis above might give the impression that OD maps should be used in pref
 <div class="cell-output-display">
 <div id="fig-edges-odmap-borough" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="figs/05/edges_odmap_within.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 5.12: Commutes between London boroughs: difference maps by occupation type assuming <em>professional</em> and <em>non-professional</em> distribute uniformly within boroughs.</figcaption><p></p>
-</figure>
+<figcaption class="figure-caption">Figure&nbsp;5.12: Commutes between London boroughs: difference maps by occupation type assuming <em>professional</em> and <em>non-professional</em> distribute uniformly within boroughs.</figcaption></figure>
 </div>
 </div>
 </div>
@@ -919,13 +898,31 @@ The analysis above might give the impression that OD maps should be used in pref
 </ul>
 
 
-</section><section class="footnotes footnotes-end-of-document" role="doc-endnotes"><hr>
+</section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><hr>
 <ol>
-<li id="fn1" role="doc-endnote"><p>Answer: Wandsworth (Wnd)<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2" role="doc-endnote"><p>Answer: Barnet (Barnt), maybe Islington (Isl)<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3" role="doc-endnote"><p>Answer: Bexleyheath (Bxl), Havering (Hvr), Barking and Dagenham (BaD). Also, Sutton (Sttn), Grenwich (Grn) look very localised.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>Answer: Wandsworth (Wnd)<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Answer: Barnet (Barnt), maybe Islington (Isl)<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Answer: Bexleyheath (Bxl), Havering (Hvr), Barking and Dagenham (BaD). Also, Sutton (Sttn), Grenwich (Grn) look very localised.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
   const icon = "";
   const anchorJS = new window.AnchorJS();
   anchorJS.options = {
@@ -933,9 +930,23 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     icon: icon
   };
   anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
   const clipboard = new window.ClipboardJS('.code-copy-button', {
-    target: function(trigger) {
-      return trigger.previousElementSibling;
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
     }
   });
   clipboard.on('success', function(e) {
@@ -947,7 +958,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     button.classList.add('code-copy-button-checked');
     var currentTitle = button.getAttribute("title");
     button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
     setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
       button.setAttribute("title", currentTitle);
       button.classList.remove('code-copy-button-checked');
     }, 1000);
@@ -975,31 +1003,136 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   for (var i=0; i<noterefs.length; i++) {
     const ref = noterefs[i];
     tippyHover(ref, function() {
-      let href = ref.getAttribute('href');
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
       return note.innerHTML;
     });
   }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
   var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
   for (var i=0; i<bibliorefs.length; i++) {
     const ref = bibliorefs[i];
-    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
-    tippyHover(ref, function() {
-      var popup = window.document.createElement('div');
-      cites.forEach(function(cite) {
-        var citeDiv = window.document.createElement('div');
-        citeDiv.classList.add('hanging-indent');
-        citeDiv.classList.add('csl-entry');
-        var biblioDiv = window.document.getElementById('ref-' + cite);
-        if (biblioDiv) {
-          citeDiv.innerHTML = biblioDiv.innerHTML;
-        }
-        popup.appendChild(citeDiv);
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
       });
-      return popup.innerHTML;
-    });
+    }
   }
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">

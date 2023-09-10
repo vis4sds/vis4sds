@@ -2,16 +2,22 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-0.9.637">
+<meta name="generator" content="quarto-1.3.450">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>Visualization for Social Data Science - 7&nbsp; Uncertainty</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-span.underline{text-decoration: underline;}
-div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -38,43 +44,13 @@ pre.numberSource code > span > a:first-child::before
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
     padding: 0 4px; width: 4em;
-    color: #aaaaaa;
   }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
 div.sourceCode
   {   }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -94,7 +70,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet"><script id="quarto-search-options" type="application/json">{
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
@@ -110,121 +86,139 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit"
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
 }</script><script type="module" src="site_libs/quarto-ojs/quarto-ojs-runtime.js"></script><link href="site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
 </head>
 <body class="nav-sidebar floating">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }"><div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Uncertainty</span></h1>
-      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
-        <i class="bi bi-chevron-right"></i>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./07-uncertainty.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Uncertainty</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
       </button>
     </div>
   </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Visualization for Social Data Science</a> 
         <div class="sidebar-tools-main">
-    <a href="https://github.com/vis4sds/vis4sds/" title="Source Code" class="sidebar-tool px-1"><i class="bi bi-github"></i></a>
-    <a href="https://twitter.com/intent/tweet?url=%7Curl%7C" title="Twitter" class="sidebar-tool px-1"><i class="bi bi-twitter"></i></a>
+    <a href="https://github.com/vis4sds/vis4sds/" rel="" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <a href="https://twitter.com/intent/tweet?url=%7Curl%7C" rel="" title="Twitter" class="quarto-navigation-tool px-1" aria-label="Twitter"><i class="bi bi-twitter"></i></a>
 </div>
     </div>
       </div>
-      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="mt-2 flex-shrink-0 align-items-center">
         <div class="sidebar-search">
         <div id="quarto-search" class="" title="Search"></div>
         </div>
-      </div>
+        </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link">Preface</a>
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./01-intro.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></a>
+  <a href="./01-intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./02-data.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data Fundamentals</span></a>
+  <a href="./02-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data Fundamentals</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./03-visual.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Visualization Fundamentals</span></a>
+  <a href="./03-visual.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Visualization Fundamentals</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./04-explore.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Exploratory Data Analysis</span></a>
+  <a href="./04-explore.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Exploratory Data Analysis</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./05-network.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Networks</span></a>
+  <a href="./05-network.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Networks</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./06-model.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Models</span></a>
+  <a href="./06-model.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Models</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./07-uncertainty.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Uncertainty</span></a>
+  <a href="./07-uncertainty.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Uncertainty</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./08-storytelling.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Data Storytelling</span></a>
+  <a href="./08-storytelling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Data Storytelling</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./references.html" class="sidebar-item-text sidebar-link">References</a>
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
   </div>
 </li>
     </ul>
 </div>
-</nav><!-- margin-sidebar --><div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc"><h2 id="toc-title">Table of contents</h2>
+</nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"> <span class="header-section-number">7.1</span> Introduction</a></li>
+<li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">7.1</span> Introduction</a></li>
   <li>
-<a href="#concepts" id="toc-concepts" class="nav-link" data-scroll-target="#concepts"> <span class="header-section-number">7.2</span> Concepts</a>
+<a href="#concepts" id="toc-concepts" class="nav-link" data-scroll-target="#concepts"><span class="header-section-number">7.2</span> Concepts</a>
   <ul class="collapse">
-<li><a href="#uncertainty-visualization" id="toc-uncertainty-visualization" class="nav-link" data-scroll-target="#uncertainty-visualization"> <span class="header-section-number">7.2.1</span> Uncertainty visualization</a></li>
-  <li><a href="#frequency-framing" id="toc-frequency-framing" class="nav-link" data-scroll-target="#frequency-framing"> <span class="header-section-number">7.2.2</span> Frequency framing</a></li>
-  <li><a href="#quantifying-uncertainty-in-frequencies" id="toc-quantifying-uncertainty-in-frequencies" class="nav-link" data-scroll-target="#quantifying-uncertainty-in-frequencies"> <span class="header-section-number">7.2.3</span> Quantifying uncertainty in frequencies</a></li>
-  <li><a href="#visualizing-uncertainty-in-frequencies" id="toc-visualizing-uncertainty-in-frequencies" class="nav-link" data-scroll-target="#visualizing-uncertainty-in-frequencies"> <span class="header-section-number">7.2.4</span> Visualizing uncertainty in frequencies</a></li>
-  <li><a href="#multiple-comparisons" id="toc-multiple-comparisons" class="nav-link" data-scroll-target="#multiple-comparisons"> <span class="header-section-number">7.2.5</span> Multiple comparisons</a></li>
+<li><a href="#uncertainty-visualization" id="toc-uncertainty-visualization" class="nav-link" data-scroll-target="#uncertainty-visualization"><span class="header-section-number">7.2.1</span> Uncertainty visualization</a></li>
+  <li><a href="#frequency-framing" id="toc-frequency-framing" class="nav-link" data-scroll-target="#frequency-framing"><span class="header-section-number">7.2.2</span> Frequency framing</a></li>
+  <li><a href="#quantifying-uncertainty-in-frequencies" id="toc-quantifying-uncertainty-in-frequencies" class="nav-link" data-scroll-target="#quantifying-uncertainty-in-frequencies"><span class="header-section-number">7.2.3</span> Quantifying uncertainty in frequencies</a></li>
+  <li><a href="#visualizing-uncertainty-in-frequencies" id="toc-visualizing-uncertainty-in-frequencies" class="nav-link" data-scroll-target="#visualizing-uncertainty-in-frequencies"><span class="header-section-number">7.2.4</span> Visualizing uncertainty in frequencies</a></li>
+  <li><a href="#multiple-comparisons" id="toc-multiple-comparisons" class="nav-link" data-scroll-target="#multiple-comparisons"><span class="header-section-number">7.2.5</span> Multiple comparisons</a></li>
   </ul>
 </li>
   <li>
-<a href="#techniques" id="toc-techniques" class="nav-link" data-scroll-target="#techniques"> <span class="header-section-number">7.3</span> Techniques</a>
+<a href="#techniques" id="toc-techniques" class="nav-link" data-scroll-target="#techniques"><span class="header-section-number">7.3</span> Techniques</a>
   <ul class="collapse">
-<li><a href="#import" id="toc-import" class="nav-link" data-scroll-target="#import"> <span class="header-section-number">7.3.1</span> Import</a></li>
-  <li><a href="#plot-icon-arrays" id="toc-plot-icon-arrays" class="nav-link" data-scroll-target="#plot-icon-arrays"> <span class="header-section-number">7.3.2</span> Plot icon arrays</a></li>
-  <li><a href="#generate-bootstrap-estimates-of-parameter-uncertainty" id="toc-generate-bootstrap-estimates-of-parameter-uncertainty" class="nav-link" data-scroll-target="#generate-bootstrap-estimates-of-parameter-uncertainty"> <span class="header-section-number">7.3.3</span> Generate bootstrap estimates of parameter uncertainty</a></li>
-  <li><a href="#plot-parameter-estimates-with-uncertainty-information" id="toc-plot-parameter-estimates-with-uncertainty-information" class="nav-link" data-scroll-target="#plot-parameter-estimates-with-uncertainty-information"> <span class="header-section-number">7.3.4</span> Plot parameter estimates with uncertainty information</a></li>
-  <li><a href="#ensemble-plots-and-hypothetical-outcome-plots" id="toc-ensemble-plots-and-hypothetical-outcome-plots" class="nav-link" data-scroll-target="#ensemble-plots-and-hypothetical-outcome-plots"> <span class="header-section-number">7.3.5</span> Ensemble plots and hypothetical outcome plots</a></li>
+<li><a href="#import" id="toc-import" class="nav-link" data-scroll-target="#import"><span class="header-section-number">7.3.1</span> Import</a></li>
+  <li><a href="#plot-icon-arrays" id="toc-plot-icon-arrays" class="nav-link" data-scroll-target="#plot-icon-arrays"><span class="header-section-number">7.3.2</span> Plot icon arrays</a></li>
+  <li><a href="#generate-bootstrap-estimates-of-parameter-uncertainty" id="toc-generate-bootstrap-estimates-of-parameter-uncertainty" class="nav-link" data-scroll-target="#generate-bootstrap-estimates-of-parameter-uncertainty"><span class="header-section-number">7.3.3</span> Generate bootstrap estimates of parameter uncertainty</a></li>
+  <li><a href="#plot-parameter-estimates-with-uncertainty-information" id="toc-plot-parameter-estimates-with-uncertainty-information" class="nav-link" data-scroll-target="#plot-parameter-estimates-with-uncertainty-information"><span class="header-section-number">7.3.4</span> Plot parameter estimates with uncertainty information</a></li>
+  <li><a href="#ensemble-plots-and-hypothetical-outcome-plots" id="toc-ensemble-plots-and-hypothetical-outcome-plots" class="nav-link" data-scroll-target="#ensemble-plots-and-hypothetical-outcome-plots"><span class="header-section-number">7.3.5</span> Ensemble plots and hypothetical outcome plots</a></li>
   </ul>
 </li>
-  <li><a href="#conclusions" id="toc-conclusions" class="nav-link" data-scroll-target="#conclusions"> <span class="header-section-number">7.4</span> Conclusions</a></li>
-  <li><a href="#further-reading" id="toc-further-reading" class="nav-link" data-scroll-target="#further-reading"> <span class="header-section-number">7.5</span> Further Reading</a></li>
+  <li><a href="#conclusions" id="toc-conclusions" class="nav-link" data-scroll-target="#conclusions"><span class="header-section-number">7.4</span> Conclusions</a></li>
+  <li><a href="#further-reading" id="toc-further-reading" class="nav-link" data-scroll-target="#further-reading"><span class="header-section-number">7.5</span> Further Reading</a></li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/vis4sds/vis4sds/edit/master/07-uncertainty.qmd" class="toc-action">Edit this page</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="sec-uncertainty" class="quarto-section-identifier d-none d-lg-block"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Uncertainty</span></span></h1>
+<h1 class="title"><span id="sec-uncertainty" class="quarto-section-identifier"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Uncertainty</span></span></h1>
 </div>
 
 
@@ -232,57 +226,49 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="quarto-title-meta">
 
     
+  
     
   </div>
   
 
-</header><div class="cell">
-
-</div>
-<p>By the end of this chapter you should gain the following knowledge and practical skills.</p>
-<div class="callout-note callout callout-style-default callout-captioned">
+</header><p>By the end of this chapter you should gain the following knowledge and practical skills.</p>
+<div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<div class="callout-caption-container flex-fill">
+<div class="callout-title-container flex-fill">
 Knowledge
 </div>
 </div>
 <div class="callout-body-container callout-body">
 <ul class="task-list">
 <li>
-<input type="checkbox" disabled="">
-Appreciate the main challenges and objectives of uncertainty representation.</li>
+<input type="checkbox">Appreciate the main challenges and objectives of uncertainty representation.</li>
 <li>
-<input type="checkbox" disabled="">
-Learn how visualization techniques can be used to support ‘frequency framing’ – the perception of probability and risk.</li>
+<input type="checkbox">Learn how visualization techniques can be used to support ‘frequency framing’ – the perception of probability and risk.</li>
 <li>
-<input type="checkbox" disabled="">
-Understand how parameter uncertainty can be estimated computationally.</li>
+<input type="checkbox">Understand how parameter uncertainty can be estimated computationally.</li>
 </ul>
 </div>
 </div>
-<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<div class="callout-caption-container flex-fill">
+<div class="callout-title-container flex-fill">
 Practical skills
 </div>
 </div>
 <div class="callout-body-container callout-body">
 <ul class="task-list">
 <li>
-<input type="checkbox" disabled="">
-Create uncertainty visualizations in ggplot2.</li>
+<input type="checkbox">Create uncertainty visualizations in ggplot2.</li>
 <li>
-<input type="checkbox" disabled="">
-Generate estimates of parameter uncertainty using bootstrap resampling.</li>
+<input type="checkbox">Generate estimates of parameter uncertainty using bootstrap resampling.</li>
 <li>
-<input type="checkbox" disabled="">
-Apply <a href="https://purrr.tidyverse.org/articles/other-langs.html">functional-style programming</a> for working over bootstrap resamples.</li>
+<input type="checkbox">Apply <a href="https://purrr.tidyverse.org/articles/other-langs.html">functional-style programming</a> for working over bootstrap resamples.</li>
 </ul>
 </div>
 </div>
@@ -298,8 +284,7 @@ Apply <a href="https://purrr.tidyverse.org/articles/other-langs.html">functional
 <div class="cell-output-display">
 <div id="fig-uncertainty-variables" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="figs/07/uncertainty_vars.png" class="img-fluid figure-img" style="width:65.0%"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 7.1: Visual variables that can be used to represent levels of uncertainty information. Sketchy rendering is generated with <a href="https://github.com/rough-stuff/rough"><code>Rough.js</code></a>, an implementation of the work published in <span class="citation" data-cites="wood_sketchy_2012">Wood et al. (<a href="references.html#ref-wood_sketchy_2012" role="doc-biblioref">2012</a>)</span>.</figcaption><p></p>
-</figure>
+<figcaption class="figure-caption">Figure&nbsp;7.1: Visual variables that can be used to represent levels of uncertainty information. Sketchy rendering is generated with <a href="https://github.com/rough-stuff/rough"><code>Rough.js</code></a>, an implementation of the work published in <span class="citation" data-cites="wood_sketchy_2012">Wood et al. (<a href="references.html#ref-wood_sketchy_2012" role="doc-biblioref">2012</a>)</span>.</figcaption></figure>
 </div>
 </div>
 </div>
@@ -619,17 +604,14 @@ Apply <a href="https://purrr.tidyverse.org/articles/other-langs.html">functional
 <p>Much discussed in recent literature on uncertainty visualization <span class="citation" data-cites="n_balakrishnan_uncertainty_2021">(e.g. <a href="references.html#ref-n_balakrishnan_uncertainty_2021" role="doc-biblioref">Padilla and Hullman 2021</a>)</span> is the US National Weather Service’s (NWS) <span class="citation" data-cites="nhc_cone_2023">(<a href="references.html#ref-nhc_cone_2023" role="doc-biblioref">NHC 2023</a>)</span> cone graphic (<a href="#fig-hurricane-vis">Figure&nbsp;<span>7.2</span></a>). The cone starts at the storm’s current location and spreads out to represent the <em>projected path</em> of the storm as determined by NWS’s modelling. The main problem is that the cone implies the storm is growing as we move away from its current location, when in fact this is not the case. Instead there is more uncertainty in the areas that could be affected by the storm the further away those areas are from the storm’s current location. The second problem is that the cone uses strong lines that imply precision. The temptation is to think that anything contained by the cone is unsafe and anything outside of it is safe. This is of course not what is suggested by the model. Rather, that areas beyond the cone fall outside some chosen threshold probability. You will notice that the graphic in <a href="#fig-nhc">Figure&nbsp;<span>7.2 (a)</span></a> is annotated with a guidance note to discourage such false interpretation.</p>
 <div id="fig-hurricane-vis" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><div id="fig-nhc" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figs/07/cone_uncertainty.png" class="img-fluid figure-img" data-ref-parent="fig-hurricane-vis" style="width:75.0%"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">(a) National Hurricane Center cone design</figcaption><p></p>
-</figure>
+<figure class="figure"><p><img src="figs/07/cone_uncertainty.png" class="img-fluid figure-img" style="width:75.0%" data-ref-parent="fig-hurricane-vis"></p>
+<figcaption class="figure-caption">(a) National Hurricane Center cone design</figcaption></figure>
 </div>
 <div id="fig-nhc-redesign" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figs/07/cone_redesign.png" class="img-fluid figure-img" data-ref-parent="fig-hurricane-vis" style="width:75.0%"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">(b) <span class="citation" data-cites="van_goethem_stenomaps_2014">Van Goethem et al. (<a href="references.html#ref-van_goethem_stenomaps_2014" role="doc-biblioref">2014</a>)</span> redesign</figcaption><p></p>
-</figure>
+<figure class="figure"><p><img src="figs/07/cone_redesign.png" class="img-fluid figure-img" style="width:75.0%" data-ref-parent="fig-hurricane-vis"></p>
+<figcaption class="figure-caption">(b) <span class="citation" data-cites="van_goethem_stenomaps_2014">Van Goethem et al. (<a href="references.html#ref-van_goethem_stenomaps_2014" role="doc-biblioref">2014</a>)</span> redesign</figcaption></figure>
 </div>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 7.2: Cone graphic produced by National Hurricane Center <span class="citation" data-cites="nhc_cone_2023">(<a href="references.html#ref-nhc_cone_2023" role="doc-biblioref">NHC 2023</a>)</span> and example re-design in <span class="citation" data-cites="van_goethem_stenomaps_2014">Van Goethem et al. (<a href="references.html#ref-van_goethem_stenomaps_2014" role="doc-biblioref">2014</a>)</span>. Cone graphic re-printed with permission, credit National Oceanic and Atmospheric Administration/National Weather Service.<strong>Permission for jwo re-design</strong></figcaption><p></p>
-</figure>
+<figcaption class="figure-caption">Figure&nbsp;7.2: Cone graphic produced by National Hurricane Center <span class="citation" data-cites="nhc_cone_2023">(<a href="references.html#ref-nhc_cone_2023" role="doc-biblioref">NHC 2023</a>)</span> and example re-design in <span class="citation" data-cites="van_goethem_stenomaps_2014">Van Goethem et al. (<a href="references.html#ref-van_goethem_stenomaps_2014" role="doc-biblioref">2014</a>)</span>. Cone graphic re-printed with permission, credit National Oceanic and Atmospheric Administration/National Weather Service.<strong>Permission for jwo re-design</strong></figcaption></figure>
 </div>
 <p>In <span class="citation" data-cites="van_goethem_stenomaps_2014">Van Goethem et al. (<a href="references.html#ref-van_goethem_stenomaps_2014" role="doc-biblioref">2014</a>)</span>’s redesign, colour value is used to represent four binned categories of storm probability suggested by the model. Greater visual saliency is therefore conferred to locations where there is greater certainty. The state boundaries are also encoded somehwat differently. In <a href="#fig-nhc-redesign">Figure&nbsp;<span>7.2 (b)</span></a> US states are symbolised using a single line generated via curve schematisation <span class="citation" data-cites="van_goethem_stenomaps_2014">(<a href="references.html#ref-van_goethem_stenomaps_2014" role="doc-biblioref">Van Goethem et al. 2014</a>)</span>. The thinking here is that hard lines in maps, and data graphics more generally, tend to induce binary judgements. If the cone is close to but not overlapping a state boundary, for example, should a state’s authorities prepare and organise a response any differently from a state whose boundary very slightly overlaps the cone? Context around states is introduced in the redesign, but in a way that discourages binary thinking; precise inferences of location are not possible as the state areas and borders are very obviously not exact.</p>
 </section><section id="frequency-framing" class="level3" data-number="7.2.2"><h3 data-number="7.2.2" class="anchored" data-anchor-id="frequency-framing">
@@ -641,8 +623,7 @@ Apply <a href="https://purrr.tidyverse.org/articles/other-langs.html">functional
 <div class="cell-output-display">
 <div id="fig-icon-arrays" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="figs/07/icon_arrays.png" class="img-fluid figure-img" style="width:70.0%"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 7.3: Icon array displaying injury severity rates for Pedestrian-Vehicle crashes</figcaption><p></p>
-</figure>
+<figcaption class="figure-caption">Figure&nbsp;7.3: Icon array displaying injury severity rates for Pedestrian-Vehicle crashes</figcaption></figure>
 </div>
 </div>
 </div>
@@ -652,8 +633,7 @@ Apply <a href="https://purrr.tidyverse.org/articles/other-langs.html">functional
 <div class="cell-output-display">
 <div id="fig-risk-theatre" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="figs/07/risk_theatre.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 7.4: Risk theatre of different election eve forecasts, reimplemented in ggplot2 but based on data graphics appearing in <span class="citation" data-cites="gross_how_2016">Gross (<a href="references.html#ref-gross_how_2016" role="doc-biblioref">2016</a>)</span>.</figcaption><p></p>
-</figure>
+<figcaption class="figure-caption">Figure&nbsp;7.4: Risk theatre of different election eve forecasts, reimplemented in ggplot2 but based on data graphics appearing in <span class="citation" data-cites="gross_how_2016">Gross (<a href="references.html#ref-gross_how_2016" role="doc-biblioref">2016</a>)</span>.</figcaption></figure>
 </div>
 </div>
 </div>
@@ -676,8 +656,7 @@ Apply <a href="https://purrr.tidyverse.org/articles/other-langs.html">functional
 <div class="cell-output-display">
 <div id="fig-bootstrap-selected" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="figs/07/bootstrap_selected.png" class="img-fluid figure-img" style="width:65.0%"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 7.5: KSI rates for pedestrian-vehicle crashes in selected local authorities with 95% CIs (derived from 1000 resample bootstraps)</figcaption><p></p>
-</figure>
+<figcaption class="figure-caption">Figure&nbsp;7.5: KSI rates for pedestrian-vehicle crashes in selected local authorities with 95% CIs (derived from 1000 resample bootstraps)</figcaption></figure>
 </div>
 </div>
 </div>
@@ -688,8 +667,7 @@ Apply <a href="https://purrr.tidyverse.org/articles/other-langs.html">functional
 <div class="cell-output-display">
 <div id="fig-selected-uncertainty" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="figs/07/selected_uncertainty.png" class="img-fluid figure-img" style="width:95.0%"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 7.6: KSI rates for pedestrian-vehicle crashes in selected local authorities with uncertainty estimates</figcaption><p></p>
-</figure>
+<figcaption class="figure-caption">Figure&nbsp;7.6: KSI rates for pedestrian-vehicle crashes in selected local authorities with uncertainty estimates</figcaption></figure>
 </div>
 </div>
 </div>
@@ -698,8 +676,7 @@ Apply <a href="https://purrr.tidyverse.org/articles/other-langs.html">functional
 <div class="cell-output-display">
 <div id="fig-temporal-uncertainty" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="figs/07/temporal_uncertainty.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 7.7: Year-on-year KSI rates for pedestrian-vehicle crashes in selected local authorities with bootstrap resamples superimposed.</figcaption><p></p>
-</figure>
+<figcaption class="figure-caption">Figure&nbsp;7.7: Year-on-year KSI rates for pedestrian-vehicle crashes in selected local authorities with bootstrap resamples superimposed.</figcaption></figure>
 </div>
 </div>
 </div>
@@ -708,8 +685,7 @@ Apply <a href="https://purrr.tidyverse.org/articles/other-langs.html">functional
 <div class="cell-output-display">
 <div id="fig-hop" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="figs/07/hop.png" class="img-fluid figure-img" style="width:90.0%"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 7.8: Frames from hypothetical outcome plot of year-on-year KSI rates for pedestrian-vehicle crashes.</figcaption><p></p>
-</figure>
+<figcaption class="figure-caption">Figure&nbsp;7.8: Frames from hypothetical outcome plot of year-on-year KSI rates for pedestrian-vehicle crashes.</figcaption></figure>
 </div>
 </div>
 </div>
@@ -721,8 +697,7 @@ Apply <a href="https://purrr.tidyverse.org/articles/other-langs.html">functional
 <div class="cell-output-display">
 <div id="fig-geog-severity" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="figs/07/geog-severity-2.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 7.9: Bayesian Risk Ratios comparing pedestrian injury severity rates in English local authorities coloured according to ‘statistical significance’, whether the bootstrap confidence interval does not cross 1.0.</figcaption><p></p>
-</figure>
+<figcaption class="figure-caption">Figure&nbsp;7.9: Bayesian Risk Ratios comparing pedestrian injury severity rates in English local authorities coloured according to ‘statistical significance’, whether the bootstrap confidence interval does not cross 1.0.</figcaption></figure>
 </div>
 </div>
 </div>
@@ -754,8 +729,7 @@ include_graphics("figs/07/geog-severity-lineup.png", error = FALSE)
 <div class="cell-output-display">
 <div id="fig-icon-technical" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="figs/07/icon-technical.png" class="img-fluid figure-img" style="width:60.0%"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 7.10: Icon arrays of pedestrian-vehicle crashes.</figcaption><p></p>
-</figure>
+<figcaption class="figure-caption">Figure&nbsp;7.10: Icon arrays of pedestrian-vehicle crashes.</figcaption></figure>
 </div>
 </div>
 </div>
@@ -802,8 +776,7 @@ include_graphics("figs/07/geog-severity-lineup.png", error = FALSE)
 <div class="cell-output-display">
 <div id="fig-theatre-technical" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="figs/07/theatre-technical.png" class="img-fluid figure-img" style="width:90.0%"></p>
-<p></p><figcaption aria-hidden="true" class="figure-caption">Figure 7.11: Risk theatre for pedestrian-vehicle crashes.</figcaption><p></p>
-</figure>
+<figcaption class="figure-caption">Figure&nbsp;7.11: Risk theatre for pedestrian-vehicle crashes.</figcaption></figure>
 </div>
 </div>
 </div>
@@ -975,6 +948,7 @@ include_graphics("figs/07/geog-severity-lineup.png", error = FALSE)
 </section></main><!-- /main --><script type="ojs-module-contents">
 {"contents":[{"methodName":"interpret","cellName":"ojs-cell-1","inline":false,"source":"function rStyle(roughness) {\n  const rStyle = {roughness: roughness};\n  rStyle;\n  return(rStyle)\n}\n\nfunction drawPointsSketch(r, pts) {\n  pts.map(function(d) {\n    r.setRoughStyle(rStyle(d.roughness))\n    .fill(\"#636363\").ellipse(d.x, d.y, .3)} )\nreturn r;\n}\n\nfunction drawPointsSize(r, pts) {\n  pts.map(function(d) { r.fill(\"#636363\").strokeWidth(0).ellipse(d.x, d.y, d.size)} )\nreturn r;\n}\nfunction drawPointsColour(r, pts) {\n  pts.map(function(d) { r.fill(d.cls).strokeWidth(0).ellipse(d.x, d.y, .3)} )\nreturn r;\n}\n\nfunction drawPointsAlpha(r, pts) {\n  pts.map(function(d) {\n    r.strokeWidth(1).stroke(d.alphs).fill(\"#ffffff00\").ellipse(d.x, d.y, .35)\n    r.strokeWidth(2).line([[d.x, .65], [d.x, 1.35]])\n    r.line([[d.x-.35, d.y], [d.x+.35, d.y]])\n    r.fill(d.alphs).strokeWidth(0).ellipse(d.x, d.y, .25)\n    } )\nreturn r;\n}\n\nfunction drawPointsLocation(r, pts) {\n  pts.map(function(d) {\n    r.strokeWidth(1).stroke(\"#636363\").fill(\"#ffffff00\").ellipse(d.x, d.y, .35)\n    r.strokeWidth(.8).line([[d.x, .65], [d.x, 1.35]])\n    r.line([[d.x-.35, d.y], [d.x+.35, d.y]])\n    r.strokeWidth(0).fill(\"#636363\").\n    ellipse(\n      d.x + ((Math.round(Math.random()) * 2 - 1)* .5*(d.location)),\n      d.y + ((Math.round(Math.random()) * 2 - 1)* .5*(d.location)),\n      .05)\n    } )\nreturn r;\n}\n\n"},{"methodName":"interpret","cellName":"ojs-cell-2","inline":false,"source":"import { Renderer } from \"@jwolondon/renderer\"\nimport { aq, op } from '@uwdata/arquero'\nw = 480;\nh = 50;\nborder = 1;\n\ntestDat = aq.table({\n    x: [2.2, 3.2, 4.2, 5.2, 6.2, 7.2],\n    y: [1, 1, 1, 1, 1, 1],\n    size: [.35, .3, .25, .2, .15, .1],\n    cls: [\"#252525\", \"#525252\", \"#737373\", \"#969696\", \"#bdbdbd\", \"#d9d9d9\"],\n    alphs: [\"#252525E6\", \"#252525BF\", \"#25252599\", \"#25252573\", \"#25252559\", \"#25252533\"],\n    location: [.01, .18, .25, .32, .38, .45],\n    roughness: [0.2, 1, 2, 3, 4.2, 6.5]\n  });\n\nxSc = d3\n   .scaleLinear()\n   .domain([0,9.5])\n   .range([border, w - border]);\nySc = d3\n    .scaleLinear()\n    .domain([0.5, 1.5])\n    .range([h - border, border]);\n\n\nr0 = new Renderer(w, h-10, \"svg\")\n  .setScales(xSc, ySc)\n  .font(\"Avenir Next Ultra Light\")\n  .textAlign(\"left\")\n  .textBaseline(\"middle\")\n  .textSize(10)\n  .text(\"certain\",1.8,1)\n  .textAlign(\"right\")\n  .text(\"uncertain\", 7.3,1)\n  .line([[2.8,1], [6,1]])\nr0.render();\n\nr1 = new Renderer(w, h, \"svg\")\n  .setScales(xSc, ySc)\n  .font(\"Avenir Next Ultra Light\")\n  .textAlign(\"left\")\n  .textBaseline(\"middle\")\n  .textSize(10)\n  .text(\"size\",0,1)\ndrawPointsSize(r1, testDat.objects()).render();\n\nr2 = new Renderer(w, h, \"svg\")\n  .setScales(xSc, ySc)\n  .font(\"Avenir Next Ultra Light\")\n  .textAlign(\"left\")\n  .textBaseline(\"middle\")\n  .textSize(10)\n  .text(\"colour\",0,1)\ndrawPointsColour(r2, testDat.objects()).render();\n\nr3 = new Renderer(w, h, \"svg\")\n  .setScales(xSc, ySc)\n  .font(\"Avenir Next Ultra Light\")\n  .textAlign(\"left\")\n  .textBaseline(\"middle\")\n  .textSize(10)\n  .text(\"transparency\",0,1)\ndrawPointsAlpha(r3, testDat.objects()).render();\n\nr4 = new Renderer(w, h, \"svg\")\n  .setScales(xSc, ySc)\n  .font(\"Avenir Next Ultra Light\")\n  .textAlign(\"left\")\n  .textBaseline(\"middle\")\n  .textSize(10)\n  .text(\"location\",0,1)\ndrawPointsLocation(r4, testDat.objects()).render();\n\nr5 = new Renderer(w, h, \"roughsvg\")\n  .setScales(xSc, ySc)\n  .font(\"Avenir Next Ultra Light\")\n  .textAlign(\"left\")\n  .textBaseline(\"middle\")\n  .textSize(10)\n  .text(\"sketchy\",0,1)\ndrawPointsSketch(r5, testDat.objects()).render();\n\n"}]}
 </script><script type="module">
+if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
 window._ojs.paths.runtimeToDoc = "../..";
 window._ojs.paths.runtimeToRoot = "../..";
 window._ojs.paths.docToRoot = "";
@@ -982,6 +956,24 @@ window._ojs.selfContained = false;
 window._ojs.runtime.interpretFromScriptTags();
 </script><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
   const icon = "";
   const anchorJS = new window.AnchorJS();
   anchorJS.options = {
@@ -989,9 +981,23 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     icon: icon
   };
   anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
   const clipboard = new window.ClipboardJS('.code-copy-button', {
-    target: function(trigger) {
-      return trigger.previousElementSibling;
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
     }
   });
   clipboard.on('success', function(e) {
@@ -1003,7 +1009,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     button.classList.add('code-copy-button-checked');
     var currentTitle = button.getAttribute("title");
     button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
     setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
       button.setAttribute("title", currentTitle);
       button.classList.remove('code-copy-button-checked');
     }, 1000);
@@ -1031,31 +1054,136 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   for (var i=0; i<noterefs.length; i++) {
     const ref = noterefs[i];
     tippyHover(ref, function() {
-      let href = ref.getAttribute('href');
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
       return note.innerHTML;
     });
   }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
   var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
   for (var i=0; i<bibliorefs.length; i++) {
     const ref = bibliorefs[i];
-    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
-    tippyHover(ref, function() {
-      var popup = window.document.createElement('div');
-      cites.forEach(function(cite) {
-        var citeDiv = window.document.createElement('div');
-        citeDiv.classList.add('hanging-indent');
-        citeDiv.classList.add('csl-entry');
-        var biblioDiv = window.document.getElementById('ref-' + cite);
-        if (biblioDiv) {
-          citeDiv.innerHTML = biblioDiv.innerHTML;
-        }
-        popup.appendChild(citeDiv);
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
       });
-      return popup.innerHTML;
-    });
+    }
   }
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">

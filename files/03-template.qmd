@@ -6,7 +6,7 @@ format: html
 
 ## Introduction
 
-Reopen your project and save this  `.qmd` file in the top-level folder. When working through the materials from this chapter run each code chunk separately by clicking the small green arrow beside each code chunk. By default I have set `eval: false` on most code chunks, so when you knit the code chunk will not execute.
+Reopen your project and save this `.qmd` file in the top-level folder. When working through the materials from this chapter run each code chunk separately by clicking the small green arrow beside each code chunk. By default I have set `eval: false` on most code chunks, so when you knit the code chunk will not execute.
 
 The technical element involves analysing data from the 2019 UK General Election. You will work with results data recorded by Parliamentary Constituency. After importing and describing the dataset, you will generate data graphics that expose patterns in voting behaviour by writing ggplot2 specifications.
 
@@ -61,28 +61,8 @@ Towards the end of the technical section, code for generating a map of Conservat
 ```{r}
 #| echo: true
 #| eval: false
-
-# Convert degrees to radians.
-get_radians <- function(degrees) {
-  (degrees * pi) / (180)
-}
-# Rescaling function.
-map_scale <- function(value, min1, max1, min2, max2) {
-  return  (min2+(max2-min2)*((value-min1)/(max1-min1)))
-}
-# Position subclass for centred geom_spoke.
-# As per https://bit.ly/3yfXdKJ.
-position_centre_spoke <- function() PositionCentreSpoke
-PositionCenterSpoke <-
-    ggplot2::ggproto('PositionCentreSpoke', ggplot2::Position,
-        compute_panel = function(self, data, params, scales)
-            {
-                data$x <- 2*data$x - data$xend
-                data$y <- 2*data$y - data$yend
-                data$radius <- 2*data$radius
-                data
-            }
-    )
+url <- "https://vis4sds.github.io/data/ch3/spoke_helpers.R"
+source(url)
 ```
 
 The ggplot2 specification:
@@ -90,7 +70,6 @@ The ggplot2 specification:
 ```{r}
 #| echo: true
 #| eval: false
-
 # Find the maximum Swing values, to pin the min and max angles to.
 max_shift <- max(abs(data_gb |> pull(swing_con_lab)))
 min_shift <- -max_shift
@@ -126,4 +105,81 @@ data_gb |>
   scale_linewidth_ordinal(range=c(.2,.5))+
   scale_colour_manual(values=party_colours)+
   scale_fill_manual(values=party_colours)
+```
+
+## Plot dot-density graphic
+
+The session ends with some hidden code used to generate a dot-density map of 2019 GE result. As you will find throughout this book, the challenge is not in wrangling ggplot2 in order to draw dots on map. Rather it is the data generating procedures needed to create point locations sampled within the spatial areas of constituencies that correspond to votes.
+
+In the code below for each element of the dot-density map, we generate point locations by random spatial sampling within each constituency. This may take some time, just under 1 minute, execute. If you are new to R and the tidyverse the code below looks quite formidable. I don't describe the code here, but we will be revisiting and reusing these sorts of code design patterns throughout the book.
+
+```{r}
+#| echo: true
+#| eval: false
+# Collect 2019 GE data from which dots are approximated.
+vote_data <- bes_2019 |>   
+  filter(ons_const_id!="S14000051") |> 
+  mutate(other_vote_19=total_vote_19-(con_vote_19 + lab_vote_19)) |> 
+  select(
+    ons_const_id, constituency_name, region, con_vote_19, lab_vote_19, other_vote_19
+    ) |> 
+  pivot_longer(
+    cols=con_vote_19:other_vote_19, names_to="party", values_to="votes"
+    ) |> 
+  mutate(
+    party=str_extract(party, "[^_]+"),
+    votes_dot=round(votes/1000,0)
+  ) |>  
+  filter(!is.na(votes_dot))
+
+# This might take a bit of time to execute.
+start_time <- Sys.time()
+sampled_points <- 
+  cons_outline |>   select(geometry, pcon21cd) |> filter(pcon21cd!="S14000051") |>  
+  inner_join(
+    vote_data |> 
+    group_by(ons_const_id) |>  summarise(votes_dot=sum(votes_dot)) |>  ungroup()
+    , by=c("pcon21cd"="ons_const_id")
+    ) |> 
+  nest(data=everything()) |> 
+  mutate(
+    sampled_points=
+    map(
+      data,
+      ~sf::st_sample(
+        x=.x,
+        size=.x$votes_dot, exact=TRUE, type="random"
+        ) |> 
+        st_coordinates() |>   as_tibble(.name_repair=~c("east", "north"))
+        ),
+     const_id=map(data, ~.x |>  st_drop_geometry() |>   select(pcon21cd, votes_dot) |>   uncount(votes_dot))
+    ) |> 
+  unnest(-data) |> 
+  select(-data)
+end_time <- Sys.time()
+end_time - start_time
+
+point_votes <- vote_data |>   select(party, votes_dot) |>  uncount(votes_dot)
+sampled_points  <- sampled_points |>  bind_cols(point_votes)
+```
+
+The ggplot2 code:
+
+```{r}
+party_colours <- c(con, lab, other)
+sampled_points |> 
+  ggplot() +
+  geom_sf(data=cons_outline, fill="transparent", colour="#636363", linewidth=.03) +
+  geom_sf(data=cons_outline |>  inner_join(vote_data, by=c("pcon21cd"="ons_const_id")) |> 
+            group_by(region) |>  summarise(),
+          fill="transparent", colour="#636363", linewidth=.1) +
+  geom_point(aes(x=east,y=north, fill=party, colour=party), alpha=.5, size=.6, stroke=0)+
+  scale_fill_manual(values=party_colours, "1 dot = 1,000 votes")+
+  scale_colour_manual(values=party_colours, "1 dot = 1,000 votes")+
+  guides(colour=guide_legend(override.aes=list(size=3)))+
+  theme(
+    plot.background = element_rect(fill="#ffffff", colour="#ffffff"), 
+    legend.position ="right", axis.line = element_blank(), axis.text = element_blank(),
+    axis.title.x = element_blank(), axis.title.y = element_blank()
+    ) 
 ```
