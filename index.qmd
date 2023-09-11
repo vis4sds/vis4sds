@@ -11,7 +11,7 @@ Visualization toolkits such as [ggplot2](), [vega-lite]() and [Tableau]() have b
 
 This book aims to fill this space. It presents principled workflows, with accompanying code, for using data graphics and statistics in tandem. In doing so it equips readers with critical design and technical skills needed to analyse and communicate with a range of datasets in the social sciences.
 
-The book emphasises application. Each chapter introduces concepts for analysis, with an accompanying technical implementation, using a real-world dataset located a within social science domain. The ambition is that, by the end of each chapter, we have a more advanced knowlegde and understanding of the phenomena under investigation.
+The book emphasises application. Each chapter introduces concepts for analysis, with an accompanying technical implementation, using a real-world dataset located within a social science domain. The ambition is that by the end of each chapter, we have a more advanced knowlegde and understanding of the phenomena under investigation.
 
 
 ## Structure, content and outcomes {.unnumbered}
@@ -47,7 +47,7 @@ Space in the book is instead dedicated to introspecting into data graphics:  the
 
 ## Acknowledgments
 
-You will notice that the book is written in the first person, but with "we/our" rather than the singular pronoun "I/my". The reasons for this are partly stylistic. They also, hopefully, betray that the ideas presented in the book are not entirely "my own". In particular *I* would like to thank [Jo Wood](https://www.city.ac.uk/about/people/academics/joseph-wood) and [Jason Dykes](https://www.city.ac.uk/about/people/academics/jason-dykes), whose thinking on visualization design and practice runs throughout the book; and [Robin Lovelace](https://environment.leeds.ac.uk/transport/staff/953/dr-robin-lovelace), who helped get things kick-started, whose technical knowledge is legion and whose critique and encouragement always welcome. Thanks also to ...
+You will notice that the book is written in the first person, but with "we/our" rather than the singular pronoun "I/my". The reasons for this are partly stylistic. They also, hopefully, betray that the ideas presented in the book are not entirely "my own". In particular *I* would like to thank [Jo Wood](https://www.city.ac.uk/about/people/academics/joseph-wood) and [Jason Dykes](https://www.city.ac.uk/about/people/academics/jason-dykes), whose thinking on visualization design and practice runs throughout the book; and [Robin Lovelace](https://environment.leeds.ac.uk/transport/staff/953/dr-robin-lovelace), who helped get things kick-started, whose technical knowledge is legion and whose critique and encouragement is always welcome. Thanks also to ...
 
 <!-- Lara Spieker, from CRC Press, who has worked over two years to take the book from an early plan into production. -->
 
