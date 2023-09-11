@@ -183,6 +183,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">References</span></a>
   </div>
 </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./a1-tasks.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Task answers</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
     </ul>
 </div>
 </nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
@@ -358,7 +375,7 @@ Data vocabulary
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Task
+Task 1
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -429,7 +446,7 @@ Task
 <p>In the template file there is documentation on how to setup your R session with key packages – <code>tidyverse</code> , <code>fst</code>, <code>lubridate</code>, <code>sf</code>. The data were collected using the <a href="https://github.com/ropensci/bikedata"><code>bikedata</code></a> package. A subset of data from New York’s bikeshare scheme, <a href="https://www.citibikenyc.com/">Citibike</a>, were collected for this chapter and can be downloaded from the book’s accompanying <a href="https://github.com/vis4sds/data">data repository</a><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. Instructions for doing so are in the <a href="./files/02-template.qmd"><code>02-template.qmd</code></a> file.</p>
 <!-- -- and also the [`bikedata`](https://github.com/ropensci/bikedata) package for accessing bikeshare data. -->
 <!-- Available via the `bikedata` package are trip and occupancy data for a number of bikeshare schemes (as below). We will work with data from New York's [Citibike](https://www.citibikenyc.com/) scheme for June 2020. A list of all cities covered by the `bikedata` package is below: -->
-<p>The code for reading in these data may be familiar to most readers. The <a href="https://here.r-lib.org/"><code>here</code></a> package, which reliably creates paths relative to a project’s root, is used to pass as a parameter to <code>read_csv()</code> and <code>read_fst()</code> the locations at which the New York trips and stations data are stored. Notice that we use <em>assignment</em> (<code>&lt;-</code>), so data are loaded as objects and appear in the Environment pane of your RStudio window.</p>
+<p>The code for reading in these data may be familiar to most readers. The <a href="https://here.r-lib.org/"><code>here</code></a> package, which reliably creates paths relative to a project’s root, is used to pass the locations at which the New York trips and stations data are stored as a parameter to <code>read_csv()</code> and <code>read_fst()</code>. Notice that we use <em>assignment</em> (<code>&lt;-</code>), so data are loaded as objects and appear in the Environment pane of your RStudio window.</p>
 <!-- Some of the above may be familiar to you. The key arguments to look at are `read_csv()` and `read_fst()`, into which we pass the path to the file. In this case we create a `tmpfile()` within the R session. We then write these data out and save locally to the project's `data` folder. This is useful as we only want to download the data once. In the `write_*<>` functions we reference this location using the [`here`](https://here.r-lib.org/) package's `here()` function, useful for reliably creating paths relative to your project's root.  -->
 <div class="cell">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Read in local copies of the trips and stations data.</span></span>
@@ -461,7 +478,7 @@ Note
 </div>
 <!-- ![`ny_trips` and `ny_stations` as they appear when calling `View()`](figs/01/view.png){#fig-view-annotate width=100% fig-align="center"} -->
 <p>The <code>glimpse()</code> function can be used to quickly describe a data frame’s dimensions. We have 500,000 trip observations in <code>ny_trips</code> and 11 variables; the 500,000 represents a random sample of c.1.9 million trips recorded in June 2020. The function also prints out the object type for each of these variables, with the variables either of type <code>int</code>, <code>chr</code> or <code>dbl</code>.</p>
-<p>In this case the assignment needs correcting. <code>start_time</code> and <code>stop_time</code> may be better represented in <code>date-time</code> format; the station identifier variables (e.g.&nbsp;<code>start_station_id</code>) are more efficient when converted to <code>int</code> types; and the geographic coordinates, currently stored as text strings (<code>chr</code>) are better converted as floating points (<code>dbl</code>) or <a href="https://r-spatial.github.io/sf/articles/sf1.html#simple-feature-geometry-types"><code>POINT</code></a> geometry types. In the <a href="">02-template.qmd</a> file are code chunks for doing these conversions. There are some slightly more involved data transform procedures in this code, which you may wish to ignore at this stage.</p>
+<p>In this case the assignment needs correcting. <code>start_time</code> and <code>stop_time</code> may be better represented in <code>date-time</code> format; the station identifier variables (e.g.&nbsp;<code>start_station_id</code>) are more efficient when converted to <code>int</code> types; and the geographic coordinates, currently stored as text strings (<code>chr</code>), are better converted as floating points (<code>dbl</code>) or <a href="https://r-spatial.github.io/sf/articles/sf1.html#simple-feature-geometry-types"><code>POINT</code></a> geometry types <span class="citation" data-cites="pebesma_simple_2018">(<a href="references.html#ref-pebesma_simple_2018" role="doc-biblioref">Pebesma 2018</a>)</span>. In the <a href="./files/02-template.qmd">02-template.qmd</a> file are code chunks for doing these conversions. There are some slightly more involved data transform procedures in this code, which you may wish to ignore at this stage.</p>
 <div class="cell">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">glimpse</span><span class="op">(</span><span class="va">ny_trips</span><span class="op">)</span></span>
 <span><span class="co">## Rows: 500,000</span></span>
@@ -555,7 +572,7 @@ Note
 <p><code>dplyr</code> functions are designed to be chained together – you will see this shortly as we explore the New York bikeshare data. This chaining of functions can be achieved using the <em>pipe</em> operator (<code>|&gt;</code>). Pipes are mechanisms for passing information in a program. They take the output of a set of code (a <code>dplyr</code> specification) and make it the input of the next set (another <code>dplyr</code> specification). Pipes can be easily applied to <code>dplyr</code> functions and the functions of all packages that form the <code>tidyverse</code>. We mentioned in <a href="01-intro.html"><span>Chapter&nbsp;1</span></a> that ggplot2 provides a framework for specifying a <em>layered grammar of graphics</em> (more on this in <a href="03-visual.html"><span>Chapter&nbsp;3</span></a>). Together with the pipe operator, <code>dplyr</code> supports a <em>layered grammar of data manipulation</em>. You will see this throughout the book as we develop and re-use code templates for performing some data manipulation that is then piped to a ggplot2 specification for visual analysis.</p>
 </section><section id="count-and-summarise-over-rows" class="level4 unnumbered"><h4 class="unnumbered anchored" data-anchor-id="count-and-summarise-over-rows">
 <code>count()</code> and <code>summarise()</code> over rows</h4>
-<p>Let’s use and combine some <code>dplyr</code> functions to generate statistical summaries of the New York bikeshare data. First we’ll count the number of trips made in June 2020 by <code>user_type</code>, a variable distinguishing casual users from those formally registered to use the scheme (<code>Customer</code> vs.&nbsp;<code>Subscriber</code> cyclists). <code>dplyr</code> has a convenience function for counting, so we could run the code below, also in the <a href="./files/02-template.qmd"><code>02-template.qmd</code></a> for this chapter.</p>
+<p>Let’s combine some <code>dplyr</code> functions to generate statistical summaries of the New York bikeshare data. First we’ll count the number of trips made in June 2020 by <code>user_type</code>, a variable distinguishing casual users from those formally registered to use the scheme (<code>Customer</code> vs.&nbsp;<code>Subscriber</code> cyclists). <code>dplyr</code> has a convenience function for counting, so we could run the code below, also in the <a href="./files/02-template.qmd"><code>02-template.qmd</code></a> for this chapter.</p>
 <div class="cell">
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Take the ny_trips data frame.</span></span>
 <span><span class="va">ny_trips</span> <span class="op">|&gt;</span></span>
@@ -663,7 +680,7 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Remembering that pipes take the output of a set of code and make it the input of the next set, you will notice separate lines for each call to the pipe operator. This is good practice for supporting readability of your code, and for debugging and learning how your data is affected by each line of code. Especially if <code>dplyr</code> is new to you, we recommend you run each line of code separated by a pipe (<code>|&gt;</code>) in the Console and observe how the dataset is changed.</p>
+<p>Remembering that pipes take the output of a set of code and make it the input of the next set, you will notice separate lines for each call to the pipe operator. This is good practice for supporting readability of your code, and for debugging and learning how your data is affected by each line of code. Especially if <code>dplyr</code> is new to you, we recommend you run each code line separated by a pipe (<code>|&gt;</code>) in the Console and observe how the dataset is changed.</p>
 </div>
 </div>
 </section><section id="manipulate-dates-with-lubridate" class="level4 unnumbered"><h4 class="unnumbered anchored" data-anchor-id="manipulate-dates-with-lubridate">Manipulate dates with <a href="https://lubridate.tidyverse.org/"><code>lubridate</code></a>
@@ -758,7 +775,7 @@ Note
 <span>    dist<span class="op">=</span><span class="fu">geosphere</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/geosphere/man/distHaversine.html">distHaversine</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">o_lat</span>, <span class="va">o_lon</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">d_lat</span>, <span class="va">d_lon</span><span class="op">)</span><span class="op">)</span><span class="op">/</span><span class="fl">1000</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">ungroup</span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The code block above introduces some new functions: <code>select()</code> to pick or drop variables, <code>rename()</code> to rename variables and a convenience function for calculating straight line distances from polar coordinates, <code>distHaversine()</code>. The key function to emphasise is the <code>left_join()</code>. If you’ve worked with relational databases, <code>dplyr</code>’s join functions will be familiar to you. In a <code>left_join</code>, all the values from the first (left-most) table are retained, <code>ny_trips</code> in this case, and variables from the table on the right , <code>ny_stations</code>, are added. We specify the variable on which tables should be joined with the <code>by=</code> parameter, <code>station_id</code> in this case. If there is a <code>station_id</code> in <code>ny_trips</code> that doesn’t exist in <code>ny_stations</code> then corresponding cells are filled out with <code>NA</code>.</p>
+<p>The code block above introduces some new functions: <code>select()</code> to pick or drop variables, <code>rename()</code> to rename variables and a convenience function for calculating straight line distances from polar coordinates, <code>distHaversine()</code>. The key function to emphasise is the <code>left_join()</code>. If you’ve worked with relational databases, <code>dplyr</code>’s join functions will be familiar to you. In a <code>left_join</code> all the values from the first (left-most) table are retained, <code>ny_trips</code> in this case, and variables from the table on the right , <code>ny_stations</code>, are added. We specify the variable on which tables should be joined with the <code>by=</code> parameter, <code>station_id</code> in this case. If there is a <code>station_id</code> in <code>ny_trips</code> that doesn’t exist in <code>ny_stations</code> then corresponding cells are filled out with <code>NA</code>.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="tbl-table-joins" class="anchored">
@@ -807,7 +824,7 @@ Note
 </div>
 </div>
 <!-- ![Histograms generated with ggplot2. Plot data computed using `dplyr` and `lubridate`](figs/02/dist.svg){#fig-plot-dist width=100% fig-align="center"} -->
-<p>From the newly created distance variable, we can calculate the average (mean) trip distance for the 500,000 sampled trips – 1.6km. This might seem very short, but remember that these are straight-line distances between pairs of docking stations. Ideally we would calculate distances derived from cycle trajectories. A separate reason, discovered when generating a histogram on the <code>dist</code> variable, is that there are a large number of trips that start and end at the same docking station. Initially these might seem to be unsuccessful hires – people failing to undock a bike for example. We could investigate this further by paying attention to the docking stations at which same origin-destination trips occur, as in the code block below.</p>
+<p>From the newly created distance variable we can calculate the average (mean) trip distance for the 500,000 sampled trips – 1.6km. This might seem very short, but remember that these are straight-line distances between pairs of docking stations. Ideally we would calculate distances derived from cycle trajectories. A separate reason, discovered when generating a histogram on the <code>dist</code> variable, is that there are a large number of trips that start and end at the same docking station. Initially these might seem to be unsuccessful hires – people failing to undock a bike for example. We could investigate this further by paying attention to the docking stations at which same origin-destination trips occur, as in the code block below.</p>
 <div class="cell">
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ny_trips</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">start_station_id</span><span class="op">==</span><span class="va">end_station_id</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -847,9 +864,9 @@ Note
 <ol type="1">
 <li>They are (usually) named – the name should be expressive and communicate what the function does.</li>
 <li>They have brackets <code>&lt;function-name()&gt;</code> usually containing arguments – inputs, which determine what the function does and returns.</li>
-<li>Immediately followed by <code>&lt;function-name()&gt;</code> are curly bracket (<code><a href="https://rdrr.io/r/base/Paren.html">{}</a></code>) used to contain the body – code that performs a distinct task, described by the function’s name.</li>
+<li>Immediately followed by <code>&lt;function-name()&gt;</code> are curly brackets (<code><a href="https://rdrr.io/r/base/Paren.html">{}</a></code>) used to contain the body – code that performs a distinct task, described by the function’s name.</li>
 </ol>
-<p>Effective functions are short, perform single, discrete operations and are intuitive.</p>
+<p>Effective functions are short and perform single, discrete operations.</p>
 <p>You will recall that in the <code>ny_trips</code> table there is a variable called <code>birth_year</code>. From this we can derive cyclists’ approximate age in years. Below is a function called <code>get_age()</code>. The function expects two arguments: <code>yob</code> – a year of birth as type <code>chr</code>; and <code>yref</code> – a reference year. In the body, <code>lubridate</code>’s <code><a href="https://lubridate.tidyverse.org/reference/as.period.html">as.period()</a></code> function is used to calculate the time in years that elapsed between these dates.</p>
 <div class="cell">
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># get_age() depends on lubridate.</span></span>
@@ -957,7 +974,7 @@ Note
 <span><span class="co">## 10        72       229 weekend     1  1.22     39.2</span></span>
 <span><span class="co">## # … with 205,506 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>To fix <code>ny_spread_columns</code> requires a little more thought. First we <code>pivot_longer()</code> on columns that are muddled with multiple variables. This results in a long and thin dataset similar to <code>ny_spread_rows</code> – each row is the origin-destination pair with either a count, distance or duration recorded for trips occurring at weekdays or weekdays. The muddled variables, for example <code>dist_weekend</code> <code>duration_weekday</code>, now appear in the rows of a new column with the default title <code>name</code>. This column is separated on the <code>_</code> mark to create two new columns, <code>summary_type</code> and <code>wkday</code>, used in <code>pivot_wider()</code>.</p>
+<p>To fix <code>ny_spread_columns</code> requires a little more thought. First we <code>pivot_longer()</code> on columns that are muddled with multiple variables. This results in a long and thin dataset similar to <code>ny_spread_rows</code> – each row is the origin-destination pair with either a count, distance or duration recorded for trips occurring at weekends or weekdays. The muddled variables, for example <code>dist_weekend</code> <code>duration_weekday</code>, now appear in the rows of a new column with the default title <code>name</code>. This column is separated on the <code>_</code> mark to create two new columns, <code>summary_type</code> and <code>wkday</code>, used in <code>pivot_wider()</code>.</p>
 <div class="cell">
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ny_spread_columns</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">pivot_longer</span><span class="op">(</span>cols <span class="op">=</span> <span class="va">count_weekend</span><span class="op">:</span><span class="va">duration_weekday</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -1097,7 +1114,7 @@ untidy_wide |>
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Task
+Task 2
 </div>
 </div>
 <div class="callout-body-container callout-body">

@@ -2,42 +2,46 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://vis4sds/vis4sds/index.html</loc>
-    <lastmod>2023-09-11T13:11:29.796Z</lastmod>
+    <lastmod>2023-09-11T21:11:41.959Z</lastmod>
   </url>
   <url>
     <loc>https://vis4sds/vis4sds/01-intro.html</loc>
-    <lastmod>2023-09-11T13:11:29.848Z</lastmod>
+    <lastmod>2023-09-11T21:11:41.991Z</lastmod>
   </url>
   <url>
     <loc>https://vis4sds/vis4sds/02-data.html</loc>
-    <lastmod>2023-09-11T13:11:29.908Z</lastmod>
+    <lastmod>2023-09-11T21:11:42.035Z</lastmod>
   </url>
   <url>
     <loc>https://vis4sds/vis4sds/03-visual.html</loc>
-    <lastmod>2023-09-11T13:11:30.040Z</lastmod>
+    <lastmod>2023-09-11T21:11:42.107Z</lastmod>
   </url>
   <url>
     <loc>https://vis4sds/vis4sds/04-explore.html</loc>
-    <lastmod>2023-09-11T13:11:30.100Z</lastmod>
+    <lastmod>2023-09-11T21:11:42.155Z</lastmod>
   </url>
   <url>
     <loc>https://vis4sds/vis4sds/05-network.html</loc>
-    <lastmod>2023-09-11T13:11:30.188Z</lastmod>
+    <lastmod>2023-09-11T21:11:42.207Z</lastmod>
   </url>
   <url>
     <loc>https://vis4sds/vis4sds/06-model.html</loc>
-    <lastmod>2023-09-11T13:11:30.260Z</lastmod>
+    <lastmod>2023-09-11T21:11:42.263Z</lastmod>
   </url>
   <url>
     <loc>https://vis4sds/vis4sds/07-uncertainty.html</loc>
-    <lastmod>2023-09-11T13:11:30.340Z</lastmod>
+    <lastmod>2023-09-11T21:11:42.327Z</lastmod>
   </url>
   <url>
     <loc>https://vis4sds/vis4sds/08-storytelling.html</loc>
-    <lastmod>2023-09-11T13:11:30.400Z</lastmod>
+    <lastmod>2023-09-11T21:11:42.375Z</lastmod>
   </url>
   <url>
     <loc>https://vis4sds/vis4sds/references.html</loc>
-    <lastmod>2023-09-11T13:11:30.432Z</lastmod>
+    <lastmod>2023-09-11T21:11:42.391Z</lastmod>
+  </url>
+  <url>
+    <loc>https://vis4sds/vis4sds/a1-tasks.html</loc>
+    <lastmod>2023-09-11T21:11:42.439Z</lastmod>
   </url>
 </urlset>

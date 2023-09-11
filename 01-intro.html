@@ -183,6 +183,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">References</span></a>
   </div>
 </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./a1-tasks.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Task answers</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
     </ul>
 </div>
 </nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
@@ -500,7 +517,7 @@ author: "Roger Beecham"
 title: "Chapter 01"
 format: html
 ---</code></pre>
-<p>Quarto files are rendered with the <em>Render</em> button, annotated in <a href="#fig-quarto-annotate">Figure&nbsp;<span>1.2</span></a> above. This starts <a href="https://pandoc.org/"><code>pandoc</code></a> and executes all the code chunks and outputs in the case above an <code>.html</code> file. The file can be converted to many different output formats via <code>pandoc</code>).</p>
+<p>Quarto files are rendered with the <em>Render</em> button, annotated in <a href="#fig-quarto-annotate">Figure&nbsp;<span>1.2</span></a> above. This starts <a href="https://pandoc.org/"><code>pandoc</code></a>, a library that converts Markdown files, and executes all the code chunks and, in the case above, outputs an <code>.html</code> file.</p>
 <ul>
 <li>Render the <a href="">01-template.qmd</a> file for this chapter by clicking the <em>Render</em> button.</li>
 </ul>
@@ -526,7 +543,7 @@ format: html
 <code>cache: &lt;true|false&gt;</code> Determines whether the results from the code chunk are cached.</li>
 </ul></section><section id="r-scripts" class="level3" data-number="1.3.5"><h3 data-number="1.3.5" class="anchored" data-anchor-id="r-scripts">
 <span class="header-section-number">1.3.5</span> R Scripts</h3>
-<p>Whilst there are obvious benefits to working in <code>.qmd</code> documents when doing data analysis, there may be occasions where a script is preferable. R scripts are plain text files with the extension <code>.R</code>. They are typically used for writing discrete but substantial code blocks that are to be executed. For example, a set of <a href="https://r4ds.had.co.nz/functions.html">functions</a> that relate to a particular use case might be organised into an R script, and those functions referred to in a data analysis from a <code>.qmd</code> in a similar way as one might import a package. Below is an example script file with helper functions to support flow visualizations in R. The script is saved with the file name <code>bezier_path.R</code>. If it were stored in a sensible location, like a project’s <code>code</code> folder, it could be called from a <code>.qmd</code> file with <code>source(./code/bezier_path)</code>. R scripts can be edited in the same way as Quarto files in RStudio, via the code editor pane.</p>
+<p>Whilst there are obvious benefits to working in <code>.qmd</code> documents when doing data analysis, there may be occasions where a script is preferable. R scripts are plain text files with the extension <code>.R</code>. They are typically used for writing discrete but substantial code blocks that are to be executed. For example, a set of <a href="https://r4ds.had.co.nz/functions.html">functions</a> that relate to a particular use case might be organised into an R script, and those functions referred to in a data analysis from a <code>.qmd</code> in a similar way as one might import a package. Below is an example script file with helper functions to support flow visualizations in R. The script is saved with the file name <code>bezier_path.R</code>. If it were stored in a sensible location, like a project’s <code>code</code> folder, it could be called from a <code>.qmd</code> file with <code>source("code/bezier_path")</code>. R scripts can be edited in the same way as Quarto files in RStudio, via the code editor pane.</p>
 <div class="cell">
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Filename: bezier_path.R</span></span>
 <span><span class="co">#</span></span>
@@ -583,9 +600,9 @@ format: html
 </div>
 </section><section id="create-an-rstudio-project" class="level3" data-number="1.3.6"><h3 data-number="1.3.6" class="anchored" data-anchor-id="create-an-rstudio-project">
 <span class="header-section-number">1.3.6</span> Create an RStudio Project</h3>
-<p>Throughout the book we will use project-oriented workflows. This is where all files pertaining to a data analysis – data, code and outputs – are organised from a single top-level, or root, folder and where file path discipline is used such that all paths are relative to the project’s root folder <span class="citation" data-cites="wickham_r_2023">(see Chapter 7 of <a href="references.html#ref-wickham_r_2023" role="doc-biblioref">Wickham, Çetinkaya-Rundel, and Grolemund 2023</a>)</span>. You can imagine this self-contained project set-up is necessary for achieving reproducibility of your research. It allows anyone to take a project and run it on their own machines with minimal adjustment.</p>
+<p>Throughout the book we will use project-oriented workflows. This is where all files pertaining to a data analysis – data, code and outputs – are organised from a single top-level, or root, folder and where file path discipline is maintained such that all paths are relative to the project’s root folder <span class="citation" data-cites="wickham_r_2023">(see Chapter 7 of <a href="references.html#ref-wickham_r_2023" role="doc-biblioref">Wickham, Çetinkaya-Rundel, and Grolemund 2023</a>)</span>. You can imagine this self-contained project setup is necessary for achieving reproducibility of your research. It allows anyone to take a project and run it on their own machines with minimal adjustment.</p>
 <p>When opening RStudio, the IDE automatically points to a working directory, likely the home folder for your local machine. RStudio will save any outputs to this folder and expect any data you use to be saved there. Clearly to incorporate neat, self-contained project workflows you will want a dedicated project folder rather than the default home folder for your machine. This can be achieved with the <code>setwd(&lt;path-to-your-project&gt;)</code> function. The problem with doing this is that you insert a path which cannot be understood outside of your local machine at the time it was created. This is a real pain. It makes simple things like moving projects around on your machine an arduous task and most importantly it hinders reproducibility if others are to reuse your work.</p>
-<p>RStudio Projects resolve these problems. Whenever you load an RStudio Project, <code>R</code> starts up and the working directory is automatically set to the project’s root folder. If you were to move the project elsewhere on your machine, or to another machine, a new root is automatically generated – so RStudio projects ensure that relative paths work.</p>
+<p>RStudio Projects resolve these problems. Whenever you load an RStudio Project, R starts up and the working directory is automatically set to the project’s root folder. If you were to move the project elsewhere on your machine, or to another machine, a new root is automatically generated – so RStudio projects ensure that relative paths work.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-studio-project" class="quarto-figure quarto-figure-center anchored">
@@ -618,7 +635,7 @@ format: html
 <!-- We will work with both new, large-scale behavioural datasets, as well as more traditional, administrative datasets located within various social science domains. We will do so using the statistical programming environment `R`, making use of tools and software libraries that form part of the `R` ecosystem: the `tidyverse` for doing modern data science and Quarto for authoring reproducible research projects. -->
 </section><section id="further-reading" class="level2" data-number="1.5"><h2 data-number="1.5" class="anchored" data-anchor-id="further-reading">
 <span class="header-section-number">1.5</span> Further Reading</h2>
-<p>A paper that introduces modern data analysis and data science in a direct way, eschewing much of the hype:</p>
+<p>A paper that introduces modern data analysis and data science in a straightforward way, eschewing much of the hype:</p>
 <ul>
 <li>Donoho, D. 2017. “50 Years of Data Science” <em>Journal of Computational and Graphical Statistics</em>, 26(6): 745–66. doi: <a href="https://doi.org/10.1080/10618600.2017.13847340">10.1080/10618600.2017.13847340</a>.</li>
 </ul>

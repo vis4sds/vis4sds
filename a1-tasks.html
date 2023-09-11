@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>Visualization for Social Data Science - Appendix A — Task answers</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./references.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+</head>
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./a1-tasks.html">Appendices</a></li><li class="breadcrumb-item"><a href="./a1-tasks.html"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Task answers</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Visualization for Social Data Science</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/vis4sds/vis4sds/" rel="" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <a href="https://twitter.com/intent/tweet?url=%7Curl%7C" rel="" title="Twitter" class="quarto-navigation-tool px-1" aria-label="Twitter"><i class="bi bi-twitter"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data Fundamentals</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-visual.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Visualization Fundamentals</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-explore.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Exploratory Data Analysis</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-network.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Networks</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-model.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-uncertainty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Uncertainty</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-storytelling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Data Storytelling</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./a1-tasks.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Task answers</span></span></a>
+  </div>
+</li>
+      </ul>
+</li>
+    </ul>
+</div>
+</nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+<li>
+<a href="#from-chapter-2" id="toc-from-chapter-2" class="nav-link active" data-scroll-target="#from-chapter-2"><span class="header-section-number">A.1</span> From Chapter 2</a>
+  <ul class="collapse">
+<li><a href="#task-1" id="toc-task-1" class="nav-link" data-scroll-target="#task-1">Task 1</a></li>
+  <li><a href="#task-2" id="toc-task-2" class="nav-link" data-scroll-target="#task-2">Task 2</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#from-chapter-3" id="toc-from-chapter-3" class="nav-link" data-scroll-target="#from-chapter-3"><span class="header-section-number">A.2</span> From Chapter 3</a>
+  <ul class="collapse">
+<li><a href="#task-1-1" id="toc-task-1-1" class="nav-link" data-scroll-target="#task-1-1">Task 1</a></li>
+  <li><a href="#task-2-1" id="toc-task-2-1" class="nav-link" data-scroll-target="#task-2-1">Task 2</a></li>
+  <li><a href="#task-3" id="toc-task-3" class="nav-link" data-scroll-target="#task-3">Task 3</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#from-chapter-4" id="toc-from-chapter-4" class="nav-link" data-scroll-target="#from-chapter-4"><span class="header-section-number">A.3</span> From Chapter 4</a>
+  <ul class="collapse">
+<li><a href="#task-1-2" id="toc-task-1-2" class="nav-link" data-scroll-target="#task-1-2">Task 1</a></li>
+  <li><a href="#task-2-2" id="toc-task-2-2" class="nav-link" data-scroll-target="#task-2-2">Task 2</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#from-chapter-5" id="toc-from-chapter-5" class="nav-link" data-scroll-target="#from-chapter-5"><span class="header-section-number">A.4</span> From Chapter 5</a>
+  <ul class="collapse">
+<li><a href="#task-1-3" id="toc-task-1-3" class="nav-link" data-scroll-target="#task-1-3">Task 1</a></li>
+  </ul>
+</li>
+  <li><a href="#from-chapter-6" id="toc-from-chapter-6" class="nav-link" data-scroll-target="#from-chapter-6"><span class="header-section-number">A.5</span> From Chapter 6</a></li>
+  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/vis4sds/vis4sds/edit/master/a1-tasks.qmd" class="toc-action">Edit this page</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<h1 class="title"><span id="sec-tasks-answers" class="quarto-section-identifier">Appendix A — Task answers</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header><div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This page contains answers to the <em>Task</em> activities presented in selected chapters of the book.</p>
+</div>
+</div>
+<section id="from-chapter-2" class="level2" data-number="A.1"><h2 data-number="A.1" class="anchored" data-anchor-id="from-chapter-2">
+<span class="header-section-number">A.1</span> From Chapter 2</h2>
+<section id="task-1" class="level3 unnumbered"><h3 class="unnumbered anchored" data-anchor-id="task-1">Task 1</h3>
+<p>The completed data description table for the Citibike stations dataset.</p>
+<div style="font-size:0.8em;">
+<table class="table">
+<thead><tr class="header">
+<th>Variable name</th>
+<th>Variable value</th>
+<th>Measurement level</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code>name</code></td>
+<td>“Central Park”</td>
+<td>Categorical-nominal</td>
+</tr>
+<tr class="even">
+<td><code>capacity</code></td>
+<td>80</td>
+<td>Ratio</td>
+</tr>
+<tr class="odd">
+<td><code>rank_capacity</code></td>
+<td>45</td>
+<td>Ordinal</td>
+</tr>
+<tr class="even">
+<td><code>date_opened</code></td>
+<td>“2014-05-23”</td>
+<td>Interval</td>
+</tr>
+<tr class="odd">
+<td><code>longitude</code></td>
+<td>-74.00149746</td>
+<td>Interval</td>
+</tr>
+<tr class="even">
+<td><code>latitude</code></td>
+<td>40.74177603</td>
+<td>Interval</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section><section id="task-2" class="level3 unnumbered"><h3 class="unnumbered anchored" data-anchor-id="task-2">Task 2</h3>
+<div class="cell">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># # A tibble: 7 × 3</span></span>
+<span><span class="co">#   day   Customer Subscriber</span></span>
+<span><span class="co">#   &lt;ord&gt;    &lt;dbl&gt;      &lt;dbl&gt;</span></span>
+<span><span class="co"># 1 Sun     0.198       0.144</span></span>
+<span><span class="co"># 2 Mon     0.137       0.163</span></span>
+<span><span class="co"># 3 Tue     0.144       0.172</span></span>
+<span><span class="co"># 4 Wed     0.104       0.125</span></span>
+<span><span class="co"># 5 Thu     0.0973      0.122</span></span>
+<span><span class="co"># 6 Fri     0.135       0.138</span></span>
+<span><span class="co"># 7 Sat     0.185       0.136</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Code for exploring the proportion of trips made by day of week on <code>user_type</code>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ny_temporal</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">day</span>, <span class="va">user_type</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">summarise</span><span class="op">(</span>count<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">count</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">ungroup</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">pivot_wider</span><span class="op">(</span>names_from<span class="op">=</span><span class="va">user_type</span>, values_from<span class="op">=</span><span class="va">count</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">mutate</span><span class="op">(</span><span class="fu">across</span><span class="op">(</span>.cols<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">Customer</span>, <span class="va">Subscriber</span><span class="op">)</span>, .fns<span class="op">=</span><span class="op">~</span><span class="va">.x</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">.x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section></section><section id="from-chapter-3" class="level2" data-number="A.2"><h2 data-number="A.2" class="anchored" data-anchor-id="from-chapter-3">
+<span class="header-section-number">A.2</span> From Chapter 3</h2>
+<section id="task-1-1" class="level3 unnumbered"><h3 class="unnumbered anchored" data-anchor-id="task-1-1">Task 1</h3>
+<p>The completed encoding description table for the Washington Post election map (<a href="03-visual.html#fig-wp-swing">Figure&nbsp;<span>3.5</span></a>).</p>
+<div style="font-size:0.8em;">
+<table class="table">
+<colgroup>
+<col style="width: 23%">
+<col style="width: 23%">
+<col style="width: 17%">
+<col style="width: 19%">
+<col style="width: 17%">
+</colgroup>
+<thead><tr class="header">
+<th>Data item</th>
+<th>Measurement level</th>
+<th>Visual mark</th>
+<th>Visual channel</th>
+<th>Rank</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>County location</td>
+<td>Interval</td>
+<td>Lines</td>
+<td>Position in x- y-</td>
+<td>1 mag:order</td>
+</tr>
+<tr class="even">
+<td>County winner</td>
+<td>Categorical-nominal</td>
+<td>Lines</td>
+<td>Colour hue</td>
+<td>2 id:category</td>
+</tr>
+<tr class="odd">
+<td>County flip from 2012</td>
+<td>Categorical-ordinal</td>
+<td>Lines</td>
+<td>1D size</td>
+<td>3 mag:order</td>
+</tr>
+<tr class="even">
+<td>County Swing fom 2012</td>
+<td>Ratio</td>
+<td>Lines</td>
+<td>Tilt/angle</td>
+<td>4 mag:order</td>
+</tr>
+<tr class="odd">
+<td>State ‘winner’</td>
+<td>Categorical-nominal</td>
+<td>Polygon</td>
+<td>Colour hue</td>
+<td>2 id:category</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section><section id="task-2-1" class="level3 unnumbered"><h3 class="unnumbered anchored" data-anchor-id="task-2-1">Task 2</h3>
+<p>Code to produce a set of histograms similar to those in <a href="03-visual.html#fig-hist-region">Figure&nbsp;<span>3.7</span></a>.</p>
+<div class="cell">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_gb</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">ggplot</span><span class="op">(</span>mapping<span class="op">=</span><span class="fu">aes</span><span class="op">(</span><span class="va">swing_con_lab</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_histogram</span><span class="op">(</span>fill<span class="op">=</span><span class="st">"#003c8f"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="co"># Annotate with median Swing.</span></span>
+<span>  <span class="fu">geom_vline</span><span class="op">(</span>xintercept<span class="op">=</span><span class="fl">4.44</span>, size<span class="op">=</span><span class="fl">.3</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu">labs</span><span class="op">(</span>x<span class="op">=</span><span class="st">"Swing"</span>, y<span class="op">=</span><span class="st">"count"</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu">facet_wrap</span><span class="op">(</span><span class="op">~</span><span class="va">region</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="task-3" class="level3 unnumbered"><h3 class="unnumbered anchored" data-anchor-id="task-3">Task 3</h3>
+<p>The code to reproduce the graphic in <a href="03-visual.html#fig-scatters-con">Figure&nbsp;<span>3.10</span></a>.</p>
+<div class="cell">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">con</span> <span class="op">&lt;-</span> <span class="st">"#0575c9"</span></span>
+<span><span class="va">lab</span> <span class="op">&lt;-</span> <span class="st">"#ed1e0e"</span></span>
+<span><span class="va">other</span> <span class="op">&lt;-</span> <span class="st">"#bdbdbd"</span></span>
+<span></span>
+<span><span class="va">data_gb</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">mutate</span><span class="op">(</span>is_flipped<span class="op">=</span><span class="va">seat_change_1719</span><span class="op">==</span><span class="st">"Conservative gain from Labour"</span>,</span>
+<span>         is_flipped<span class="op">=</span><span class="fu">if_else</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">is_flipped</span><span class="op">)</span>, <span class="cn">FALSE</span>, <span class="va">is_flipped</span><span class="op">)</span>,</span>
+<span>         winner_19<span class="op">=</span><span class="fu">case_when</span><span class="op">(</span></span>
+<span>           <span class="va">winner_19</span> <span class="op">==</span> <span class="st">"Conservative"</span> <span class="op">~</span> <span class="st">"Conservative"</span>,</span>
+<span>           <span class="va">winner_19</span> <span class="op">==</span> <span class="st">"Labour"</span> <span class="op">~</span> <span class="st">"Labour"</span>,</span>
+<span>           <span class="cn">TRUE</span> <span class="op">~</span> <span class="st">"Other"</span></span>
+<span>         <span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">con_17</span>, y<span class="op">=</span><span class="va">con_19</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_point</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>colour<span class="op">=</span><span class="va">winner_19</span>, alpha<span class="op">=</span><span class="va">is_flipped</span>, shape<span class="op">=</span><span class="va">is_flipped</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_abline</span><span class="op">(</span>intercept <span class="op">=</span> <span class="fl">0</span>, slope <span class="op">=</span> <span class="fl">1</span>, size<span class="op">=</span><span class="fl">.3</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">scale_colour_manual</span><span class="op">(</span>values<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">con</span>,<span class="va">lab</span>,<span class="va">other</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">scale_alpha_ordinal</span><span class="op">(</span>range<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">.5</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">scale_shape_manual</span><span class="op">(</span>values<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">21</span>,<span class="fl">19</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">scale_x_continuous</span><span class="op">(</span>limits<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">90</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">labs</span><span class="op">(</span>x<span class="op">=</span><span class="st">"vote share 2017 "</span>, y<span class="op">=</span><span class="st">"vote share 2019"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section></section><section id="from-chapter-4" class="level2" data-number="A.3"><h2 data-number="A.3" class="anchored" data-anchor-id="from-chapter-4">
+<span class="header-section-number">A.3</span> From Chapter 4</h2>
+<section id="task-1-2" class="level3 unnumbered"><h3 class="unnumbered anchored" data-anchor-id="task-1-2">Task 1</h3>
+<p>The code to reproduce the heatmap in the left column of <a href="04-explore.html#fig-borough-freqs-resids">Figure&nbsp;<span>4.6</span></a>.</p>
+<div class="cell">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Vector of vehicles in order they appear in graphic. </span></span>
+<span><span class="co"># Convert vehicle_type to factor to effect ordering.</span></span>
+<span><span class="va">order_type</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Car"</span>, <span class="st">"Taxi"</span>, <span class="st">"Bus"</span>, <span class="st">"Motorcycle"</span>, <span class="st">"Other"</span>,<span class="st">"Van"</span>, <span class="st">"HGV"</span>, <span class="st">"Bicycle"</span><span class="op">)</span> </span>
+<span><span class="co"># For new is_inner variable used to facet plot.</span></span>
+<span><span class="va">inner_boroughs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Camden"</span>, <span class="st">"Greenwich"</span>, <span class="st">"Hackney"</span>, <span class="st">"Hammersmith and Fulham"</span>, <span class="st">"Islington"</span>,</span>
+<span>                    <span class="st">"Kensington and Chelsea"</span>, <span class="st">"Lambeth"</span>, <span class="st">"Lewisham"</span>, <span class="st">"Southwark"</span>, <span class="st">"Tower Hamlets"</span>,</span>
+<span>                    <span class="st">"Wandsworth"</span>, <span class="st">"Westminster"</span>, <span class="st">"City of London"</span><span class="op">)</span></span>
+<span><span class="co"># Staged dataset where signed-chi residuals are created.</span></span>
+<span><span class="va">model_data</span> <span class="op">&lt;-</span> <span class="va">ped_veh</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">police_force</span> <span class="op">==</span> <span class="st">"Metropolitan Police"</span> <span class="op">|</span> <span class="va">police_force</span> <span class="op">==</span> <span class="st">"City of London"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">mutate</span><span class="op">(</span></span>
+<span>    is_inner<span class="op">=</span></span>
+<span>      <span class="fu">if_else</span><span class="op">(</span><span class="va">local_authority_district</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="va">inner_boroughs</span>, <span class="st">"inner"</span>, <span class="st">"outer"</span><span class="op">)</span>,</span>
+<span>    vehicle_type<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">vehicle_type</span>, levels<span class="op">=</span><span class="va">order_type</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">local_authority_district</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">mutate</span><span class="op">(</span>row_total<span class="op">=</span><span class="fu">n</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">ungroup</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">vehicle_type</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">mutate</span><span class="op">(</span>col_total<span class="op">=</span><span class="fu">n</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">ungroup</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">mutate</span><span class="op">(</span>grand_total<span class="op">=</span><span class="fu">n</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">local_authority_district</span>, <span class="va">vehicle_type</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">summarise</span><span class="op">(</span></span>
+<span>    observed<span class="op">=</span><span class="fu">n</span><span class="op">(</span><span class="op">)</span>, row_total<span class="op">=</span><span class="fu">first</span><span class="op">(</span><span class="va">row_total</span><span class="op">)</span>,  col_total<span class="op">=</span><span class="fu">first</span><span class="op">(</span><span class="va">col_total</span><span class="op">)</span>, </span>
+<span>    grand_total<span class="op">=</span><span class="fu">first</span><span class="op">(</span><span class="va">grand_total</span><span class="op">)</span>, expected<span class="op">=</span><span class="op">(</span><span class="va">row_total</span><span class="op">*</span><span class="va">col_total</span><span class="op">)</span><span class="op">/</span><span class="va">grand_total</span>, </span>
+<span>    resid<span class="op">=</span><span class="op">(</span><span class="va">observed</span><span class="op">-</span><span class="va">expected</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="va">expected</span><span class="op">)</span>,</span>
+<span>    is_inner<span class="op">=</span><span class="fu">first</span><span class="op">(</span><span class="va">is_inner</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span>  <span class="fu">ungroup</span><span class="op">(</span><span class="op">)</span> </span>
+<span><span class="co"># Find maximum residual value to ensure colour scheme is symmetrical on 0.</span></span>
+<span><span class="va">max_resid</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span><span class="op">(</span><span class="va">model_data</span><span class="op">$</span><span class="va">resid</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Plot heatmap.</span></span>
+<span><span class="va">model_data</span> <span class="op">|&gt;</span>   </span>
+<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">vehicle_type</span>, y<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/reorder.factor.html">reorder</a></span><span class="op">(</span><span class="va">local_authority_district</span>, <span class="va">row_total</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_tile</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>fill<span class="op">=</span><span class="va">resid</span><span class="op">)</span>, colour<span class="op">=</span><span class="st">"#ffffff"</span>, size<span class="op">=</span><span class="fl">.4</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">facet_grid</span><span class="op">(</span><span class="va">is_inner</span><span class="op">~</span><span class="va">.</span>, scales<span class="op">=</span><span class="st">"free_y"</span>, space<span class="op">=</span><span class="st">"free_y"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">scale_fill_distiller</span><span class="op">(</span>palette<span class="op">=</span><span class="st">"RdBu"</span>, direction<span class="op">=</span><span class="op">-</span><span class="fl">1</span>, limits<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="va">max_resid</span>,<span class="va">max_resid</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">guides</span><span class="op">(</span>fill<span class="op">=</span><span class="st">"none"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="task-2-2" class="level3 unnumbered"><h3 class="unnumbered anchored" data-anchor-id="task-2-2">Task 2</h3>
+<p>The code to reproduce the design challenge plots in <a href="04-explore.html#fig-age-imd-light">Figure&nbsp;<span>4.12</span></a>.</p>
+<div class="cell">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Calculate crash freqs by IMD class of location, dark/daylight and casulty age.</span></span>
+<span><span class="va">plot_data</span> <span class="op">&lt;-</span> <span class="va">ped_veh</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span></span>
+<span>    <span class="va">age_of_casualty</span><span class="op">&gt;</span><span class="fl">0</span>, <span class="va">crash_quintile</span> <span class="op">!=</span> <span class="st">"Data missing or out of range"</span>,  </span>
+<span>    <span class="va">light_conditions</span> <span class="op">!=</span> <span class="st">"Data missing or out of range"</span></span>
+<span>    <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">mutate</span><span class="op">(</span>is_daylight<span class="op">=</span></span>
+<span>           <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="fu">if_else</span><span class="op">(</span><span class="va">light_conditions</span> <span class="op">==</span> <span class="st">"Daylight"</span>, <span class="st">"daylight"</span>, <span class="st">"dark"</span><span class="op">)</span>,</span>
+<span>                  levels<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"dark"</span>, <span class="st">"daylight"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">age_of_casualty</span>, <span class="va">is_daylight</span>, <span class="va">crash_quintile</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">summarise</span><span class="op">(</span>count<span class="op">=</span><span class="fu">n</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">ungroup</span><span class="op">(</span><span class="op">)</span> </span>
+<span></span>
+<span><span class="co"># Top plot.</span></span>
+<span><span class="va">plot_data</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">age_of_casualty</span>, y<span class="op">=</span><span class="va">count</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_col</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>colour<span class="op">=</span><span class="va">is_daylight</span><span class="op">)</span>, width<span class="op">=</span><span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">facet_grid</span><span class="op">(</span><span class="va">is_daylight</span><span class="op">~</span><span class="va">crash_quintile</span>, space<span class="op">=</span><span class="st">"free_y"</span>, scales<span class="op">=</span><span class="st">"free_y"</span>, </span>
+<span>             labeller<span class="op">=</span><span class="fu">labeller</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"daylight"</span>, <span class="st">"dark"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">scale_colour_manual</span><span class="op">(</span>values<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"#08519c"</span>, <span class="st">"#c6dbef"</span><span class="op">)</span>, guide<span class="op">=</span><span class="st">"none"</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu">labs</span><span class="op">(</span>y<span class="op">=</span><span class="st">"crash count in hundreds"</span>, x<span class="op">=</span><span class="st">"casualty age"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">scale_y_continuous</span><span class="op">(</span></span>
+<span>    breaks<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">4</span>,<span class="fl">6</span>,<span class="fl">8</span>,<span class="fl">10</span><span class="op">)</span><span class="op">*</span><span class="fl">100</span><span class="op">)</span>,</span>
+<span>    labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/comma.html">comma_format</a></span><span class="op">(</span>scale <span class="op">=</span> <span class="fl">.01</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Bottom plot.</span></span>
+<span><span class="va">plot_data</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="co"># Calcuate % crashes in daylight and expected daylight counts </span></span>
+<span>  <span class="co"># in each data item from this.</span></span>
+<span>  <span class="fu">mutate</span><span class="op">(</span>total<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">count</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">pivot_wider</span><span class="op">(</span>names_from<span class="op">=</span><span class="va">is_daylight</span>, values_from<span class="op">=</span><span class="va">count</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">mutate</span><span class="op">(</span></span>
+<span>    prop_daylight<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">daylight</span>, na.rm<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">/</span><span class="fu">first</span><span class="op">(</span><span class="va">total</span><span class="op">)</span>,</span>
+<span>    expected_daylight<span class="op">=</span><span class="op">(</span><span class="va">daylight</span><span class="op">+</span><span class="va">dark</span><span class="op">)</span><span class="op">*</span><span class="va">prop_daylight</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">pivot_longer</span><span class="op">(</span>cols<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">dark</span>, <span class="va">daylight</span><span class="op">)</span>, names_to<span class="op">=</span><span class="st">"is_daylight"</span>, values_to<span class="op">=</span><span class="st">"count"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="co"># Plot.</span></span>
+<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">age_of_casualty</span>, y<span class="op">=</span><span class="va">count</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_col</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>colour<span class="op">=</span><span class="va">is_daylight</span><span class="op">)</span>, width<span class="op">=</span><span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_line</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>y<span class="op">=</span><span class="va">expected_daylight</span>, group<span class="op">=</span><span class="va">crash_quintile</span><span class="op">)</span>, colour<span class="op">=</span><span class="st">"#737373"</span>, linewidth<span class="op">=</span><span class="fl">.4</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">facet_wrap</span><span class="op">(</span><span class="op">~</span><span class="va">crash_quintile</span>, labeller<span class="op">=</span><span class="fu">labeller</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"daylight"</span>, <span class="st">"dark"</span><span class="op">)</span><span class="op">)</span>, nrow<span class="op">=</span><span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">scale_colour_manual</span><span class="op">(</span>values<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"#08519c"</span>, <span class="st">"#c6dbef"</span><span class="op">)</span>, guide<span class="op">=</span><span class="st">"none"</span><span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu">labs</span><span class="op">(</span>y<span class="op">=</span><span class="st">"crash count in hundreds"</span>, x<span class="op">=</span><span class="st">"casualty age"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">scale_y_continuous</span><span class="op">(</span></span>
+<span>    breaks<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">4</span>,<span class="fl">8</span>,<span class="fl">12</span><span class="op">)</span><span class="op">*</span><span class="fl">100</span><span class="op">)</span>, </span>
+<span>    labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/comma.html">comma_format</a></span><span class="op">(</span>scale <span class="op">=</span> <span class="fl">.01</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section></section><section id="from-chapter-5" class="level2" data-number="A.4"><h2 data-number="A.4" class="anchored" data-anchor-id="from-chapter-5">
+<span class="header-section-number">A.4</span> From Chapter 5</h2>
+<section id="task-1-3" class="level3 unnumbered"><h3 class="unnumbered anchored" data-anchor-id="task-1-3">Task 1</h3>
+<ul>
+<li>For jobs filled in the City of London (CoL) from which borough does the largest number of workers commute?
+<ul>
+<li>Answer: Wandsworth (Wnd)</li>
+</ul>
+</li>
+<li>For jobs filled in Camden (Cmd) from which borough does the largest number of workers commute?
+<ul>
+<li>Answer: Barnet (Barnt), maybe Islington (Isl)</li>
+</ul>
+</li>
+<li>Eyeballing the graphic, identify the top 3 boroughs which appear to have the most localised labour markets in terms of in-commuting?
+<ul>
+<li>Answer: Bexleyheath (Bxl), Havering (Hvr), Barking and Dagenham (BaD). Also, Sutton (Sttn), Grenwich (Grn) look very localised.</li>
+</ul>
+</li>
+</ul></section></section><section id="from-chapter-6" class="level2" data-number="A.5"><h2 data-number="A.5" class="anchored" data-anchor-id="from-chapter-6">
+<span class="header-section-number">A.5</span> From Chapter 6</h2>
+<p>The code to reproduce the annotated parallel-coordinate-plot in <a href="06-model.html#fig-pcps">Figure&nbsp;<span>6.3</span></a>.</p>
+<div class="cell">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># List of variables ordered ascending by correlation with leave.</span></span>
+<span><span class="va">order_vars</span> <span class="op">&lt;-</span> <span class="va">cons_data</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">mutate</span><span class="op">(</span><span class="fu">across</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">younger</span><span class="op">:</span><span class="va">heavy_industry</span><span class="op">)</span>, <span class="op">~</span><span class="op">(</span><span class="va">.x</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">.x</span><span class="op">)</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">.x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">pivot_longer</span><span class="op">(</span>cols<span class="op">=</span><span class="va">younger</span><span class="op">:</span><span class="va">heavy_industry</span>, names_to<span class="op">=</span><span class="st">"expl_var"</span>, values_to<span class="op">=</span><span class="st">"prop"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">expl_var</span><span class="op">)</span> <span class="op">|&gt;</span>  </span>
+<span>  <span class="fu">summarise</span><span class="op">(</span>cor<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html">cor</a></span><span class="op">(</span><span class="va">leave</span>,<span class="va">prop</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">ungroup</span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">arrange</span><span class="op">(</span><span class="va">cor</span><span class="op">)</span> <span class="op">|&gt;</span>  </span>
+<span>  <span class="fu">pull</span><span class="op">(</span><span class="va">expl_var</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Staged dataset of z-score transformed variables and variables identifying </span></span>
+<span><span class="co"># extreme Leave/Remain constituencies for highlighting.</span></span>
+<span><span class="va">plot_data</span> <span class="op">&lt;-</span> <span class="va">cons_data</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">mutate</span><span class="op">(</span></span>
+<span>    majority<span class="op">=</span><span class="fu">if_else</span><span class="op">(</span><span class="va">leave</span><span class="op">&gt;</span><span class="fl">.5</span>, <span class="st">"Leave"</span>, <span class="st">"Remain"</span><span class="op">)</span>,</span>
+<span>    <span class="fu">across</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">leave</span>, <span class="va">younger</span><span class="op">:</span><span class="va">heavy_industry</span><span class="op">)</span>, <span class="op">~</span><span class="op">(</span><span class="va">.x</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">.x</span><span class="op">)</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">.x</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    decile<span class="op">=</span><span class="fu">ntile</span><span class="op">(</span><span class="va">leave</span>, <span class="fl">10</span><span class="op">)</span>, is_extreme<span class="op">=</span><span class="va">decile</span> <span class="op">&gt;</span> <span class="fl">9</span> <span class="op">|</span> <span class="va">decile</span> <span class="op">&lt;</span> <span class="fl">2</span></span>
+<span>  <span class="op">)</span>  <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">select</span><span class="op">(</span></span>
+<span>    <span class="va">majority</span>, <span class="va">is_extreme</span>, <span class="va">decile</span>, <span class="va">constituency_name</span>, <span class="va">leave</span>, <span class="va">degree</span>, <span class="va">professional</span>, </span>
+<span>    <span class="va">younger</span>, <span class="va">eu_born</span>, <span class="va">no_car</span>, <span class="va">white</span>, <span class="va">own_home</span>, <span class="va">christian</span>, <span class="va">not_good_health</span>, <span class="va">heavy_industry</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span>  </span>
+<span>  <span class="co"># Change polarity in selected variables.</span></span>
+<span>  <span class="fu">mutate</span><span class="op">(</span>degree<span class="op">=</span><span class="op">-</span><span class="va">degree</span>, professional<span class="op">=</span><span class="op">-</span><span class="va">professional</span>, younger<span class="op">=</span><span class="op">-</span><span class="va">younger</span>, </span>
+<span>    eu_born<span class="op">=</span><span class="op">-</span><span class="va">eu_born</span>, no_car<span class="op">=</span><span class="op">-</span><span class="va">no_car</span><span class="op">)</span> <span class="op">|&gt;</span>  </span>
+<span>  <span class="fu">pivot_longer</span><span class="op">(</span>cols<span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">leave</span><span class="op">:</span><span class="va">not_good_health</span><span class="op">)</span>, names_to<span class="op">=</span><span class="st">"var"</span>, values_to<span class="op">=</span><span class="st">"z_score"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="co"># Explanatory variable as factor ordered according to known assocs with Leave.</span></span>
+<span>  <span class="fu">mutate</span><span class="op">(</span></span>
+<span>    var<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">var</span>, levels<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"leave"</span>, <span class="va">order_vars</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    var<span class="op">=</span><span class="fu">fct_rev</span><span class="op">(</span><span class="va">var</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> </span>
+<span><span class="co"># Sample extreme constituencies -- for Leave and Remain -- each time plot is built.</span></span>
+<span><span class="va">annotate_data</span> <span class="op">&lt;-</span> <span class="va">plot_data</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">is_extreme</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">decile</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">sample_n</span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">pull</span><span class="op">(</span><span class="va">constituency_name</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">plot_data</span> <span class="op">|&gt;</span>  </span>
+<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">var</span>, y<span class="op">=</span><span class="va">z_score</span>, colour<span class="op">=</span><span class="va">majority</span>, group<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">constituency_name</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_path</span><span class="op">(</span>alpha<span class="op">=</span><span class="fl">0.15</span>, linewidth<span class="op">=</span><span class="fl">.2</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="co"># Highlight extreme remain/leave constituencies.</span></span>
+<span>  <span class="fu">geom_path</span><span class="op">(</span></span>
+<span>    data<span class="op">=</span> <span class="va">.</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">constituency_name</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="va">annotate_data</span><span class="op">)</span>,</span>
+<span>    alpha<span class="op">=</span><span class="fl">1</span>, linewidth<span class="op">=</span><span class="fl">.4</span></span>
+<span>  <span class="op">)</span><span class="op">+</span></span>
+<span>  <span class="fu">geom_text</span><span class="op">(</span></span>
+<span>    data<span class="op">=</span> <span class="va">.</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">constituency_name</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="va">annotate_data</span>, <span class="va">var</span><span class="op">==</span><span class="st">"leave"</span><span class="op">)</span>,</span>
+<span>    <span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="st">"leave"</span>, y<span class="op">=</span><span class="va">z_score</span>, label<span class="op">=</span><span class="fu">str_wrap</span><span class="op">(</span><span class="va">constituency_name</span>,<span class="fl">15</span><span class="op">)</span><span class="op">)</span>, </span>
+<span>    size<span class="op">=</span><span class="fl">3.5</span>, vjust<span class="op">=</span><span class="st">"top"</span>, hjust<span class="op">=</span><span class="st">"centre"</span>, nudge_x<span class="op">=</span><span class="op">+</span><span class="fl">.5</span></span>
+<span>    <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">scale_colour_manual</span><span class="op">(</span>values<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"#b2182b"</span>,<span class="st">"#2166ac"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">coord_flip</span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+
+
+</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
+      <a href="./references.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">References</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>
