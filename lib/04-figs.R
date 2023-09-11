@@ -613,20 +613,17 @@ observed_vehicle <- ped_veh |> filter(police_force == "Metropolitan Police" | po
     legend.text=element_text(size=4)
   )
 
-resids_vehicle <- ped_veh |> filter(police_force == "Metropolitan Police" | police_force == "City of London", local_authority_district!="London Airport (Heathrow)") |> 
+
+order_type <- c("Car", "Taxi", "Bus", "Motorcycle", "Other","Van", "Bicycle", "HGV") 
+inner_boroughs <- c("Camden", "Greenwich", "Hackney", "Hammersmith and Fulham", "Islington",
+                    "Kensington and Chelsea", "Lambeth", "Lewisham", "Southwark", "Tower Hamlets",
+                    "Wandsworth", "Westminster", "City of London")
+
+resids_vehicle <- ped_veh |> 
+  filter(police_force == "Metropolitan Police" | police_force == "City of London") |> 
   mutate(
-    is_inner=if_else(local_authority_district %in% c("Camden",
-                                                     "Greenwich",
-                                                     "Hackney",
-                                                     "Hammersmith and Fulham",
-                                                     "Islington",
-                                                     "Kensington and Chelsea",
-                                                     "Lambeth",
-                                                     "Lewisham",
-                                                     "Southwark",
-                                                     "Tower Hamlets",
-                                                     "Wandsworth",
-                                                     "Westminster", "City of London"), "inner", "outer"),
+    is_inner=
+      if_else(local_authority_district %in% inner_boroughs, "inner", "outer"),
     vehicle_type=factor(vehicle_type, levels=order_type)
   ) |> 
   group_by(local_authority_district) |> 
@@ -642,7 +639,6 @@ resids_vehicle <- ped_veh |> filter(police_force == "Metropolitan Police" | poli
     col_total=first(col_total),
     grand_total=first(grand_total),
     expected=(row_total*col_total)/grand_total,
-    prop=observed/row_total,
     resid=(observed-expected)/sqrt(expected),
     is_inner=first(is_inner)) |> 
   ungroup() |> 
@@ -1625,11 +1621,9 @@ p1 <- ped_veh |>
                   levels=c("dark", "daylight"))) |>
   group_by(age_of_casualty, is_daylight, crash_quintile) |>
   summarise(count=n()) |> ungroup() |>
-  ggplot(aes(x=age_of_casualty, y=count, fill=is_daylight)) +
-  geom_col(linewidth=0, width=1) +
+  ggplot(aes(x=age_of_casualty, y=count, colour=is_daylight)) +
+  geom_col(width=1) +
   facet_grid(is_daylight~crash_quintile, space="free_y", scales="free_y", labeller=labeller(c("daylight", "dark"))) +
-  scale_fill_manual(values=c("#000000", "#bdbdbd"), guide="none") +
-  scale_fill_manual(values=c("#08519c", "#c6dbef"), guide="none")+
   scale_colour_manual(values=c("#08519c", "#c6dbef"), guide="none")+
   labs(y="crash count in hundreds", x="casualty age") +
   scale_y_continuous(
@@ -1652,8 +1646,8 @@ p2 <- ped_veh |>
     ) |> 
   pivot_longer(cols=c(dark, daylight), names_to="is_daylight", values_to="count") |> 
   ggplot(aes(x=age_of_casualty, y=count)) +
-  geom_col(aes(fill=is_daylight, colour=is_daylight), linewidth=0, width=1) +
-  geom_line(aes(y=expected_daylight, group=crash_quintile), colour="#969696", linewidth=.4) +
+  geom_col(aes(colour=is_daylight), width=1) +
+  geom_line(aes(y=expected_daylight, group=crash_quintile), colour="#737373", linewidth=.4) +
   geom_text(data=
               . %>% filter(crash_quintile == "2 more deprived", age_of_casualty==30, is_daylight=="daylight"),
             aes(x=45, y=1000), label="expected #\ndaylight crashes", hjust=0
@@ -1663,8 +1657,6 @@ p2 <- ped_veh |>
                aes(x=42, y=1000, xend=21, yend=530), linewidth=.3
                ) +
   facet_wrap(~crash_quintile, labeller=labeller(c("daylight", "dark")), nrow=1) +
-  scale_fill_manual(values=c("#000000", "#bdbdbd"), guide="none") +
-  scale_fill_manual(values=c("#08519c", "#c6dbef"), guide="none")+
   scale_colour_manual(values=c("#08519c", "#c6dbef"), guide="none")+
   labs(y="crash count in hundreds", x="casualty age") +
   scale_y_continuous(
@@ -1694,3 +1686,85 @@ p2 <- ped_veh |>
 plot <- p1 / p2 + plot_layout(heights=c(1,.8))
 
 ggsave(here("figs", "04", "age_light_imd.png"), plot, dpi=500, width = 10, height=7)
+
+
+#------- Task 1
+
+order_type <- c("Car", "Taxi", "Bus", "Motorcycle", "Other","Van", "HGV", "Bicycle") 
+inner_boroughs <- c("Camden", "Greenwich", "Hackney", "Hammersmith and Fulham", "Islington",
+                    "Kensington and Chelsea", "Lambeth", "Lewisham", "Southwark", "Tower Hamlets",
+                    "Wandsworth", "Westminster", "City of London")
+model_data <- ped_veh |> 
+  filter(police_force == "Metropolitan Police" | police_force == "City of London") |> 
+  mutate(
+    is_inner=
+      if_else(local_authority_district %in% inner_boroughs, "inner", "outer"),
+    vehicle_type=factor(vehicle_type, levels=order_type)
+  ) |> 
+  group_by(local_authority_district) |> 
+  mutate(row_total=n()) |> ungroup() |> 
+  group_by(vehicle_type) |> 
+  mutate(col_total=n()) |> ungroup() |> 
+  mutate(grand_total=n()) |> 
+  group_by(local_authority_district, vehicle_type) |> 
+  
+  summarise(
+    observed=n(), 
+    row_total=first(row_total), 
+    col_total=first(col_total),
+    grand_total=first(grand_total),
+    expected=(row_total*col_total)/grand_total,
+    resid=(observed-expected)/sqrt(expected),
+    is_inner=first(is_inner)
+  ) |>  ungroup() 
+
+max_resid <- max(abs(model_data$resid))
+
+model_data |>   
+  ggplot(aes(x=vehicle_type, y=reorder(local_authority_district, row_total))) +
+  geom_tile(aes(fill=resid), colour="#ffffff", size=.4) +
+  facet_grid(is_inner~., scales="free_y", space="free_y") +
+  scale_fill_distiller(palette="RdBu", direction=-1, limits=c(-max_resid,max_resid)) +
+  guides(fill="none")
+
+
+# Task 2 ----------
+
+plot_data <- ped_veh |>
+  filter(age_of_casualty > 0, crash_quintile != "Data missing or out of range",  light_conditions != "Data missing or out of range") |>
+  mutate(is_daylight=
+           factor(if_else(light_conditions == "Daylight", "daylight", "dark"),
+                  levels=c("dark", "daylight"))) |>
+  group_by(age_of_casualty, is_daylight, crash_quintile) |>
+  summarise(count=n()) |> ungroup() 
+
+
+plot_data |>
+  ggplot(aes(x=age_of_casualty, y=count)) +
+  geom_col(aes(colour=is_daylight), width=1) +
+  facet_grid(is_daylight~crash_quintile, space="free_y", scales="free_y", 
+             labeller=labeller(c("daylight", "dark"))) +
+  scale_colour_manual(values=c("#08519c", "#c6dbef"), guide="none")+
+  labs(y="crash count in hundreds", x="casualty age") +
+  scale_y_continuous(
+    breaks=c(c(2,4,6,8,10)*100),
+    labels = scales::comma_format(scale = .01))
+
+
+plot_data |> 
+  mutate(total=sum(count)) |> 
+  pivot_wider(names_from=is_daylight, values_from=count) |> 
+  mutate(
+    prop_daylight=sum(daylight, na.rm=TRUE)/first(total),
+    expected_daylight=(daylight+dark)*prop_daylight
+  ) |> 
+  pivot_longer(cols=c(dark, daylight), names_to="is_daylight", values_to="count") |> 
+  ggplot(aes(x=age_of_casualty, y=count)) +
+  geom_col(aes(colour=is_daylight), width=1) +
+  geom_line(aes(y=expected_daylight, group=crash_quintile), colour="#737373", linewidth=.4) +
+  facet_wrap(~crash_quintile, labeller=labeller(c("daylight", "dark")), nrow=1) +
+  scale_colour_manual(values=c("#08519c", "#c6dbef"), guide="none")+
+  labs(y="crash count in hundreds", x="casualty age") +
+  scale_y_continuous(
+    breaks=c(c(4,8,12)*100), 
+    labels = scales::comma_format(scale = .01))

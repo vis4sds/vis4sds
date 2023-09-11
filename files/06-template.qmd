@@ -47,8 +47,7 @@ The data for the parallel coordinate plots is z-score transformed. In the code b
 #| echo: true
 #| eval: false
 
-order_vars <- 
-  cons_data |>
+order_vars <- cons_data |>
   mutate(across(c(younger:heavy_industry), ~(.x-mean(.x))/sd(.x))) |> 
   pivot_longer(cols=younger:heavy_industry, names_to="expl_var", values_to="prop") |> 
   group_by(expl_var) |>  

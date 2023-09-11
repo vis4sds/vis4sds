@@ -176,16 +176,16 @@ include_graphics("figs/05/od_map.png", error = FALSE)
 ```
 
 ::: {.callout-tip icon="false"}
-## Task
+## Task 1
 Although OD maps overcome several problems of flow-line based visualizations and share several of the characteristics of effective data graphics discussed in Chapter [-@sec-visual], they do require some interpretation, especially when seen for the first time.
 
-Test your knowledge by completing the following look-up tasks based on @fig-odmap (answers in the footnotes):
+Test your knowledge by completing the following look-up tasks based on @fig-odmap):
 
-* For jobs filled in the City of London (CoL) from which borough does the largest number of workers commute? ^[Answer: Wandsworth (Wnd)]
+* For jobs filled in the City of London (CoL) from which borough does the largest number of workers commute?
 
-* For jobs filled in Camden (Cmd) from which borough does the largest number of workers commute? ^[Answer: Barnet (Barnt), maybe Islington (Isl)]
+* For jobs filled in Camden (Cmd) from which borough does the largest number of workers commute? 
 
-* Eyeballing the graphic, identify the top 3 boroughs which appear to have the most localised labour markets in terms of in-commuting? ^[Answer: Bexleyheath (Bxl), Havering (Hvr), Barking and Dagenham (BaD). Also, Sutton (Sttn), Grenwich (Grn) look very localised.]
+* Eyeballing the graphic, identify the top 3 boroughs which appear to have the most localised labour markets in terms of in-commuting? 
 
 :::
 

@@ -749,7 +749,6 @@ plot_scatters_con <- data_gb |>
   scale_alpha_ordinal(range=c(.5,1)) +
   scale_shape_manual(values=c(21,19)) +
   scale_x_continuous(limits=c(0,90)) +
- # annotate("text", x=40, y=90, label="Conservative", hjust=0.5, size=4.5) +
   annotate("text", x=20, y=60, label="Con increase on\n 2017 vote share", hjust=0.5, size=3.8, colour="#525252") +
   annotate("text", x=76, y=35, label="Con decrease on\n 2019 vote share", hjust=0.5, size=3.8, colour="#525252") +
   labs(x="vote share 2017 ", y="vote share 2019") +

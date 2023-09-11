@@ -1,0 +1,302 @@
+# Task answers {#sec-tasks-answers}
+
+::: callout-note
+This page contains answers to the *Task* activities presented in selected chapters of the book.
+:::
+
+
+## From Chapter 2
+
+### Task 1 {.unnumbered}
+
+The completed data description table for the Citibike stations dataset.
+
+<div style="font-size:0.8em;">
+
+| Variable name  | Variable value   | Measurement level |
+|----------------|------------------|-------------------|
+| `name`         | "Central Park"   |  Categorical-nominal     |
+| `capacity`     |  80              |         Ratio          |
+| `rank_capacity`|  45              |      Ordinal     |
+| `date_opened`  |  "2014-05-23"    |        Interval           |
+| `longitude`    | -74.00149746     |         Interval          |
+| `latitude`     | 40.74177603      |           Interval        |
+
+</div>
+
+### Task 2 {.unnumbered}
+
+
+```{r}
+#| echo: true
+#| eval: false
+# # A tibble: 7 × 3
+#   day   Customer Subscriber
+#   <ord>    <dbl>      <dbl>
+# 1 Sun     0.198       0.144
+# 2 Mon     0.137       0.163
+# 3 Tue     0.144       0.172
+# 4 Wed     0.104       0.125
+# 5 Thu     0.0973      0.122
+# 6 Fri     0.135       0.138
+# 7 Sat     0.185       0.136
+```
+
+Code for exploring the proportion of trips made by day of week on `user_type`:
+
+```{r}
+#| echo: true
+#| eval: false
+ny_temporal |> 
+  group_by(day, user_type) |> 
+  summarise(count=sum(count)) |> ungroup() |> 
+  pivot_wider(names_from=user_type, values_from=count) |> 
+  mutate(across(.cols=c(Customer, Subscriber), .fns=~.x/sum(.x)))
+```
+
+
+## From Chapter 3
+
+
+### Task 1 {.unnumbered}
+
+The completed encoding description table for the Washington Post election map (@fig-wp-swing).
+
+<div style="font-size:0.8em;">
+
+| Data item         | Measurement level | Visual mark  | Visual channel | Rank         |
+|-------------------|-------------------|--------------|----------------|--------------|
+| County location | Interval   | Lines | Position in x- y-   |  1 mag:order |
+| County winner             | Categorical-nominal             | Lines       | Colour hue          |  2 id:category    |
+| County flip from 2012           | Categorical-ordinal             | Lines       | 1D size          | 3 mag:order       |
+| County Swing fom 2012            | Ratio             | Lines        | Tilt/angle          | 4 mag:order        |
+| State 'winner'             |   Categorical-nominal           | Polygon       | Colour hue          | 2 id:category       |
+
+
+</div>
+
+### Task 2 {.unnumbered}
+
+Code to produce a set of histograms similar to those in @fig-hist-region.
+
+```{r}
+#| echo: true
+#| eval: false
+data_gb |>
+  ggplot(mapping=aes(swing_con_lab)) +
+  geom_histogram(fill="#003c8f") +
+  # Annotate with median Swing.
+  geom_vline(xintercept=4.44, size=.3)+
+  labs(x="Swing", y="count")+
+  facet_wrap(~region)
+```
+
+
+### Task 3 {.unnumbered}
+
+The code to reproduce the graphic in @fig-scatters-con.
+
+```{r}
+#| echo: true
+#| eval: false
+
+con <- "#0575c9"
+lab <- "#ed1e0e"
+other <- "#bdbdbd"
+
+data_gb |>
+  mutate(is_flipped=seat_change_1719=="Conservative gain from Labour",
+         is_flipped=if_else(is.na(is_flipped), FALSE, is_flipped),
+         winner_19=case_when(
+           winner_19 == "Conservative" ~ "Conservative",
+           winner_19 == "Labour" ~ "Labour",
+           TRUE ~ "Other"
+         )) |>
+  ggplot(aes(x=con_17, y=con_19)) +
+  geom_point(aes(colour=winner_19, alpha=is_flipped, shape=is_flipped)) +
+  geom_abline(intercept = 0, slope = 1, size=.3) +
+  scale_colour_manual(values=c(con,lab,other)) +
+  scale_alpha_ordinal(range=c(.5,1)) +
+  scale_shape_manual(values=c(21,19)) +
+  scale_x_continuous(limits=c(0,90)) +
+  labs(x="vote share 2017 ", y="vote share 2019")
+```
+
+
+## From Chapter 4
+
+### Task 1 {.unnumbered}
+
+The code to reproduce the heatmap in the left column of @fig-borough-freqs-resids.
+
+
+```{r}
+#| echo: true
+#| eval: false
+# Vector of vehicles in order they appear in graphic. 
+# Convert vehicle_type to factor to effect ordering.
+order_type <- c("Car", "Taxi", "Bus", "Motorcycle", "Other","Van", "HGV", "Bicycle") 
+# For new is_inner variable used to facet plot.
+inner_boroughs <- c("Camden", "Greenwich", "Hackney", "Hammersmith and Fulham", "Islington",
+                    "Kensington and Chelsea", "Lambeth", "Lewisham", "Southwark", "Tower Hamlets",
+                    "Wandsworth", "Westminster", "City of London")
+# Staged dataset where signed-chi residuals are created.
+model_data <- ped_veh |> 
+  filter(police_force == "Metropolitan Police" | police_force == "City of London") |> 
+  mutate(
+    is_inner=
+      if_else(local_authority_district %in% inner_boroughs, "inner", "outer"),
+    vehicle_type=factor(vehicle_type, levels=order_type)
+  ) |> 
+  group_by(local_authority_district) |> 
+  mutate(row_total=n()) |> ungroup() |> 
+  group_by(vehicle_type) |> 
+  mutate(col_total=n()) |> ungroup() |> 
+  mutate(grand_total=n()) |> 
+  group_by(local_authority_district, vehicle_type) |> 
+  summarise(
+    observed=n(), row_total=first(row_total),  col_total=first(col_total), 
+    grand_total=first(grand_total), expected=(row_total*col_total)/grand_total, 
+    resid=(observed-expected)/sqrt(expected),
+    is_inner=first(is_inner)
+  ) |>  ungroup() 
+# Find maximum residual value to ensure colour scheme is symmetrical on 0.
+max_resid <- max(abs(model_data$resid))
+
+# Plot heatmap.
+model_data |>   
+  ggplot(aes(x=vehicle_type, y=reorder(local_authority_district, row_total))) +
+  geom_tile(aes(fill=resid), colour="#ffffff", size=.4) +
+  facet_grid(is_inner~., scales="free_y", space="free_y") +
+  scale_fill_distiller(palette="RdBu", direction=-1, limits=c(-max_resid,max_resid)) +
+  guides(fill="none")
+```
+
+
+### Task 2 {.unnumbered}
+
+The code to reproduce the design challenge plots in @fig-age-imd-light.
+
+```{r}
+#| echo: true
+#| eval: false
+# Calculate crash freqs by IMD class of location, dark/daylight and casulty age.
+plot_data <- ped_veh |>
+  filter(
+    age_of_casualty>0, crash_quintile != "Data missing or out of range",  
+    light_conditions != "Data missing or out of range"
+    ) |>
+  mutate(is_daylight=
+           factor(if_else(light_conditions == "Daylight", "daylight", "dark"),
+                  levels=c("dark", "daylight"))) |>
+  group_by(age_of_casualty, is_daylight, crash_quintile) |>
+  summarise(count=n()) |> ungroup() 
+
+# Top plot.
+plot_data |>
+  ggplot(aes(x=age_of_casualty, y=count)) +
+  geom_col(aes(colour=is_daylight), width=1) +
+  facet_grid(is_daylight~crash_quintile, space="free_y", scales="free_y", 
+             labeller=labeller(c("daylight", "dark"))) +
+  scale_colour_manual(values=c("#08519c", "#c6dbef"), guide="none")+
+  labs(y="crash count in hundreds", x="casualty age") +
+  scale_y_continuous(
+    breaks=c(c(2,4,6,8,10)*100),
+    labels = scales::comma_format(scale = .01))
+
+# Bottom plot.
+plot_data |> 
+  # Calcuate % crashes in daylight and expected daylight counts 
+  # in each data item from this.
+  mutate(total=sum(count)) |> 
+  pivot_wider(names_from=is_daylight, values_from=count) |> 
+  mutate(
+    prop_daylight=sum(daylight, na.rm=TRUE)/first(total),
+    expected_daylight=(daylight+dark)*prop_daylight
+  ) |> 
+  pivot_longer(cols=c(dark, daylight), names_to="is_daylight", values_to="count") |> 
+  # Plot.
+  ggplot(aes(x=age_of_casualty, y=count)) +
+  geom_col(aes(colour=is_daylight), width=1) +
+  geom_line(aes(y=expected_daylight, group=crash_quintile), colour="#737373", linewidth=.4) +
+  facet_wrap(~crash_quintile, labeller=labeller(c("daylight", "dark")), nrow=1) +
+  scale_colour_manual(values=c("#08519c", "#c6dbef"), guide="none")+
+  labs(y="crash count in hundreds", x="casualty age") +
+  scale_y_continuous(
+    breaks=c(c(4,8,12)*100), 
+    labels = scales::comma_format(scale = .01))
+```
+
+
+## From Chapter 5
+
+### Task 1 {.unnumbered}
+
+* For jobs filled in the City of London (CoL) from which borough does the largest number of workers commute? 
+  + Answer: Wandsworth (Wnd)
+
+* For jobs filled in Camden (Cmd) from which borough does the largest number of workers commute? 
+  + Answer: Barnet (Barnt), maybe Islington (Isl)
+
+* Eyeballing the graphic, identify the top 3 boroughs which appear to have the most localised labour markets in terms of in-commuting? 
+  + Answer: Bexleyheath (Bxl), Havering (Hvr), Barking and Dagenham (BaD). Also, Sutton (Sttn), Grenwich (Grn) look very localised.
+
+
+## From Chapter 6
+
+The code to reproduce the annotated parallel-coordinate-plot in @fig-pcps.
+
+```{r}
+#| echo: true
+#| eval: false
+# List of variables ordered ascending by correlation with leave.
+order_vars <- cons_data |>
+  mutate(across(c(younger:heavy_industry), ~(.x-mean(.x))/sd(.x))) |> 
+  pivot_longer(cols=younger:heavy_industry, names_to="expl_var", values_to="prop") |> 
+  group_by(expl_var) |>  
+  summarise(cor=cor(leave,prop)) |> ungroup() |> arrange(cor) |>  
+  pull(expl_var)
+
+# Staged dataset of z-score transformed variables and variables identifying 
+# extreme Leave/Remain constituencies for highlighting.
+plot_data <- cons_data |> 
+  mutate(
+    majority=if_else(leave>.5, "Leave", "Remain"),
+    across(c(leave, younger:heavy_industry), ~(.x-mean(.x))/sd(.x)),
+    decile=ntile(leave, 10), is_extreme=decile > 9 | decile < 2
+  )  |> 
+  select(
+    majority, is_extreme, decile, constituency_name, leave, degree, professional, 
+    younger, eu_born, no_car, white, own_home, christian, not_good_health, heavy_industry
+  ) |>  
+  # Change polarity in selected variables.
+  mutate(degree=-degree, professional=-professional, younger=-younger, 
+    eu_born=-eu_born, no_car=-no_car) |>  
+  pivot_longer(cols= c(leave:not_good_health), names_to="var", values_to="z_score") |> 
+  # Explanatory variable as factor ordered according to known assocs with Leave.
+  mutate(
+    var=factor(var, levels=c("leave", order_vars)),
+    var=fct_rev(var)
+  ) 
+# Sample extreme constituencies -- for Leave and Remain -- each time plot is built.
+annotate_data <- plot_data |> 
+  filter(is_extreme) |> 
+  group_by(decile) |> 
+  sample_n(1) |> pull(constituency_name)
+
+plot_data |>  
+  ggplot(aes(x=var, y=z_score, colour=majority, group=c(constituency_name))) +
+  geom_path(alpha=0.15, linewidth=.2) +
+  # Highlight extreme remain/leave constituencies.
+  geom_path(
+    data= . %>% filter(constituency_name %in% annotate_data),
+    alpha=1, linewidth=.4
+  )+
+  geom_text(
+    data= . %>% filter(constituency_name %in% annotate_data, var=="leave"),
+    aes(x="leave", y=z_score, label=str_wrap(constituency_name,15)), 
+    size=3.5, vjust="top", hjust="centre", nudge_x=+.5
+    ) +
+  scale_colour_manual(values=c("#b2182b","#2166ac")) +
+  coord_flip()
+  ```

@@ -637,10 +637,10 @@ The ggplot2 spec for @fig-imd-driver-cas:
 4. *Scale*: `scale_fill_distiller()` for continuous [ColorBrewer](https://colorbrewer2.org/#type=sequential&scheme=BuGn&n=3) [@harrower_colorbrewerorg_2003], diverging using the `RdBu` palette. To make the scheme centred on 0, the maximum absolute residual value in `model_data` is used.
 
 ::: {.callout-tip icon="false"}
-## Task
+## Task 1
 You will see that data preparation with `dplyr` plays an important role in constructing data graphics in ggplot2. Whilst the code to create `model_data` may seem somewhat cumbersome,  you will find yourself reusing these data processing templates.
 
-Now that you have seen how observed, expected and residual values can be derived for cells of a heatmap, can you recreate the heatmap in the left column of @fig-borough-freqs-resids displaying differences from expectation in the number of pedestrian crashes by London borough, assuming that crashes distribute by borough independently of vehicle type?
+Now that you have seen how observed, expected and residual values can be derived for cells of a heatmap, recreate the heatmap in the left column of @fig-borough-freqs-resids displaying differences from expectation in the number of pedestrian crashes by London borough, assuming that crashes distribute by borough independently of vehicle type.
 :::
 
 
@@ -725,7 +725,7 @@ model_data |>
 ```
 
 ::: {.callout-tip icon="false"}
-## Task: Design challenge
+## Task 2: Design challenge
 
 <!-- This technical section was quite specialised visually-informed informing model development, but -->
 

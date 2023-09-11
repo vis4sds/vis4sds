@@ -309,3 +309,17 @@ plot <- v |> ungroup() |>
 
 ggsave(filename=here("figs", "02", "speeds.png"), plot=plot,width=8, height=4.5, dpi=500)
 
+
+#-----------------------------------------
+# 4. Tasks
+#-----------------------------------------
+
+ny_temporal |> 
+  group_by(day, user_type) |> 
+  summarise(count=sum(count)) |> ungroup() |> 
+  pivot_wider(names_from=user_type, values_from=count) |> 
+  mutate(across(.cols=c(Customer, Subscriber), .fns=~.x/sum(.x)))
+
+
+
+

@@ -271,7 +271,7 @@ include_graphics("figs/03/wp_spoke.png", error = FALSE)
 <!-- ![Map of swing in 2016 US presidential election results. Note that for copyright reasons this is a re-implementation of the original [Washington Post piece](https://www.washingtonpost.com/graphics/politics/2016-election/election-results-from-coast-to-coast/) in ggplot2.](figs/03/wp_spoke.png){#fig-wp-swing width=100% fig-align="center"} -->
 
 ::: {.callout-tip icon="false"}
-## Task
+## Task 1
 
 Complete the description table below identifying each *data item* that is encoded in @fig-wp-swing along with its *measurement level*, *visual mark* and *visual channel* and the effectiveness rank of this encoding, according to @munzner_visualization_2014.
 
@@ -619,7 +619,7 @@ include_graphics("figs/03/hist-region.png", error = FALSE)
 <!-- ![Histograms of Swing variable, grouped by region.](figs/03/hist-region.png){#fig-hist-region width=100% fig-align="center"} -->
 
 ::: {.callout-tip icon="false"}
-## Task
+## Task 2
 
 Update the earlier ggplot2 specification to produce a set of histograms of the Swing variable faceted by region, similar to that in @fig-hist-region.
 :::
@@ -803,7 +803,7 @@ Hopefully there is little surprising here:
 3.  *Marks*: `geom_point()` for generating the points of the scatterplot; `geom_abline()` for drawing the reference diagonal.
 
 ::: {.callout-tip icon="false"}
-## Task
+## Task 3
 
 The code block above doesn't exactly reproduce the graphic in @fig-scatters-con. Try updating the ggplot2 specification to emphasise constituencies that flipped from Labour to Conservative. Hint: you may wish to generate a variable recording constituencies that flipped between 2017 and 2019 and encode some visual channel in the graphic on this.
 :::

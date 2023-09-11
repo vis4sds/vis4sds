@@ -245,9 +245,7 @@ ggsave(filename=here("figs", "06", "scatters.png"), plot=plot,width=10, height=7
 
 # Additional dependency.
 plot_data <- cons_data |> 
-  mutate(
-    across(c(younger:heavy_industry), ~(.x-mean(.x))/sd(.x))
-  ) |> 
+  mutate(across(c(younger:heavy_industry), ~(.x-mean(.x))/sd(.x))) |> 
   # Identify Leave/Remain majority and deciles.
   mutate(
     majority=if_else(leave>.5, "Leave", "Remain"),
@@ -280,6 +278,8 @@ high <- plot_data |>   filter(decile==10) |>  sample_n(1) |> pull(constituency_n
 low <-  plot_data |>   filter(decile==1) |>  sample_n(1) |> pull(constituency_name)
 
 annotate_data <- c(high, low)
+
+# ----------- pcps
 
 plot <- plot_data |>  
   ggplot(aes(x=var, y=z_score, group=c(constituency_name), colour=majority))+
@@ -1012,3 +1012,58 @@ v |>
   facet_wrap(~region) +
   coord_flip()+
   labs(y="estimated coefficient", x="explanatory variable")
+
+
+# Task 1 ------------
+
+order_vars <- cons_data |>
+  mutate(across(c(younger:heavy_industry), ~(.x-mean(.x))/sd(.x))) |> 
+  pivot_longer(cols=younger:heavy_industry, names_to="expl_var", values_to="prop") |> 
+  group_by(expl_var) |>  
+  summarise(cor=cor(leave,prop)) |> ungroup() |> arrange(cor) |>  
+  pull(expl_var)
+
+plot_data <- cons_data |> 
+  mutate(
+    majority=if_else(leave>.5, "Leave", "Remain"),
+    across(c(leave, younger:heavy_industry), ~(.x-mean(.x))/sd(.x)),
+    decile=ntile(leave, 10), is_extreme=decile > 9 | decile < 2
+  )  |> 
+  # Select out variables needed for plot.
+  select(
+    majority, is_extreme, decile, constituency_name, leave, 
+    degree, professional, younger, eu_born, no_car, white, own_home, christian, not_good_health, heavy_industry
+  ) |>  
+  # Change polarity in selected variables.
+  mutate(degree=-degree, professional=-professional, younger=-younger, eu_born=-eu_born, no_car=-no_car) |>  
+  # Gather explanatory variables for along rows.
+  pivot_longer(cols= c(leave:not_good_health), names_to="var", values_to="z_score") |> 
+  # Recode new explanatory variable as factor ordered according to known
+  # assocs. Reverse order here as coord_flip() used in plot.
+  mutate(
+    var=factor(var, levels=c("leave", order_vars)),
+    var=fct_rev(var)
+  ) 
+
+annotate_data <- plot_data |> 
+  filter(is_extreme) |> 
+  group_by(decile) |> 
+  sample_n(1) |> pull(constituency_name)
+
+plot_data |>  
+  ggplot(aes(x=var, y=z_score, colour=majority, group=c(constituency_name))) +
+  geom_path(alpha=0.15, linewidth=.2) +
+  
+  # Highlight extreme remain/leave constituencies.
+  geom_path(
+    data= . %>% filter(constituency_name %in% annotate_data),
+    alpha=1, linewidth=.4
+  )+
+  geom_text(
+    data= . %>% filter(constituency_name %in% annotate_data, var=="leave"),
+    aes(x="leave", y=z_score, label=str_wrap(constituency_name,15)), 
+    size=3.5, vjust="top", hjust="centre", nudge_x=+.5) +
+  
+  scale_colour_manual(values=c("#b2182b","#2166ac")) +
+  coord_flip()
+

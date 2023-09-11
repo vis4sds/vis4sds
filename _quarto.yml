@@ -23,7 +23,8 @@ book:
     - 07-uncertainty.qmd
     - 08-storytelling.qmd
     - references.qmd
-
+  appendices:
+    - a1-tasks.qmd
 bibliography: references.bib
 suppress-bibliography: true
 
