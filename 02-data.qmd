@@ -130,7 +130,7 @@ The three rules for tidy data:
 
 The concept of tidy data, and its usefulness for tidyverse-style operations, is best explained through example. The technical element to this chapter is therefore comparatively lengthy and demonstrates key coding templates for organising and re-organising data frames for analysis.
 
-````{=html}
+
 <!-- #### Drug treatment dataset {-}
 
 To elaborate further, we can use the example given in @wickham_tidy_2014, a drug treatment dataset in which two different treatments are administered to participants.
