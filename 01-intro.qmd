@@ -237,7 +237,7 @@ So let's install it.
 install.packages("sf")
 ```
 
-And now it's installed, why not bring up some documentation on one of its functions, [`st_contains()`](https://r-spatial.github.io/sf/reference/geos_binary_pred.html), by typing `?<function-name>` into the Console.
+And now it's installed, bring up some documentation on one of its functions, [`st_contains()`](https://r-spatial.github.io/sf/reference/geos_binary_pred.html), by typing `?<function-name>` into the Console.
 
 ```{r}
 #| echo: true
@@ -279,22 +279,18 @@ install.packages(pkgs)
 ::: callout-note
 ## R package visibility
 
-If you wanted to make use of a package only very occasionally in a single session, you could access it without explicitly loading it via `library(<package-name>)`, using this syntax: `<package-name>::<function_name>`, e.g. `?sf::st_contains()`.
+If you wanted to make use of a package only very occasionally in a single session, you could access it without explicitly loading it via `library(<package-name>)`, using this syntax: `<package-name>::<function_name>`, e.g. `sf::st_contains()`.
 :::
 
 ### Experiment with Quarto
 
-Quarto documents are suffixed with the extension `.qmd`. They are computational notebooks that blend code with textual explanation and images, and so are a mechanism for supporting literate programming [@knuth_literate_1984]. They resemble  [Markdown](https://en.wikipedia.org/wiki/Markdown), a lightweight language designed to minimise tedious markup tags (`<header></header>`) when preparing HTML documents. The idea is that you trade some flexibility in the formatting of your HTML for ease-of-writing. Working with Quarto documents feels very similar to Markdown. Sections are denoted hierarchically with hashes (`#`, `##`, `###`) and emphasis using `*` symbols (`*emphasis* **added**` reads *emphasis* **added** ).
-
-Different from standard Markdown, Quarto documents can also contain code chunks to be run when the document is rendered; they are a mechanism for producing reproducible, dynamic and interactive notebooks. Dynamic and reproducible because the outputs may change when there are changes to the underlying data; interactive because they can execute not just R code blocks, but also [Jupyter Widgets](https://jupyter.org/widgets), [Shiny](https://shiny.rstudio.com/) and [Observable JS](https://observablehq.com/@observablehq/observables-not-javascript).
-
-Each chapter of this book has an accompanying Quarto file. In later chapters you will use these to author computational notebooks that blend code, analysis prose and outputs.
+Quarto documents are suffixed with the extension `.qmd`. They are computational notebooks that blend code with textual explanation and images, and so are a mechanism for supporting literate programming [@knuth_literate_1984]. They resemble  [Markdown](https://en.wikipedia.org/wiki/Markdown), a lightweight language designed to minimise tedious markup tags (`<header></header>`) when preparing HTML documents. The idea is that you trade some flexibility in the formatting of your HTML for ease-of-writing. Working with Quarto documents feels very similar to Markdown. Sections are denoted hierarchically with hashes (`#`, `##`, `###`) and emphasis using `*` symbols (`*emphasis* **added**` reads *emphasis* **added** ). Different from standard Markdown, Quarto documents can also contain code chunks to be run when the document is rendered; they are a mechanism for producing reproducible, dynamic and interactive notebooks. Dynamic and reproducible because the outputs may change when there are changes to the underlying data; interactive because they can execute not just R code blocks, but also [Jupyter Widgets](https://jupyter.org/widgets), [Shiny](https://shiny.rstudio.com/) and [Observable JS](https://observablehq.com/@observablehq/observables-not-javascript). Each chapter of this book has an accompanying Quarto file. In later chapters you will use these to author computational notebooks that blend code, analysis prose and outputs.
 
 Download the [01-template.qmd]() file for this chapter and open it in RStudio by clicking `File` \> `Open File ...` \> `<your-downloads>/01-template.qmd`. Note that there are two tabs that you can switch between when working with `.qmd` files. *Source* retains markdown syntax (e.g. `#|##|###` for headings); *Visual* renders these tags and allows you to, for example, perform formatting and build tables through point-and-click utilities.
 
 A quick anatomy of `.qmd` files :
 
--   [YAML](https://en.wikipedia.org/wiki/YAML) - positioned at the head of the document and contains metadata determining amongst other things the author details and the output format when rendering.
+-   [YAML](https://en.wikipedia.org/wiki/YAML) - positioned at the head of the document and contains metadata determining amongst other things the author details and the output format when rendered.
 -   TEXT - incorporated throughout to document and comment on your analysis.
 -   CODE chunks - containing discrete blocks that are run when the `.qmd` file is rendered.
 
