@@ -723,7 +723,15 @@ Experimental work that tries to understand how encoded quantities are perceived 
 * *Hue* : what we generally refer to as "colour" in everyday life -- red, blue green.
 * *Saturation* : how much  of a colour there is.
 * *Luminance/Brightness* : how dark or light a colour is. -->
-<p>The ultimate rule when using colour in data graphics is to use properties of colour that match the properties of the data. Categorical <code>nominal</code> data – data that cannot be easily ordered – should be encoded using discrete colours with no obvious order; so colour hue. Categorical <code>ordinal</code> data – data whose categories can be ordered – should be encoded with colours that contain an intrinsic order; saturation or brightness allocated into perceptually-spaced gradients. <code>Quantitative</code> data – data that can be ordered and contain values on a continuous scale – should also be encoded with saturation or brightness, expressed on a continuous scale. As we will discover shortly, these principles are applied by default in ggplot2, along with access to perceptually valid schemes <span class="citation" data-cites="harrower_colorbrewerorg_2003">(e.g. <a href="references.html#ref-harrower_colorbrewerorg_2003" role="doc-biblioref">Harrower and Brewer 2003</a>)</span>.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-brewer" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="figs/03/brewer_colour.png" class="img-fluid figure-img" style="width:80.0%"></p>
+<figcaption class="figure-caption">Figure&nbsp;3.6: Colour schemes matched to variabe measurement level.</figcaption></figure>
+</div>
+</div>
+</div>
+<p>The ultimate rule when using colour in data graphics is to use properties of colour that match the properties of the data (<a href="#fig-brewer">Figure&nbsp;<span>3.6</span></a>). Categorical <code>nominal</code> data – data that cannot be easily ordered – should be encoded using discrete colours with no obvious order; so colour hue. Categorical <code>ordinal</code> data – data whose categories can be ordered – should be encoded with colours that contain an intrinsic order; saturation or brightness (colour value) allocated into perceptually-spaced gradients. <code>Quantitative</code> data – data that can be ordered and contain values on a continuous scale – should also be encoded with saturation or brightness, expressed on a continuous scale. As we will discover shortly, these principles are applied by default in ggplot2, along with access to perceptually valid schemes <span class="citation" data-cites="harrower_colorbrewerorg_2003">(e.g. <a href="references.html#ref-harrower_colorbrewerorg_2003" role="doc-biblioref">Harrower and Brewer 2003</a>)</span>.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -844,7 +852,7 @@ Different from the US where "third parties" play a negligible role, scenarios 2 
 <div class="cell-output-display">
 <div id="fig-hist" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="figs/03/hist.png" class="img-fluid figure-img" style="width:90.0%"></p>
-<figcaption class="figure-caption">Figure&nbsp;3.6: Histograms of Butler two-party Labour-Conservative Swing.</figcaption></figure>
+<figcaption class="figure-caption">Figure&nbsp;3.7: Histograms of Butler two-party Labour-Conservative Swing.</figcaption></figure>
 </div>
 </div>
 </div>
@@ -868,7 +876,7 @@ Different from the US where "third parties" play a negligible role, scenarios 2 
 <span>  <span class="fu">geom_histogram</span><span class="op">(</span>fill<span class="op">=</span><span class="st">"#003c8f"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">labs</span><span class="op">(</span>x<span class="op">=</span><span class="st">"Swing"</span>, y<span class="op">=</span><span class="st">"count"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>You will notice that different elements of a ggplot2 specification are added (<code>+</code>) as layers. In the example above, the additional layer of labels (<code>labs()</code>) is not intrinsic to the graphic, or does not directly affect the way data are represented. However, often you will add layers that do affect the graphic itself. For example, the scaling of encoded values (e.g.&nbsp;<code>scale_*_continuous()</code>) or whether the graphic is to be conditioned on another variable to generate small multiples for comparison (e.g.&nbsp;<code>facet_*()</code>). Adding a call to <code>facet_*()</code>, we can compare how Swing varies by region (<a href="#fig-hist-region">Figure&nbsp;<span>3.7</span></a>). The plot is annotated with the <em>median</em> value for Swing (4.4) by adding a vertical line layer (<code>geom_vline()</code>) set with an x-intercept at this median value. From this, there is some evidence of a regional geography to the 2019 vote: London and Scotland are particularly distinctive in containing relatively few constituencies swinging greater than the expected midpoint; North East, Yorkshire &amp; The Humber, and to a lesser extent West and East Midlands, appear to show the largest relative number of constituencies swinging greater than the midpoint.</p>
+<p>You will notice that different elements of a ggplot2 specification are added (<code>+</code>) as layers. In the example above, the additional layer of labels (<code>labs()</code>) is not intrinsic to the graphic, or does not directly affect the way data are represented. However, often you will add layers that do affect the graphic itself. For example, the scaling of encoded values (e.g.&nbsp;<code>scale_*_continuous()</code>) or whether the graphic is to be conditioned on another variable to generate small multiples for comparison (e.g.&nbsp;<code>facet_*()</code>). Adding a call to <code>facet_*()</code>, we can compare how Swing varies by region (<a href="#fig-hist-region">Figure&nbsp;<span>3.8</span></a>). The plot is annotated with the <em>median</em> value for Swing (4.4) by adding a vertical line layer (<code>geom_vline()</code>) set with an x-intercept at this median value. From this, there is some evidence of a regional geography to the 2019 vote: London and Scotland are particularly distinctive in containing relatively few constituencies swinging greater than the expected midpoint; North East, Yorkshire &amp; The Humber, and to a lesser extent West and East Midlands, appear to show the largest relative number of constituencies swinging greater than the midpoint.</p>
 <!-- It was this graphic, especially the fact that London and Scotland look different from the rest of the country, that prompted the scatterplots in @fig-gog-demo comparing gain in Conservative vote shares against the Brexit vote. -->
 <!-- ::: {.callout-note}
 ## On histograms
@@ -878,7 +886,7 @@ This design exposition by [Lunzner and McNamara, 2020](http://tinlizzie.org/hist
 <div class="cell-output-display">
 <div id="fig-hist-region" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="figs/03/hist-region.png" class="img-fluid figure-img" style="width:90.0%"></p>
-<figcaption class="figure-caption">Figure&nbsp;3.7: Histograms of Swing variable, grouped by region.</figcaption></figure>
+<figcaption class="figure-caption">Figure&nbsp;3.8: Histograms of Swing variable, grouped by region.</figcaption></figure>
 </div>
 </div>
 </div>
@@ -893,7 +901,7 @@ Task 2
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Update the earlier ggplot2 specification to produce a set of histograms of the Swing variable faceted by region, similar to that in <a href="#fig-hist-region">Figure&nbsp;<span>3.7</span></a>.</p>
+<p>Update the earlier ggplot2 specification to produce a set of histograms of the Swing variable faceted by region, similar to that in <a href="#fig-hist-region">Figure&nbsp;<span>3.8</span></a>.</p>
 </div>
 </div>
 </section><section id="plot-ranksmagnitudes" class="level3" data-number="3.3.4"><h3 data-number="3.3.4" class="anchored" data-anchor-id="plot-ranksmagnitudes">
@@ -902,7 +910,7 @@ Task 2
 <div class="cell-output-display">
 <div id="fig-bars" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="figs/03/bars.png" class="img-fluid figure-img" style="width:85.0%"></p>
-<figcaption class="figure-caption">Figure&nbsp;3.8: Plots of vote shares by party.</figcaption></figure>
+<figcaption class="figure-caption">Figure&nbsp;3.9: Plots of vote shares by party.</figcaption></figure>
 </div>
 </div>
 </div>
@@ -937,12 +945,12 @@ ggplot2 themes control the appearance of all non-data items -- font sizes and ty
 <div class="cell-output-display">
 <div id="fig-bars-region" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="figs/03/bars-region.png" class="img-fluid figure-img" style="width:90.0%"></p>
-<figcaption class="figure-caption">Figure&nbsp;3.9: Plots of vote shares by party and region.</figcaption></figure>
+<figcaption class="figure-caption">Figure&nbsp;3.10: Plots of vote shares by party and region.</figcaption></figure>
 </div>
 </div>
 </div>
 <!-- ![Plots of vote shares by party and region.](figs/03/bars-region.png){#fig-bars-region width=100% fig-align="center"} -->
-<p>In <a href="#fig-bars-region">Figure&nbsp;<span>3.9</span></a> the graphic is faceted by region. This requires an updated staged dataset grouping by <code>vote_share</code> <em>and</em> <code>region</code> and of course a faceting layer (<code>geom_facet(~region)</code>). The graphic is more data-rich, and additional cognitive effort is required in relating the political party bars between different graphical subsets. We can assist this associative task by encoding parties with an appropriate visual channel: <em>colour hue</em>. The ggplot2 specification for this is as you would expect; we add a mapping to <code>geom_col()</code> and pass the variable name <code>party</code> to the fill argument (<code>aes(fill=party)</code>).</p>
+<p>In <a href="#fig-bars-region">Figure&nbsp;<span>3.10</span></a> the graphic is faceted by region. This requires an updated staged dataset grouping by <code>vote_share</code> <em>and</em> <code>region</code> and of course a faceting layer (<code>geom_facet(~region)</code>). The graphic is more data-rich, and additional cognitive effort is required in relating the political party bars between different graphical subsets. We can assist this associative task by encoding parties with an appropriate visual channel: <em>colour hue</em>. The ggplot2 specification for this is as you would expect; we add a mapping to <code>geom_col()</code> and pass the variable name <code>party</code> to the fill argument (<code>aes(fill=party)</code>).</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>data_gb <span class="sc">|&gt;</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># The code block summarising vote by party and also now region.</span></span>
@@ -1002,7 +1010,7 @@ Grammar of Graphics-backed visualization toolkits
 </div>
 <div class="callout-body-container callout-body">
 <p>The idea behind visualization toolkits such as ggplot2 is to insert visual approaches into a data scientist’s workflow. Rather than being overly concerned with low-level aspects of drawing, mapping data values to screen coordinates and scaling factors, you instead focus on aspects relevant to the analysis – the variables in a dataset and how they will be encoded and conditioned using visuals. Hadley Wickham talks about a grammar of <em>interactive</em> data analysis, whereby <code>dplyr</code> functions are used to rapidly prepare data for charting before being piped (<code>|&gt;</code>) to ggplot2.</p>
-<p>The process of searching for, defining and inserting manual colour schemes for creating <a href="#fig-bars-region">Figure&nbsp;<span>3.9</span></a> might seem inimical to this. There is some reasonably involved <code>dplyr</code> and a little <a href="https://stat.ethz.ch/R-manual/R-devel/library/base/html/regex.html">regular expression</a> in the data preparation code that you should not be overly concerned with. Having control of these slightly more low-level properties is, though, sometimes necessary even for exploratory analysis, in this case for enabling appropriate and sensible <em>symbolisation</em>.</p>
+<p>The process of searching for, defining and inserting manual colour schemes for creating <a href="#fig-bars-region">Figure&nbsp;<span>3.10</span></a> might seem inimical to this. There is some reasonably involved <code>dplyr</code> and a little <a href="https://stat.ethz.ch/R-manual/R-devel/library/base/html/regex.html">regular expression</a> in the data preparation code that you should not be overly concerned with. Having control of these slightly more low-level properties is, though, sometimes necessary even for exploratory analysis, in this case for enabling appropriate and sensible <em>symbolisation</em>.</p>
 </div>
 </div>
 </section></section><section id="plot-relationships" class="level3" data-number="3.3.5"><h3 data-number="3.3.5" class="anchored" data-anchor-id="plot-relationships">
@@ -1011,14 +1019,14 @@ Grammar of Graphics-backed visualization toolkits
 <div class="cell-output-display">
 <div id="fig-scatters-con" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="figs/03/scatters-con.png" class="img-fluid figure-img" style="width:70.0%"></p>
-<figcaption class="figure-caption">Figure&nbsp;3.10: Plots of 2019 versus 2017 vote shares.</figcaption></figure>
+<figcaption class="figure-caption">Figure&nbsp;3.11: Plots of 2019 versus 2017 vote shares.</figcaption></figure>
 </div>
 </div>
 </div>
 <!-- ![Plots of 2019 versus 2017 vote shares.](figs/03/scatters-con.svg){#fig-scatters-con width=100% fig-align="center"} -->
 <!-- In @sec-grammar we demonstrated how scatterplots are specified in ggplot2. Scatterplots are useful examples for introducing ggplot2 specifications as they involve working with genuine  mark primitives (`geom_point()`) and can be built up using a wide range of encoding channels. -->
-<p>To continue the investigation of change in vote shares for the major parties between 2017 and 2019, <a href="#fig-scatters-con">Figure&nbsp;<span>3.10</span></a> contains a scatterplot of Conservative vote share in 2019 (y-axis) against vote share in 2017 (x-axis). The graphic is annotated with a diagonal line. If constituencies voted in 2019 in exactly the same way as 2017, the points would converge on the diagonal. Points above the diagonal indicate a larger Conservative vote share than 2017, those below the diagonal represent a smaller Conservative vote share than 2017. Points are coloured according to the winning party in 2019 and constituencies that flipped from Labour to Conservative are emphasised using transparency and shape.</p>
-<p>The code for generating most of the scatterplot in <a href="#fig-scatters-con">Figure&nbsp;<span>3.10</span></a> is below.</p>
+<p>To continue the investigation of change in vote shares for the major parties between 2017 and 2019, <a href="#fig-scatters-con">Figure&nbsp;<span>3.11</span></a> contains a scatterplot of Conservative vote share in 2019 (y-axis) against vote share in 2017 (x-axis). The graphic is annotated with a diagonal line. If constituencies voted in 2019 in exactly the same way as 2017, the points would converge on the diagonal. Points above the diagonal indicate a larger Conservative vote share than 2017, those below the diagonal represent a smaller Conservative vote share than 2017. Points are coloured according to the winning party in 2019 and constituencies that flipped from Labour to Conservative are emphasised using transparency and shape.</p>
+<p>The code for generating most of the scatterplot in <a href="#fig-scatters-con">Figure&nbsp;<span>3.11</span></a> is below.</p>
 <div class="cell">
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_gb</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">mutate</span><span class="op">(</span>winner_19<span class="op">=</span><span class="fu">case_when</span><span class="op">(</span></span>
@@ -1051,7 +1059,7 @@ Task 3
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>The code block above doesn’t exactly reproduce the graphic in <a href="#fig-scatters-con">Figure&nbsp;<span>3.10</span></a>. Try updating the ggplot2 specification to emphasise constituencies that flipped from Labour to Conservative. Hint: you may wish to generate a variable recording constituencies that flipped between 2017 and 2019 and encode some visual channel in the graphic on this.</p>
+<p>The code block above doesn’t exactly reproduce the graphic in <a href="#fig-scatters-con">Figure&nbsp;<span>3.11</span></a>. Try updating the ggplot2 specification to emphasise constituencies that flipped from Labour to Conservative. Hint: you may wish to generate a variable recording constituencies that flipped between 2017 and 2019 and encode some visual channel in the graphic on this.</p>
 </div>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
@@ -1079,12 +1087,12 @@ data_gb |>
 </div>
 </section><section id="plot-geography" class="level3" data-number="3.3.6"><h3 data-number="3.3.6" class="anchored" data-anchor-id="plot-geography">
 <span class="header-section-number">3.3.6</span> Plot geography</h3>
-<p>Implicit in the data graphics above is that the composition of Conservative and Labour voting may be shifting. If so, then paying attention to the geography of voting, certainly to <em>changes</em> in voting between 2017 and 2019 elections (e.g. <a href="#fig-hist-region">Figure&nbsp;<span>3.7</span></a>), may be instructive. We end the technical component to the chapter by generating thematic maps of the results data.</p>
+<p>Implicit in the data graphics above is that the composition of Conservative and Labour voting may be shifting. If so, then paying attention to the geography of voting, certainly to <em>changes</em> in voting between 2017 and 2019 elections (e.g. <a href="#fig-hist-region">Figure&nbsp;<span>3.8</span></a>), may be instructive. We end the technical component to the chapter by generating thematic maps of the results data.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-map-winners" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="figs/03/map-winners.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<figcaption class="figure-caption">Figure&nbsp;3.11: Choropleth of elected parties in 2019 General Election.</figcaption></figure>
+<figcaption class="figure-caption">Figure&nbsp;3.12: Choropleth of elected parties in 2019 General Election.</figcaption></figure>
 </div>
 </div>
 </div>
@@ -1097,7 +1105,7 @@ data_gb |>
 <span><span class="co"># Check class.</span></span>
 <span><span class="co">## [1] "sf"         "data.frame"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The code for generating the choropleth maps of winning party by constituency in <a href="#fig-map-winners">Figure&nbsp;<span>3.11</span></a>:</p>
+<p>The code for generating the choropleth maps of winning party by constituency in <a href="#fig-map-winners">Figure&nbsp;<span>3.12</span></a>:</p>
 <div class="cell">
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Recode winner_19 as a factor variable for assigning colours.</span></span>
 <span><span class="va">data_gb</span> <span class="op">&lt;-</span> <span class="va">data_gb</span> <span class="op">|&gt;</span></span>
@@ -1130,13 +1138,13 @@ data_gb |>
 <li>
 <em>Setting</em>: Constituency boundaries are subtly introduced by setting the <code>geom_sf()</code> mark to light grey (<code>colour="#eeeeee"</code>) with a thin outline (<code>linewidth=0.01</code>). On the map to the right, outlines for regions are added as another <code>geom_sf()</code> layer. Note how this is achieved in the second <code>geom_sf()</code>. The <code>data_gb</code> dataset initially passed to ggplot2 (identified by the <code>.</code> mark) is collapsed by region (with <code>group_by()</code> and <code>summarise()</code>), in the background the boundaries in <code>geometry</code> are aggregated by region.</li>
 </ol>
-<p>In the third map of <a href="#fig-map-winners">Figure&nbsp;<span>3.11</span></a> the transparency (<code>alpha</code>) of filled constituencies is varied according to the Swing variable. This does demonstrate that constituencies swinging most dramatically for Conservative (darker colours) are in the midlands and North of England and not in London and the South East. The pattern is nevertheless a subtle one; transparency (colour luminance / saturation) is not a highly effective visual channel for encoding quantities.</p>
+<p>In the third map of <a href="#fig-map-winners">Figure&nbsp;<span>3.12</span></a> the transparency (<code>alpha</code>) of filled constituencies is varied according to the Swing variable. This does demonstrate that constituencies swinging most dramatically for Conservative (darker colours) are in the midlands and North of England and not in London and the South East. The pattern is nevertheless a subtle one; transparency (colour luminance / saturation) is not a highly effective visual channel for encoding quantities.</p>
 <p>It may be worth applying the same encoding to Butler two-party swing as that used in the Washington Post graphic when characterising Republican-Democrat swing in 2016 US Elections <span class="citation" data-cites="beecham_using_2020">(e.g. <a href="references.html#ref-beecham_using_2020" role="doc-biblioref">Beecham 2020</a>)</span>. This can be achieved by simply adding another ggplot2 layer, though the code is a little more involved. ggplot2’s <code>geom_spoke()</code> primitive draws line segments parameterised by a location (x- y- position) and angle. With this we can encode constituencies with <span style="font-weight:bolder">|</span> marks that angle to the right <span style="color:#3879A1;font-weight:bold">/</span> where the constituency swings towards Conservative and to the left where it swings towards Labour <span style="color:#DB534D;font-weight:bolder">\</span>. This encoding better exposes the pattern of constituencies forming Labour’s “red wall” in the north of England, as well as parts of Wales and the Midlands flipping to Conservative.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-spoke-map" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="figs/03/spoke-map.png" class="img-fluid figure-img" style="width:90.0%"></p>
-<figcaption class="figure-caption">Figure&nbsp;3.12: Map of Butler Con-Lab Swing in 2019 General Election.</figcaption></figure>
+<figcaption class="figure-caption">Figure&nbsp;3.13: Map of Butler Con-Lab Swing in 2019 General Election.</figcaption></figure>
 </div>
 </div>
 </div>
