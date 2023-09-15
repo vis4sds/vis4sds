@@ -74,6 +74,9 @@ elected_parties <- c("Conservative", "Labour", "Other")
 # 2. Concepts graphics
 #-----------------------------------------
 
+
+# 3.4 Muzner ------------------
+
 # Assemble Munzner visual channels.
 position_common <- image_read(here("figs", "03", "munzner", "position_common.png"))
 position_common_image <- image_fill(position_common, 'none')
@@ -232,6 +235,9 @@ munzner_effect <- ggplot() +
 ggsave(here("figs", "03", "munzner_effect_trans.png"), munzner_effect, dpi=700, width = 5.7, height=6)
 
 
+
+# 3.3 GOG demo ------------------
+
 # And recode elected variable as factor for use in scale_colour_manual.
 t <- bes_2019 |>
   mutate(
@@ -322,6 +328,9 @@ plot_export <-plot + plot2 + plot3 +  plot_layout(nrow=3) +
 
 ggsave(filename=here("figs", "03", "gog-demo-label.png"), plot=plot_export,width=5, height=12, dpi=300)
 ggsave(filename=here("figs", "03", "gog-demo-label.svg"), plot=plot_export,width=5, height=12)
+
+
+# Not include : perceptual checks -----------
 
 # Preattentive
 temp <- tibble(
@@ -524,6 +533,9 @@ power_laws | (bars / circles / rectangles / plot_spacer())  + plot_layout(widths
 
 ggsave(filename=here("figs","03","perception.svg"), plot=plot,width=7, height=3.5)
 
+
+# Power law graphics --------------
+
 plot <- power_laws +
   annotation_custom(ggplotGrob(bars), xmin=6.5, xmax=9.2, ymin=4.1, ymax=6.0) +
   annotation_custom(ggplotGrob(circles), xmin=6.0, xmax=9.5, ymin=2.8, ymax=4.5) +
@@ -552,6 +564,64 @@ bes_2019 |>
   group_by(party) |>
   summarise(vote_share=sum(votes, na.rm=TRUE)/sum(total_vote_19)) |>
   arrange(desc(vote_share))
+
+
+# 3.5 Brewer palettes --------------
+
+temp_dat <-tibble(
+  ids=1:5,
+  y=rep(1,5),
+  x=1:5,
+)
+
+qual <- temp_dat |> 
+  ggplot(aes(x=ids, y=y)) +
+  geom_tile(colour="#ffffff", aes(fill=as.character(ids)), linewidth=2) +
+  coord_equal() +
+  labs(x="<span style='font-family:Iosevka;'> categorical-nominal<br><br><br></span><span style='font-family:Avenir Book;'>hue-based scheme</span>") +
+  scale_fill_brewer(type = "qual", guide="none", palette = "Accent") +
+  theme(
+    axis.title.x=element_markdown(),
+    axis.text = element_blank(), axis.title.y = element_blank(),
+    axis.line = element_blank()
+  )
+
+seq <- temp_dat |> 
+  ggplot(aes(x=ids, y=y)) +
+  geom_tile(colour="#ffffff", aes(fill=as.character(ids)), linewidth=2) +
+  coord_equal() +
+  labs(x="<span style='font-family:Iosevka;'> categorical-ordinal<br>quantitative<br><br></span><span style='font-family:Avenir Book;'>sequential colour-value</span>") +
+  scale_fill_brewer(type = "seq", guide="none") +
+  theme(
+    axis.title.x=element_markdown(),
+    axis.text = element_blank(), axis.title.y = element_blank(),
+    axis.line = element_blank()
+  )
+
+cont <- temp_dat |> 
+  mutate(count=5) |> 
+  uncount(count) |> 
+  group_by(ids) |>
+  add_column(spacers=rep(c(.2,.4,.6,.8,1), 5)) |> ungroup() |> 
+  mutate(n=row_number()) |> 
+  ggplot(aes(x=spacers, y=y)) +
+  geom_tile(colour="#ffffff", aes(fill=n), linewidth=0) +
+  facet_wrap(~ids, nrow=1)+
+  scale_y_continuous(limits = c(.4,1.6)) +
+  coord_equal() +
+  labs(x="<span style='font-family:Iosevka;'> quantitative<br><br><br></span><span style='font-family:Avenir Book;'>continuous colour-value</span>") +
+  scale_fill_distiller(palette="Blues", guide="none", direction=1) +
+  theme(
+    panel.spacing = unit(0.06, "lines"),
+    strip.text.x = element_blank(),
+    axis.title.x=element_markdown(),
+    axis.text = element_blank(), axis.title.y = element_blank(),
+    axis.line = element_blank()
+  )
+
+plot <- qual + seq + cont
+
+ggsave(filename=here("figs","03","brewer_colour.png"), plot=plot,width=10, height=2.2, dpi=300)
 
 
 #-----------------------------------------

@@ -426,7 +426,17 @@ Experimental work that tries to understand how encoded quantities are perceived 
 * *Saturation* : how much  of a colour there is.
 * *Luminance/Brightness* : how dark or light a colour is. -->
 ```
-The ultimate rule when using colour in data graphics is to use properties of colour that match the properties of the data. Categorical `nominal` data -- data that cannot be easily ordered -- should be encoded using discrete colours with no obvious order; so colour hue. Categorical `ordinal` data -- data whose categories can be ordered -- should be encoded with colours that contain an intrinsic order; saturation or brightness allocated into perceptually-spaced gradients. `Quantitative` data -- data that can be ordered and contain values on a continuous scale -- should also be encoded with saturation or brightness, expressed on a continuous scale. As we will discover shortly, these principles are applied by default in ggplot2, along with access to perceptually valid schemes [e.g. @harrower_colorbrewerorg_2003].
+
+```{r}
+#| label: fig-brewer
+#| fig-cap: "Colour schemes matched to variabe measurement level."
+#| echo: false
+#| out.width: 80%
+include_graphics("figs/03/brewer_colour.png", error = FALSE)
+```
+
+
+The ultimate rule when using colour in data graphics is to use properties of colour that match the properties of the data (@fig-brewer). Categorical `nominal` data -- data that cannot be easily ordered -- should be encoded using discrete colours with no obvious order; so colour hue. Categorical `ordinal` data -- data whose categories can be ordered -- should be encoded with colours that contain an intrinsic order; saturation or brightness (colour value) allocated into perceptually-spaced gradients. `Quantitative` data -- data that can be ordered and contain values on a continuous scale -- should also be encoded with saturation or brightness, expressed on a continuous scale. As we will discover shortly, these principles are applied by default in ggplot2, along with access to perceptually valid schemes [e.g. @harrower_colorbrewerorg_2003].
 
 ::: callout-note
 ## On colour

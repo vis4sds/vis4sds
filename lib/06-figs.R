@@ -1044,7 +1044,6 @@ plot_data <- cons_data |>
     var=factor(var, levels=c("leave", order_vars)),
     var=fct_rev(var)
   ) 
-
 annotate_data <- plot_data |> 
   filter(is_extreme) |> 
   group_by(decile) |> 
@@ -1062,8 +1061,8 @@ plot_data |>
   geom_text(
     data= . %>% filter(constituency_name %in% annotate_data, var=="leave"),
     aes(x="leave", y=z_score, label=str_wrap(constituency_name,15)), 
-    size=3.5, vjust="top", hjust="centre", nudge_x=+.5) +
-  
+    size=3.5, vjust="top", hjust="centre", nudge_x=+.5
+    ) +
   scale_colour_manual(values=c("#b2182b","#2166ac")) +
   coord_flip()
 
