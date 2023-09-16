@@ -4,6 +4,7 @@
 .Ruserdata
 .DS_Store
 /.quarto/
+libs/
 figs/03/munzner/
 docs/
 *.html
