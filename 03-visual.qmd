@@ -427,16 +427,20 @@ Experimental work that tries to understand how encoded quantities are perceived 
 * *Luminance/Brightness* : how dark or light a colour is. -->
 ```
 
+
 ```{r}
 #| label: fig-brewer
 #| fig-cap: "Colour schemes matched to variabe measurement level."
 #| echo: false
-#| out.width: 80%
+#| out.width: 70%
 include_graphics("figs/03/brewer_colour.png", error = FALSE)
 ```
 
 
 The ultimate rule when using colour in data graphics is to use properties of colour that match the properties of the data (@fig-brewer). Categorical `nominal` data -- data that cannot be easily ordered -- should be encoded using discrete colours with no obvious order; so colour hue. Categorical `ordinal` data -- data whose categories can be ordered -- should be encoded with colours that contain an intrinsic order; saturation or brightness (colour value) allocated into perceptually-spaced gradients. `Quantitative` data -- data that can be ordered and contain values on a continuous scale -- should also be encoded with saturation or brightness, expressed on a continuous scale. As we will discover shortly, these principles are applied by default in ggplot2, along with access to perceptually valid schemes [e.g. @harrower_colorbrewerorg_2003].
+
+
+
 
 ::: callout-note
 ## On colour
@@ -618,7 +622,7 @@ This design exposition by [Lunzner and McNamara, 2020](http://tinlizzie.org/hist
 #| label: fig-hist-region
 #| fig-cap: "Histograms of Swing variable, grouped by region."
 #| echo: false
-#| out.width: 90%
+#| out.width: 85%
 include_graphics("figs/03/hist-region.png", error = FALSE)
 ```
 
@@ -636,7 +640,7 @@ Update the earlier ggplot2 specification to produce a set of histograms of the S
 #| label: fig-bars
 #| fig-cap: "Plots of vote shares by party."
 #| echo: false
-#| out.width: 85%
+#| out.width: 80%
 
 include_graphics("figs/03/bars.png", error = FALSE)
 ```
@@ -955,13 +959,13 @@ There are helper functions that must also be run to execute the ggplot2 code abo
 ## Dot-density maps
 <!-- 
 We mentioned in the book's preface that there is no single chapter dedicated to geovisualization; that instead maps are integrated thoughout depending on analysis need.  -->
-A familiar design trade-off when presenting population data spatially is that between precision in geography and the quantitive outcome of interest -- the location and shape of constitutencies versus their associated votes in this case.  You may be familiar with cartogram layouts that distort geographic space to give constituencies equal graphic size or to size constituencies according to their voting population. The former more reliably depicts cosntituency wins by party, the latter overall votes by party. 
+A familiar design trade-off when presenting population data spatially is that between precision in geography and the quantitive outcome of interest -- the location and shape of constituencies versus their associated votes in this case.  You may be familiar with cartogram layouts that distort geographic space to give constituencies equal graphic size or to size constituencies according to their voting population. The former more reliably depicts constituency wins by party, the latter overall votes by party. 
 
 Dot-density maps also convey absolute numbers of votes but in a way that preserves geography. In the example below, each dot represents 1,000 votes for a given party -- Conservative, Labour, Other -- and dots are positioned in the constituencies from which those votes were made. Dots therefore concentrate in population-dense areas of the country. 
 
 The difficulty in generating dot-density maps is not in wrangling ggplot2, but in preparing data to be plotted. We need to create a randomly located point within a constituency's boundary for every thousand of votes that are made there.  R packages specialised to dot-density maps provide functions for doing  this, but it is quite easy to achieve using the sorts of functional and `tidyverse`-style code introduced throughout this book. 
 
-Below the plot is a dropdown sybmol that can be clicked to expose the code. You will see that the code is compact, but certain functional programming concepts are slightly more advanced. These, particularly `purrr::map()`,  are covered in some detail in later chapters of the book.
+Below the plot is a dropdown symbol that can be clicked to expose the code. You will see that the code is compact, but certain functional programming concepts are slightly more advanced. These, particularly `purrr::map()`,  are covered in some detail in later chapters of the book.
 
 
 ```{r}
