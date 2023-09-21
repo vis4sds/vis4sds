@@ -520,9 +520,9 @@ Communicating effectively with data is not an easy undertaking. Difficult decisi
 
 ## Further Reading
 
-Cédric Scherer's excellent workshop at rstudio::conf(2022). Highly recommended as a resource for covering in a methodical way how to parameterise ggplot2 scales, coordinate systems, facets, annotation and labelling.
+Cédric Scherer's excellent workshop at posit::conf(2023). Highly recommended as a resource for covering in a methodical way how to parameterise ggplot2 scales, coordinate systems, facets, annotation and labelling.
 
-* Cédric Scherer, 2022. "Graphic Design with ggplot2: How to Create Engaging and Complex Visualizations in R", An rstudio::conf(2022) Workshop, [rstudio-conf-2022.github.io/ggplot2-graphic-design/](https://rstudio-conf-2022.github.io/ggplot2-graphic-design/)
+* Cédric Scherer, 2023. "Designing Data Visualizations to Successfully Tell a Story", A posit::conf(2023) Workshop, [posit-conf-2023.github.io/dataviz-storytelling/](https://posit-conf-2023.github.io/dataviz-storytelling/)
 
 For a similarly excellent resource see:
 

@@ -290,11 +290,11 @@ data_types <- tibble::tibble(
 )
 ```
 
-### Transform
+### Manipulate
 
-#### Transform with `dplyr` and pipes (`|>`) {.unnumbered}
+#### Manipulate with `dplyr` and pipes (`|>`) {.unnumbered}
 
-[`dplyr`](https://dplyr.tidyverse.org/) is the foundational package within the tidyverse. It provides a *grammar of data manipulation*, with access to functions that can be variously combined to support most data processing and transformation tasks. Once familiar with `dplyr` functions you will find yourself generating analysis templates to re-use whenever working on a dataset.
+[`dplyr`](https://dplyr.tidyverse.org/) is the foundational package within the tidyverse. It provides a *grammar of data manipulation*, with access to functions that can be variously combined to support most data processing and manipulation tasks. Once familiar with `dplyr` functions you will find yourself generating analysis templates to re-use whenever working on a dataset.
 
 All `dplyr` functions operate in a consistent way:
 

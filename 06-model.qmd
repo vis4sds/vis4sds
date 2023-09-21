@@ -522,7 +522,7 @@ The plot specification:
 4. *Setting*: `coord_flip()` to make variable names easier to read.
 
 
-### Extended model terms
+### Extend model terms
 
 To include a fixed effect (FE) term on region, the `region` variable is simply added as a variable to `lm()`. However, we must convert it to a factor variable (this has the effect of creating dummies on each value of `region`). Default behaviour within `lm()` is to hold back a reference value of region with FE regression coefficients describing the effect on the outcome of a constituency located in a given region relative to the reference region.  So the reference region (intercept) in the model below is East Midlands -- the first in the factor to appear alphabetically. The signed coefficient estimates for regions identifies whether, after controlling for variation in demographics, the Leave vote for a particular region is expected to be higher or lower than this.
 
@@ -626,7 +626,7 @@ The plot specification:
 3. *Marks*: `geom_pointrange()`, encoded in exactly the same was as for @fig-outputs. The only addition is light bars in the background (`geom_col()`). This seems to aid interpretation of the direction and size of the coefficients.
 4. *Facets*: `facet_wrap()` on `region` in order to display coefficients estimated separately for each region.
 
-### Evaluate models with lineup plots
+### Evaluate models with lineups
 
 In @fig-lineup-fe is a map line-up of the residuals from the model updated with a fixed effect on region -- our expectation is that these residuals should *no longer* be spatially autocorrelated. Using functional-style programming, and `tidymodels`, plot lineups can be generated with surprisingly paired-back code.
 
