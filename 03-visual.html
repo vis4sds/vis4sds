@@ -726,7 +726,7 @@ Experimental work that tries to understand how encoded quantities are perceived 
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-brewer" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figs/03/brewer_colour.png" class="img-fluid figure-img" style="width:80.0%"></p>
+<figure class="figure"><p><img src="figs/03/brewer_colour.png" class="img-fluid figure-img" style="width:70.0%"></p>
 <figcaption class="figure-caption">Figure&nbsp;3.6: Colour schemes matched to variabe measurement level.</figcaption></figure>
 </div>
 </div>
@@ -885,7 +885,7 @@ This design exposition by [Lunzner and McNamara, 2020](http://tinlizzie.org/hist
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-hist-region" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figs/03/hist-region.png" class="img-fluid figure-img" style="width:90.0%"></p>
+<figure class="figure"><p><img src="figs/03/hist-region.png" class="img-fluid figure-img" style="width:85.0%"></p>
 <figcaption class="figure-caption">Figure&nbsp;3.8: Histograms of Swing variable, grouped by region.</figcaption></figure>
 </div>
 </div>
@@ -909,7 +909,7 @@ Task 2
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-bars" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figs/03/bars.png" class="img-fluid figure-img" style="width:85.0%"></p>
+<figure class="figure"><p><img src="figs/03/bars.png" class="img-fluid figure-img" style="width:80.0%"></p>
 <figcaption class="figure-caption">Figure&nbsp;3.9: Plots of vote shares by party.</figcaption></figure>
 </div>
 </div>
@@ -1209,10 +1209,10 @@ Dot-density maps
 <div class="callout-body-container callout-body">
 <!-- 
 We mentioned in the book's preface that there is no single chapter dedicated to geovisualization; that instead maps are integrated thoughout depending on analysis need.  -->
-<p>A familiar design trade-off when presenting population data spatially is that between precision in geography and the quantitive outcome of interest – the location and shape of constitutencies versus their associated votes in this case. You may be familiar with cartogram layouts that distort geographic space to give constituencies equal graphic size or to size constituencies according to their voting population. The former more reliably depicts cosntituency wins by party, the latter overall votes by party.</p>
+<p>A familiar design trade-off when presenting population data spatially is that between precision in geography and the quantitive outcome of interest – the location and shape of constituencies versus their associated votes in this case. You may be familiar with cartogram layouts that distort geographic space to give constituencies equal graphic size or to size constituencies according to their voting population. The former more reliably depicts constituency wins by party, the latter overall votes by party.</p>
 <p>Dot-density maps also convey absolute numbers of votes but in a way that preserves geography. In the example below, each dot represents 1,000 votes for a given party – Conservative, Labour, Other – and dots are positioned in the constituencies from which those votes were made. Dots therefore concentrate in population-dense areas of the country.</p>
 <p>The difficulty in generating dot-density maps is not in wrangling ggplot2, but in preparing data to be plotted. We need to create a randomly located point within a constituency’s boundary for every thousand of votes that are made there. R packages specialised to dot-density maps provide functions for doing this, but it is quite easy to achieve using the sorts of functional and <code>tidyverse</code>-style code introduced throughout this book.</p>
-<p>Below the plot is a dropdown sybmol that can be clicked to expose the code. You will see that the code is compact, but certain functional programming concepts are slightly more advanced. These, particularly <code><a href="https://purrr.tidyverse.org/reference/map.html">purrr::map()</a></code>, are covered in some detail in later chapters of the book.</p>
+<p>Below the plot is a dropdown symbol that can be clicked to expose the code. You will see that the code is compact, but certain functional programming concepts are slightly more advanced. These, particularly <code><a href="https://purrr.tidyverse.org/reference/map.html">purrr::map()</a></code>, are covered in some detail in later chapters of the book.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
