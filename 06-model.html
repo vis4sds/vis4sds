@@ -241,8 +241,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><a href="#import-transform-explore" id="toc-import-transform-explore" class="nav-link" data-scroll-target="#import-transform-explore"><span class="header-section-number">6.3.1</span> Import, transform, explore</a></li>
   <li><a href="#model-tidily" id="toc-model-tidily" class="nav-link" data-scroll-target="#model-tidily"><span class="header-section-number">6.3.2</span> Model tidily</a></li>
   <li><a href="#plot-models-tidily" id="toc-plot-models-tidily" class="nav-link" data-scroll-target="#plot-models-tidily"><span class="header-section-number">6.3.3</span> Plot models tidily</a></li>
-  <li><a href="#extended-model-terms" id="toc-extended-model-terms" class="nav-link" data-scroll-target="#extended-model-terms"><span class="header-section-number">6.3.4</span> Extended model terms</a></li>
-  <li><a href="#evaluate-models-with-lineup-plots" id="toc-evaluate-models-with-lineup-plots" class="nav-link" data-scroll-target="#evaluate-models-with-lineup-plots"><span class="header-section-number">6.3.5</span> Evaluate models with lineup plots</a></li>
+  <li><a href="#extend-model-terms" id="toc-extend-model-terms" class="nav-link" data-scroll-target="#extend-model-terms"><span class="header-section-number">6.3.4</span> Extend model terms</a></li>
+  <li><a href="#evaluate-models-with-lineups" id="toc-evaluate-models-with-lineups" class="nav-link" data-scroll-target="#evaluate-models-with-lineups"><span class="header-section-number">6.3.5</span> Evaluate models with lineups</a></li>
   </ul>
 </li>
   <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion"><span class="header-section-number">6.4</span> Conclusion</a></li>
@@ -772,8 +772,8 @@ Task
 <em>Marks</em>: <code>geom_pointrange()</code>, which understands <code>ymin</code> and <code>ymax</code>, for the dots with confidence intervals.</li>
 <li>
 <em>Setting</em>: <code>coord_flip()</code> to make variable names easier to read.</li>
-</ol></section><section id="extended-model-terms" class="level3" data-number="6.3.4"><h3 data-number="6.3.4" class="anchored" data-anchor-id="extended-model-terms">
-<span class="header-section-number">6.3.4</span> Extended model terms</h3>
+</ol></section><section id="extend-model-terms" class="level3" data-number="6.3.4"><h3 data-number="6.3.4" class="anchored" data-anchor-id="extend-model-terms">
+<span class="header-section-number">6.3.4</span> Extend model terms</h3>
 <p>To include a fixed effect (FE) term on region, the <code>region</code> variable is simply added as a variable to <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code>. However, we must convert it to a factor variable (this has the effect of creating dummies on each value of <code>region</code>). Default behaviour within <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> is to hold back a reference value of region with FE regression coefficients describing the effect on the outcome of a constituency located in a given region relative to the reference region. So the reference region (intercept) in the model below is East Midlands – the first in the factor to appear alphabetically. The signed coefficient estimates for regions identifies whether, after controlling for variation in demographics, the Leave vote for a particular region is expected to be higher or lower than this.</p>
 <div class="cell">
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">cons_data</span> <span class="op">|&gt;</span></span>
@@ -862,8 +862,8 @@ Task
 <em>Marks</em>: <code>geom_pointrange()</code>, encoded in exactly the same was as for <a href="#fig-outputs">Figure&nbsp;<span>6.4</span></a>. The only addition is light bars in the background (<code>geom_col()</code>). This seems to aid interpretation of the direction and size of the coefficients.</li>
 <li>
 <em>Facets</em>: <code>facet_wrap()</code> on <code>region</code> in order to display coefficients estimated separately for each region.</li>
-</ol></section><section id="evaluate-models-with-lineup-plots" class="level3" data-number="6.3.5"><h3 data-number="6.3.5" class="anchored" data-anchor-id="evaluate-models-with-lineup-plots">
-<span class="header-section-number">6.3.5</span> Evaluate models with lineup plots</h3>
+</ol></section><section id="evaluate-models-with-lineups" class="level3" data-number="6.3.5"><h3 data-number="6.3.5" class="anchored" data-anchor-id="evaluate-models-with-lineups">
+<span class="header-section-number">6.3.5</span> Evaluate models with lineups</h3>
 <p>In <a href="#fig-lineup-fe">Figure&nbsp;<span>6.8</span></a> is a map line-up of the residuals from the model updated with a fixed effect on region – our expectation is that these residuals should <em>no longer</em> be spatially autocorrelated. Using functional-style programming, and <code>tidymodels</code>, plot lineups can be generated with surprisingly paired-back code.</p>
 <div class="cell">
 <div class="cell-output-display">
