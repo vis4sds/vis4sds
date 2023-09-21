@@ -384,7 +384,7 @@ ggplot() +
   theme_void()
 ```
 
-**TO DO: Include a figure with a simplified explanation of two ways in which gridmaps can be plotted -- on `geom_sf()`, on `facet_grid()` on both `map-within-wap`. Also imroved gridmap solution (Hck poor).**
+**TO DO: Include a figure with a simplified explanation of two ways in which gridmaps can be plotted -- on `geom_sf()`, on `facet_grid()` on both `map-within-wap`. Also imroved gridmap solution (Cmd poor).**
 
 
 ### Analysing over nodes
