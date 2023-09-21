@@ -119,11 +119,10 @@ Whilst using colour lightness rather than line width to show flow magnitude is a
 ```{r}
 #| label: fig-matrices
 #| out.width: 100%
-#| fig-cap: "Origin-destination matrices ordered according to borough size on number of jobs. In the right graphic a separate "local" colour scale is created for each destination borough."
+#| fig-cap: "Origin-destination matrices ordered according to borough size on number of jobs. In the right graphic a separate 'local' colour scale is created for each destination borough."
 #| echo: false
 #| eval: true
 #| warning: false
-
 include_graphics("figs/05/matrices.png", error = FALSE)
 ```
 
