@@ -330,38 +330,6 @@ Layout is an extremely important mechanism for enabling comparison. The heatmaps
 @fig-spatial-layout borrows the earlier mosaic plot design to study crash frequencies (bar height) and relative number of weekday/weekend crashes (dark bar width), with frequencies compared between London boroughs. Rather than laying out boroughs top-to-bottom on frequency, boroughs are given an approximate spatial arrangement. This is generated using the `gridmappr` [@beecham_gridmappr_2023] R package, which we describe and explore properly in @sec-network. This arrangement enables several patterns to be quickly inferred. We can observe that pedestrian crashes involving  motorcycles generally occur more in central London boroughs; those involving cars occur in greater relative number during weekends, especially so for those that take place in central London boroughs;
  and, different from other vehicle types, pedestrian crashes involving cars occur in similarly large numbers in outer London boroughs (Barnet, Croydon) as they do inner London boroughs such as Westminster.
 
-<!-- Alternatively we could directly encode difference from expectation by centring the dark bars and varying the widths according to how much the relative number of weekend crashes is above (oriented to right) or below (oriented to left) this expectation (middle plot). The latter approach helps highlight boroughs that are different from the London average: the more dark blue the more atypical that borough is. The largest differences from expectation are in Westminster, with crashes involving vans, motorcycles and bicycles overrepresented amongst weekdays. Finally, if we are to compare across all 33 London boroughs we may chose to reduce some of the detail in the graphic and focus on a subset of vehicle types. As vehicle type is a categorical nominal variable it may also be sensible to encode that variable using colour hue to help associate vehicle types between boroughs.
-
- ```{r}
-#| label: fig-mosaic-boroughs
-#| fig-cap: "Mosaic plots of vehicle type and injury severity for Westminster and Harrow."
-#| echo: false
-#| eval: true
-#| warning: false
-
-include_graphics("figs/04/mosaic_boroughs_model.svg", error = FALSE)
-```
-
-@fig-mosaic-boroughs-alpha shows this updated design with boroughs grouped by whether they are in inner or outer London. This grouping usefully reinforces the distinctive pattern of vehicle categories involved in pedestrian crashes. In inner London, crashes between pedestrians and vehicles other than cars are in relative terms much more common, with motorcycles and bicycles overrepresented amongst crashes taking place during weekdays and cars and taxis very much overrepresented amongst weekend crashes.
-
-
- ```{r}
-#| label: fig-mosaic-boroughs-alpha
-#| fig-cap: "Mosaic plots of vehicle type and injury severity for London Boroughs."
-#| echo: false
-#| eval: true
-#| warning: false
-
-include_graphics("figs/04/mosaic_boroughs_model_alpha.svg", error = FALSE)
-```
-
-
-<!-- 
-#### Semi-geographic orderings {-} 
-
-The alphabetical *layout* of boroughs helps with look-up-type tasks, but since we have already identified that patterns of pedestrian injuries by vehicle type varies by central-inner-outer London, we could further support this comparison by laying out the mosaic plots with a spatial arrangement, as in @fig-spatial-layout. This 'map' clearly looks different from standard maps of London that use a precise geographic arrangement. When studying social phenomena, high  levels of precision are not always needed. Relaxing geography frees up space to introduce richer, more complex designs. In the layout in @fig-spatial-layout, taken from [AfterTheFlood](https://github.com/aftertheflood/londonsquared), each borough is represented as a square of regular size and arranged in its approximate geographic position, allowing the central-inner-outer London distinctions to be made more effectively. 
- -->
-
 
 ```{r}
 #| label: fig-spatial-layout
@@ -724,7 +692,7 @@ model_data |>
 
 <!-- This technical section was quite specialised visually-informed informing model development, but -->
 
-Key to developing data graphics in any exploratory anaysis is proficiency in implementing strategies for comparison (e.g. @tbl-comparison-strategies). @fig-age-imd-light makes use of juxtaposition (top graphic), superposition + explicit encoding (bottom graphic) to compare pedestrian casualties taking place in daylight/darkness and against the age of pedestrians injured and the IMD class of the crash location.  
+Key to developing data graphics in any exploratory anaysis is proficiency in implementing strategies for comparison (e.g. @tbl-comparison-strategies). @fig-age-imd-light makes use of juxtaposition (top graphic) and superposition + explicit encoding (bottom graphic) to compare pedestrian casualties taking place in daylight versus darkness and against the age of pedestrians injured and the IMD class of the crash location.  
 
 As expected from the analysis at the start of this chapter, there is a peak in youger adults being injured in pedestrian road crashes.  For crashes taking place in darkness, this peak is less extreme and shifts to slightly 'older' young adult ages. 
 
