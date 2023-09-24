@@ -246,7 +246,7 @@ In order to generate an approximate geographic arrangement of London boroughs we
 devtools::install_github("rogerbeecham/gridmappr")
 ```
 
-The `od_pairs` dataset is displayed in @tbl-census-ods. Each observation is a unique OD pair summarising the total number of recorded commuters between a pair of London boroughs for a stated occupation type.
+The `od_pairs` dataset is in @tbl-census-ods. Each observation is a unique OD pair summarising the total number of recorded commuters between a pair of London boroughs for a stated occupation type.
 
 ```{r}
 #| label: tbl-census-ods
@@ -384,7 +384,18 @@ ggplot() +
   theme_void()
 ```
 
-**TO DO: Include a figure with a simplified explanation of two ways in which gridmaps can be plotted -- on `geom_sf()`, on `facet_grid()` on both `map-within-wap`. Also imroved gridmap solution (Cmd poor).**
+Once a gridmap polygon file (`grid`) and corresponding cell positions (`row` and `col`) is generated, gridmaps can be plotted from the pollygon file directly, as in plot *(a)* of @fig-map-code, by supplying grid square positions to `facet_grid()`, plot *(b)*, or combining both to effect a map-within-map layout for OD maps, plot *(c)*.
+
+```{r}
+#| label: fig-map-code
+#| out.width: 100%
+#| fig-cap: "ggplot2 code for plotting gridmap layouts."
+#| echo: false
+#| eval: true
+#| warning: false
+
+include_graphics("figs/05/map_map_code_ann.png", error = FALSE)
+```
 
 
 ### Analysing over nodes
