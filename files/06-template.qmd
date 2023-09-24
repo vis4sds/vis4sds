@@ -41,14 +41,13 @@ cons_hex <- st_read(here("data", "cons_hex.geojson"))
 
 ## Plot parallel coordinates 
 
-The data for the parallel coordinate plots is z-score transformed. In the code below we also identify majority Leave/Remain constituencies (`majority`), identify extreme Leave/Remain constituencies (`is_extreme`), select out the variables we need to plot and edit targeted variables in order to make the plot show Leave-related variables to the right. For example `degree`, a variable very negatively associated with leave, is given a negative sign. In order to encode variable types along an axis, we also need to `pivot_longer()`, so that each observation is a constituency, an explanatory variable and its corresponding tranformed variable value.  In the final `mutate()` the new `var` variable is given a factor ordering based on the largest to smallest associations with Leave -- see `ordered vars`.
+The data for the parallel coordinate plots is z-score transformed. In the code below we also identify majority Leave/Remain constituencies (`majority`), identify extreme Leave/Remain constituencies (`is_extreme`), select out the variables we need to plot and edit targeted variables in order to make the plot show Leave-related variables to the right. For example `degree`, a variable very negatively associated with leave, is given a negative sign. In order to encode variable types along an axis, we also need to `pivot_longer()`, so that each observation is a constituency, an explanatory variable and its corresponding transformed variable value.  In the final `mutate()` the new `var` variable is given a factor ordering based on the largest to smallest associations with Leave -- see `ordered vars`.
 
 ```{r}
 #| echo: true
 #| eval: false
 
 order_vars <- cons_data |>
-  mutate(across(c(younger:heavy_industry), ~(.x-mean(.x))/sd(.x))) |> 
   pivot_longer(cols=younger:heavy_industry, names_to="expl_var", values_to="prop") |> 
   group_by(expl_var) |>  
   summarise(cor=cor(leave,prop)) |> ungroup() |> arrange(cor) |>  
