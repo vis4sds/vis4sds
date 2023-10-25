@@ -884,7 +884,7 @@ There are many accessible introductions to the `tidyverse` for modern data analy
 
 -   Wickham, H., Çetinkaya-Rundel, M., Grolemund, G. 2023, "R for Data Science, 2nd Edition", *O'rielly*.
     -   Chapter 4.
--   Ismay, C. and Kim, A. 2020. "Statistical Inference via Data Science: A ModernDive into r and the Tidyverse" *CRC Press*. doi: [10.1201/9780367409913](https://doi.org/10.1201/9780367409913).
+-   Ismay, C. and Kim, A. 2020. "Statistical Inference via Data Science: A ModernDive into R and the Tidyverse" *CRC Press*. doi: [10.1201/9780367409913](https://doi.org/10.1201/9780367409913).
     -   Chapters 3, 4.
 
 Hadley Wickham's original paper on Tidy Data:

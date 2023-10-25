@@ -6,7 +6,7 @@ book:
   title: "Visualization for Social Data Science"
   author: "Roger Beecham"
   description: ""
-  # cover-image: images/cover.png
+  cover-image: figs/01/cover.png
   site-url: https://vis4sds/vis4sds
   repo-url: https://github.com/vis4sds/vis4sds/
   repo-branch: master
