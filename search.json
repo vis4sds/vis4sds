@@ -116,7 +116,7 @@
     "href": "02-data.html#further-reading",
     "title": "2  Data Fundamentals",
     "section": "\n2.5 Further Reading",
-    "text": "2.5 Further Reading\nThere are many accessible introductions to the tidyverse for modern data analysis. Two excellent resources:\n\nWickham, H., Çetinkaya-Rundel, M., Grolemund, G. 2023, “R for Data Science, 2nd Edition”, O’rielly.\n\nChapter 4.\n\n\nIsmay, C. and Kim, A. 2020. “Statistical Inference via Data Science: A ModernDive into r and the Tidyverse” CRC Press. doi: 10.1201/9780367409913.\n\nChapters 3, 4.\n\n\n\nHadley Wickham’s original paper on Tidy Data:\n\nWickham, H. 2010. “Tidy Data” Journal of Statistical Software, 59(10): 1–23. doi: 10.18637/jss.v059.i10."
+    "text": "2.5 Further Reading\nThere are many accessible introductions to the tidyverse for modern data analysis. Two excellent resources:\n\nWickham, H., Çetinkaya-Rundel, M., Grolemund, G. 2023, “R for Data Science, 2nd Edition”, O’rielly.\n\nChapter 4.\n\n\nIsmay, C. and Kim, A. 2020. “Statistical Inference via Data Science: A ModernDive into R and the Tidyverse” CRC Press. doi: 10.1201/9780367409913.\n\nChapters 3, 4.\n\n\n\nHadley Wickham’s original paper on Tidy Data:\n\nWickham, H. 2010. “Tidy Data” Journal of Statistical Software, 59(10): 1–23. doi: 10.18637/jss.v059.i10."
   },
   {
     "objectID": "02-data.html#footnotes",
