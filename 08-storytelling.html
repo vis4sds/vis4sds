@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.4.554">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>Visualization for Social Data Science - 8&nbsp; Data Storytelling</title>
 <style>
@@ -19,7 +19,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -76,7 +76,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   "collapse-after": 3,
   "panel-placement": "start",
   "type": "textbox",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -85,6 +91,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
@@ -103,29 +110,55 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    });
 }}});
   </script><script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 </head>
 <body class="nav-sidebar floating">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./08-storytelling.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Data Storytelling</span></a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-      </a>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./08-storytelling.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Data Storytelling</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
     </div>
   </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Visualization for Social Data Science</a> 
         <div class="sidebar-tools-main">
-    <a href="https://github.com/vis4sds/vis4sds/" rel="" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
-    <a href="https://twitter.com/intent/tweet?url=%7Curl%7C" rel="" title="Twitter" class="quarto-navigation-tool px-1" aria-label="Twitter"><i class="bi bi-twitter"></i></a>
+    <a href="https://github.com/vis4sds/vis4sds/" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <a href="https://twitter.com/intent/tweet?url=%7Curl%7C" title="Twitter" class="quarto-navigation-tool px-1" aria-label="Twitter"><i class="bi bi-twitter"></i></a>
 </div>
     </div>
       </div>
@@ -215,7 +248,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
     </ul>
 </div>
-</nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
@@ -243,7 +276,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
   <li><a href="#conclusions" id="toc-conclusions" class="nav-link" data-scroll-target="#conclusions"><span class="header-section-number">8.4</span> Conclusions</a></li>
   <li><a href="#further-reading" id="toc-further-reading" class="nav-link" data-scroll-target="#further-reading"><span class="header-section-number">8.5</span> Further Reading</a></li>
-  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/vis4sds/vis4sds/edit/master/08-storytelling.qmd" class="toc-action">Edit this page</a></p></div></div></nav>
+  </ul><div class="toc-actions"><ul><li><a href="https://github.com/vis4sds/vis4sds/edit/master/08-storytelling.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
@@ -260,6 +293,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
+
 </header><p>By the end of this chapter you should gain the following knowledge and practical skills.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -272,10 +306,8 @@ Knowledge
 </div>
 <div class="callout-body-container callout-body">
 <ul class="task-list">
-<li>
-<input type="checkbox">Appreciate the main characteristics of data-driven stories.</li>
-<li>
-<input type="checkbox">Identify how visual and rhetorical devices are used to communicate with data.</li>
+<li><label><input type="checkbox">Appreciate the main characteristics of data-driven stories.</label></li>
+<li><label><input type="checkbox">Identify how visual and rhetorical devices are used to communicate with data.</label></li>
 </ul>
 </div>
 </div>
@@ -290,23 +322,21 @@ Practical skills
 </div>
 <div class="callout-body-container callout-body">
 <ul class="task-list">
-<li>
-<input type="checkbox">Use shape primitives to code up custom chart designs in ggplot2.</li>
-<li>
-<input type="checkbox">Add non-standard annotations to ggplot2 graphics.</li>
+<li><label><input type="checkbox">Use shape primitives to code up custom chart designs in ggplot2.</label></li>
+<li><label><input type="checkbox">Add non-standard annotations to ggplot2 graphics.</label></li>
 </ul>
 </div>
 </div>
 <section id="introduction" class="level2" data-number="8.1"><h2 data-number="8.1" class="anchored" data-anchor-id="introduction">
 <span class="header-section-number">8.1</span> Introduction</h2>
 <p>It is now taken-for-granted that we live in an evidence-based society in which data are deeply embedded in most domains and in how we approach the world’s problems. This recognition has coincided with the open source movement, which has freed up access and accelerated the development of tools for working with data. The response to Covid-19 is an excellent example. Enter <a href="https://www.google.com/search?q=covid19+github&amp;rlz=1C5CHFA_enGB632GB632&amp;oq=covid19+&amp;aqs=chrome.0.69i59l2j69i57j0l2j69i61l3.3040j0j7&amp;sourceid=chrome&amp;ie=UTF-8">Covid19 github</a> into a search and you’ll be confronted with hundreds of code repositories demonstrating how data related to the pandemic can be collected, processed and analysed. This is exciting and feels very democratic. But there is a responsibility amongst those constructing and sharing evidence-based arguments to do so with integrity; navigating the difficult tension between communicating a clear message – necessarily reducing some of the complexity – at the same time as acknowledging uncertainty.</p>
-<p>The role of narrative and storytelling when working with data is much discussed in Information Visualization <span class="citation" data-cites="henryriche_data_2018">(<a href="references.html#ref-henryriche_data_2018" role="doc-biblioref">Henry-Riche et al. 2018</a>)</span> and Science Communication <span class="citation" data-cites="franconeri_psychological_2022">(<a href="references.html#ref-franconeri_psychological_2022" role="doc-biblioref">Franconeri et al. 2022</a>)</span>. Importantly, this work recognises that there is no single, optimal visualization design that exposes the true structure or story in a dataset. Instead, that careful design decisions must be made in light of data, audience and intended purpose.</p>
+<p>The role of narrative and storytelling when working with data is much discussed in Information Visualization <span class="citation" data-cites="henryriche_data_2018">(Henry-Riche et al. 2018)</span> and Science Communication <span class="citation" data-cites="franconeri_psychological_2022">(Franconeri et al. 2022)</span>. Importantly, this work recognises that there is no single, optimal visualization design that exposes the true structure or story in a dataset. Instead, that careful design decisions must be made in light of data, audience and intended purpose.</p>
 <p>In this chapter we will review some of this literature with a special focus on approaches to communicating data around the Covid-19 pandemic, specifically publicly reported numbers on cases, hospitalisations and deaths.</p>
 </section><section id="concepts" class="level2" data-number="8.2"><h2 data-number="8.2" class="anchored" data-anchor-id="concepts">
 <span class="header-section-number">8.2</span> Concepts</h2>
 <section id="data-driven-storytelling" class="level3" data-number="8.2.1"><h3 data-number="8.2.1" class="anchored" data-anchor-id="data-driven-storytelling">
 <span class="header-section-number">8.2.1</span> Data-driven storytelling</h3>
-<p>In earlier chapters of the book (e.g. <a href="03-visual.html"><span>Chapter&nbsp;3</span></a>) we identified and explored some common characteristics of effective data graphics. <span class="citation" data-cites="roth_cartographic_2020">Roth (<a href="references.html#ref-roth_cartographic_2020" role="doc-biblioref">2021</a>)</span> enumerates 10 such characteristics specialised to data storytelling. Particularly important for visualization design is that data graphics are:</p>
+<p>In earlier chapters of the book (e.g. <a href="03-visual.html" class="quarto-xref"><span>Chapter 3</span></a>) we identified and explored some common characteristics of effective data graphics. <span class="citation" data-cites="roth_cartographic_2020">Roth (2021)</span> enumerates 10 such characteristics specialised to data storytelling. Particularly important for visualization design is that data graphics are:</p>
 <!-- Although  reasonably generalisable, those characteristics benefit from being re-interpreted when designing for *communication*.  -->
 <!-- we made the case that visual data analysis is about encoding data to visuals in a way that follows established guidelines known to work well for particular tasks. This might imply there is some optimal visualization design that can be achieved. Clearly, no such optimal solution exists, especially so when designing graphics for *communication* [@henryriche_data_2018]. However, we can consider some of the common characteristics of effective visual data stories. @roth_cartographic_2020 identifies 10 such characteristics, but particularly important are that visual design stories are: -->
 <ul>
@@ -320,17 +350,21 @@ Practical skills
 <p>In the sections that follow, we review some prominent Covid-19 visualizations and reflect on how they implement these sorts of storytelling devices.</p>
 </section><section id="designed-and-partial" class="level3" data-number="8.2.2"><h3 data-number="8.2.2" class="anchored" data-anchor-id="designed-and-partial">
 <span class="header-section-number">8.2.2</span> Designed and partial</h3>
-<p>Perhaps the most high-profile example of data graphics specialised to communication were those produced by the Financial Times <span class="citation" data-cites="ft_coronavirus_2020">(<a href="references.html#ref-ft_coronavirus_2020" role="doc-biblioref">Financial Times 2020</a>)</span>. <a href="#fig-ft-vis">Figure&nbsp;<span>8.1</span></a> displays one such example, the Financial Times’s Covid-19 trajectory tracker. Along the y-axis are cumulative numbers of deaths represented using a log-scale; and along the x-axis, the number of days that elapsed since some threshold number of deaths was recorded.</p>
+<p>Perhaps the most high-profile example of data graphics specialised to communication were those produced by the Financial Times <span class="citation" data-cites="ft_coronavirus_2020">(Financial Times 2020)</span>. <a href="#fig-ft-vis" class="quarto-xref">Figure&nbsp;<span>8.1</span></a> displays one such example, the Financial Times’s Covid-19 trajectory tracker. Along the y-axis are cumulative numbers of deaths represented using a log-scale; and along the x-axis, the number of days that elapsed since some threshold number of deaths was recorded.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-ft-vis" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figs/08/cum_deaths_full.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<figcaption class="figure-caption">Figure&nbsp;8.1: <a href="https://www.ft.com/john-burn-murdoch">John Burn-Murdoch</a>’s international comparison of deaths, as explained in <span class="citation" data-cites="ft_coronavirus_2020">Financial Times (<a href="references.html#ref-ft_coronavirus_2020" role="doc-biblioref">2020</a>)</span>. This is an approximate ggplot2 re-implementation of the original Financial Times graphic.</figcaption></figure>
+<div id="fig-ft-vis" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-ft-vis-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/08/cum_deaths_full.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ft-vis-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8.1: <a href="https://www.ft.com/john-burn-murdoch">John Burn-Murdoch</a>’s international comparison of deaths, as explained in <span class="citation" data-cites="ft_coronavirus_2020">Financial Times (2020)</span>. This is an approximate ggplot2 re-implementation of the original Financial Times graphic.
+</figcaption></figure>
 </div>
 </div>
 </div>
-<p>We can evaluate the graphic using some of the principles introduced in <a href="03-visual.html"><span>Chapter&nbsp;3</span></a>. In its use of position on an aligned scale to encode death counts, colour hue to differentiate countries and lines to connect daily counts, the graphic’s visual encoding exploits our cognitive abilities. The graphic also makes appropriate use of superimposition to support comparison <span class="citation" data-cites="gleicher_visual_2011">(<a href="references.html#ref-gleicher_visual_2011" role="doc-biblioref">Gleicher and Roberts 2011</a>)</span> – lines for each country represented on the same coordinate space.</p>
-<p>On <span class="citation" data-cites="roth_cartographic_2020">Roth (<a href="references.html#ref-roth_cartographic_2020" role="doc-biblioref">2021</a>)</span>’s characteristics of visual storytelling, it is clear that the graphic is <em>designed</em> with a very deliberate purpose:</p>
+<p>We can evaluate the graphic using some of the principles introduced in <a href="03-visual.html" class="quarto-xref"><span>Chapter 3</span></a>. In its use of position on an aligned scale to encode death counts, colour hue to differentiate countries and lines to connect daily counts, the graphic’s visual encoding exploits our cognitive abilities. The graphic also makes appropriate use of superimposition to support comparison <span class="citation" data-cites="gleicher_visual_2011">(Gleicher and Roberts 2011)</span> – lines for each country represented on the same coordinate space.</p>
+<p>On <span class="citation" data-cites="roth_cartographic_2020">Roth (2021)</span>’s characteristics of visual storytelling, it is clear that the graphic is <em>designed</em> with a very deliberate purpose:</p>
 <ol type="1">
 <li>Between country comparison: <em>Are countries on the same course?</em>
 </li>
@@ -353,12 +387,16 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>A design alternative that supports between country comparison is <span class="citation" data-cites="bhatia_covidtrends_2020">Bhatia and Reich (<a href="references.html#ref-bhatia_covidtrends_2020" role="doc-biblioref">2020</a>)</span>’s <a href="https://aatishb.com/covidtrends/">Covid Trends</a> chart (<a href="#fig-covid-trends">Figure&nbsp;<span>8.2</span></a>). In this example, a double log scale is used and growth rates in new cases are presented on the y-axis with total case numbers, rather than time elapsed, plotted along the x-axis. Whilst the introduction of a double log scale might be judged to increase difficulty, actually this design narrows or simplifies the reader’s visual judgement to looking at the thing that we are most interested in: comparison of country growth rates against the two day doubling (annotated with the diagonal). The chart is also accompanied with an excellent <a href="https://www.hippocraticpost.com/covid-19-update/how-to-tell-if-were-beating-covid-19/">explanatory video</a><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, in which many of the characteristics of visual data stories enumerated by <span class="citation" data-cites="roth_cartographic_2020">Roth (<a href="references.html#ref-roth_cartographic_2020" role="doc-biblioref">2021</a>)</span> can be identified.</p>
+<p>A design alternative that supports between country comparison is <span class="citation" data-cites="bhatia_covidtrends_2020">Bhatia and Reich (2020)</span>’s <a href="https://aatishb.com/covidtrends/">Covid Trends</a> chart (<a href="#fig-covid-trends" class="quarto-xref">Figure&nbsp;<span>8.2</span></a>). In this example, a double log scale is used and growth rates in new cases are presented on the y-axis with total case numbers, rather than time elapsed, plotted along the x-axis. Whilst the introduction of a double log scale might be judged to increase difficulty, actually this design narrows or simplifies the reader’s visual judgement to looking at the thing that we are most interested in: comparison of country growth rates against the two day doubling (annotated with the diagonal). The chart is also accompanied with an excellent <a href="https://www.hippocraticpost.com/covid-19-update/how-to-tell-if-were-beating-covid-19/">explanatory video</a><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, in which many of the characteristics of visual data stories enumerated by <span class="citation" data-cites="roth_cartographic_2020">Roth (2021)</span> can be identified.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-covid-trends" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figs/08/covid_logs.png" class="img-fluid figure-img" style="width:80.0%"></p>
-<figcaption class="figure-caption">Figure&nbsp;8.2: <a href="https://aatishb.com/covidtrends/">Covid Trends</a> chart <span class="citation" data-cites="bhatia_covidtrends_2020">(<a href="references.html#ref-bhatia_covidtrends_2020" role="doc-biblioref">Bhatia and Reich 2020</a>)</span>. This is an approximate ggplot2 re-implementation of a static from the original webpage.</figcaption></figure>
+<div id="fig-covid-trends" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-covid-trends-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/08/covid_logs.png" class="img-fluid figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-covid-trends-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8.2: <a href="https://aatishb.com/covidtrends/">Covid Trends</a> chart <span class="citation" data-cites="bhatia_covidtrends_2020">(Bhatia and Reich 2020)</span>. This is an approximate ggplot2 re-implementation of a static from the original webpage.
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -366,12 +404,16 @@ Note
 </div>
 </section><section id="intuitive-and-compelling" class="level3" data-number="8.2.3"><h3 data-number="8.2.3" class="anchored" data-anchor-id="intuitive-and-compelling">
 <span class="header-section-number">8.2.3</span> Intuitive and compelling</h3>
-<p>Visual data stories are often explanatory <span class="citation" data-cites="roth_cartographic_2020">(<a href="references.html#ref-roth_cartographic_2020" role="doc-biblioref">Roth 2021</a>)</span>. They make <em>compelling</em> use of graphical and rhetorical devices to support understanding. This is especially important in data-driven storytelling as it often involves concepts that are initially quite challenging. In <a href="#fig-lambrechts-connected">Figure&nbsp;<span>8.3</span></a> is a static image from a data story written by Flourish<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> <span class="citation" data-cites="flourish_masters_2021">(<a href="references.html#ref-flourish_masters_2021" role="doc-biblioref">Lawlor and Robertson 2021</a>)</span> based on design work by <a href="https://twitter.com/maartenzam/status/1319622943526293505">Marteen Lambrechts</a>. The data story is essentially a design exposition <span class="citation" data-cites="beecham_design_2020 wood_design_2018">(<a href="references.html#ref-beecham_design_2020" role="doc-biblioref">Beecham et al. 2020</a>; <a href="references.html#ref-wood_design_2018" role="doc-biblioref">Wood, Kachkaev, and Dykes 2018</a>)</span>, guiding readers from the familiar to the unfamiliar. First a standard time series chart of hospitalisations and deaths is presented. Deficiencies in this layout are explained before progressively introducing the transformations involved to generate the preferred graphic, a connected scatterplot <span class="citation" data-cites="haroz_the_2016">(<a href="references.html#ref-haroz_the_2016" role="doc-biblioref">Haroz, Kosara, and Franconeri 2016</a>)</span>. Ordering the story in this way explains design decisions and trade-offs from a familiar starting point and helps justify new, sometimes unfamiliar encodings. Thinking about <span class="citation" data-cites="roth_cartographic_2020">Roth (<a href="references.html#ref-roth_cartographic_2020" role="doc-biblioref">2021</a>)</span>’s characteristics of visual storytelling, formulating a design story in this way helps build <em>intuition</em> – there is a clear entry point and clear progression.</p>
+<p>Visual data stories are often explanatory <span class="citation" data-cites="roth_cartographic_2020">(Roth 2021)</span>. They make <em>compelling</em> use of graphical and rhetorical devices to support understanding. This is especially important in data-driven storytelling as it often involves concepts that are initially quite challenging. In <a href="#fig-lambrechts-connected" class="quarto-xref">Figure&nbsp;<span>8.3</span></a> is a static image from a data story written by Flourish<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> <span class="citation" data-cites="flourish_masters_2021">(Lawlor and Robertson 2021)</span> based on design work by <a href="https://twitter.com/maartenzam/status/1319622943526293505">Marteen Lambrechts</a>. The data story is essentially a design exposition <span class="citation" data-cites="beecham_design_2020 wood_design_2018">(Beecham et al. 2020; Wood, Kachkaev, and Dykes 2018)</span>, guiding readers from the familiar to the unfamiliar. First a standard time series chart of hospitalisations and deaths is presented. Deficiencies in this layout are explained before progressively introducing the transformations involved to generate the preferred graphic, a connected scatterplot <span class="citation" data-cites="haroz_the_2016">(Haroz, Kosara, and Franconeri 2016)</span>. Ordering the story in this way explains design decisions and trade-offs from a familiar starting point and helps justify new, sometimes unfamiliar encodings. Thinking about <span class="citation" data-cites="roth_cartographic_2020">Roth (2021)</span>’s characteristics of visual storytelling, formulating a design story in this way helps build <em>intuition</em> – there is a clear entry point and clear progression.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-lambrechts-connected" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figs/08/lambrechts-connected-flourish.png" class="img-fluid figure-img" style="width:95.0%"></p>
-<figcaption class="figure-caption">Figure&nbsp;8.3: Screenshot from a data story written by <span class="citation" data-cites="flourish_masters_2021">Lawlor and Robertson (<a href="references.html#ref-flourish_masters_2021" role="doc-biblioref">2021</a>)</span>, demonstrating how connected scatterplots can be used to analyse changes in hospitalisations and deaths. The screenshot is reprinted, with permission, from <em>Flourish</em>.</figcaption></figure>
+<div id="fig-lambrechts-connected" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-lambrechts-connected-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/08/lambrechts-connected-flourish.png" class="img-fluid figure-img" style="width:95.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-lambrechts-connected-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8.3: Screenshot from a data story written by <span class="citation" data-cites="flourish_masters_2021">Lawlor and Robertson (2021)</span>, demonstrating how connected scatterplots can be used to analyse changes in hospitalisations and deaths. The screenshot is reprinted, with permission, from <em>Flourish</em>.
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -386,32 +428,40 @@ Note
 </div>
 <div class="callout-body-container callout-body">
 <!-- For a more involved design exposition of connected scatterplots, see [Danny Dorling](http://www.dannydorling.org)'s work on [slowdown](https://twitter.com/dannydorling/status/1245010922592231424). Note that Danny also encodes time using line width. This is an important addition, along with colour as demonstrated with [timecurves](https://aviz.fr/~bbach/timecurves/). -->
-<p>For an example of guided design exposition, see <span class="citation" data-cites="beecham_on_2021">Beecham et al. (<a href="references.html#ref-beecham_on_2021" role="doc-biblioref">2021</a>)</span> which develops ways of showing simultaneously absolute and relative change in cases, with geographic context.</p>
+<p>For an example of guided design exposition, see <span class="citation" data-cites="beecham_on_2021">Beecham et al. (2021)</span> which develops ways of showing simultaneously absolute and relative change in cases, with geographic context.</p>
 </div>
 </div>
-<p>Animations in data graphics can increase engagement and aesthetic appeal. They can also overwhelm since they involve complex tracking of information between frames <span class="citation" data-cites="franconeri_psychological_2022">(<a href="references.html#ref-franconeri_psychological_2022" role="doc-biblioref">Franconeri et al. 2022</a>)</span>. An example of how animation can be used selectively to build <em>intuition</em> is demonstrated in <a href="#fig-ft-anim">Figure&nbsp;<span>8.4</span></a>, again from Financial Times <span class="citation" data-cites="ft_flu_2021">(<a href="references.html#ref-ft_flu_2021" role="doc-biblioref">Financial Times 2021</a>)</span>. The main objective is to demonstrate how different 2020-21 is in terms of admissions to intensive care compared to a normal year. This was in response to claims that Covid-19 behaves much like seasonal flu; to this extent the graphic is also quite <em>political</em>. Each year from 2013-14 is added to the chart and the y-axis rescaled to reflect the new numbers. The animated transitions of the y-axis help build expectation around normal variability in a similar way to hypothetical outcome plots <span class="citation" data-cites="hullman_hypothetical_2015">(<a href="references.html#ref-hullman_hypothetical_2015" role="doc-biblioref">Hullman, Resnick, and Adar 2015</a>)</span>, covered in the previous chapter. The claim that the 2020-21 flu season is consistent with normal variability is then debunked by the introduction of the 2020-21 line in red, with animated rescaling of the y-axis used to further emphasise this point.</p>
+<p>Animations in data graphics can increase engagement and aesthetic appeal. They can also overwhelm since they involve complex tracking of information between frames <span class="citation" data-cites="franconeri_psychological_2022">(Franconeri et al. 2022)</span>. An example of how animation can be used selectively to build <em>intuition</em> is demonstrated in <a href="#fig-ft-anim" class="quarto-xref">Figure&nbsp;<span>8.4</span></a>, again from Financial Times <span class="citation" data-cites="ft_flu_2021">(Financial Times 2021)</span>. The main objective is to demonstrate how different 2020-21 is in terms of admissions to intensive care compared to a normal year. This was in response to claims that Covid-19 behaves much like seasonal flu; to this extent the graphic is also quite <em>political</em>. Each year from 2013-14 is added to the chart and the y-axis rescaled to reflect the new numbers. The animated transitions of the y-axis help build expectation around normal variability in a similar way to hypothetical outcome plots <span class="citation" data-cites="hullman_hypothetical_2015">(Hullman, Resnick, and Adar 2015)</span>, covered in the previous chapter. The claim that the 2020-21 flu season is consistent with normal variability is then debunked by the introduction of the 2020-21 line in red, with animated rescaling of the y-axis used to further emphasise this point.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-ft-anim" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figs/08/flu_years.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<figcaption class="figure-caption">Figure&nbsp;8.4: Weekly admissions to intensive care units in England. Each year is introduced progressively, with animated rescaling of the y-axis used to demonstrates how different in terms of intensive care admissions 2020/21 is to previous flu seasons. These are frames from an approximate ggplot2 re-implementation of the original Financial Times graphic <span class="citation" data-cites="ft_flu_2021">(<a href="references.html#ref-ft_flu_2021" role="doc-biblioref">Financial Times 2021</a>)</span>.</figcaption></figure>
+<div id="fig-ft-anim" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-ft-anim-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/08/flu_years.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ft-anim-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8.4: Weekly admissions to intensive care units in England. Each year is introduced progressively, with animated rescaling of the y-axis used to demonstrates how different in terms of intensive care admissions 2020/21 is to previous flu seasons. These are frames from an approximate ggplot2 re-implementation of the original Financial Times graphic <span class="citation" data-cites="ft_flu_2021">(Financial Times 2021)</span>.
+</figcaption></figure>
 </div>
 </div>
 </div>
 </section><section id="political" class="level3" data-number="8.2.4"><h3 data-number="8.2.4" class="anchored" data-anchor-id="political">
 <span class="header-section-number">8.2.4</span> Political</h3>
-<p><a href="#fig-ft-vaccine">Figure&nbsp;<span>8.5</span></a> presents a final example from Financial Times <span class="citation" data-cites="burnmurdoch_vaccines_2021">(<a href="references.html#ref-burnmurdoch_vaccines_2021" role="doc-biblioref">Burn-Murdoch 2021</a>)</span> with an obviously political purpose. The graphic was created in response to some claims that it is movement restrictions (lockdowns) rather than vaccination that reduced infection rates in the country.</p>
+<p><a href="#fig-ft-vaccine" class="quarto-xref">Figure&nbsp;<span>8.5</span></a> presents a final example from Financial Times <span class="citation" data-cites="burnmurdoch_vaccines_2021">(Burn-Murdoch 2021)</span> with an obviously political purpose. The graphic was created in response to some claims that it is movement restrictions (lockdowns) rather than vaccination that reduced infection rates in the country.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-ft-vaccine" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figs/08/vaccine_effect.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<figcaption class="figure-caption">Figure&nbsp;8.5: Data graphic by <span class="citation" data-cites="burnmurdoch_vaccines_2021">Burn-Murdoch (<a href="references.html#ref-burnmurdoch_vaccines_2021" role="doc-biblioref">2021</a>)</span>, presenting an argument for the role of vaccines in reducing Covid cases, hospital admissions and deaths. An approximate ggplot2 re-implementation of the original Financial Times graphic. Note that a slightly different smoothing function may have been used in the original graphic, especially for the cases data.</figcaption></figure>
+<div id="fig-ft-vaccine" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-ft-vaccine-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/08/vaccine_effect.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ft-vaccine-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8.5: Data graphic by <span class="citation" data-cites="burnmurdoch_vaccines_2021">Burn-Murdoch (2021)</span>, presenting an argument for the role of vaccines in reducing Covid cases, hospital admissions and deaths. An approximate ggplot2 re-implementation of the original Financial Times graphic. Note that a slightly different smoothing function may have been used in the original graphic, especially for the cases data.
+</figcaption></figure>
 </div>
 </div>
 </div>
 <p>Interesting here is how annotation and <em>visual saliency</em> is used to direct our reading. If the graphic was only annotated with points in time when lockdown and vaccination was initiated, it might invite judgements about the effects of these two events on infectious rates. That the graphic makes highly salient annotations labelling the (unmeasurable) <em>effect</em> of the vaccine is an interesting addition. There is little room for ambiguity.</p>
-<p>This sort of presentation, labelling the chart with an unmeasurable vaccine effect, may risk graphical integrity. In a keynote given at IEEE VIS 2020, John <span class="citation" data-cites="burnmurdoch_beliv_2020">Burn-Murdoch (<a href="references.html#ref-burnmurdoch_beliv_2020" role="doc-biblioref">2020</a>)</span>, who created this and the other Financial Times graphics, reflected on his experiences generating data stories early in the pandemic. One observation was that the way in which the Financial Times’s data graphics were interpreted, and misinterpreted, varied depending on the prior expectations and political beliefs of those consuming them. The chart labelling in this case might have been added to signal more directly the evidence-based argument that was being made – to amplify a particular conclusion supported by the data.</p>
-<p>Clearly all data analysis is heavily informed by the values, prejudices, motivations and incentives of those undertaking them. As demonstrated by <span class="citation" data-cites="roth_cartographic_2020">Roth (<a href="references.html#ref-roth_cartographic_2020" role="doc-biblioref">2021</a>)</span>’s characteristics of data storytelling, these individual factors are necessary to communicate effectively. An interesting question, then, is around how integrity and trust is designed into a data analysis. Perhaps in the case of the Financial Times data journalists, this trust is established over time, through a portfolio of data analysis work that is considered, communicated transparently and with humility.</p>
+<p>This sort of presentation, labelling the chart with an unmeasurable vaccine effect, may risk graphical integrity. In a keynote given at IEEE VIS 2020, John <span class="citation" data-cites="burnmurdoch_beliv_2020">Burn-Murdoch (2020)</span>, who created this and the other Financial Times graphics, reflected on his experiences generating data stories early in the pandemic. One observation was that the way in which the Financial Times’s data graphics were interpreted, and misinterpreted, varied depending on the prior expectations and political beliefs of those consuming them. The chart labelling in this case might have been added to signal more directly the evidence-based argument that was being made – to amplify a particular conclusion supported by the data.</p>
+<p>Clearly all data analysis is heavily informed by the values, prejudices, motivations and incentives of those undertaking them. As demonstrated by <span class="citation" data-cites="roth_cartographic_2020">Roth (2021)</span>’s characteristics of data storytelling, these individual factors are necessary to communicate effectively. An interesting question, then, is around how integrity and trust is designed into a data analysis. Perhaps in the case of the Financial Times data journalists, this trust is established over time, through a portfolio of data analysis work that is considered, communicated transparently and with humility.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -422,38 +472,46 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>The annotations in <a href="#fig-ft-vaccine">Figure&nbsp;<span>8.5</span></a> have heavy saliency thanks to the parsimonious use of axis titles, marks and legends, and other non-data-ink <span class="citation" data-cites="tufte_visual_1983">(<a href="references.html#ref-tufte_visual_1983" role="doc-biblioref">Tufte 1983</a>)</span>.</p>
+<p>The annotations in <a href="#fig-ft-vaccine" class="quarto-xref">Figure&nbsp;<span>8.5</span></a> have heavy saliency thanks to the parsimonious use of axis titles, marks and legends, and other non-data-ink <span class="citation" data-cites="tufte_visual_1983">(Tufte 1983)</span>.</p>
 </div>
 </div>
 </section></section><section id="techniques" class="level2" data-number="8.3"><h2 data-number="8.3" class="anchored" data-anchor-id="techniques">
 <span class="header-section-number">8.3</span> Techniques</h2>
-<p>The technical element demonstrates how to design plots deliberatively with annotations in ggplot2. We will recreate a glyphmap type graphic that originally appeared in The Washington Post<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> <span class="citation" data-cites="thebault_reis_covid-19s_2020">(<a href="references.html#ref-thebault_reis_covid-19s_2020" role="doc-biblioref">Thebault and Hauslohner 2020</a>)</span> to tell a story of growth in Covid-19 cases by US county. The graphic is presented in <a href="#fig-wp">Figure&nbsp;<span>8.6</span></a>. Each US county is represented as a line encoded by daily growth rates in new cases between 3rd May and 26th May 2020. Lines are positioned at the geographic centre of each county.</p>
+<p>The technical element demonstrates how to design plots deliberatively with annotations in ggplot2. We will recreate a glyphmap type graphic that originally appeared in The Washington Post<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> <span class="citation" data-cites="thebault_reis_covid-19s_2020">(Thebault and Hauslohner 2020)</span> to tell a story of growth in Covid-19 cases by US county. The graphic is presented in <a href="#fig-wp" class="quarto-xref">Figure&nbsp;<span>8.6</span></a>. Each US county is represented as a line encoded by daily growth rates in new cases between 3rd May and 26th May 2020. Lines are positioned at the geographic centre of each county.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-wp" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figs/08/wp.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<figcaption class="figure-caption">Figure&nbsp;8.6: Glyphmap design displaying growth in COVID-19 cases by US county, based on the design by <span class="citation" data-cites="thebault_reis_covid-19s_2020">Thebault and Hauslohner (<a href="references.html#ref-thebault_reis_covid-19s_2020" role="doc-biblioref">2020</a>)</span>, originally in <a href="https://www.washingtonpost.com/nation/2020/05/24/coronavirus-rural-america-outbreaks/?arc404=true">The Washington Post</a>.</figcaption></figure>
+<div id="fig-wp" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-wp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/08/wp.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-wp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8.6: Glyphmap design displaying growth in COVID-19 cases by US county, based on the design by <span class="citation" data-cites="thebault_reis_covid-19s_2020">Thebault and Hauslohner (2020)</span>, originally in <a href="https://www.washingtonpost.com/nation/2020/05/24/coronavirus-rural-america-outbreaks/?arc404=true">The Washington Post</a>.
+</figcaption></figure>
 </div>
 </div>
 </div>
-<p><a href="#fig-wp">Figure&nbsp;<span>8.6</span></a> is certainly data dense. Without careful decisions on which aspects to emphasise it would be quite unreadable. Line thickness is varied according to relative infection rates (cumulative cases/population size) and growth rate is double encoded with colour value – darker and steeper lines for higher growth rates. Even with these additions it is challenging to discern trajectories for every county, but instead a typical model or expectation of these trajectories can be learnt from visually scanning the graphic. That there is spatial autocorrelation in trajectories means an overall pattern of exposure can be inferred, before eyes are drawn to exceptions. Initially these are towards the extreme end: tall, steep, dark and thick lines suggesting rapid growth rates and high case rates. Secondary patterns can also be discerned, for example thick and mid-dark lines surrounded by lines that are generally lighter and thinner: counties that appear locally exceptional in having comparatively high growth and exposure rates.</p>
-<p>The design is impressive, and there is an obvious benefit to showing growth rates in their spatial position. However, we are not looking at absolute numbers here. The counties that are most salient are not those with the largest case counts. Rather, they have experienced rapid growth since the number of cases reported on 3rd May. So the graphic is most certainly <em>partial</em> and <em>designed</em> to suit a particular purpose. A slight adjustment in the implementation in <a href="#fig-wp">Figure&nbsp;<span>8.6</span></a> was to only show growth rates for counties that had non-negligible case counts on 3rd May (<span class="math inline">\geq20</span> cases).</p>
-<p>Without the careful integration of annotations and non-standard legends, <a href="#fig-wp">Figure&nbsp;<span>8.6</span></a> would not be so successful. The aim of this technical section is to demonstrate an approach to generating heavily designed annotations – custom legends, which are often necessary when communicating with maps. For more extensive demonstration of how charts can be annotated and refined, do see the Further Reading section of this chapter.</p>
+<p><a href="#fig-wp" class="quarto-xref">Figure&nbsp;<span>8.6</span></a> is certainly data dense. Without careful decisions on which aspects to emphasise it would be quite unreadable. Line thickness is varied according to relative infection rates (cumulative cases/population size) and growth rate is double encoded with colour value – darker and steeper lines for higher growth rates. Even with these additions it is challenging to discern trajectories for every county, but instead a typical model or expectation of these trajectories can be learnt from visually scanning the graphic. That there is spatial autocorrelation in trajectories means an overall pattern of exposure can be inferred, before eyes are drawn to exceptions. Initially these are towards the extreme end: tall, steep, dark and thick lines suggesting rapid growth rates and high case rates. Secondary patterns can also be discerned, for example thick and mid-dark lines surrounded by lines that are generally lighter and thinner: counties that appear locally exceptional in having comparatively high growth and exposure rates.</p>
+<p>The design is impressive, and there is an obvious benefit to showing growth rates in their spatial position. However, we are not looking at absolute numbers here. The counties that are most salient are not those with the largest case counts. Rather, they have experienced rapid growth since the number of cases reported on 3rd May. So the graphic is most certainly <em>partial</em> and <em>designed</em> to suit a particular purpose. A slight adjustment in the implementation in <a href="#fig-wp" class="quarto-xref">Figure&nbsp;<span>8.6</span></a> was to only show growth rates for counties that had non-negligible case counts on 3rd May (<span class="math inline">\geq20</span> cases).</p>
+<p>Without the careful integration of annotations and non-standard legends, <a href="#fig-wp" class="quarto-xref">Figure&nbsp;<span>8.6</span></a> would not be so successful. The aim of this technical section is to demonstrate an approach to generating heavily designed annotations – custom legends, which are often necessary when communicating with maps. For more extensive demonstration of how charts can be annotated and refined, do see the Further Reading section of this chapter.</p>
 <section id="import" class="level3" data-number="8.3.1"><h3 data-number="8.3.1" class="anchored" data-anchor-id="import">
 <span class="header-section-number">8.3.1</span> Import</h3>
 <ul>
 <li>Download the <a href="./files/08-template.qmd">08-template.qmd</a> file and save it to your <code>vis4sds</code> project.</li>
 <li>Open your <code>vis4sds</code> project in RStudio and load the template file by clicking <code>File</code> &gt; <code>Open File ...</code> &gt; <code>08-template.qmd</code>.</li>
 </ul>
-<p>The template file lists the required packages – <code>tidyverse</code> and <code>sf</code>. The data were collected using the <a href="https://kjhealy.github.io/covdata/"><code>covdata</code></a> package <span class="citation" data-cites="healy_covdata_2020">(<a href="references.html#ref-healy_covdata_2020" role="doc-biblioref">Healy 2020</a>)</span>, attributing the county-level cumulative cases dataset maintained by data journalists at <span class="citation" data-cites="nyt_coronavirus_2021">The New York Times (<a href="references.html#ref-nyt_coronavirus_2021" role="doc-biblioref">2021</a>)</span>.</p>
+<p>The template file lists the required packages – <code>tidyverse</code> and <code>sf</code>. The data were collected using the <a href="https://kjhealy.github.io/covdata/"><code>covdata</code></a> package <span class="citation" data-cites="healy_covdata_2020">(Healy 2020)</span>, attributing the county-level cumulative cases dataset maintained by data journalists at <span class="citation" data-cites="nyt_coronavirus_2021">The New York Times (2021)</span>.</p>
 <p>The template provides access to a version of this dataset that is ‘staged’ for charting. For this cases are filtered on the dates covered by the Washington Post graphic (3rd to 25th May); counties whose daily case counts were <span class="math inline">\geq20</span> cases on 3rd May are identified; calculated daily growth rates are anchored to case counts on 3rd May; calculated ‘end’ growth rates and daily counts for each county are calculated (those recorded on 25th May); and finally a binned growth rate variable identifying counties with daily case counts on 25rd May that were <span class="math inline">\leq2\times</span>, <span class="math inline">\geq2\times</span>, <span class="math inline">\geq4\times</span>, <span class="math inline">\geq7\times</span> the daily case counts measured on 3rd May. Also there is a <code>state_boundaries</code> dataset to download, which contains <code>geometry</code> data for each US state, collected from <a href="https://www.census.gov/geographies/mapping-files/time-series/geo/carto-boundary-file.html">US Census Bureau</a> as well as coordinate variables describing the geographic centroid of each state. The <a href="https://en.wikipedia.org/wiki/Albers_projection">Albers Equal Area</a> projection is used.</p>
 </section><section id="plot-trajectories" class="level3" data-number="8.3.2"><h3 data-number="8.3.2" class="anchored" data-anchor-id="plot-trajectories">
 <span class="header-section-number">8.3.2</span> Plot trajectories</h3>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-wp-basic" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figs/08/wp-basic.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<figcaption class="figure-caption">Figure&nbsp;8.7: Glyphmap design displaying growth in COVID-19 cases by US county, without legend and annotations.</figcaption></figure>
+<div id="fig-wp-basic" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-wp-basic-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/08/wp-basic.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-wp-basic-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8.7: Glyphmap design displaying growth in COVID-19 cases by US county, without legend and annotations.
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -574,22 +632,34 @@ Note
 </div>
 </section><section id="build-custom-legend" class="level3" data-number="8.3.4"><h3 data-number="8.3.4" class="anchored" data-anchor-id="build-custom-legend">
 <span class="header-section-number">8.3.4</span> Build custom legend</h3>
-<p>Since <a href="#fig-wp">Figure&nbsp;<span>8.6</span></a> is a custom data graphic coded in a somewhat low-level way with <code>geom_segment()</code>, it is useful to accompany it with a more expressive legend. We therefore build our own legend from scratch, using the geographic space of the plot as our canvas.</p>
-<div id="fig-legends" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><div class="columns">
+<p>Since <a href="#fig-wp" class="quarto-xref">Figure&nbsp;<span>8.6</span></a> is a custom data graphic coded in a somewhat low-level way with <code>geom_segment()</code>, it is useful to accompany it with a more expressive legend. We therefore build our own legend from scratch, using the geographic space of the plot as our canvas.</p>
+<div id="fig-legends" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-legends-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="columns">
 <div class="column" style="width:47%;">
-<div id="fig-wp-growth-legend" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figs/08/wp-legend-growth.png" class="img-fluid figure-img" data-ref-parent="fig-legends"></p>
-<figcaption class="figure-caption">(a) Growth rates</figcaption></figure>
+<div id="fig-wp-growth-legend" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-subfloat-fig figure"><div aria-describedby="fig-wp-growth-legend-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/08/wp-legend-growth.png" class="img-fluid figure-img" data-ref-parent="fig-legends">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-wp-growth-legend-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) Growth rates
+</figcaption></figure>
 </div>
 </div><div class="column" style="width:53%;">
-<div id="fig-wp-case-legend" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figs/08/wp-legend-case.png" class="img-fluid figure-img" data-ref-parent="fig-legends"></p>
-<figcaption class="figure-caption">(b) Case rates</figcaption></figure>
+<div id="fig-wp-case-legend" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-subfloat-fig figure"><div aria-describedby="fig-wp-case-legend-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/08/wp-legend-case.png" class="img-fluid figure-img" data-ref-parent="fig-legends">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-wp-case-legend-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) Case rates
+</figcaption></figure>
 </div>
 </div>
 </div>
-<figcaption class="figure-caption">Figure&nbsp;8.8: Custom legends used to demonstrate growth and case rates.</figcaption></figure>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-legends-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8.8: Custom legends used to demonstrate growth and case rates.
+</figcaption></figure>
 </div>
 <p>To support positioning of the legend we extract the spatial limits, or bounding box, of our plot area – the mainland US.</p>
 <div class="cell">
@@ -598,7 +668,7 @@ Note
 <span><span class="va">width</span> <span class="op">&lt;-</span> <span class="va">bbox</span><span class="op">$</span><span class="va">xmax</span><span class="op">-</span><span class="va">bbox</span><span class="op">$</span><span class="va">xmin</span></span>
 <span><span class="va">height</span> <span class="op">&lt;-</span> <span class="va">bbox</span><span class="op">$</span><span class="va">ymax</span><span class="op">-</span><span class="va">bbox</span><span class="op">$</span><span class="va">ymin</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>We then create a dataset for the top right legend displaying the different categories of growth rate – <a href="#fig-wp-growth-legend">Figure&nbsp;<span>8.8 (a)</span></a>. Counties filtered by their different growth rates were identified manually. As you will see shortly we use exactly the same <em>encoding</em> as the main graphic for the example legend lines, but rather than positioning these selected counties in their real geographic position, we override their x- and y- location so that the lines appear in a margin to the top right of the graphic. This is achieved in the <code>mutate()</code>, where we set x-position to start at the right quarter of the graphic (<code>bbox$xmax-.25*width</code>) and y-position to start slightly above the top of the graphic <code>bbox$ymax+.05*height</code>. <code>case_rate</code> is set to a constant as we don’t want line width to vary and also a manually created <code>label</code> variable.</p>
+<p>We then create a dataset for the top right legend displaying the different categories of growth rate – <a href="#fig-wp-growth-legend" class="quarto-xref">Figure&nbsp;<span>8.8 (a)</span></a>. Counties filtered by their different growth rates were identified manually. As you will see shortly we use exactly the same <em>encoding</em> as the main graphic for the example legend lines, but rather than positioning these selected counties in their real geographic position, we override their x- and y- location so that the lines appear in a margin to the top right of the graphic. This is achieved in the <code>mutate()</code>, where we set x-position to start at the right quarter of the graphic (<code>bbox$xmax-.25*width</code>) and y-position to start slightly above the top of the graphic <code>bbox$ymax+.05*height</code>. <code>case_rate</code> is set to a constant as we don’t want line width to vary and also a manually created <code>label</code> variable.</p>
 <div class="cell">
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Legend : growth</span></span>
 <span><span class="va">legend_growth</span> <span class="op">&lt;-</span> <span class="va">county_data</span> <span class="op">|&gt;</span></span>
@@ -619,7 +689,7 @@ Note
 <span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>A separate dataset is also created for drawing the top left legend – <a href="#fig-wp-case-legend">Figure&nbsp;<span>8.8 (b)</span></a>, showing different case rates relative to population size. In the <code>mutate()</code> we set x-position to start towards the left of the graphic (<code>bbox$xmax-.88*width</code>) and y-position to start slightly above the top of the graphic <code>bbox$ymax+.05*height</code>. We want to draw three lines corresponding to a low, medium and high growth rate and so <code>pivot_longer()</code> to duplicate the daily case data over rows. Each line needs to be drawn next to one another and this is achieved with the <code>offset_day</code> variable, a multiple applied to the geographic <code>width</code> of US used later in the ggplot2 specification.</p>
+<p>A separate dataset is also created for drawing the top left legend – <a href="#fig-wp-case-legend" class="quarto-xref">Figure&nbsp;<span>8.8 (b)</span></a>, showing different case rates relative to population size. In the <code>mutate()</code> we set x-position to start towards the left of the graphic (<code>bbox$xmax-.88*width</code>) and y-position to start slightly above the top of the graphic <code>bbox$ymax+.05*height</code>. We want to draw three lines corresponding to a low, medium and high growth rate and so <code>pivot_longer()</code> to duplicate the daily case data over rows. Each line needs to be drawn next to one another and this is achieved with the <code>offset_day</code> variable, a multiple applied to the geographic <code>width</code> of US used later in the ggplot2 specification.</p>
 <div class="cell">
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Legend : case</span></span>
 <span><span class="va">legend_case</span> <span class="op">&lt;-</span> <span class="va">county_data</span> <span class="op">|&gt;</span></span>
@@ -708,7 +778,7 @@ Note
 </div>
 </section></section><section id="conclusions" class="level2" data-number="8.4"><h2 data-number="8.4" class="anchored" data-anchor-id="conclusions">
 <span class="header-section-number">8.4</span> Conclusions</h2>
-<p>Communicating effectively with data is not an easy undertaking. Difficult decisions must be made around how much detail to sacrifice in favour of clarity and simplicity of message. Visual approaches can help here, giving cues that order and prioritise information and that build explanatory narratives using metaphor and other rhetorical devices. There are stellar examples of this from in-house data journalism teams, most obviously in recent evidence-based stories around the Covid-19 pandemic. We have considered some of these and the careful design decisions made when communicating data-driven stories in light of data, audience and intended purpose. Many data journalists use ggplot2 as their visualization toolkit of choice and in the technical section we demonstrated how more <em>designed</em> graphics can be generated. This somewhat fiddly approach to creating graphics is different from the style of workflow envisaged in <a href="03-visual.html"><span>Chapter&nbsp;3</span></a> and <a href="04-explore.html"><span>Chapter&nbsp;4</span></a> on exploratory visual analysis. However, as demonstrated through the examples in this chapter and the book more generally, ggplot2 can be used for this more deliberative visualization design, making control over annotations, text labels and embedded graphics useful skills to develop.</p>
+<p>Communicating effectively with data is not an easy undertaking. Difficult decisions must be made around how much detail to sacrifice in favour of clarity and simplicity of message. Visual approaches can help here, giving cues that order and prioritise information and that build explanatory narratives using metaphor and other rhetorical devices. There are stellar examples of this from in-house data journalism teams, most obviously in recent evidence-based stories around the Covid-19 pandemic. We have considered some of these and the careful design decisions made when communicating data-driven stories in light of data, audience and intended purpose. Many data journalists use ggplot2 as their visualization toolkit of choice and in the technical section we demonstrated how more <em>designed</em> graphics can be generated. This somewhat fiddly approach to creating graphics is different from the style of workflow envisaged in <a href="03-visual.html" class="quarto-xref"><span>Chapter 3</span></a> and <a href="04-explore.html" class="quarto-xref"><span>Chapter 4</span></a> on exploratory visual analysis. However, as demonstrated through the examples in this chapter and the book more generally, ggplot2 can be used for this more deliberative visualization design, making control over annotations, text labels and embedded graphics useful skills to develop.</p>
 </section><section id="further-reading" class="level2" data-number="8.5"><h2 data-number="8.5" class="anchored" data-anchor-id="further-reading">
 <span class="header-section-number">8.5</span> Further Reading</h2>
 <p>Cédric Scherer’s excellent workshop at posit::conf(2023). Highly recommended as a resource for covering in a methodical way how to parameterise ggplot2 scales, coordinate systems, facets, annotation and labelling.</p>
@@ -823,10 +893,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/vis4sds\/vis4sds");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -836,8 +923,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -849,7 +945,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -893,6 +1112,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -918,6 +1138,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -977,12 +1223,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
-      <a href="./07-uncertainty.html" class="pagination-link">
+      <a href="./07-uncertainty.html" class="pagination-link" aria-label="Uncertainty">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Uncertainty</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./references.html" class="pagination-link">
+      <a href="./references.html" class="pagination-link" aria-label="References">
         <span class="nav-page-text">References</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
@@ -991,4 +1237,4 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 
 
 
-</body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/vis4sds/vis4sds/edit/master/08-storytelling.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li></ul></div></div></div></footer></body></html>

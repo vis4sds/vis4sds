@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.4.554">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>Visualization for Social Data Science - 3&nbsp; Visualization Fundamentals</title>
 <style>
@@ -19,7 +19,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -76,7 +76,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   "collapse-after": 3,
   "panel-placement": "start",
   "type": "textbox",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -85,6 +91,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
@@ -95,24 +102,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./03-visual.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Visualization Fundamentals</span></a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-      </a>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./03-visual.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Visualization Fundamentals</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
     </div>
   </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Visualization for Social Data Science</a> 
         <div class="sidebar-tools-main">
-    <a href="https://github.com/vis4sds/vis4sds/" rel="" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
-    <a href="https://twitter.com/intent/tweet?url=%7Curl%7C" rel="" title="Twitter" class="quarto-navigation-tool px-1" aria-label="Twitter"><i class="bi bi-twitter"></i></a>
+    <a href="https://github.com/vis4sds/vis4sds/" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <a href="https://twitter.com/intent/tweet?url=%7Curl%7C" title="Twitter" class="quarto-navigation-tool px-1" aria-label="Twitter"><i class="bi bi-twitter"></i></a>
 </div>
     </div>
       </div>
@@ -202,7 +209,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
     </ul>
 </div>
-</nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
@@ -233,7 +240,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
   <li><a href="#conclusions" id="toc-conclusions" class="nav-link" data-scroll-target="#conclusions"><span class="header-section-number">3.4</span> Conclusions</a></li>
   <li><a href="#further-reading" id="toc-further-reading" class="nav-link" data-scroll-target="#further-reading"><span class="header-section-number">3.5</span> Further Reading</a></li>
-  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/vis4sds/vis4sds/edit/master/03-visual.qmd" class="toc-action">Edit this page</a></p></div></div></nav>
+  </ul><div class="toc-actions"><ul><li><a href="https://github.com/vis4sds/vis4sds/edit/master/03-visual.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
@@ -250,6 +257,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
+
 </header><script defer="" src="./fontawesome.min.js"></script><p>By the end of this chapter you should gain the following knowledge and practical skills.</p>
 <div class="callout callout-style-default callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -262,16 +270,11 @@ Knowledge outcomes
 </div>
 <div class="callout-body-container callout-body">
 <ul class="task-list">
-<li>
-<input type="checkbox">Recognise the characteristics of effective data graphics.</li>
-<li>
-<input type="checkbox">Understand that there is a <em>grammar</em> of graphics, and that this grammar underpins modern visualization toolkits (ggplot2, vega-lite and Tableau).</li>
-<li>
-<input type="checkbox">Be aware of the vocabulary used by these toolkits – that of encoding data through visual channels.</li>
-<li>
-<input type="checkbox">Be able to select appropriate visual channels given a data item’s measurement type.</li>
-<li>
-<input type="checkbox">Appreciate how visual channels and evidence of their encoding effectiveness can be used to evaluate data graphics.</li>
+<li><label><input type="checkbox">Recognise the characteristics of effective data graphics.</label></li>
+<li><label><input type="checkbox">Understand that there is a <em>grammar</em> of graphics, and that this grammar underpins modern visualization toolkits (ggplot2, vega-lite and Tableau).</label></li>
+<li><label><input type="checkbox">Be aware of the vocabulary used by these toolkits – that of encoding data through visual channels.</label></li>
+<li><label><input type="checkbox">Be able to select appropriate visual channels given a data item’s measurement type.</label></li>
+<li><label><input type="checkbox">Appreciate how visual channels and evidence of their encoding effectiveness can be used to evaluate data graphics.</label></li>
 </ul>
 </div>
 </div>
@@ -286,8 +289,7 @@ Skills outcomes
 </div>
 <div class="callout-body-container callout-body">
 <ul class="task-list">
-<li>
-<input type="checkbox">Write ggplot2 specifications that represent data using marks (<code>geoms</code>) and encoding channels (<code>aesthetics</code>).</li>
+<li><label><input type="checkbox">Write ggplot2 specifications that represent data using marks (<code>geoms</code>) and encoding channels (<code>aesthetics</code>).</label></li>
 </ul>
 </div>
 </div>
@@ -310,18 +312,22 @@ Watch [Miriah Meyer's](https://www.cs.utah.edu/~miriah/) TEDx talk, *Information
 <li>Are concise, emphasising dimensions of a dataset without extraneous details.</li>
 <li>Generate an aesthetic response, encouraging people to engage with the data or question.</li>
 </ul>
-<p>Given these characteristics consider the data graphic below (<a href="#fig-wp-map">Figure&nbsp;<span>3.1</span></a>), which presents an analysis of 2016 US Presidential Election, or the <em>Peaks and Valleys of Trump and Clinton’s Support</em>. The map is reproduced from an article in the The Washington Post <span class="citation" data-cites="gamio_how_2016">(<a href="references.html#ref-gamio_how_2016" role="doc-biblioref">Gamio and Keating 2016</a>)</span>. Included in the bottom margin is a choropleth map coloured according to party majority, more standard practice for reporting county-level voting.</p>
-<p><span class="citation" data-cites="gamio_how_2016">Gamio and Keating (<a href="references.html#ref-gamio_how_2016" role="doc-biblioref">2016</a>)</span>’s graphic is clearly <em>data rich</em>, encoding many more data items than does the standard choropleth. It is not simply the data density that makes the graphic successful, however. There are careful design choices that help <em>support comparison</em> and emphasise <em>complex structure</em>. By varying the height of triangles according to the number of votes cast, the thickness according to whether or not the result for Trump/Clinton was a landslide and rotating the map 90 degrees, the very obvious differences between metropolitan, densely populated coastal counties that voted emphatically for Clinton and the vast number of suburban, provincial town and rural counties (everywhere else) that voted Trump, are exposed.</p>
+<p>Given these characteristics consider the data graphic below (<a href="#fig-wp-map" class="quarto-xref">Figure&nbsp;<span>3.1</span></a>), which presents an analysis of 2016 US Presidential Election, or the <em>Peaks and Valleys of Trump and Clinton’s Support</em>. The map is reproduced from an article in the The Washington Post <span class="citation" data-cites="gamio_how_2016">(Gamio and Keating 2016)</span>. Included in the bottom margin is a choropleth map coloured according to party majority, more standard practice for reporting county-level voting.</p>
+<p><span class="citation" data-cites="gamio_how_2016">Gamio and Keating (2016)</span>’s graphic is clearly <em>data rich</em>, encoding many more data items than does the standard choropleth. It is not simply the data density that makes the graphic successful, however. There are careful design choices that help <em>support comparison</em> and emphasise <em>complex structure</em>. By varying the height of triangles according to the number of votes cast, the thickness according to whether or not the result for Trump/Clinton was a landslide and rotating the map 90 degrees, the very obvious differences between metropolitan, densely populated coastal counties that voted emphatically for Clinton and the vast number of suburban, provincial town and rural counties (everywhere else) that voted Trump, are exposed.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-wp-map" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figs/03/wp_long.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<figcaption class="figure-caption">Figure&nbsp;3.1: Map of 2016 US presidential election results. Note that for copyright reasons this is a re-implementation in ggplot2 of <span class="citation" data-cites="gamio_how_2016">Gamio and Keating (<a href="references.html#ref-gamio_how_2016" role="doc-biblioref">2016</a>)</span>’s original, which appeared in The Washington Post. Code for reproducing the graphic from this link<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</figcaption></figure>
+<div id="fig-wp-map" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-wp-map-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/03/wp_long.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-wp-map-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.1: Map of 2016 US presidential election results. Note that for copyright reasons this is a re-implementation in ggplot2 of <span class="citation" data-cites="gamio_how_2016">Gamio and Keating (2016)</span>’s original, which appeared in The Washington Post. Code for reproducing the graphic from this link<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.
+</figcaption></figure>
 </div>
 </div>
 </div>
 <!-- ![Map of 2016 US presidential election results. Note that for copyright reasons this is a re-implementation of the original [Washington Post piece](https://www.washingtonpost.com/graphics/politics/2016-election/election-results-from-coast-to-coast/) in `ggplot2`.](figs/03/wp_long.png){#fig-wp-map width=100% fig-align="center"} -->
-
+<div>
 <!-- ```{r wp-data}
 #| label: wp-data
 #| tbl-cap: "Data items encoded in the Washington Post *Peaks and Valleys* graphic as compared to standard choropleth map."
@@ -347,6 +353,12 @@ kbl(data) |> kable_minimal() |> column_spec(2, extra_css = "font-family:  Monosp
 <caption>Table 3.1: Data items encoded in the Washington Post and Medium articles.</caption>
 
 <table data-quarto-postprocess="true">
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">Item</th>
@@ -359,64 +371,100 @@ kbl(data) |> kable_minimal() |> column_spec(2, extra_css = "font-family:  Monosp
 <tr class="odd">
 <td style="text-align: left;">county location</td>
 <td style="text-align: left;">`interval`</td>
-<td style="text-align: left;"><a href="www.google.com"><img src="data:image/svg+xml;base64,PHN2ZyBhcmlhLWhpZGRlbj0idHJ1ZSIgcm9sZT0iaW1nIiB2aWV3Ym94PSIwIDAgNTEyIDUxMiIgc3R5bGU9ImhlaWdodDoxZW07d2lkdGg6MWVtO3ZlcnRpY2FsLWFsaWduOi0wLjEyNWVtO21hcmdpbi1sZWZ0OmF1dG87bWFyZ2luLXJpZ2h0OmF1dG87Zm9udC1zaXplOmluaGVyaXQ7ZmlsbDpjdXJyZW50Q29sb3I7b3ZlcmZsb3c6dmlzaWJsZTtwb3NpdGlvbjpyZWxhdGl2ZTsiPjxwYXRoIGQ9Ik0xNzMuODk4IDQzOS40MDRsLTE2Ni40LTE2Ni40Yy05Ljk5Ny05Ljk5Ny05Ljk5Ny0yNi4yMDYgMC0zNi4yMDRsMzYuMjAzLTM2LjIwNGM5Ljk5Ny05Ljk5OCAyNi4yMDctOS45OTggMzYuMjA0IDBMMTkyIDMxMi42OSA0MzIuMDk1IDcyLjU5NmM5Ljk5Ny05Ljk5NyAyNi4yMDctOS45OTcgMzYuMjA0IDBsMzYuMjAzIDM2LjIwNGM5Ljk5NyA5Ljk5NyA5Ljk5NyAyNi4yMDYgMCAzNi4yMDRsLTI5NC40IDI5NC40MDFjLTkuOTk4IDkuOTk3LTI2LjIwNyA5Ljk5Ny0zNi4yMDQtLjAwMXoiPjwvcGF0aD48L3N2Zz4=" class="img-fluid" /></a></td>
-<td style="text-align: left;"><a href="www.google.com"><img src="data:image/svg+xml;base64,PHN2ZyBhcmlhLWhpZGRlbj0idHJ1ZSIgcm9sZT0iaW1nIiB2aWV3Ym94PSIwIDAgNTEyIDUxMiIgc3R5bGU9ImhlaWdodDoxZW07d2lkdGg6MWVtO3ZlcnRpY2FsLWFsaWduOi0wLjEyNWVtO21hcmdpbi1sZWZ0OmF1dG87bWFyZ2luLXJpZ2h0OmF1dG87Zm9udC1zaXplOmluaGVyaXQ7ZmlsbDpjdXJyZW50Q29sb3I7b3ZlcmZsb3c6dmlzaWJsZTtwb3NpdGlvbjpyZWxhdGl2ZTsiPjxwYXRoIGQ9Ik0xNzMuODk4IDQzOS40MDRsLTE2Ni40LTE2Ni40Yy05Ljk5Ny05Ljk5Ny05Ljk5Ny0yNi4yMDYgMC0zNi4yMDRsMzYuMjAzLTM2LjIwNGM5Ljk5Ny05Ljk5OCAyNi4yMDctOS45OTggMzYuMjA0IDBMMTkyIDMxMi42OSA0MzIuMDk1IDcyLjU5NmM5Ljk5Ny05Ljk5NyAyNi4yMDctOS45OTcgMzYuMjA0IDBsMzYuMjAzIDM2LjIwNGM5Ljk5NyA5Ljk5NyA5Ljk5NyAyNi4yMDYgMCAzNi4yMDRsLTI5NC40IDI5NC40MDFjLTkuOTk4IDkuOTk3LTI2LjIwNyA5Ljk5Ny0zNi4yMDQtLjAwMXoiPjwvcGF0aD48L3N2Zz4=" class="img-fluid" /></a></td>
+<td style="text-align: left;"><a href="www.google.com">
+<svg aria-hidden="true" role="img" viewbox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;">
+<path d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z"></path>
+</svg>
+</a></td>
+<td style="text-align: left;"><a href="www.google.com">
+<svg aria-hidden="true" role="img" viewbox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;">
+<path d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z"></path>
+</svg>
+</a></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">county result</td>
 <td style="text-align: left;">`Nominal`</td>
-<td style="text-align: left;"><a href="www.google.com"><img src="data:image/svg+xml;base64,PHN2ZyBhcmlhLWhpZGRlbj0idHJ1ZSIgcm9sZT0iaW1nIiB2aWV3Ym94PSIwIDAgNTEyIDUxMiIgc3R5bGU9ImhlaWdodDoxZW07d2lkdGg6MWVtO3ZlcnRpY2FsLWFsaWduOi0wLjEyNWVtO21hcmdpbi1sZWZ0OmF1dG87bWFyZ2luLXJpZ2h0OmF1dG87Zm9udC1zaXplOmluaGVyaXQ7ZmlsbDpjdXJyZW50Q29sb3I7b3ZlcmZsb3c6dmlzaWJsZTtwb3NpdGlvbjpyZWxhdGl2ZTsiPjxwYXRoIGQ9Ik0xNzMuODk4IDQzOS40MDRsLTE2Ni40LTE2Ni40Yy05Ljk5Ny05Ljk5Ny05Ljk5Ny0yNi4yMDYgMC0zNi4yMDRsMzYuMjAzLTM2LjIwNGM5Ljk5Ny05Ljk5OCAyNi4yMDctOS45OTggMzYuMjA0IDBMMTkyIDMxMi42OSA0MzIuMDk1IDcyLjU5NmM5Ljk5Ny05Ljk5NyAyNi4yMDctOS45OTcgMzYuMjA0IDBsMzYuMjAzIDM2LjIwNGM5Ljk5NyA5Ljk5NyA5Ljk5NyAyNi4yMDYgMCAzNi4yMDRsLTI5NC40IDI5NC40MDFjLTkuOTk4IDkuOTk3LTI2LjIwNyA5Ljk5Ny0zNi4yMDQtLjAwMXoiPjwvcGF0aD48L3N2Zz4=" class="img-fluid" /></a></td>
-<td style="text-align: left;"><a href="www.google.com"><img src="data:image/svg+xml;base64,PHN2ZyBhcmlhLWhpZGRlbj0idHJ1ZSIgcm9sZT0iaW1nIiB2aWV3Ym94PSIwIDAgNTEyIDUxMiIgc3R5bGU9ImhlaWdodDoxZW07d2lkdGg6MWVtO3ZlcnRpY2FsLWFsaWduOi0wLjEyNWVtO21hcmdpbi1sZWZ0OmF1dG87bWFyZ2luLXJpZ2h0OmF1dG87Zm9udC1zaXplOmluaGVyaXQ7ZmlsbDpjdXJyZW50Q29sb3I7b3ZlcmZsb3c6dmlzaWJsZTtwb3NpdGlvbjpyZWxhdGl2ZTsiPjxwYXRoIGQ9Ik0xNzMuODk4IDQzOS40MDRsLTE2Ni40LTE2Ni40Yy05Ljk5Ny05Ljk5Ny05Ljk5Ny0yNi4yMDYgMC0zNi4yMDRsMzYuMjAzLTM2LjIwNGM5Ljk5Ny05Ljk5OCAyNi4yMDctOS45OTggMzYuMjA0IDBMMTkyIDMxMi42OSA0MzIuMDk1IDcyLjU5NmM5Ljk5Ny05Ljk5NyAyNi4yMDctOS45OTcgMzYuMjA0IDBsMzYuMjAzIDM2LjIwNGM5Ljk5NyA5Ljk5NyA5Ljk5NyAyNi4yMDYgMCAzNi4yMDRsLTI5NC40IDI5NC40MDFjLTkuOTk4IDkuOTk3LTI2LjIwNyA5Ljk5Ny0zNi4yMDQtLjAwMXoiPjwvcGF0aD48L3N2Zz4=" class="img-fluid" /></a></td>
+<td style="text-align: left;"><a href="www.google.com">
+<svg aria-hidden="true" role="img" viewbox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;">
+<path d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z"></path>
+</svg>
+</a></td>
+<td style="text-align: left;"><a href="www.google.com">
+<svg aria-hidden="true" role="img" viewbox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;">
+<path d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z"></path>
+</svg>
+</a></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">state result</td>
 <td style="text-align: left;">`Nominal`</td>
 <td style="text-align: left;"></td>
-<td style="text-align: left;"><a href="www.google.com"><img src="data:image/svg+xml;base64,PHN2ZyBhcmlhLWhpZGRlbj0idHJ1ZSIgcm9sZT0iaW1nIiB2aWV3Ym94PSIwIDAgNTEyIDUxMiIgc3R5bGU9ImhlaWdodDoxZW07d2lkdGg6MWVtO3ZlcnRpY2FsLWFsaWduOi0wLjEyNWVtO21hcmdpbi1sZWZ0OmF1dG87bWFyZ2luLXJpZ2h0OmF1dG87Zm9udC1zaXplOmluaGVyaXQ7ZmlsbDpjdXJyZW50Q29sb3I7b3ZlcmZsb3c6dmlzaWJsZTtwb3NpdGlvbjpyZWxhdGl2ZTsiPjxwYXRoIGQ9Ik0xNzMuODk4IDQzOS40MDRsLTE2Ni40LTE2Ni40Yy05Ljk5Ny05Ljk5Ny05Ljk5Ny0yNi4yMDYgMC0zNi4yMDRsMzYuMjAzLTM2LjIwNGM5Ljk5Ny05Ljk5OCAyNi4yMDctOS45OTggMzYuMjA0IDBMMTkyIDMxMi42OSA0MzIuMDk1IDcyLjU5NmM5Ljk5Ny05Ljk5NyAyNi4yMDctOS45OTcgMzYuMjA0IDBsMzYuMjAzIDM2LjIwNGM5Ljk5NyA5Ljk5NyA5Ljk5NyAyNi4yMDYgMCAzNi4yMDRsLTI5NC40IDI5NC40MDFjLTkuOTk4IDkuOTk3LTI2LjIwNyA5Ljk5Ny0zNi4yMDQtLjAwMXoiPjwvcGF0aD48L3N2Zz4=" class="img-fluid" /></a></td>
+<td style="text-align: left;"><a href="www.google.com">
+<svg aria-hidden="true" role="img" viewbox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;">
+<path d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z"></path>
+</svg>
+</a></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">county votes cast (~pop size)</td>
 <td style="text-align: left;">`Ratio`</td>
 <td style="text-align: left;"></td>
-<td style="text-align: left;"><a href="www.google.com"><img src="data:image/svg+xml;base64,PHN2ZyBhcmlhLWhpZGRlbj0idHJ1ZSIgcm9sZT0iaW1nIiB2aWV3Ym94PSIwIDAgNTEyIDUxMiIgc3R5bGU9ImhlaWdodDoxZW07d2lkdGg6MWVtO3ZlcnRpY2FsLWFsaWduOi0wLjEyNWVtO21hcmdpbi1sZWZ0OmF1dG87bWFyZ2luLXJpZ2h0OmF1dG87Zm9udC1zaXplOmluaGVyaXQ7ZmlsbDpjdXJyZW50Q29sb3I7b3ZlcmZsb3c6dmlzaWJsZTtwb3NpdGlvbjpyZWxhdGl2ZTsiPjxwYXRoIGQ9Ik0xNzMuODk4IDQzOS40MDRsLTE2Ni40LTE2Ni40Yy05Ljk5Ny05Ljk5Ny05Ljk5Ny0yNi4yMDYgMC0zNi4yMDRsMzYuMjAzLTM2LjIwNGM5Ljk5Ny05Ljk5OCAyNi4yMDctOS45OTggMzYuMjA0IDBMMTkyIDMxMi42OSA0MzIuMDk1IDcyLjU5NmM5Ljk5Ny05Ljk5NyAyNi4yMDctOS45OTcgMzYuMjA0IDBsMzYuMjAzIDM2LjIwNGM5Ljk5NyA5Ljk5NyA5Ljk5NyAyNi4yMDYgMCAzNi4yMDRsLTI5NC40IDI5NC40MDFjLTkuOTk4IDkuOTk3LTI2LjIwNyA5Ljk5Ny0zNi4yMDQtLjAwMXoiPjwvcGF0aD48L3N2Zz4=" class="img-fluid" /></a></td>
+<td style="text-align: left;"><a href="www.google.com">
+<svg aria-hidden="true" role="img" viewbox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;">
+<path d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z"></path>
+</svg>
+</a></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">county result margin</td>
 <td style="text-align: left;">`Ratio`</td>
 <td style="text-align: left;"></td>
-<td style="text-align: left;"><a href="www.google.com"><img src="data:image/svg+xml;base64,PHN2ZyBhcmlhLWhpZGRlbj0idHJ1ZSIgcm9sZT0iaW1nIiB2aWV3Ym94PSIwIDAgNTEyIDUxMiIgc3R5bGU9ImhlaWdodDoxZW07d2lkdGg6MWVtO3ZlcnRpY2FsLWFsaWduOi0wLjEyNWVtO21hcmdpbi1sZWZ0OmF1dG87bWFyZ2luLXJpZ2h0OmF1dG87Zm9udC1zaXplOmluaGVyaXQ7ZmlsbDpjdXJyZW50Q29sb3I7b3ZlcmZsb3c6dmlzaWJsZTtwb3NpdGlvbjpyZWxhdGl2ZTsiPjxwYXRoIGQ9Ik0xNzMuODk4IDQzOS40MDRsLTE2Ni40LTE2Ni40Yy05Ljk5Ny05Ljk5Ny05Ljk5Ny0yNi4yMDYgMC0zNi4yMDRsMzYuMjAzLTM2LjIwNGM5Ljk5Ny05Ljk5OCAyNi4yMDctOS45OTggMzYuMjA0IDBMMTkyIDMxMi42OSA0MzIuMDk1IDcyLjU5NmM5Ljk5Ny05Ljk5NyAyNi4yMDctOS45OTcgMzYuMjA0IDBsMzYuMjAzIDM2LjIwNGM5Ljk5NyA5Ljk5NyA5Ljk5NyAyNi4yMDYgMCAzNi4yMDRsLTI5NC40IDI5NC40MDFjLTkuOTk4IDkuOTk3LTI2LjIwNyA5Ljk5Ny0zNi4yMDQtLjAwMXoiPjwvcGF0aD48L3N2Zz4=" class="img-fluid" /></a></td>
+<td style="text-align: left;"><a href="www.google.com">
+<svg aria-hidden="true" role="img" viewbox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;">
+<path d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z"></path>
+</svg>
+</a></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">county result landslide</td>
 <td style="text-align: left;">`Nominal`</td>
 <td style="text-align: left;"></td>
-<td style="text-align: left;"><a href="www.google.com"><img src="data:image/svg+xml;base64,PHN2ZyBhcmlhLWhpZGRlbj0idHJ1ZSIgcm9sZT0iaW1nIiB2aWV3Ym94PSIwIDAgNTEyIDUxMiIgc3R5bGU9ImhlaWdodDoxZW07d2lkdGg6MWVtO3ZlcnRpY2FsLWFsaWduOi0wLjEyNWVtO21hcmdpbi1sZWZ0OmF1dG87bWFyZ2luLXJpZ2h0OmF1dG87Zm9udC1zaXplOmluaGVyaXQ7ZmlsbDpjdXJyZW50Q29sb3I7b3ZlcmZsb3c6dmlzaWJsZTtwb3NpdGlvbjpyZWxhdGl2ZTsiPjxwYXRoIGQ9Ik0xNzMuODk4IDQzOS40MDRsLTE2Ni40LTE2Ni40Yy05Ljk5Ny05Ljk5Ny05Ljk5Ny0yNi4yMDYgMC0zNi4yMDRsMzYuMjAzLTM2LjIwNGM5Ljk5Ny05Ljk5OCAyNi4yMDctOS45OTggMzYuMjA0IDBMMTkyIDMxMi42OSA0MzIuMDk1IDcyLjU5NmM5Ljk5Ny05Ljk5NyAyNi4yMDctOS45OTcgMzYuMjA0IDBsMzYuMjAzIDM2LjIwNGM5Ljk5NyA5Ljk5NyA5Ljk5NyAyNi4yMDYgMCAzNi4yMDRsLTI5NC40IDI5NC40MDFjLTkuOTk4IDkuOTk3LTI2LjIwNyA5Ljk5Ny0zNi4yMDQtLjAwMXoiPjwvcGF0aD48L3N2Zz4=" class="img-fluid" /></a></td>
+<td style="text-align: left;"><a href="www.google.com">
+<svg aria-hidden="true" role="img" viewbox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;">
+<path d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z"></path>
+</svg>
+</a></td>
 </tr>
 </tbody>
 </table>
 
 </div> -->
+</div>
 </section><section id="sec-grammar" class="level3" data-number="3.2.2"><h3 data-number="3.2.2" class="anchored" data-anchor-id="sec-grammar">
 <span class="header-section-number">3.2.2</span> Grammar of Graphics</h3>
 <blockquote class="blockquote">
 <p>Data graphics visually display measured quantities by means of the combined use of points, lines, a coordinate system, numbers, symbols, words, shading, and color.</p>
-<p><span class="citation" data-cites="tufte_visual_1983">Tufte (<a href="references.html#ref-tufte_visual_1983" role="doc-biblioref">1983</a>)</span></p>
+<p><span class="citation" data-cites="tufte_visual_1983">Tufte (1983)</span></p>
 </blockquote>
-<p>In evidence in the Washington Post graphic is a judicious <em>mapping</em> of data to visuals and a clear understanding of analysis context. This act of carefully considering how best to leverage visual systems given the available data and analysis priorities is key to designing effective data graphics. Leland Wilkinson’s <em>Grammar of Graphics</em> <span class="citation" data-cites="wilkinson_grammar_1999">(<a href="references.html#ref-wilkinson_grammar_1999" role="doc-biblioref">1999</a>)</span> captures this process of turning data into visuals. <span class="citation" data-cites="wilkinson_grammar_1999">Wilkinson (<a href="references.html#ref-wilkinson_grammar_1999" role="doc-biblioref">1999</a>)</span>’s thesis is that if graphics can be described in a consistent way according to their structure and composition, then the process of <em>generating</em> graphics of different types can be systematised. This has obvious benefits for building visualization toolkits. Different chart types and combinations can be specified systematically, thereby formalising data visualization design.</p>
-
+<p>In evidence in the Washington Post graphic is a judicious <em>mapping</em> of data to visuals and a clear understanding of analysis context. This act of carefully considering how best to leverage visual systems given the available data and analysis priorities is key to designing effective data graphics. Leland Wilkinson’s <em>Grammar of Graphics</em> <span class="citation" data-cites="wilkinson_grammar_1999">(1999)</span> captures this process of turning data into visuals. <span class="citation" data-cites="wilkinson_grammar_1999">Wilkinson (1999)</span>’s thesis is that if graphics can be described in a consistent way according to their structure and composition, then the process of <em>generating</em> graphics of different types can be systematised. This has obvious benefits for building visualization toolkits. Different chart types and combinations can be specified systematically, thereby formalising data visualization design.</p>
 <!-- [Tableau](https://www.tableau.com/en-gb), [vega-lite](https://vega.github.io/vega-lite/) and [ggplot2](https://ggplot2.tidyverse.org/) are all underpinned by *Grammar of Graphics* thinking. -->
-<p><span class="citation" data-cites="wilkinson_grammar_1999">Wilkinson (<a href="references.html#ref-wilkinson_grammar_1999" role="doc-biblioref">1999</a>)</span>’s grammar separates the construction of data graphics into a series of components. Below are the components of the <em>Layered Grammar of Graphics</em> on which ggplot2 is based <span class="citation" data-cites="wickham_layered_2010">(<a href="references.html#ref-wickham_layered_2010" role="doc-biblioref">Wickham 2010</a>)</span>, adapted from <span class="citation" data-cites="wilkinson_grammar_1999">Wilkinson (<a href="references.html#ref-wilkinson_grammar_1999" role="doc-biblioref">1999</a>)</span>’s original work. The components in <a href="#fig-gog">Figure&nbsp;<span>3.2</span></a> are together used to create ggplot2 specifications. Those to highlight at this stage are in <span style="color:#000000;">emphasis</span>: the <span style="color:#5A91CA;font-weight:bold">data</span> containing the variables of interest, the <span style="color:#E17637;font-weight:bold">marks</span> used to represent data and the visual <span style="color:#62B743;font-weight:bold">channels</span> through which variables are encoded.</p>
+<p><span class="citation" data-cites="wilkinson_grammar_1999">Wilkinson (1999)</span>’s grammar separates the construction of data graphics into a series of components. Below are the components of the <em>Layered Grammar of Graphics</em> on which ggplot2 is based <span class="citation" data-cites="wickham_layered_2010">(Wickham 2010)</span>, adapted from <span class="citation" data-cites="wilkinson_grammar_1999">Wilkinson (1999)</span>’s original work. The components in <a href="#fig-gog" class="quarto-xref">Figure&nbsp;<span>3.2</span></a> are together used to create ggplot2 specifications. Those to highlight at this stage are in <span style="color:#000000;">emphasis</span>: the <span style="color:#5A91CA;font-weight:bold">data</span> containing the variables of interest, the <span style="color:#E17637;font-weight:bold">marks</span> used to represent data and the visual <span style="color:#62B743;font-weight:bold">channels</span> through which variables are encoded.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-gog" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figs/03/gog.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<figcaption class="figure-caption">Figure&nbsp;3.2: Components of <span class="citation" data-cites="wickham_layered_2010">Wickham (<a href="references.html#ref-wickham_layered_2010" role="doc-biblioref">2010</a>)</span>’s Layered Grammar of Graphics.</figcaption></figure>
+<div id="fig-gog" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-gog-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/03/gog.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-gog-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.2: Components of <span class="citation" data-cites="wickham_layered_2010">Wickham (2010)</span>’s Layered Grammar of Graphics.
+</figcaption></figure>
 </div>
 </div>
 </div>
 <!-- ![Components of @wickham_layered_2010's Layered Grammar of Graphics.](figs/03/gog.png){#fig-gog width=100% fig-align="center"} -->
-<p>To demonstrate this, let’s generate some scatterplots based on the 2019 General Election data. Two variables worth exploring for association here are: <code>con_1719</code>, the change in Conservative vote share by constituency between 2017-2019, and <code>leave_hanretty</code>, the size of the Leave vote in the 2016 EU referendum, estimated at Parliamentary Constituency level <span class="citation" data-cites="hanretty_areal_2017">(see <a href="references.html#ref-hanretty_areal_2017" role="doc-biblioref">Hanretty 2017</a>)</span>.</p>
-<p>In <a href="#fig-gog-demo">Figure&nbsp;<span>3.3</span></a> are three plots, accompanied by ggplot2 specifications used to generated them. Reading-off the graphics and the associated code, you should get a feel for how ggplot2 specifications are constructed:</p>
+<p>To demonstrate this, let’s generate some scatterplots based on the 2019 General Election data. Two variables worth exploring for association here are: <code>con_1719</code>, the change in Conservative vote share by constituency between 2017-2019, and <code>leave_hanretty</code>, the size of the Leave vote in the 2016 EU referendum, estimated at Parliamentary Constituency level <span class="citation" data-cites="hanretty_areal_2017">(see Hanretty 2017)</span>.</p>
+<p>In <a href="#fig-gog-demo" class="quarto-xref">Figure&nbsp;<span>3.3</span></a> are three plots, accompanied by ggplot2 specifications used to generated them. Reading-off the graphics and the associated code, you should get a feel for how ggplot2 specifications are constructed:</p>
 <ol type="1">
 <li>Start with a data frame, in this case 2019 General Election results for UK Parliamentary Constituencies. The data are passed to ggplot2 (<code>ggplot()</code>) using the pipe operator (<code>|&gt;</code>). Also at this stage, we consider the variables to encode and their measurement <span style="color:#5A91CA;font-weight:bold">type</span> – both <code>con_1719</code> and <code>leave_hanretty</code> are <code>ratio</code> scale variables.</li>
 <li>Next is the encoding (<code>mapping=aes()</code>), which determines how the data are to be mapped to visual <span style="color:#62B743;font-weight:bold">channels</span>. In a scatterplot horizontal and vertical position varies in a meaningful way, in response to the values of a dataset. Here the values of <code>leave_hanretty</code> are mapped along the x-axis and the values of <code>con_1719</code> are mapped along the y-axis.</li>
@@ -426,9 +474,13 @@ kbl(data) |> kable_minimal() |> column_spec(2, extra_css = "font-family:  Monosp
 <!-- `flipped` is labelled an `ordinal` variable, but it could also be a `nominal` variable. In the plot, constituencies that flipped are given greater visual emphasis and so it is appropriate to call `flipped` an ordinal variable. -->
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-gog-demo" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figs/03/gog_demo_redesign.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<figcaption class="figure-caption">Figure&nbsp;3.3: Plots, grammars and underlying ggplot2 specifications for the scatterplot.</figcaption></figure>
+<div id="fig-gog-demo" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-gog-demo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/03/gog_demo_redesign.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-gog-demo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.3: Plots, grammars and underlying ggplot2 specifications for the scatterplot.
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -443,12 +495,16 @@ It is understandable if at this stage the specifications in @fig-gog-demo still 
 >
 > via [Jo Wood](https://www.gicentre.net/jwo/index) -->
 <p>You might have noticed that in our descriptions we introduced <span style="color:#E17637;font-weight:bold">marks</span> as another term for <em>geometry</em> and visual encoding <span style="color:#62B743;font-weight:bold">channels</span> as another term for <em>aesthetics</em>. We also paid special attention to the <span style="color:#5A91CA;font-weight:bold">data types</span> that are being encoded. <em>Marks</em> are graphical elements such as <em>bars</em>, <em>lines</em>, <em>points</em>, <em>ellipses</em> that can be used to represent data items. In ggplot2 these are accessed through the function layers prefaced with <a href="https://ggplot2.tidyverse.org/reference/#section-geoms"><code>geom_*()</code></a>. Visual <em>channels</em> are attributes such as <em>colour</em>, <em>size</em>, <em>position</em> that, when mapped to data, affect the appearance of marks in response to the values of a dataset. In ggplot2 these attributes are controlled via the <code>aes()</code> (aesthetics) function.</p>
-<p><em>Marks</em> and <em>channels</em> are terms used widely in Information Visualization, an academic discipline devoted to the study of data graphics, and most notably by Tamara <span class="citation" data-cites="munzner_visualization_2014">Munzner (<a href="references.html#ref-munzner_visualization_2014" role="doc-biblioref">2014</a>)</span> in her textbook <em>Visualization Analysis and Design</em>. <span class="citation" data-cites="munzner_visualization_2014">Munzner (<a href="references.html#ref-munzner_visualization_2014" role="doc-biblioref">2014</a>)</span>’s work synthesises over foundational research in Information Visualization and Cognitive Science testing how effective different visual channels are at supporting different tasks. <a href="#fig-munzner">Figure&nbsp;<span>3.4</span></a> is adapted from <span class="citation" data-cites="munzner_visualization_2014">Munzner (<a href="references.html#ref-munzner_visualization_2014" role="doc-biblioref">2014</a>)</span> and lists the main visual channels with which data might be encoded. The grouping and order of the figure is meaningful. Channels are grouped according to the tasks to which they are best suited and then ordered according to their effectiveness at supporting those tasks. The left grouping displays <em>magnitude:order</em> channels – those that are best suited to tasks aimed at quantifying data items. The right grouping displays <em>identity:category</em> channels – those that are most suited to supporting tasks that involve isolating and associating data items.</p>
+<p><em>Marks</em> and <em>channels</em> are terms used widely in Information Visualization, an academic discipline devoted to the study of data graphics, and most notably by Tamara <span class="citation" data-cites="munzner_visualization_2014">Munzner (2014)</span> in her textbook <em>Visualization Analysis and Design</em>. <span class="citation" data-cites="munzner_visualization_2014">Munzner (2014)</span>’s work synthesises over foundational research in Information Visualization and Cognitive Science testing how effective different visual channels are at supporting different tasks. <a href="#fig-munzner" class="quarto-xref">Figure&nbsp;<span>3.4</span></a> is adapted from <span class="citation" data-cites="munzner_visualization_2014">Munzner (2014)</span> and lists the main visual channels with which data might be encoded. The grouping and order of the figure is meaningful. Channels are grouped according to the tasks to which they are best suited and then ordered according to their effectiveness at supporting those tasks. The left grouping displays <em>magnitude:order</em> channels – those that are best suited to tasks aimed at quantifying data items. The right grouping displays <em>identity:category</em> channels – those that are most suited to supporting tasks that involve isolating and associating data items.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-munzner" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figs/03/munzner_effect_trans.png" class="img-fluid figure-img" style="width:65.0%"></p>
-<figcaption class="figure-caption">Figure&nbsp;3.4: Visual channels to which data items can be encoded, adapted from <span class="citation" data-cites="munzner_visualization_2014">Munzner (<a href="references.html#ref-munzner_visualization_2014" role="doc-biblioref">2014</a>)</span>.</figcaption></figure>
+<div id="fig-munzner" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-munzner-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/03/munzner_effect_trans.png" class="img-fluid figure-img" style="width:65.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-munzner-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.4: Visual channels to which data items can be encoded, adapted from <span class="citation" data-cites="munzner_visualization_2014">Munzner (2014)</span>.
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -456,12 +512,13 @@ It is understandable if at this stage the specifications in @fig-gog-demo still 
 <!-- We can use this organisation of visual channels to make decisions on appropriate encodings given a variable's measurement level. If we wished to convey the magnitude of something, for example a quantitative (`ratio`) variable like the size of the Conservative vote share in a constituency, we might select a channel that has good quantitative effectiveness -- *position on a common scale* or *length*.  If we wished to also effectively identify and associate constituencies according to the political party that was elected, a categorical `nominal` variable, we might select a channel that has good associative properties such as *colour hue*. -->
 </section><section id="evaluating-designs" class="level3" data-number="3.2.4"><h3 data-number="3.2.4" class="anchored" data-anchor-id="evaluating-designs">
 <span class="header-section-number">3.2.4</span> Evaluating designs</h3>
-<p>The effectiveness rankings of visual channels in Figure <a href="#fig-munzner">Figure&nbsp;<span>3.4</span></a> are not simply based on Munzner’s preference. They are informed by detailed experimental work by <span class="citation" data-cites="cleveland_graphical_1984">Cleveland and McGill (<a href="references.html#ref-cleveland_graphical_1984" role="doc-biblioref">1984</a>)</span>, later replicated by <span class="citation" data-cites="heer_crowdsourcing_2010">Heer and Bostock (<a href="references.html#ref-heer_crowdsourcing_2010" role="doc-biblioref">2010</a>)</span>, which involved conducting controlled experiments testing people’s ability to make judgements from graphical elements. We can use <a href="#fig-munzner">Figure&nbsp;<span>3.4</span></a> to help make decisions around which data item to encode with which visual channel. This is particularly useful when designing data-rich graphics, where several data items are to be encoded simultaneously <span class="citation" data-cites="beecham_on_2021">(e.g. <a href="references.html#ref-beecham_on_2021" role="doc-biblioref">Beecham et al. 2021</a>)</span>. <a href="#fig-munzner">Figure&nbsp;<span>3.4</span></a> also offers a low cost way of <em>evaluating</em> different designs against their encoding effectiveness.</p>
-<p>To illustrate this, we can use Munzner’s ranking of channels to evaluate the Washington Post graphic discussed in <a href="#fig-wp-map">Figure&nbsp;<span>3.1</span></a>. <a href="#tab:wp-eval-size">Table 3.2</a> provides a summary of the encodings used in the graphic. US counties are represented using a peak-shaped <em>mark</em>. The key purpose of the graphic is to depict the geography of voting outcomes, and the most effective quantitative channel – position on an aligned scale – is used to order the county marks with a geographic arrangement. With the positional channels taken, the two quantitive measures are encoded with the next highest ranked channel, length / 1D size: height varies according to number of <em>total votes cast</em> and width according to <em>margin size</em>. The marks are additionally encoded with two categorical variables: whether the county-level result was a <em>landslide</em> and also the <em>winning party</em>. Since the intention is to give greater visual saliency to counties that resulted in a landslide, this is an <code>ordinal</code> variable encoded with a quantitative channel: area / 2D size. The <em>winning party</em>, a categorical <code>nominal</code> variable, is encoded using colour hue.</p>
+<p>The effectiveness rankings of visual channels in Figure <a href="#fig-munzner" class="quarto-xref">Figure&nbsp;<span>3.4</span></a> are not simply based on Munzner’s preference. They are informed by detailed experimental work by <span class="citation" data-cites="cleveland_graphical_1984">Cleveland and McGill (1984)</span>, later replicated by <span class="citation" data-cites="heer_crowdsourcing_2010">Heer and Bostock (2010)</span>, which involved conducting controlled experiments testing people’s ability to make judgements from graphical elements. We can use <a href="#fig-munzner" class="quarto-xref">Figure&nbsp;<span>3.4</span></a> to help make decisions around which data item to encode with which visual channel. This is particularly useful when designing data-rich graphics, where several data items are to be encoded simultaneously <span class="citation" data-cites="beecham_on_2021">(e.g. Beecham et al. 2021)</span>. <a href="#fig-munzner" class="quarto-xref">Figure&nbsp;<span>3.4</span></a> also offers a low cost way of <em>evaluating</em> different designs against their encoding effectiveness.</p>
+<p>To illustrate this, we can use Munzner’s ranking of channels to evaluate the Washington Post graphic discussed in <a href="#fig-wp-map" class="quarto-xref">Figure&nbsp;<span>3.1</span></a>. <a href="#tab:wp-eval-size">Table 3.2</a> provides a summary of the encodings used in the graphic. US counties are represented using a peak-shaped <em>mark</em>. The key purpose of the graphic is to depict the geography of voting outcomes, and the most effective quantitative channel – position on an aligned scale – is used to order the county marks with a geographic arrangement. With the positional channels taken, the two quantitive measures are encoded with the next highest ranked channel, length / 1D size: height varies according to number of <em>total votes cast</em> and width according to <em>margin size</em>. The marks are additionally encoded with two categorical variables: whether the county-level result was a <em>landslide</em> and also the <em>winning party</em>. Since the intention is to give greater visual saliency to counties that resulted in a landslide, this is an <code>ordinal</code> variable encoded with a quantitative channel: area / 2D size. The <em>winning party</em>, a categorical <code>nominal</code> variable, is encoded using colour hue.</p>
 <div class="cell">
 <div class="cell-output-display">
+<div>
 <table data-quarto-postprocess="true" class="table table-sm table-striped small">
-<caption>Encoding effectiveness for Gamio and Keating’s (2016) Washington Post graphic that emphasises <em>vote margin and size</em> of counties using triangle marks. </caption>
+<caption>Encoding effectiveness for Gamio and Keating’s (2016) Washington Post graphic that emphasises <em>vote margin and size</em> of counties using triangle marks.</caption>
 <thead><tr class="header">
 <th data-quarto-table-cell-role="th" style="text-align: left; border-bottom: 1px solid;">Data item</th>
 <th data-quarto-table-cell-role="th" style="text-align: left; border-bottom: 1px solid;">Type</th>
@@ -509,6 +566,7 @@ It is understandable if at this stage the specifications in @fig-gog-demo still 
 </table>
 </div>
 </div>
+</div>
 <p>Each of the encoding choices follow conventional wisdom in that data items are encoded using visual channels appropriate to their measurement level. Glancing down the “rank” column, the graphic has high effectiveness. Whilst technically <em>spatial region</em> is the most effective channel for encoding <code>nominal</code> data, it is already in use as the marks are arranged by geographic position. Additionally, it makes sense to distinguish <span style="color:#DB534D;font-weight:bold">Republican</span> and <span style="color:#3879A1;font-weight:bold">Democrat</span> wins using the colours with which they are always represented. Given the fact that the positional channels represent geographic <em>location</em>, length to represent <em>votes cast</em> and <em>vote margin</em>, the only superior visual channel to 2D area that could be used to encode the <em>landslide</em> variable is <em>orientation</em>. There are very good reasons for not varying the orientation of the arrow marks. Most obvious is that this would undermine perception of length encodings used to represent the vote margin (width) and absolute vote size (height).</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -527,16 +585,20 @@ Visualization design and trade-offs
 <span class="header-section-number">3.2.5</span> Symbolisation</h3>
 <blockquote class="blockquote">
 <p>Symbolization is the process of encoding something with meaning in order to represent something else. Effective symbol design requires that the relationship between a symbol and the information that symbol represents (the referent) be clear and easily interpreted.</p>
-<p><span class="citation" data-cites="white_symbolization_2017">White (<a href="references.html#ref-white_symbolization_2017" role="doc-biblioref">2017</a>)</span></p>
+<p><span class="citation" data-cites="white_symbolization_2017">White (2017)</span></p>
 </blockquote>
 <p>Implicit in the discussion above, and when making design decisions, is the importance of <a href="https://gistbok.ucgis.org/bok-topics/symbolization-and-visual-variables"><em>symbolisation</em></a>. From the original Washington Post article, the overall pattern that can be discerned is of population-dense coastal and metropolitan counties voting Democrat – densely-packed, tall, wide and blue <i style="color:#3879A1;font-weight:bold" class="fas fa-lg fa-angle-up"></i> marks – contrasted with population-sparse rural and small town areas voting Republican – short, wide and red <i style="color:#DB534D;font-weight:bold" class="fas fa-angle-up"></i> marks. The graphic evokes a distinctive landscape of voting behaviour, emphasised by its caption: “<em>The peaks and valleys of Trump and Clinton’s support</em>”.</p>
-<p><em>Symbolisation</em> is used equally well in a variant of the graphic emphasising two-party <em>Swing</em> between the 2012 and 2016 elections (<a href="#fig-wp-swing">Figure&nbsp;<span>3.5</span></a>). Each county is represented as a <span style="font-weight:bolder">|</span> mark. The <em>Swing</em> variable is then encoded by continuously varying mark angles: counties swinging <span style="color:#DB534D;font-weight:bold">Republican</span> are angled to the right <span style="color:#DB534D;font-weight:bolder">/</span>; counties swinging <span style="color:#3879A1;font-weight:bold">Democrat</span> are angled to the left <span style="color:#3879A1;font-weight:bolder">\</span>. Although <em>angle</em> is a less effective channel at encoding quantities than is <em>length</em>, there are obvious links to the political phenomena in the symbolisation – angled right for counties that moved to the right politically. There are further useful properties in this example. Since county voting is spatially auotocorrelated, we quickly assemble from the graphic dominant patterns of Swing to the Republicans (Great Lakes, rural East Coast), predictable Republican stasis (the mid west) and more isolated, locally exceptional swings to the Democrats (rapidly urbanising counties in the deep south).</p>
+<p><em>Symbolisation</em> is used equally well in a variant of the graphic emphasising two-party <em>Swing</em> between the 2012 and 2016 elections (<a href="#fig-wp-swing" class="quarto-xref">Figure&nbsp;<span>3.5</span></a>). Each county is represented as a <span style="font-weight:bolder">|</span> mark. The <em>Swing</em> variable is then encoded by continuously varying mark angles: counties swinging <span style="color:#DB534D;font-weight:bold">Republican</span> are angled to the right <span style="color:#DB534D;font-weight:bolder">/</span>; counties swinging <span style="color:#3879A1;font-weight:bold">Democrat</span> are angled to the left <span style="color:#3879A1;font-weight:bolder">\</span>. Although <em>angle</em> is a less effective channel at encoding quantities than is <em>length</em>, there are obvious links to the political phenomena in the symbolisation – angled right for counties that moved to the right politically. There are further useful properties in this example. Since county voting is spatially auotocorrelated, we quickly assemble from the graphic dominant patterns of Swing to the Republicans (Great Lakes, rural East Coast), predictable Republican stasis (the mid west) and more isolated, locally exceptional swings to the Democrats (rapidly urbanising counties in the deep south).</p>
 <!-- Additionally, the variable itself might be regarded as cyclic -- or at least it has a ceiling with an important mid-point that requires emphasis. It is worth taking a second look at the full graphic here.  -->
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-wp-swing" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figs/03/wp_spoke.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<figcaption class="figure-caption">Figure&nbsp;3.5: Map of swing in 2016 US presidential election results. Note that for copyright reasons this is a re-implementation in ggplot2 of <span class="citation" data-cites="gamio_how_2016">Gamio and Keating (<a href="references.html#ref-gamio_how_2016" role="doc-biblioref">2016</a>)</span>’s original, which appeared in The Washington Post. Code for reproducing the graphic from this link<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>.</figcaption></figure>
+<div id="fig-wp-swing" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-wp-swing-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/03/wp_spoke.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-wp-swing-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.5: Map of swing in 2016 US presidential election results. Note that for copyright reasons this is a re-implementation in ggplot2 of <span class="citation" data-cites="gamio_how_2016">Gamio and Keating (2016)</span>’s original, which appeared in The Washington Post. Code for reproducing the graphic from this link<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>.
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -551,7 +613,7 @@ Task 1
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Complete the description table below identifying each <em>data item</em> that is encoded in <a href="#fig-wp-swing">Figure&nbsp;<span>3.5</span></a> along with its <em>measurement level</em>, <em>visual mark</em> and <em>visual channel</em> and the effectiveness rank of this encoding, according to <span class="citation" data-cites="munzner_visualization_2014">Munzner (<a href="references.html#ref-munzner_visualization_2014" role="doc-biblioref">2014</a>)</span>.</p>
+<p>Complete the description table below identifying each <em>data item</em> that is encoded in <a href="#fig-wp-swing" class="quarto-xref">Figure&nbsp;<span>3.5</span></a> along with its <em>measurement level</em>, <em>visual mark</em> and <em>visual channel</em> and the effectiveness rank of this encoding, according to <span class="citation" data-cites="munzner_visualization_2014">Munzner (2014)</span>.</p>
 <table class="table">
 <colgroup>
 <col style="width: 23%">
@@ -642,7 +704,6 @@ First, a set of numbers without applying any special encoding to the number `3`.
 ::: {.callout-tip icon=false collapse=true}
 ## Task: click to expose graphic, then count number of occurrences of #3
 
-
 ![Encoding: *none*.](figs/03/no-encoding.png){#fig-no-encoding width=100% fig-align="center"}
 :::
 
@@ -654,8 +715,6 @@ If you were racing to complete the task, I imagine you found it moderately stres
 ::: {.callout-tip icon=false collapse=true}
 ## Task: click to expose graphic, then count number of occurrences of #3
 
-
-
 ![Encoding: *area*.](figs/03/area-encoding.png){#fig-area-encoding width=100% fig-align="center"}
 :::
 
@@ -665,8 +724,6 @@ Using visualization to support the task makes it easier, but let's explore some 
 
 ::: {.callout-tip icon=false collapse=true}
 ## Task: click to expose graphic, then count number of occurrences of #3
-
-
 
 ![Encoding: *tilt/angle*.](figs/03/angle-encoding.png){#fig-angle-encoding width=100% fig-align="center"}
 :::
@@ -678,8 +735,6 @@ Next we'll use a visual channel with known effectiveness at assisting selective 
 ::: {.callout-tip icon=false collapse=true}
 ## Task: click to expose graphic, then count number of occurrences of #3
 
-
-
 ![Encoding: *colour hue*.](figs/03/hue-encoding.png){#fig-hue-encoding width=100% fig-align="center"}
 :::
 
@@ -687,8 +742,6 @@ Finally, though a slightly contrived example, we can use the top-ranked channel 
 
 ::: {.callout-tip icon=false collapse=true}
 ## Task: click to expose graphic, then count number of occurrences of #3
-
-
 
 ![Encoding: *spatial region*.](figs/03/spatial-encoding.png){#fig-spatial-encoding width=100% fig-align="center"}
 :::
@@ -708,8 +761,6 @@ Where $S$ is the magnitude of the stimulus, for example, the absolute length of 
 Experimental findings vary and so these models of human perception are also subject to variation. Nevertheless, corrections can be applied. In cartography a [Flannery compensation](https://makingmaps.net/2007/08/28/perceptual-scaling-of-map-symbols/) is used when representing quantities with area.
 
 
-
-
 ![Differences in power law exponents for the perception of variation in length and area.](figs/03/perception.svg){#fig-perception width=100% fig-align="center"} -->
 <!-- ::: {.callout-note}
 
@@ -725,13 +776,17 @@ Experimental work that tries to understand how encoded quantities are perceived 
 * *Luminance/Brightness* : how dark or light a colour is. -->
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-brewer" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figs/03/brewer_colour.png" class="img-fluid figure-img" style="width:70.0%"></p>
-<figcaption class="figure-caption">Figure&nbsp;3.6: Colour schemes matched to variabe measurement level.</figcaption></figure>
+<div id="fig-brewer" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-brewer-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/03/brewer_colour.png" class="img-fluid figure-img" style="width:70.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-brewer-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.6: Colour schemes matched to variabe measurement level.
+</figcaption></figure>
 </div>
 </div>
 </div>
-<p>The ultimate rule when using colour in data graphics is to use properties of colour that match the properties of the data (<a href="#fig-brewer">Figure&nbsp;<span>3.6</span></a>). Categorical <code>nominal</code> data – data that cannot be easily ordered – should be encoded using discrete colours with no obvious order; so colour hue. Categorical <code>ordinal</code> data – data whose categories can be ordered – should be encoded with colours that contain an intrinsic order; saturation or brightness (colour value) allocated into perceptually-spaced gradients. <code>Quantitative</code> data – data that can be ordered and contain values on a continuous scale – should also be encoded with saturation or brightness, expressed on a continuous scale. As we will discover shortly, these principles are applied by default in ggplot2, along with access to perceptually valid schemes <span class="citation" data-cites="harrower_colorbrewerorg_2003">(e.g. <a href="references.html#ref-harrower_colorbrewerorg_2003" role="doc-biblioref">Harrower and Brewer 2003</a>)</span>.</p>
+<p>The ultimate rule when using colour in data graphics is to use properties of colour that match the properties of the data (<a href="#fig-brewer" class="quarto-xref">Figure&nbsp;<span>3.6</span></a>). Categorical <code>nominal</code> data – data that cannot be easily ordered – should be encoded using discrete colours with no obvious order; so colour hue. Categorical <code>ordinal</code> data – data whose categories can be ordered – should be encoded with colours that contain an intrinsic order; saturation or brightness (colour value) allocated into perceptually-spaced gradients. <code>Quantitative</code> data – data that can be ordered and contain values on a continuous scale – should also be encoded with saturation or brightness, expressed on a continuous scale. As we will discover shortly, these principles are applied by default in ggplot2, along with access to perceptually valid schemes <span class="citation" data-cites="harrower_colorbrewerorg_2003">(e.g. Harrower and Brewer 2003)</span>.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -754,9 +809,9 @@ On colour
 </ul>
 <section id="import" class="level3" data-number="3.3.1"><h3 data-number="3.3.1" class="anchored" data-anchor-id="import">
 <span class="header-section-number">3.3.1</span> Import</h3>
-<p>The template file lists the required packages – <code>tidyverse</code>, <code>sf</code> and also <a href="https://cran.r-project.org/web/packages/parlitools/index.html"><code>parlitools</code></a>. Installing <code>parlitools</code> brings down the 2019 UK General Election dataset, along with other constituency-level datasets. Loading it with <code><a href="https://docs.evanodell.com/parlitools">library(parlitools)</a></code> makes these data available in your R session.</p>
-<p>The data frame containing 2019 UK General Election data is called <code>bes_2019</code>. This stores results data released by House of Commons Library <span class="citation" data-cites="uberoi_general_2020">(<a href="references.html#ref-uberoi_general_2020" role="doc-biblioref">Uberoi, Baker, and Cracknell 2020</a>)</span>. We can get a quick overview with a call to <code>glimpse(&lt;dataset-name&gt;)</code>. <code>bes_2019</code> contains 650 rows, one for each parliamentary constituency, and 118 columns. Contained in the columns are variables reporting vote numbers and shares for the main political parties for 2019 and 2017 General Elections, as well as names and codes (<code>ID</code>s) for each constituency and the local authority, region and country in which they are contained.</p>
-<p>We will replicate some of the visual data analysis in <span class="citation" data-cites="beecham_using_2020">Beecham (<a href="references.html#ref-beecham_using_2020" role="doc-biblioref">2020</a>)</span>. For this we need to calculate an additional variable, Butler Swing <span class="citation" data-cites="butler_why_1990">(<a href="references.html#ref-butler_why_1990" role="doc-biblioref">Butler and Van Beek 1990</a>)</span>, the average change in share of the vote won by two parties contesting successive elections. Code for calculating this variable, named <code>swing_con_lab</code>, is in the <a href="./files/03-template.qmd">03-template.qmd</a>. The only other dataset to load is a <code>.geojson</code> file containing simplified geometries of constituencies, collected originally from <a href="https://geoportal.statistics.gov.uk/">ONS Open Geography Portal</a><a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>. This is a special class of data frame containing a Simple Features <span class="citation" data-cites="pebesma_simple_2018">(<a href="references.html#ref-pebesma_simple_2018" role="doc-biblioref">Pebesma 2018</a>)</span> <code>geometry</code> column.</p>
+<p>The template file lists the required packages – <code>tidyverse</code>, <code>sf</code> and also <a href="https://cran.r-project.org/web/packages/parlitools/index.html"><code>parlitools</code></a>. Installing <code>parlitools</code> brings down the 2019 UK General Election dataset, along with other constituency-level datasets. Loading it with <code><a href="https://rdrr.io/r/base/library.html">library(parlitools)</a></code> makes these data available in your R session.</p>
+<p>The data frame containing 2019 UK General Election data is called <code>bes_2019</code>. This stores results data released by House of Commons Library <span class="citation" data-cites="uberoi_general_2020">(Uberoi, Baker, and Cracknell 2020)</span>. We can get a quick overview with a call to <code>glimpse(&lt;dataset-name&gt;)</code>. <code>bes_2019</code> contains 650 rows, one for each parliamentary constituency, and 118 columns. Contained in the columns are variables reporting vote numbers and shares for the main political parties for 2019 and 2017 General Elections, as well as names and codes (<code>ID</code>s) for each constituency and the local authority, region and country in which they are contained.</p>
+<p>We will replicate some of the visual data analysis in <span class="citation" data-cites="beecham_using_2020">Beecham (2020)</span>. For this we need to calculate an additional variable, Butler Swing <span class="citation" data-cites="butler_why_1990">(Butler and Van Beek 1990)</span>, the average change in share of the vote won by two parties contesting successive elections. Code for calculating this variable, named <code>swing_con_lab</code>, is in the <a href="./files/03-template.qmd">03-template.qmd</a>. The only other dataset to load is a <code>.geojson</code> file containing simplified geometries of constituencies, collected originally from <a href="https://geoportal.statistics.gov.uk/">ONS Open Geography Portal</a><a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>. This is a special class of data frame containing a Simple Features <span class="citation" data-cites="pebesma_simple_2018">(Pebesma 2018)</span> <code>geometry</code> column.</p>
 <!-- Although initially intuitive, the measure takes a little interpretation. A Swing to the Conservatives, which we observe most often in this dataset, could happen in three ways:
 
 1. An increase in Conservative vote share and a decrease in Labour vote share.
@@ -850,9 +905,13 @@ Different from the US where "third parties" play a negligible role, scenarios 2 
 <span class="header-section-number">3.3.3</span> Plot distributions</h3>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-hist" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figs/03/hist.png" class="img-fluid figure-img" style="width:90.0%"></p>
-<figcaption class="figure-caption">Figure&nbsp;3.7: Histograms of Butler two-party Labour-Conservative Swing.</figcaption></figure>
+<div id="fig-hist" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-hist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/03/hist.png" class="img-fluid figure-img" style="width:90.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-hist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.7: Histograms of Butler two-party Labour-Conservative Swing.
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -876,7 +935,7 @@ Different from the US where "third parties" play a negligible role, scenarios 2 
 <span>  <span class="fu">geom_histogram</span><span class="op">(</span>fill<span class="op">=</span><span class="st">"#003c8f"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">labs</span><span class="op">(</span>x<span class="op">=</span><span class="st">"Swing"</span>, y<span class="op">=</span><span class="st">"count"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>You will notice that different elements of a ggplot2 specification are added (<code>+</code>) as layers. In the example above, the additional layer of labels (<code>labs()</code>) is not intrinsic to the graphic, or does not directly affect the way data are represented. However, often you will add layers that do affect the graphic itself. For example, the scaling of encoded values (e.g.&nbsp;<code>scale_*_continuous()</code>) or whether the graphic is to be conditioned on another variable to generate small multiples for comparison (e.g.&nbsp;<code>facet_*()</code>). Adding a call to <code>facet_*()</code>, we can compare how Swing varies by region (<a href="#fig-hist-region">Figure&nbsp;<span>3.8</span></a>). The plot is annotated with the <em>median</em> value for Swing (4.4) by adding a vertical line layer (<code>geom_vline()</code>) set with an x-intercept at this median value. From this, there is some evidence of a regional geography to the 2019 vote: London and Scotland are particularly distinctive in containing relatively few constituencies swinging greater than the expected midpoint; North East, Yorkshire &amp; The Humber, and to a lesser extent West and East Midlands, appear to show the largest relative number of constituencies swinging greater than the midpoint.</p>
+<p>You will notice that different elements of a ggplot2 specification are added (<code>+</code>) as layers. In the example above, the additional layer of labels (<code>labs()</code>) is not intrinsic to the graphic, or does not directly affect the way data are represented. However, often you will add layers that do affect the graphic itself. For example, the scaling of encoded values (e.g.&nbsp;<code>scale_*_continuous()</code>) or whether the graphic is to be conditioned on another variable to generate small multiples for comparison (e.g.&nbsp;<code>facet_*()</code>). Adding a call to <code>facet_*()</code>, we can compare how Swing varies by region (<a href="#fig-hist-region" class="quarto-xref">Figure&nbsp;<span>3.8</span></a>). The plot is annotated with the <em>median</em> value for Swing (4.4) by adding a vertical line layer (<code>geom_vline()</code>) set with an x-intercept at this median value. From this, there is some evidence of a regional geography to the 2019 vote: London and Scotland are particularly distinctive in containing relatively few constituencies swinging greater than the expected midpoint; North East, Yorkshire &amp; The Humber, and to a lesser extent West and East Midlands, appear to show the largest relative number of constituencies swinging greater than the midpoint.</p>
 <!-- It was this graphic, especially the fact that London and Scotland look different from the rest of the country, that prompted the scatterplots in @fig-gog-demo comparing gain in Conservative vote shares against the Brexit vote. -->
 <!-- ::: {.callout-note}
 ## On histograms
@@ -884,9 +943,13 @@ This design exposition by [Lunzner and McNamara, 2020](http://tinlizzie.org/hist
 ::: -->
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-hist-region" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figs/03/hist-region.png" class="img-fluid figure-img" style="width:85.0%"></p>
-<figcaption class="figure-caption">Figure&nbsp;3.8: Histograms of Swing variable, grouped by region.</figcaption></figure>
+<div id="fig-hist-region" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-hist-region-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/03/hist-region.png" class="img-fluid figure-img" style="width:85.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-hist-region-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.8: Histograms of Swing variable, grouped by region.
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -901,22 +964,26 @@ Task 2
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Update the earlier ggplot2 specification to produce a set of histograms of the Swing variable faceted by region, similar to that in <a href="#fig-hist-region">Figure&nbsp;<span>3.8</span></a>.</p>
+<p>Update the earlier ggplot2 specification to produce a set of histograms of the Swing variable faceted by region, similar to that in <a href="#fig-hist-region" class="quarto-xref">Figure&nbsp;<span>3.8</span></a>.</p>
 </div>
 </div>
 </section><section id="plot-ranksmagnitudes" class="level3" data-number="3.3.4"><h3 data-number="3.3.4" class="anchored" data-anchor-id="plot-ranksmagnitudes">
 <span class="header-section-number">3.3.4</span> Plot ranks/magnitudes</h3>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-bars" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figs/03/bars.png" class="img-fluid figure-img" style="width:80.0%"></p>
-<figcaption class="figure-caption">Figure&nbsp;3.9: Plots of vote shares by party.</figcaption></figure>
+<div id="fig-bars" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-bars-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/03/bars.png" class="img-fluid figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-bars-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.9: Plots of vote shares by party.
+</figcaption></figure>
 </div>
 </div>
 </div>
 <!-- ![Plots of vote shares by party.](figs/03/bars.png){#fig-bars width=100% fig-align="center"} -->
 <p>Previously we calculated overall vote shares by political party. We could continue the exploration of votes by region, re-using this code to generate plots displaying vote shares but also comparing by region, using marks and encoding channels that are suitable for magnitudes.</p>
-<p>To generate a bar chart similar to <a href="04-explore.html#fig-bars">Figure&nbsp;<span>4.3</span></a> the ggplot2 specification would be:</p>
+<p>To generate a bar chart similar to <a href="04-explore.html#fig-bars" class="quarto-xref">Figure&nbsp;<span>4.3</span></a> the ggplot2 specification would be:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>data_gb <span class="sc">|&gt;</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># The code block summarising vote by party.</span></span>
@@ -943,14 +1010,18 @@ ggplot2 themes control the appearance of all non-data items -- font sizes and ty
 ::: --><section id="faceting-by-region" class="level4 unnumbered"><h4 class="unnumbered anchored" data-anchor-id="faceting-by-region">Faceting by region</h4>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-bars-region" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figs/03/bars-region.png" class="img-fluid figure-img" style="width:90.0%"></p>
-<figcaption class="figure-caption">Figure&nbsp;3.10: Plots of vote shares by party and region.</figcaption></figure>
+<div id="fig-bars-region" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-bars-region-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/03/bars-region.png" class="img-fluid figure-img" style="width:90.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-bars-region-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.10: Plots of vote shares by party and region.
+</figcaption></figure>
 </div>
 </div>
 </div>
 <!-- ![Plots of vote shares by party and region.](figs/03/bars-region.png){#fig-bars-region width=100% fig-align="center"} -->
-<p>In <a href="#fig-bars-region">Figure&nbsp;<span>3.10</span></a> the graphic is faceted by region. This requires an updated staged dataset grouping by <code>vote_share</code> <em>and</em> <code>region</code> and of course a faceting layer (<code>geom_facet(~region)</code>). The graphic is more data-rich, and additional cognitive effort is required in relating the political party bars between different graphical subsets. We can assist this associative task by encoding parties with an appropriate visual channel: <em>colour hue</em>. The ggplot2 specification for this is as you would expect; we add a mapping to <code>geom_col()</code> and pass the variable name <code>party</code> to the fill argument (<code>aes(fill=party)</code>).</p>
+<p>In <a href="#fig-bars-region" class="quarto-xref">Figure&nbsp;<span>3.10</span></a> the graphic is faceted by region. This requires an updated staged dataset grouping by <code>vote_share</code> <em>and</em> <code>region</code> and of course a faceting layer (<code>geom_facet(~region)</code>). The graphic is more data-rich, and additional cognitive effort is required in relating the political party bars between different graphical subsets. We can assist this associative task by encoding parties with an appropriate visual channel: <em>colour hue</em>. The ggplot2 specification for this is as you would expect; we add a mapping to <code>geom_col()</code> and pass the variable name <code>party</code> to the fill argument (<code>aes(fill=party)</code>).</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>data_gb <span class="sc">|&gt;</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># The code block summarising vote by party and also now region.</span></span>
@@ -1010,23 +1081,27 @@ Grammar of Graphics-backed visualization toolkits
 </div>
 <div class="callout-body-container callout-body">
 <p>The idea behind visualization toolkits such as ggplot2 is to insert visual approaches into a data scientist’s workflow. Rather than being overly concerned with low-level aspects of drawing, mapping data values to screen coordinates and scaling factors, you instead focus on aspects relevant to the analysis – the variables in a dataset and how they will be encoded and conditioned using visuals. Hadley Wickham talks about a grammar of <em>interactive</em> data analysis, whereby <code>dplyr</code> functions are used to rapidly prepare data for charting before being piped (<code>|&gt;</code>) to ggplot2.</p>
-<p>The process of searching for, defining and inserting manual colour schemes for creating <a href="#fig-bars-region">Figure&nbsp;<span>3.10</span></a> might seem inimical to this. There is some reasonably involved <code>dplyr</code> and a little <a href="https://stat.ethz.ch/R-manual/R-devel/library/base/html/regex.html">regular expression</a> in the data preparation code that you should not be overly concerned with. Having control of these slightly more low-level properties is, though, sometimes necessary even for exploratory analysis, in this case for enabling appropriate and sensible <em>symbolisation</em>.</p>
+<p>The process of searching for, defining and inserting manual colour schemes for creating <a href="#fig-bars-region" class="quarto-xref">Figure&nbsp;<span>3.10</span></a> might seem inimical to this. There is some reasonably involved <code>dplyr</code> and a little <a href="https://stat.ethz.ch/R-manual/R-devel/library/base/html/regex.html">regular expression</a> in the data preparation code that you should not be overly concerned with. Having control of these slightly more low-level properties is, though, sometimes necessary even for exploratory analysis, in this case for enabling appropriate and sensible <em>symbolisation</em>.</p>
 </div>
 </div>
 </section></section><section id="plot-relationships" class="level3" data-number="3.3.5"><h3 data-number="3.3.5" class="anchored" data-anchor-id="plot-relationships">
 <span class="header-section-number">3.3.5</span> Plot relationships</h3>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-scatters-con" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figs/03/scatters-con.png" class="img-fluid figure-img" style="width:70.0%"></p>
-<figcaption class="figure-caption">Figure&nbsp;3.11: Plots of 2019 versus 2017 vote shares.</figcaption></figure>
+<div id="fig-scatters-con" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-scatters-con-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/03/scatters-con.png" class="img-fluid figure-img" style="width:70.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-scatters-con-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.11: Plots of 2019 versus 2017 vote shares.
+</figcaption></figure>
 </div>
 </div>
 </div>
 <!-- ![Plots of 2019 versus 2017 vote shares.](figs/03/scatters-con.svg){#fig-scatters-con width=100% fig-align="center"} -->
 <!-- In @sec-grammar we demonstrated how scatterplots are specified in ggplot2. Scatterplots are useful examples for introducing ggplot2 specifications as they involve working with genuine  mark primitives (`geom_point()`) and can be built up using a wide range of encoding channels. -->
-<p>To continue the investigation of change in vote shares for the major parties between 2017 and 2019, <a href="#fig-scatters-con">Figure&nbsp;<span>3.11</span></a> contains a scatterplot of Conservative vote share in 2019 (y-axis) against vote share in 2017 (x-axis). The graphic is annotated with a diagonal line. If constituencies voted in 2019 in exactly the same way as 2017, the points would converge on the diagonal. Points above the diagonal indicate a larger Conservative vote share than 2017, those below the diagonal represent a smaller Conservative vote share than 2017. Points are coloured according to the winning party in 2019 and constituencies that flipped from Labour to Conservative are emphasised using transparency and shape.</p>
-<p>The code for generating most of the scatterplot in <a href="#fig-scatters-con">Figure&nbsp;<span>3.11</span></a> is below.</p>
+<p>To continue the investigation of change in vote shares for the major parties between 2017 and 2019, <a href="#fig-scatters-con" class="quarto-xref">Figure&nbsp;<span>3.11</span></a> contains a scatterplot of Conservative vote share in 2019 (y-axis) against vote share in 2017 (x-axis). The graphic is annotated with a diagonal line. If constituencies voted in 2019 in exactly the same way as 2017, the points would converge on the diagonal. Points above the diagonal indicate a larger Conservative vote share than 2017, those below the diagonal represent a smaller Conservative vote share than 2017. Points are coloured according to the winning party in 2019 and constituencies that flipped from Labour to Conservative are emphasised using transparency and shape.</p>
+<p>The code for generating most of the scatterplot in <a href="#fig-scatters-con" class="quarto-xref">Figure&nbsp;<span>3.11</span></a> is below.</p>
 <div class="cell">
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data_gb</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">mutate</span><span class="op">(</span>winner_19<span class="op">=</span><span class="fu">case_when</span><span class="op">(</span></span>
@@ -1059,7 +1134,7 @@ Task 3
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>The code block above doesn’t exactly reproduce the graphic in <a href="#fig-scatters-con">Figure&nbsp;<span>3.11</span></a>. Try updating the ggplot2 specification to emphasise constituencies that flipped from Labour to Conservative. Hint: you may wish to generate a variable recording constituencies that flipped between 2017 and 2019 and encode some visual channel in the graphic on this.</p>
+<p>The code block above doesn’t exactly reproduce the graphic in <a href="#fig-scatters-con" class="quarto-xref">Figure&nbsp;<span>3.11</span></a>. Try updating the ggplot2 specification to emphasise constituencies that flipped from Labour to Conservative. Hint: you may wish to generate a variable recording constituencies that flipped between 2017 and 2019 and encode some visual channel in the graphic on this.</p>
 </div>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
@@ -1087,12 +1162,16 @@ data_gb |>
 </div>
 </section><section id="plot-geography" class="level3" data-number="3.3.6"><h3 data-number="3.3.6" class="anchored" data-anchor-id="plot-geography">
 <span class="header-section-number">3.3.6</span> Plot geography</h3>
-<p>Implicit in the data graphics above is that the composition of Conservative and Labour voting may be shifting. If so, then paying attention to the geography of voting, certainly to <em>changes</em> in voting between 2017 and 2019 elections (e.g. <a href="#fig-hist-region">Figure&nbsp;<span>3.8</span></a>), may be instructive. We end the technical component to the chapter by generating thematic maps of the results data.</p>
+<p>Implicit in the data graphics above is that the composition of Conservative and Labour voting may be shifting. If so, then paying attention to the geography of voting, certainly to <em>changes</em> in voting between 2017 and 2019 elections (e.g. <a href="#fig-hist-region" class="quarto-xref">Figure&nbsp;<span>3.8</span></a>), may be instructive. We end the technical component to the chapter by generating thematic maps of the results data.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-map-winners" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figs/03/map-winners.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<figcaption class="figure-caption">Figure&nbsp;3.12: Choropleth of elected parties in 2019 General Election.</figcaption></figure>
+<div id="fig-map-winners" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-map-winners-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/03/map-winners.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-map-winners-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.12: Choropleth of elected parties in 2019 General Election.
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -1105,7 +1184,7 @@ data_gb |>
 <span><span class="co"># Check class.</span></span>
 <span><span class="co">## [1] "sf"         "data.frame"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The code for generating the choropleth maps of winning party by constituency in <a href="#fig-map-winners">Figure&nbsp;<span>3.12</span></a>:</p>
+<p>The code for generating the choropleth maps of winning party by constituency in <a href="#fig-map-winners" class="quarto-xref">Figure&nbsp;<span>3.12</span></a>:</p>
 <div class="cell">
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Recode winner_19 as a factor variable for assigning colours.</span></span>
 <span><span class="va">data_gb</span> <span class="op">&lt;-</span> <span class="va">data_gb</span> <span class="op">|&gt;</span></span>
@@ -1132,19 +1211,23 @@ data_gb |>
 <li>
 <em>Encoding</em>: No surprises here – <code>fill</code> according to <code>winner_19</code>.</li>
 <li>
-<em>Marks</em>: <code>geom_sf()</code> is a special class of geometry. It draws objects using the contents of a simple features data frame’s <span class="citation" data-cites="pebesma_simple_2018">(<a href="references.html#ref-pebesma_simple_2018" role="doc-biblioref">Pebesma 2018</a>)</span> <code>geometry</code> column. In this case <code>MULTIPOLYGON</code>, so read this as a polygon shape primitive.</li>
+<em>Marks</em>: <code>geom_sf()</code> is a special class of geometry. It draws objects using the contents of a simple features data frame’s <span class="citation" data-cites="pebesma_simple_2018">(Pebesma 2018)</span> <code>geometry</code> column. In this case <code>MULTIPOLYGON</code>, so read this as a polygon shape primitive.</li>
 <li>
 <em>Coordinates</em>: <code>coord_sf</code> – we set the coordinate system (CRS) explicitly. In this case <a href="https://spatialreference.org/ref/epsg/osgb-1936-british-national-grid/">OS British National Grid</a>.</li>
 <li>
 <em>Setting</em>: Constituency boundaries are subtly introduced by setting the <code>geom_sf()</code> mark to light grey (<code>colour="#eeeeee"</code>) with a thin outline (<code>linewidth=0.01</code>). On the map to the right, outlines for regions are added as another <code>geom_sf()</code> layer. Note how this is achieved in the second <code>geom_sf()</code>. The <code>data_gb</code> dataset initially passed to ggplot2 (identified by the <code>.</code> mark) is collapsed by region (with <code>group_by()</code> and <code>summarise()</code>), in the background the boundaries in <code>geometry</code> are aggregated by region.</li>
 </ol>
-<p>In the third map of <a href="#fig-map-winners">Figure&nbsp;<span>3.12</span></a> the transparency (<code>alpha</code>) of filled constituencies is varied according to the Swing variable. This does demonstrate that constituencies swinging most dramatically for Conservative (darker colours) are in the midlands and North of England and not in London and the South East. The pattern is nevertheless a subtle one; transparency (colour luminance / saturation) is not a highly effective visual channel for encoding quantities.</p>
-<p>It may be worth applying the same encoding to Butler two-party swing as that used in the Washington Post graphic when characterising Republican-Democrat swing in 2016 US Elections <span class="citation" data-cites="beecham_using_2020">(e.g. <a href="references.html#ref-beecham_using_2020" role="doc-biblioref">Beecham 2020</a>)</span>. This can be achieved by simply adding another ggplot2 layer, though the code is a little more involved. ggplot2’s <code>geom_spoke()</code> primitive draws line segments parameterised by a location (x- y- position) and angle. With this we can encode constituencies with <span style="font-weight:bolder">|</span> marks that angle to the right <span style="color:#3879A1;font-weight:bold">/</span> where the constituency swings towards Conservative and to the left where it swings towards Labour <span style="color:#DB534D;font-weight:bolder">\</span>. This encoding better exposes the pattern of constituencies forming Labour’s “red wall” in the north of England, as well as parts of Wales and the Midlands flipping to Conservative.</p>
+<p>In the third map of <a href="#fig-map-winners" class="quarto-xref">Figure&nbsp;<span>3.12</span></a> the transparency (<code>alpha</code>) of filled constituencies is varied according to the Swing variable. This does demonstrate that constituencies swinging most dramatically for Conservative (darker colours) are in the midlands and North of England and not in London and the South East. The pattern is nevertheless a subtle one; transparency (colour luminance / saturation) is not a highly effective visual channel for encoding quantities.</p>
+<p>It may be worth applying the same encoding to Butler two-party swing as that used in the Washington Post graphic when characterising Republican-Democrat swing in 2016 US Elections <span class="citation" data-cites="beecham_using_2020">(e.g. Beecham 2020)</span>. This can be achieved by simply adding another ggplot2 layer, though the code is a little more involved. ggplot2’s <code>geom_spoke()</code> primitive draws line segments parameterised by a location (x- y- position) and angle. With this we can encode constituencies with <span style="font-weight:bolder">|</span> marks that angle to the right <span style="color:#3879A1;font-weight:bold">/</span> where the constituency swings towards Conservative and to the left where it swings towards Labour <span style="color:#DB534D;font-weight:bolder">\</span>. This encoding better exposes the pattern of constituencies forming Labour’s “red wall” in the north of England, as well as parts of Wales and the Midlands flipping to Conservative.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-spoke-map" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figs/03/spoke-map.png" class="img-fluid figure-img" style="width:90.0%"></p>
-<figcaption class="figure-caption">Figure&nbsp;3.13: Map of Butler Con-Lab Swing in 2019 General Election.</figcaption></figure>
+<div id="fig-spoke-map" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-spoke-map-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figs/03/spoke-map.png" class="img-fluid figure-img" style="width:90.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-spoke-map-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.13: Map of Butler Con-Lab Swing in 2019 General Election.
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -1217,12 +1300,12 @@ We mentioned in the book's preface that there is no single chapter dedicated to 
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><img src="figs/03/dot_density.png" class="img-fluid figure-img" style="width:80.0%"></p>
-<figcaption class="figure-caption">Dot density map of 2019 General Election result.</figcaption></figure>
+<figcaption>Dot density map of 2019 General Election result.</figcaption></figure>
 </div>
 </div>
 </div>
 <div class="cell">
-<details><summary>Code</summary><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Collect 2019 GE data from which dots are approximated.</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Collect 2019 GE data from which dots are approximated.</span></span>
 <span><span class="va">vote_data</span> <span class="op">&lt;-</span> <span class="va">bes_2019</span> <span class="op">|&gt;</span>   </span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">ons_const_id</span><span class="op">!=</span><span class="st">"S14000051"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">mutate</span><span class="op">(</span>other_vote_19<span class="op">=</span><span class="va">total_vote_19</span><span class="op">-</span><span class="op">(</span><span class="va">con_vote_19</span> <span class="op">+</span> <span class="va">lab_vote_19</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
@@ -1285,7 +1368,7 @@ We mentioned in the book's preface that there is no single chapter dedicated to 
 <li>Franconeri S. L., Padilla L. M., Shah P., Zacks J. M., Hullman J. (2021). “The science of visual data communication: What works”. <em>Psychological Science in the Public Interest</em>, 22(3), 110–161. doi: <a href="https://doi.org/10.1177/15291006211051956">10.1177/15291006211051956</a>
 </li>
 </ul>
-<p>For an introduction to ggplot2 and its relationship with <span class="citation" data-cites="wilkinson_grammar_1999">Wilkinson (<a href="references.html#ref-wilkinson_grammar_1999" role="doc-biblioref">1999</a>)</span>’s <em>grammar of graphics</em>:</p>
+<p>For an introduction to ggplot2 and its relationship with <span class="citation" data-cites="wilkinson_grammar_1999">Wilkinson (1999)</span>’s <em>grammar of graphics</em>:</p>
 <ul>
 <li>Wickham, H., Çetinkaya-Rundel, M., Grolemund, G. 2023, “R for Data Science, 2nd Edition”, <em>Orielly</em>.
 <ul>
@@ -1384,10 +1467,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/vis4sds\/vis4sds");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -1397,8 +1497,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -1410,7 +1519,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -1454,6 +1686,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -1479,6 +1712,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -1538,12 +1797,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
-      <a href="./02-data.html" class="pagination-link">
+      <a href="./02-data.html" class="pagination-link" aria-label="Data Fundamentals">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data Fundamentals</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./04-explore.html" class="pagination-link">
+      <a href="./04-explore.html" class="pagination-link" aria-label="Exploratory Data Analysis">
         <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Exploratory Data Analysis</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
@@ -1552,4 +1811,4 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 
 
 
-</body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/vis4sds/vis4sds/edit/master/03-visual.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li></ul></div></div></div></footer></body></html>
