@@ -25,7 +25,7 @@ By the end of this chapter you should gain the following knowledge and practical
 -   [ ] Load flat file datasets.
 -   [ ] Calculate descriptive summaries over datasets.
 -   [ ] Apply high-level functions in `dplyr` and `tidyr` for working with data.
--   [ ] Create statistical graphics that expose high-level structure in data for cleaning purposes.
+-   [ ] Create statistical graphics that expose structure in data for cleaning purposes.
 :::
 
 ## Introduction
