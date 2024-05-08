@@ -336,18 +336,6 @@ From @fig-geog-severity we make inferences around concentrations of high and low
 
 So there is no single solution to this multiple comparison problem, which happens often in applied social science analysis, especially in Geography, where health and other outcomes are mapped visually. Presenting the RRs in their spatial context, and providing full information around RRs that are not significant (the oriented lines), helps with making uncertainty type judgements. For example, depending on the phenomena, we may wish to attach more certainty to RRs that are labelled statistically significant and whose direction is consistent with its neighbours than those that are exceptional from their neighbours. Additionally, constructing a graphical line-up test [@wickham_graphical_2010] to explore whether the sorts of spatial patterns in RR values in the observed data are genuine or might appear in random decoy maps. Although informal, this sort of visual test approximates to the type of question that in this case transport analysts may ask when identifying priority areas for road safety intervention  [@beecham_vis_2022].
 
-
-<!-- ```{r}
-#| label: fig-geog-severity-lineup
-#| out.width: 100%
-#| fig-cap: "Map line-up of Bayesian Risk Ratios. **TODO: maybe remove this?**"
-#| echo: false
-#| eval: true
-
-include_graphics("figs/07/geog-severity-lineup.png", error = FALSE)
-``` -->
-
-
 ## Techniques
 
 
@@ -373,6 +361,7 @@ Icon arrays can be generated reasonably easily in standard ggplot2 using `geom_t
 
 include_graphics("figs/07/icon-technical.png", error = FALSE)
 ```
+
 
 First we generate the array data: a data frame of array locations (candidate crashes) with values representing whether the crash is slight or KSI depending on the observed KSI rate. In the code below, we set up a 10x10 grid of row and column locations and populate these with values for the selected local authorities (Oxford and Fareham) using base R's [`sample()`](https://stat.ethz.ch/R-manual/R-patched/library/base/html/sample.html) function.
 
@@ -583,7 +572,7 @@ rate_boots_temporal |>
   geom_line(aes(group=id), linewidth=.6) +
   facet_wrap(~local_authority_district)+
   transition_states(id, 0,1)
-  ```
+```
 
 ## Conclusions
 
