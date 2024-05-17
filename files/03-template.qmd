@@ -21,8 +21,9 @@ library(tidyverse)
 library(sf) 
 library(here) 
 
-# Uncomment to install
-# install.packages("parlitools") 
+# Uncomment to install devtools, required for installing the development version of parlitools.
+# install.packages("devtools")
+devtools::install_github("evanodell/parlitools")
 library(parlitools)
 ```
 
@@ -166,6 +167,8 @@ sampled_points  <- sampled_points |>  bind_cols(point_votes)
 The ggplot2 code:
 
 ```{r}
+#| echo: true
+#| eval: false
 party_colours <- c(con, lab, other)
 sampled_points |> 
   ggplot() +
