@@ -1048,7 +1048,7 @@ A paper presenting evidence-backed guidelines on visualization design, aimed at 
 
 For an introduction to ggplot2 and its relationship with @wilkinson_grammar_1999's *grammar of graphics*:
 
--   Wickham, H., Çetinkaya-Rundel, M., Grolemund, G. 2023, "R for Data Science, 2nd Edition", *Orielly*.
+-   Wickham, H., Çetinkaya-Rundel, M., Grolemund, G. 2023, "R for Data Science, 2nd Edition", *O'Rielly*.
     -   Chapters 2, 10.
 
 Excellent paper looking at consumption and impact of election forecast visualizations:

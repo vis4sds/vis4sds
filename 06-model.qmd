@@ -810,5 +810,5 @@ On model building in the tidyverse:
 
 On functional programming in R and tidyverse:
 
-* Wickham, H., Çetinkaya-Rundel, M., Grolemund, G. 2023, "R for Data Science, 2nd Edition", *Orielly*.
+* Wickham, H., Çetinkaya-Rundel, M., Grolemund, G. 2023, "R for Data Science, 2nd Edition", *O'Rielly*.
   - Chapter 27.

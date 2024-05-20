@@ -33,7 +33,7 @@ By the end of this chapter you should gain the following knowledge and practical
 
 ## Introduction
 
-This chapter introduces the **what**, **why** and **how** of the book. An argument is presented for the use of visual approaches in modern data analysis, especially social data science analysis, and the key technologies and analysis frameworks for the book are introduced: computational notebooks prepared via [Quarto](https://quarto.org/). The technical component consolidates on any prior knowledge of R and Quarto as well as demonstrates how to organise data science analyses as RStudio Projects.
+This chapter introduces the *what*, *why* and *how* of the book. An argument is presented for the use of visual approaches in modern data analysis, especially social data science analysis, and the key technologies and analysis frameworks for the book are introduced: computational notebooks prepared via [Quarto](https://quarto.org/). The technical component consolidates on any prior knowledge of R and Quarto as well as demonstrates how to organise data science analyses as RStudio Projects.
 
 ## Concepts
 
@@ -54,7 +54,7 @@ The definition has been somewhat stretched over the years, but data science has 
 
 Each is covered to varying degrees within the book. Data visualization and presentation gets a special status. Rather than a single and self-contained facet of data science process -- something that happens after data gathering, preparation and exploration, but before modelling -- the book demonstrates how data visualization is intrinsic to, or at least should inform, every facet of data science work: to capture complex, multivariate structure (chapters [-@sec-visual], [-@sec-explore], [-@sec-network]), provoke critical thinking around data transformation and modelling (chapters [-@sec-explore], [-@sec-network] and [-@sec-model]) and communicate observed patterns with integrity (chapters [-@sec-uncertainty] and [-@sec-storytelling]). 
 
-This special status is further justified when considering the circumstances under which Social Data Science (hereafter social data science) projects operate. New datasets are typically repurposed for social science research for the first time; contain complex structure and relations that cannot be easily captured and modelled using conventional statistics; and, as a consequence, where the types of questions asked and techniques deployed to answer them cannot be easily specified in advance. This is demonstrated in the case study below, in which data graphics reveal structure and relations in London bikeshare usage that could have not been easily identified with non-visual means.
+This special status is further justified when considering the circumstances under which Social Data Science (hereafter social data science) projects operate. New datasets are typically repurposed for social science research for the first time; contain complex structure and relations that cannot be easily modelled using conventional statistics; and, as a consequence, where the types of questions asked and techniques deployed to answer them cannot be easily specified in advance. This is demonstrated in the case study below, in which data graphics reveal structure and relations in London bikeshare usage that could have not been easily identified with non-visual means.
 
 
 ::: callout-note
@@ -67,13 +67,13 @@ In the early 2010s, major cities launched bikeshare systems with technologies th
 ```{r}
 #| echo: false
 #| label: fig-schema
-#| fig-cap: "Database schemas for London bikeshare user data. The values in these table excerpts are entirely synthetic."
+#| fig-cap: "Database schemas and summaries of London bikeshare user data. The values in these table excerpts are entirely synthetic."
 #| out.width: 90%
 knitr::include_graphics("figs/01/schema.png", error = FALSE)
 ```
 
 
-Whilst useful, these summaries and statistical graphics are abstractions. They do not necessarily characterise how users of the bikeshare system cycle around the city -- where there is more or less cycling. Thinking carefully about the available variables (locations and timestamps describing the start and end of bikeshire trips) we can use graphics to expose these more synoptic patterns of usage. In @fig-flows journeys that occur during the morning weekday peak are encoded using flow-lines that curve towards their destination. The thickness and transparency of flow-lines varies by trip frequency. From this, we observe a clear commuter function in the morning peak, with trips from London's major rail hubs -- King's Cross and Waterloo -- connecting central and City of London.
+Whilst useful, the summaries and statistical graphics in @fig-schema abstractions. They do not necessarily characterise how users of the bikeshare system cycle around the city -- where there is more or less cycling. Using the available variables (locations and timestamps describing the start and end of bikeshire trips) we can create graphics that expose these more synoptic patterns of usage. In @fig-flows journeys that occur during the morning weekday peak are encoded using flow-lines that curve towards their destination. The thickness and transparency of flow-lines varies by trip frequency. From this, we observe a clear commuter function in the morning peak, with trips from London's major rail hubs -- King's Cross and Waterloo -- connecting central and City of London.
 
 ```{r}
 #| echo: false
@@ -161,7 +161,7 @@ Watch [Jo Wood's TEDx](https://www.youtube.com/embed/FaRBUnO5PZI) talk demonstra
 
 ### *What* is (and is not) covered?
 
-The chapters of this book blend both theory and practical coding activity to cover the fundamentals of visual data analysis. As the chapters progress, data processing and analysis code is applied to datasets from the Political Science, Urban and Transport Planning and Health domains. So the examples in the book demonstrate how visual approaches can be used to generate and evaluate real findings and knowledge.
+This book blends both theory and practical coding activity to cover the fundamentals of visual data analysis. Each chapter introduces *concepts* for analysis, discussed via a specific dataset, or set of datasets, from the Political Science, Urban and Transport Planning and Health domains. Analysis of these data is then implemented via a *techniques* section. The ambition is that by the end of each chapter, we have a more advanced knowlegde and understanding of the phenomena under investigation. So the examples in the book demonstrate how visual approaches can be used to generate and evaluate *real* findings and knowledge.
 
 To do this, a reasonably broad set of data processing and analysis procedures is covered. As well as developing expertise on the design of data-rich, visually compelling graphics, some tedious aspects of data processing and wrangling are required. Additionally, to learn how to make and communicate claims under uncertainty with data graphics, techniques for estimation and modelling from Statistics are needed. In short, @donoho_50_2017's six key facets of a data science discipline:
 
@@ -174,15 +174,15 @@ To do this, a reasonably broad set of data processing and analysis procedures is
 
 There is already an impressive set of open resources practically introducing how to do modern data analysis [@wickham_r_2017], visualization [@healy_data_2018], model building [@ismay_moderndive_2020; @kuhn_tidy_2023] and geographic analysis [@lovelace_geocomputation_2019]. What makes this book different is the emphasis on *doing* applied data science throughout. We will identify problems as we gather data, discover patterns (some may even be spurious) through exploratory analysis, claim knowledge under uncertainty and communicate and tell stories with data. 
 
-Different from other visualization 'primers', we will consistently introspect into the data graphics produced. We will consider how they advance our analysis at different stages and the role of data graphics in building trust and integrity. We will pay particular attention to how statistics and models are embedded in graphics to emphasise important structure and de-emphaise spurious structure. To demonstrate this more expanded role of visual data analysis we briefly return to our bikeshare case study.
+Different from other visualization 'primers', we will routinely introspect into the data graphics produced. We will consider how they advance our analysis at different stages and the role of data graphics in building trust and integrity. We will pay particular attention to how statistics and models are embedded in graphics to emphasise important structure and de-emphaise spurious structure. To demonstrate this more expanded role of visual data analysis we briefly return to our bikeshare case study.
 
 
 ::: callout-note
 ## Case study: characterising gender differences in spatial cycling behaviour
 
-Gender is an important theme in urban cycling research. High-cycling cities typically have equity in the level of cycling undertaken by men and women, and so the extent and nature of gender-imbalance in urban cycling is useful indicator of how amenable to cycling is a particular urban environment [c.f. @beecham_exploring_2014]. Summarising over a year's user data form  London's bikeshare system, 77% of trips contributed by registered users (members) are made by men. An obvious follow-up is whether the types and geography of trips made by men and women are distinctive. To explore this we set up a modelled *expectation*.  Assuming that there were no differences in the types of trips made by men and women, were we to randomly sample an origin-destination (OD) journey between a pair of docking stations in the bikeshare user dataset, we would *expect* men to account for 77% of the journeys being made (the 'global' proportion of trips contributed by men).  
+Gender is an important theme in urban cycling research. High-cycling cities typically have equity in the level of cycling undertaken by men and women, and so the extent and nature of gender-imbalance can indicate how amenable to cycling is a particular urban environment [c.f. @beecham_exploring_2014]. Summarising over a year's user data form  London's bikeshare system, 77% of trips contributed by registered users (members) are made by men. An obvious follow-up is whether the types and geography of trips made by men and women are distinctive. To explore this we set up a modelled *expectation*.  Assuming that there were no differences in the types of trips made by men and women, were we to randomly sample an origin-destination (OD) journey between a pair of docking stations in the bikeshare user dataset, we would *expect* men to account for 77% of the journeys being made (the 'global' proportion of trips contributed by men).  
 
-In the rank size plot below (@fig-ranks), we select out the top 50 most cycled OD pairs in the dataset and examine the male-female split in those trips against our expectation (the dark line). In only three of those OD pairs (in bold) do we see a higher than expected proportion of trips contributed by women. This suggests that the journeys most popular with men are systematically different from those journeys most popular with women.
+In the rank size plot below (@fig-ranks), we select out the top 50 most cycled OD pairs in the dataset and examine the male-female split in those trips against our expectation (the dark line). In only three of those OD pairs (in bold) do we see a higher than expected proportion of trips contributed by women. This suggests that the journeys most popular with men are different from those journeys most popular with women.
 
 
 
@@ -219,7 +219,7 @@ knitr::include_graphics("figs/01/ods_sex.png", error = FALSE)
 
 All data collection, analysis and reporting activity will be completed using the open source statistical programming environment [R](https://www.r-project.org/). There are several benefits that come from being fully open-source, with a critical mass of users. Firstly, there is an array of online fora, tutorials and code examples from which to learn. Second, with such a large community, there are numerous expert R users who themselves contribute by developing packages that extend its use.
 
-Of particular importance is the [`tidyverse`](http://www.tidyverse.org). This is a set of packages for doing data science authored by the software development team at the company [Posit](https://posit.co/). `tidyverse` packages share a principled underlying philosophy, syntax and documentation. Contained within the `tidyverse` is its data visualization package, [`ggplot2`](https://ggplot2.tidyverse.org/). This package predates the `tidyverse` and is one of the most widely-used toolkits for generating data graphics. As with other visualization toolkits it is inspired by @wilkinson_grammar_1999's [The Grammar of Graphics](https://www.springer.com/gp/book/9780387245447), the `gg` in `ggplot2` stands for *Grammar of Graphics*. We will cover some of the design principles behind `ggplot2` and `tidyverse` in [Chapter -@sec-visual].
+Of particular importance is the [`tidyverse`](http://www.tidyverse.org). This is a set of packages for doing data science authored by the software development team at [Posit](https://posit.co/). `tidyverse` packages share a principled underlying philosophy, syntax and documentation. Contained within the `tidyverse` is its data visualization package, [`ggplot2`](https://ggplot2.tidyverse.org/). This package predates the `tidyverse` and is one of the most widely-used toolkits for generating data graphics. As with other visualization toolkits it is inspired by @wilkinson_grammar_1999's [The Grammar of Graphics](https://www.springer.com/gp/book/9780387245447), the `gg` in `ggplot2` stands for *Grammar of Graphics*. We will cover some of the design principles behind `ggplot2` and `tidyverse` in [Chapter -@sec-visual].
 
 #### Quarto for reproducible research
 
@@ -546,10 +546,10 @@ For a perspective on open code and reproducibility:
 
 On R Projects and workflow:
 
-* Wickham, H., Çetinkaya-Rundel, M., Grolemund, G. 2023, "R for Data Science, 2nd Edition", *Orielly*.
+* Wickham, H., Çetinkaya-Rundel, M., Grolemund, G. 2023, "R for Data Science, 2nd Edition", *O'Rielly*.
   - Chapter 7.
 
 On Quarto:
 
-* Wickham, H., Çetinkaya-Rundel, M., Grolemund, G. 2023, "R for Data Science, 2nd Edition", *Orielly*.
+* Wickham, H., Çetinkaya-Rundel, M., Grolemund, G. 2023, "R for Data Science, 2nd Edition", *O'Rielly*.
   - Chapters 29, 30.

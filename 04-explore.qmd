@@ -736,7 +736,7 @@ Further discussion with implemented examples for road safety analysis:
 
 For an introduction to exploratory data analysis in the tidyverse:
 
-* Wickham, H., Çetinkaya-Rundel, M., Grolemund, G. 2023, "R for Data Science, 2nd Edition", *Orielly*.
+* Wickham, H., Çetinkaya-Rundel, M., Grolemund, G. 2023, "R for Data Science, 2nd Edition", *O'Rielly*.
   - Chapter 11.
 
 * Ismay, C. and Kim, A. 2020. "Statistical Inference via Data Science: A ModernDive into r and the Tidyverse" *CRC Press*. doi: [10.1201/9780367409913](https://doi.org/10.1201/9780367409913).

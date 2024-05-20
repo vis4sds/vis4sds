@@ -535,5 +535,5 @@ Data journalists at the BBC have assembled a useful 'cookbook' demonstrating bas
 
 High-level but principled description of how to incorporate annotations, customise scales and legends when generating plots for communication.
 
-* Wickham, H., Çetinkaya-Rundel, M., Grolemund, G. 2023, "R for Data Science, 2nd Edition", *Orielly*.
+* Wickham, H., Çetinkaya-Rundel, M., Grolemund, G. 2023, "R for Data Science, 2nd Edition", *O'Rielly*.
   - Chapter 12.
