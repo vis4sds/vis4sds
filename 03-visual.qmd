@@ -5,6 +5,7 @@
 ```
 ```{r}
 #| echo: false
+#| warning: false
 library(knitr)
 library(kableExtra)
 library(fontawesome)
@@ -17,7 +18,7 @@ By the end of this chapter you should gain the following knowledge and practical
 
 -   [ ] Recognise the characteristics of effective data graphics.
 -   [ ] Understand that there is a *grammar* of graphics, and that this grammar underpins modern visualization toolkits (ggplot2, vega-lite and Tableau).
--   [ ] Be aware of the vocabulary used by these toolkits -- that of encoding data through visual channels.
+-   [ ] Be familiar with the vocabulary of these toolkits -- that of encoding data through visual channels.
 -   [ ] Be able to select appropriate visual channels given a data item's measurement type.
 -   [ ] Appreciate how visual channels and evidence of their encoding effectiveness can be used to evaluate data graphics.
 :::
@@ -25,12 +26,14 @@ By the end of this chapter you should gain the following knowledge and practical
 ::: {.callout-note icon="false"}
 ## Skills outcomes
 
--   [ ] Write ggplot2 specifications that represent data using marks (`geoms`) and encoding channels (`aesthetics`).
+-   [ ] Write ggplot2 code to generate statistical graphics.
+-   [ ] Update that code to layer graphics with multiple data items. 
+-   [ ] Use code to manipulate the order and colour of encoded data items. 
 :::
 
 ## Introduction
 
-This chapter outlines the fundamentals of visualization design. It offers a position on what effective data graphics should do, before discussing the processes that take place when creating data graphics. It outlines a framework -- a vocabulary and grammar -- for supporting this process which, combined with established knowledge around visual perception, can be used to describe, evaluate and create effective data graphics. Talking about a vocabulary and grammar of data and graphics may sound somewhat abstract. However, through an analysis of 2019 General Election results data the chapter will demonstrate how these concepts are fundamental to visual data analysis.
+This chapter outlines the fundamentals of visualization design. It offers a position on what effective data graphics should do, before discussing the processes that take place when creating data graphics. A framework -- a vocabulary and grammar -- for supporting this process is presented which, combined with established knowledge around visual perception, helps describe, evaluate and create effective data graphics. Talking about a vocabulary and grammar of data and graphics may sound somewhat abstract. However, through an analysis of 2019 General Election results data the chapter will demonstrate how these concepts are fundamental to visual data analysis.
 
 ```{=html}
 <!-- ::: {.callout-tip icon=false}
@@ -50,15 +53,15 @@ Data graphics take numerous forms and are used in many different ways by scienti
 -   Are concise, emphasising dimensions of a dataset without extraneous details.
 -   Generate an aesthetic response, encouraging people to engage with the data or question.
 
-Given these characteristics consider the data graphic below (@fig-wp-map), which presents an analysis of 2016 US Presidential Election, or the *Peaks and Valleys of Trump and Clinton's Support*. The map is reproduced from an article in the The Washington Post [@gamio_how_2016]. Included in the bottom margin is a choropleth map coloured according to party majority, more standard practice for reporting county-level voting.
+<!-- Given these characteristics  -->
 
-@gamio_how_2016's graphic is clearly *data rich*, encoding many more data items than does the standard choropleth. It is not simply the data density that makes the graphic successful, however. There are careful design choices that help *support comparison* and emphasise *complex structure*. By varying the height of triangles according to the number of votes cast, the thickness according to whether or not the result for Trump/Clinton was a landslide and rotating the map 90 degrees, the very obvious differences between metropolitan, densely populated coastal counties that voted emphatically for Clinton and the vast number of suburban, provincial town and rural counties (everywhere else) that voted Trump, are exposed.
+Consider the data graphic below (@fig-wp-map), which presents an analysis of 2016 US Presidential Election, or the *Peaks and Valleys of Trump and Clinton's Support*. The map is reproduced from an article in the The Washington Post [@gamio_how_2016]. Included in the bottom margin is a choropleth map coloured according to party majority, more standard practice for reporting county-level voting. @gamio_how_2016's graphic is clearly *data rich*, encoding many more data items than does the standard choropleth. It is not simply the data density that makes the graphic successful, however. There are careful design choices that help *support comparison* and emphasise *complex structure*. By varying the height of triangles according to the number of votes cast, the thickness according to whether or not the result for Trump/Clinton was a landslide and rotating the map 90 degrees, the very obvious differences between metropolitan, densely populated coastal counties that voted emphatically for Clinton and the vast number of suburban, provincial town and rural counties (everywhere else) that voted Trump, are exposed.
 
 ```{r}
 #| label: fig-wp-map
 #| echo: false
 #| out.width: 100%
-#| fig-cap: "Map of 2016 US presidential election results. Note that for copyright reasons this is a re-implementation in ggplot2 of @gamio_how_2016's original, which appeared in The Washington Post. Code for reproducing the graphic from this link^[`https://vis4sds.github.io/vis4sds/`]."
+#| fig-cap: "Map of 2016 US presidential election results. Note that for copyright reasons this is a re-implementation in ggplot2 of @gamio_how_2016's original, which appeared in The Washington Post."
 knitr::include_graphics("figs/03/wp_long.png", error = FALSE)
 ```
 
@@ -147,7 +150,7 @@ kbl(data) |> kable_minimal() |> column_spec(2, extra_css = "font-family:  Monosp
 >
 > @tufte_visual_1983
 
-In evidence in the Washington Post graphic is a judicious *mapping* of data to visuals and a clear understanding of analysis context. This act of carefully considering how best to leverage visual systems given the available data and analysis priorities is key to designing effective data graphics. Leland Wilkinson's *Grammar of Graphics* [-@wilkinson_grammar_1999] captures this process of turning data into visuals. @wilkinson_grammar_1999's thesis is that if graphics can be described in a consistent way according to their structure and composition, then the process of *generating* graphics of different types can be systematised. This has obvious benefits for building visualization toolkits. Different chart types and combinations can be specified systematically, thereby formalising data visualization design.
+In evidence in the Washington Post graphic is a judicious *mapping* of data to visuals and a clear understanding of analysis context. The act of carefully considering how best to leverage visual systems given the available data and analysis priorities is key to designing effective data graphics. Leland Wilkinson's *Grammar of Graphics* [-@wilkinson_grammar_1999] captures this process of turning data into visuals. @wilkinson_grammar_1999's thesis is that graphics can be described in a consistent way according to their structure and composition. This has obvious benefits for building visualization toolkits. If different chart types and combinations can be reduced to a common vocabulary and grammar, then the process of designing and *generating* graphics of different types can be systematised.
 
 <!-- [Tableau](https://www.tableau.com/en-gb), [vega-lite](https://vega.github.io/vega-lite/) and [ggplot2](https://ggplot2.tidyverse.org/) are all underpinned by *Grammar of Graphics* thinking. -->
 
@@ -261,7 +264,7 @@ Implicit in the discussion above, and when making design decisions, is the impor
 
 ```{r}
 #| label: fig-wp-swing
-#| fig-cap: "Map of swing in 2016 US presidential election results. Note that for copyright reasons this is a re-implementation in ggplot2 of @gamio_how_2016's original, which appeared in The Washington Post. Code for reproducing the graphic from this link^[`https://vis4sds.github.io/vis4sds/`]."
+#| fig-cap: "Map of swing in 2016 US presidential election results. Note that for copyright reasons this is a re-implementation in ggplot2 of @gamio_how_2016's original, which appeared in The Washington Post."
 #| echo: false
 #| out.width: 100%
 
@@ -622,7 +625,7 @@ This design exposition by [Lunzner and McNamara, 2020](http://tinlizzie.org/hist
 #| label: fig-hist-region
 #| fig-cap: "Histograms of Swing variable, grouped by region."
 #| echo: false
-#| out.width: 85%
+#| out.width: 90%
 include_graphics("figs/03/hist-region.png", error = FALSE)
 ```
 
@@ -683,7 +686,7 @@ ggplot2 themes control the appearance of all non-data items -- font sizes and ty
 #| label: fig-bars-region
 #| fig-cap: "Plots of vote shares by party and region."
 #| echo: false
-#| out.width: 90%
+#| out.width: 95%
 include_graphics("figs/03/bars-region.png", error = FALSE)
 ```
 
@@ -764,7 +767,7 @@ temp_party_shares_region |>
 
 The idea behind visualization toolkits such as ggplot2 is to insert visual approaches into a data scientist's workflow. Rather than being overly concerned with low-level aspects of drawing, mapping data values to screen coordinates and scaling factors, you instead focus on aspects relevant to the analysis -- the variables in a dataset and how they will be encoded and conditioned using visuals. Hadley Wickham talks about a grammar of *interactive* data analysis, whereby `dplyr` functions are used to rapidly prepare data for charting before being piped (`|>`) to ggplot2. 
 
-The process of searching for, defining and inserting manual colour schemes for creating @fig-bars-region might seem inimical to this. There is some reasonably involved `dplyr` and a little [regular expression](https://stat.ethz.ch/R-manual/R-devel/library/base/html/regex.html) in the data preparation code that you should not be overly concerned with. Having control of these slightly more low-level properties is, though, sometimes necessary even for exploratory analysis, in this case for enabling appropriate and sensible *symbolisation*.
+The process of searching for, defining and inserting manual colour schemes for creating @fig-bars-region might seem inimical to this. There is some reasonably involved `dplyr` and a little [regular expression](https://stat.ethz.ch/R-manual/R-devel/library/base/html/regex.html) in the data preparation code that you should not be overly concerned with. Having control of these slightly more low-level properties is, though, sometimes necessary even for exploratory analysis, in this case for effecting *symbolisation* that supports comparison.
 :::
 
 ### Plot relationships
@@ -814,21 +817,6 @@ Hopefully there is little surprising here:
 The code block above doesn't exactly reproduce the graphic in @fig-scatters-con. Try updating the ggplot2 specification to emphasise constituencies that flipped from Labour to Conservative. Hint: you may wish to generate a variable recording constituencies that flipped between 2017 and 2019 and encode some visual channel in the graphic on this.
 :::
 
-::: callout-note
-## Preparing data for plotting
-<!-- 
-`case_when` allows you to avoid writing multiple `if_else()` statements. It wasn't strictly necessary here, as a single `if_else()` would have sufficed:
-
-```         
-data_gb |>
-  mutate(
-    winner_19=
-    if_else(!winner_19 %in% c("Conservative", "Labour"), "Other", winner_19)
-  )
-``` -->
-
-A general point from the code blocks in this chapter is of the importance of proficiency in `dplyr`. Throughout the book you will find yourself needing to calculate new variables, recode variables, and reorganise data frames before passing through to ggplot2.
-:::
 
 ### Plot geography
 
@@ -891,7 +879,24 @@ A breakdown of the ggplot2 spec:
 4.  *Coordinates*: `coord_sf` -- we set the coordinate system (CRS) explicitly. In this case [OS British National Grid](https://spatialreference.org/ref/epsg/osgb-1936-british-national-grid/).
 5.  *Setting*: Constituency boundaries are subtly introduced by setting the `geom_sf()` mark to light grey (`colour="#eeeeee"`) with a thin outline (`linewidth=0.01`). On the map to the right, outlines for regions are added as another `geom_sf()` layer. Note how this is achieved in the second `geom_sf()`. The `data_gb` dataset initially passed to ggplot2 (identified by the `.` mark) is collapsed by region (with `group_by()` and `summarise()`), in the background the boundaries in `geometry` are aggregated by region.
 
+::: callout-note
+## Preparing data for plotting
+<!-- 
+`case_when` allows you to avoid writing multiple `if_else()` statements. It wasn't strictly necessary here, as a single `if_else()` would have sufficed:
+
+```         
+data_gb |>
+  mutate(
+    winner_19=
+    if_else(!winner_19 %in% c("Conservative", "Labour"), "Other", winner_19)
+  )
+``` -->
+
+A general point from the code blocks in this chapter is of the importance of proficiency in `dplyr`. Throughout the book you will find yourself needing to calculate new variables, recode variables, and reorganise data frames before passing through to ggplot2.
+:::
+
 In the third map of @fig-map-winners the transparency (`alpha`) of filled constituencies is varied according to the Swing variable. This does demonstrate that constituencies swinging most dramatically for Conservative (darker colours) are in the midlands and North of England and not in London and the South East. The pattern is nevertheless a subtle one; transparency (colour luminance / saturation) is not a highly effective visual channel for encoding quantities. 
+
 
 It may be worth applying the same encoding to Butler two-party swing as that used in the Washington Post graphic when characterising Republican-Democrat swing in 2016 US Elections [e.g. @beecham_using_2020]. This can be achieved by simply adding another ggplot2 layer, though the code is a little more involved. ggplot2's `geom_spoke()` primitive draws line segments parameterised by a location (x- y- position) and angle. With this we can encode constituencies with [\|]{style="font-weight:bolder"} marks that angle to the right [/]{style="color:#3879A1;font-weight:bold"} where the constituency swings towards Conservative and to the left where it swings towards Labour [\\]{style="color:#DB534D;font-weight:bolder"}. This encoding better exposes the pattern of constituencies forming Labour's "red wall" in the north of England, as well as parts of Wales and the Midlands flipping to Conservative.
 
@@ -1053,4 +1058,5 @@ For an introduction to ggplot2 and its relationship with @wilkinson_grammar_1999
 
 Excellent paper looking at consumption and impact of election forecast visualizations:
 
--   Yang, Fumeng, Mandi Cai, Chloe Mortenson, Hoda Fakhari, Ayse D. Lokmanoglu, Jessica Hullman, Steven Franconeri, et al. 2023. "Swaying the Public? Impacts of Election Forecast Visualizations on Emotion, Trust, and Intention in the 2022 U.S. Midterms." OSF Preprints. doi: [10.31219/osf.io/qpyna](https://doi.org/10.31219/osf.io/qpyna).
+-   Yang, F. et al. 2024. "Swaying the Public? Impacts of Election Forecast Visualizations on Emotion, Trust, and Intention in the 2022 U.S. Midterms." *IEEE Transactions on Visualization and Computer Graphics*, 30(1), 23--33. doi: [10.1109/TVCG.2023.3327356](https://doi.org/10.1109/TVCG.2023.3327356).
+

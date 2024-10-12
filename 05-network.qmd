@@ -2,6 +2,7 @@
 
 ```{r}
 #| echo: false
+#| warning: false
 library(knitr)
 library(kableExtra)
 library(fontawesome)
@@ -14,7 +15,8 @@ By the end of this chapter you should gain the following knowledge and practical
 ## Knowledge
 
 - [ ] Understand the special structure and vocabulary used to represent network data.
-- [ ] Appreciate the strengths, weaknesses and trade-offs of network visualizations and of incorporating geographic context.
+- [ ] Appreciate the strengths, weaknesses and trade-offs of network visualizations.
+- [ ] Learn design approaches for incorporating geographic context into network visualization.
 
 :::
 
@@ -32,7 +34,7 @@ By the end of this chapter you should gain the following knowledge and practical
 
 Networks are a special class of data used to represent things, entities, and how they relate to one another. Network data consist of two types of element: *nodes*, the entities themselves, and *edges*, the connections between nodes. Both nodes and edges can have additional information attached to them -- counts, categories and directions. Network data are cumbersome to work with in R as they are not represented well  by flat data frames. A common workflow is to split the data across two tables -- one representing nodes and one representing edges [@wickham_ggplot2_2020].
 
-A category of network data used heavily in geospatial analysis is origin-destination (OD) data describing, for example, flows of bikes [@beecham_connected_2023] and commuters [@beecham_characterising_2019] around a city. These data consist of *nodes*, origin and destination locations, and *edges*, flows between those origins and destinations. Whilst statistics from Network Science can and have [@yang_understanding_2022] been deployed in the analysis of geospatial OD data, visualization techniques provide much assistance in exposing the types of complex structural patterns and relations that result from locating OD flows within geographic context.
+A category of network data used heavily in geospatial analysis is origin-destination (OD) data describing, for example, flows of bikes [@beecham_connected_2023] and commuters [@beecham_characterising_2019] around a city. These data consist of *nodes*, origin and destination locations, and *edges*, flows between origins and destinations. Whilst statistics from Network Science can and have [@yang_understanding_2022] been deployed in the analysis of geospatial OD data, visualization techniques provide much assistance in exposing the types of complex structural patterns and relations inheretent in geographic flow data.
 
 In this chapter we will work with an accessible and widely used OD network dataset: Census travel-to-work data recording counts of individuals commuting between Census geographies of the UK based on their home and workplace. Specifically, we will work with data in London recording travel-to-work between the city's 33 boroughs.
 
@@ -41,7 +43,7 @@ In this chapter we will work with an accessible and widely used OD network datas
 
 ### Node summary
 
-The *nodes* in this dataset are London's 33 boroughs and the *edges* are directed OD pairs between these boroughs. In @fig-flows-bor frequencies of the number of jobs available in each borough and workers living in each borough (the nodes) are represented. Note that job-rich boroughs in central London -- Westminster, City of London -- contain many more jobs than workers residing in them. We can infer that there is a high level of in-commuting to those boroughs and the reverse, a high level of out-commuting, for worker-rich boroughs containing larger numbers of workers relative to jobs.
+The *nodes* in this dataset are London's 33 boroughs and the *edges* are directed OD pairs between boroughs. In @fig-flows-bor frequencies of the number of jobs available in each borough and workers living in each borough (the nodes) are represented. Note that job-rich boroughs in central London -- Westminster, City of London -- contain many more jobs than workers residing in them. We can infer that there is a high level of in-commuting to those boroughs and the reverse, a high level of out-commuting, for worker-rich boroughs containing larger numbers of workers relative to jobs.
 
 
 ```{r}
@@ -133,7 +135,7 @@ The OD matrices expose new structure that could not be so easily inferred from t
 
 OD maps contains exactly the same cells as an OD matrix, but the cells are re-ordered with an approximate geographic arrangement, as in the right column of @fig-reordered-matrix. So, for example, we may be interested in focussing on *destination*, or workplace, boroughs. In the first highlighted example, commutes into Westminster are considered (the left-most column of the OD matrix). Cells in the highlighted column are coloured according to the number of workers resident in each borough that travel into Westminster for work. In the map to the right, these cells are then re-ordered with an approximate spatial arrangement. The geographic ordering allows us to see that residents access jobs in Westminster in large numbers from many boroughs in London, but especially from Wandsworth (Wns), Lambeth (Lmb) and Southwark (Sth) to the south of Westminster (Wst). 
 
-In the second example -- the middle row of the matrix -- we focus on *origins*: commutes out of Hackney are considered. Cells in the highlighted row are coloured according to the number of jobs accessed in each borough by residents living in Hackney, but travelling out of that borough for work. Cells are again reordered in the inset map. This demonstrates that commuting patterns are reasonably localised. The modal destination/workplace borough remains Westminster, but relatively large numbers of jobs are accessed in Camden (Cmd), Islington (Isl), Tower Hamlets (TwH) and the City of London (CoL) by residents living in Hackney.
+In the second example -- the middle row of the matrix -- we focus on *origins*: commutes out of Hackney are considered. Cells in the highlighted row are coloured according to the number of jobs accessed in each borough by residents living in Hackney, but travelling out of Hackney for work. Cells are again reordered in the inset map. This demonstrates that commuting patterns are reasonably localised. The modal destination/workplace borough remains Westminster, but relatively large numbers of jobs are accessed in Camden (Cmd), Islington (Isl), Tower Hamlets (TwH) and the City of London (CoL) by residents living in Hackney.
 
 ```{r}
 #| label: fig-reordered-matrix
@@ -179,8 +181,6 @@ The local scaling allows us to characterise the geography of commuting into boro
 
 include_graphics("figs/05/od_map.png", error = FALSE)
 ```
-
-
 
 
 ::: {.callout-tip icon="false"}
@@ -318,7 +318,7 @@ pts <- london_boroughs |> st_drop_geometry() |> select(area_name, x = easting, y
 solution <- points_to_grid(pts, n_row, n_col, compactness = .6)
 ```
 
-Once a layout is generated we create a corresponding polygon object so that the gridmap can be plotted. This is achieved with `make_grid()`. This function takes an `sf` data frame containing polygons with 'real' geography and returns an `sf` data frame representing a grid, with variables identifying column and row IDs (bottom left is origin) and geographic centroids of grid squares. The gridded object can then be joined on a gridmap solution returned from `points_to_grid()` in order to create an object in which each grid square corresponds to a gridmap cell position.
+Once a layout is generated, we create a corresponding polygon object so that the gridmap can be plotted. This is achieved with `make_grid()`. This function takes an `sf` data frame containing polygons with 'real' geography and returns an `sf` data frame representing a grid, with variables identifying column and row IDs (bottom left is origin) and geographic centroids of grid squares. The gridded object can then be joined on a gridmap solution returned from `points_to_grid()` in order to create an object in which each grid square corresponds to a gridmap cell position.
 
 ```{r}
 #| echo: true
@@ -340,7 +340,7 @@ grid <- make_grid(london_boroughs, n_row, n_col) |>
 include_graphics("figs/05/displacements.png", error = FALSE)
 ```
 
-The code is slightly more advanced. Some concepts, for example functional-style programming with `map()`, are discussed in a more involved way in later chapters. First, we combine the real and grid geographies in a single data frame.  Then we `map()` over each real-to-grid location pair calling `get_trajectory()` to generate a data frame of trajectories – origins, destinations and control points, which affect the path of the vectors so that they curve towards the destination. Finally trajectories are plotted with `geom_bezier()`, with separate lines (`group=`) for each real-to-grid OD pair.
+The code is slightly more advanced. Some concepts, for example functional-style programming with `map()`, are introduced properly in later chapters. First, we combine the real and grid geographies in a single data frame.  Then we `map()` over each real-to-grid location pair calling `get_trajectory()` to generate a data frame of trajectories – origins, destinations and control points, which affect the path of the vectors so that they curve towards the destination. Finally trajectories are plotted with `geom_bezier()`, with separate lines (`group=`) for each real-to-grid OD pair.
 
 
 ```{r}
@@ -394,7 +394,7 @@ Once a gridmap polygon file (`grid`) and corresponding cell positions (`row` and
 #| eval: true
 #| warning: false
 
-include_graphics("figs/05/map_map_code_ann.png", error = FALSE)
+include_graphics("figs/05/map_map_code_ann_new.png", error = FALSE)
 ```
 
 
@@ -412,6 +412,8 @@ In @fig-nodes-summary are gridmaps summarising over the nodes (boroughs). The nu
 
 include_graphics("figs/05/nodes_summary.png", error = FALSE)
 ```
+
+
 
 The code for @fig-nodes-summary:
 

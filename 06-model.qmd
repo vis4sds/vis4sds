@@ -3,6 +3,7 @@
 
 ```{r}
 #| echo: false
+#| warning: false
 library(knitr)
 library(kableExtra)
 library(fontawesome)
@@ -15,7 +16,7 @@ By the end of this chapter you should gain the following knowledge and practical
 ## Knowledge
 
 - [ ] Be reminded of the basics of linear regression modelling.
-- [ ] Understand two categories of geographic effect in regression modelling: geographical *dependence* in values and *non-stationarity* in processes.
+- [ ] Understand two categories of geographic effect in regression modelling: spatial *dependence* in values and *non-stationarity* in processes.
 - [ ] Learn how linear regression models can be updated to account for and explore these two effects.
 
 :::
@@ -26,20 +27,19 @@ By the end of this chapter you should gain the following knowledge and practical
 ## Practical skills
 
 - [ ] Specify linear regression models in R.
-- [ ] Apply [functional-style programming](https://purrr.tidyverse.org/articles/other-langs.html) for working over multiple model outputs.
-- [ ] Update linear regression models in R with Fixed Effect (FE) and Interaction terms.
 - [ ] Extract model outputs and diagnostics in a [`tidy`](https://vita.had.co.nz/papers/tidy-data.pdf) manner.
+- [ ] Apply [functional-style programming](https://purrr.tidyverse.org/articles/other-langs.html) for working over multiple model outputs.
 - [ ] Generate graphical inference plots to test regression assumptions.
 :::
 
 ## Introduction
 
-So far the analysis presented in this book has been data-driven. Having described data in a consistent way ([@sec-data]), visual analysis approaches  have been applied to expose structure in datasets, informed by established visualization guidelines. Chapters [-@sec-explore] and [-@sec-network] involved model building, but these were largely value-free models based on limited prior theory. This chapter is presented as a worked data analysis. We attend to a well-known  dataset with a more explicit and theoretically-informed motivation.
+So far the analysis presented in this book has been data-driven. Having described data in a consistent way ([@sec-data]), visual analysis approaches  have been applied to expose structure in datasets, informed by established visualization guidelines. Chapters [-@sec-explore] and [-@sec-network] involved model building, but these were largely value-free models based on limited prior theory. This chapter is presented as a worked data analysis. We look at a well-known dataset with a more explicit and theoretically-informed motivation.
 
 The chapter explores variation in voting behaviour in the UK's 2016 referendum on leaving the EU. You might remember that whilst there was a slight majority for Leave (c. 52%), the vote varied between different parts of the country. There were many theories and explanations offered for why particular places voted the way they did, often related to the demographic composition of those areas. We will explore whether the sorts of compositional demographic factors discussed vary systematically with area-level Leave voting. Using regression frameworks, we will model the relative effect of each of these compositional factors in structuring variation in the vote and construct data graphics that allow these models and parameters to be considered and evaluated in detail.
 
 ::: {.callout-note}
-This chapter assumes some basic familiarity with linear regression modelling. For a clear and detailed overview, with excellent social science examples, you may wish to consult @bartholomew_analysis_2008.
+This chapter assumes some basic familiarity with linear regression modelling. For a fuller overview, with excellent and real-world social science examples, you may wish to consult *Regression and Other Stories* [@gelman_regression_2020].
 :::
 
 ## Concepts
@@ -48,7 +48,7 @@ This chapter assumes some basic familiarity with linear regression modelling. Fo
 
 <!-- Variation is central to most data analysis, and certainly regression modelling: quantifying variation, exploring how it is structured and accounting for (or explaining) it using a combination of empirical data, prior theory and knowledge. -->
 
-In @fig-map-uniform is a map and bar chart displaying total variation in vote shares for Leave in Great Britain (GB), estimated at Parliamentary Constituency level [see @hanretty_areal_2017]. The values themselves are the difference in estimated vote shares from an expectation that the Leave vote by constituency, $y_{i}$ our *outcome* of interest, is uniformly distributed across the country and so equivalent to the overall vote share for Leave of c. 52%. Although a slightly contrived formulation, we could express this as an intercept-only linear regression model, where the estimated *slope* ($\beta_{1}$) is 'turned off' (takes the value $0$) and the *intercept* ($\beta_{0}$) is the GB average vote share for Leave ($\bar{y}$):
+In @fig-map-uniform is a map and bar chart of voting in the 2016 EU referendum Great Britain (GB), estimated at Parliamentary Constituency level [see @hanretty_areal_2017]. The values themselves are the difference in estimated vote shares from an expectation that the Leave vote by constituency, $y_{i}$ our *outcome* of interest, is uniformly distributed across the country and so equivalent to the overall vote share for Leave of c. 52%. Although a slightly contrived formulation, we could express this as an intercept-only linear regression model, where the estimated *slope* ($\beta_{1}$) is 'turned off' (takes the value $0$) and the *intercept* ($\beta_{0}$) is the GB average vote share for Leave ($\bar{y}$):
 
 \begin{align*}
        y_{i}= \beta_{0} + \beta_{1} + \varepsilon_{i}
@@ -73,10 +73,10 @@ include_graphics("figs/06/map_uniform.png", error = FALSE)
 ```
 
 
-@fig-map-uniform is similar to the maps that were published widely in press reports in the aftermath of the vote, and demonstrates that there is indeed substantial variation in Leave voting between different parts of the country. The intercept-only model  consistently underestimates the vote in Scotland and most of London. Outside of this, constituencies voting in smaller proportions than would be expected for Leave are distributed more discretely in the country: the dark red dot with surrounding red area in the east of England is Cambridge and Cambridgeshire, constituencies in Bristol (south west), Manchester and Liverpool (north west), Brighton (south),  are also reasonably strong red.
+@fig-map-uniform is similar to the maps that were published widely in press reports in the aftermath of the vote, and demonstrates that there is indeed substantial variation in Leave voting between different parts of the country. The intercept-only model  consistently underestimates the vote in Scotland and most of London. Outside of this, constituencies voting in smaller proportions than would be expected for Leave are distributed more sparsely in the country: the dark red dot with surrounding red area in the east of England is Cambridge and Cambridgeshire, constituencies in Bristol (south west), Manchester and Liverpool (north west), Brighton (south),  are also reasonably strong red.
 
 
-When evaluating the effectiveness of modelled values, there are various checks that can be performed. An obvious one here is whether there is bias in the residuals -- whether residuals have structure that suggests they are grouped in a way not captured by the model. Given the motivation behind our analysis it is no surprise that there is a geographic pattern to the residuals in @fig-map-uniform, but also the non-symmetrical shape of the 'signed' bars in the left of the graphic is instructive. There are more constituencies with positive values than negative, the Leave vote is underestimated by the uniform model for 57% of constituencies, and some constituencies have quite large negative values. The strongest vote for Leave was Boston and Skegness with 76% for Leave, but the strongest for Remain was Hackney North and Stoke Newington with 80% for Remain.
+When evaluating the effectiveness of modelled values, there are various checks that can be performed. An obvious one here is whether there is bias in the residuals -- whether residuals have structure that suggests they are grouped in a way not captured by the model. Given the motivation behind our analysis it is no surprise that there is a geographic pattern to the residuals in @fig-map-uniform, but also the non-symmetrical shape of the 'signed' bars in the left of the graphic is instructive. There are more constituencies with positive values than negative; the Leave vote is underestimated by the uniform model for 57% of constituencies, and some constituencies have quite large negative values. The strongest vote for Leave was Boston and Skegness with 76% for Leave, but the strongest for Remain was Hackney North and Stoke Newington with 80% for Remain.
 
 
 ### Quantifying and exploring co-variation
@@ -123,13 +123,13 @@ include_graphics("figs/06/scatters.png", error = FALSE)
 ```
 
 
-It is of course possible, and likely, that there is autocorrelation in many of the compositional characteristics of constituencies and Leave voting. Parallel coordinate plots may help visually explore this multivariate space. Whereas in scatterplots, observations are represented as points located in x- and y- axes that are orthogonal, in a parallel coordinate plot axes are parallel and the values of each observation are encoded via a line connecting the multiple parallel axes. In @fig-pcps each of the thin lines is a constituency coloured according to whether the constituency voted majority Remain (red) or Leave (blue). The first variable encoded is the size of the Leave vote and variables are then ordered according to linear association with Leave. Note that we have reversed the polarity of variables such as *degree-educated* and *professional* so that we expect more Leave (blue lines) towards the right locations of the parallel axes. That the blue and red lines are reasonably separated suggests that there is autocorrelation across many of the demographics characteristics in constituencies voting differently for Leave and Remain.
+It is of course likely that many of the compositional characteristics of constituencies vary with Leave voting in consistent ways. Parallel coordinate plots may help visually explore this multivariate space. Whereas in scatterplots observations are represented as points located in x- and y- axes that are orthogonal, in a parallel coordinate plot observations are laid out across many parallel axes and the values of each observation  encoded via a line connecting the multiple parallel axes. In @fig-pcps each of the thin lines is a constituency coloured according to the recorded voting outcome -- either majority Remain (red) or Leave (blue). The first variable encoded is the size of the Leave vote and variables are then ordered according to linear association with Leave. Note that we have reversed the polarity of variables such as *degree-educated* and *professional* so that we expect more Leave (blue lines) towards the right locations of the parallel axes. That the blue and red lines are reasonably separated suggests that there is a consistent pattern of association across many of the demographics characteristics in constituencies voting differently for Leave and Remain.
 
 <!-- Although they enable some aspects of association between multiple variables to be encoded, parallel coordinate plots have several deficiencies;  -->
 
 ```{r}
 #| label: fig-pcps
-#| out.width: 70%
+#| out.width: 80%
 #| fig-cap: "Parallel coordinate plot of constituency Leave vote and selected explanatory variables."
 #| echo: false
 #| eval: true
@@ -140,7 +140,7 @@ include_graphics("figs/06/pcps.png", error = FALSE)
 
 
 ::: {.callout-note}
-Although parallel coordinate plots enable some aspects of association between multiple variables to be inferred, they have several deficiencies. Association can only really be directly inferred by comparing variables that are immediately adjacent. The order of parallel variables can affect the visual appearance and patterns of plots. And relatedly, visual patterns of the plot that are salient may be incidental to the phenomena being investigated.
+Although parallel coordinate plots enable some aspects of association between multiple variables to be inferred, they have several deficiencies. Association can only be directly inferred by comparing variables that are immediately adjacent. The order of parallel variables can affect the visual appearance and patterns of plots. And relatedly, visual patterns of the plot that are salient may be incidental to the statistical features being inferred.
 :::
 
 <!--
@@ -216,14 +216,14 @@ Given the spirit of this book, you might have wondered about the reasonably abbr
 
 <!-- The new expected values for Leave derived from the multivariate model are much closer to those observed in the data; the model  accounts for a reasonably large share (c.76%) of variation in constituency-level Leave voting. However, our analysis becomes more interesting when we start to explore and characterise model *bias*: any underlying structure to the observations that are less well accounted for by the model. -->
 
-Our analysis becomes more interesting when we start to explore and characterise model *bias*: any underlying structure to the observations that are less-well accounted for by the model.
+Our analysis becomes more interesting when we start to explore and characterise model *bias*: any underlying structure to the observations that is less-well accounted for by the model.
 
 For area-level regression models such as ours, it is usual for residuals to exhibit some spatial autocorrelation structure. For certain parts of a country a model will overestimate an outcome given the relationship implied between explanatory and outcome variables; for other parts the outcome will be underestimated. This might occur due to:
 
 * *Spatial dependence in variable values* over space. We know that the geography of GB is quite socially distinctive, so it is reasonable to expect, for example, the range in variables like *heavy industry* and *white* to be bounded to economic regions and metropolitan-versus-peripheral regional contexts.
 * *Spatial nonstationarity in processes* over space. It is possible that associations between variables might be grouped over space -- that the associations vary for different parts of the country. For example, high levels of *EU-born* migration might affect political attitudes, and thus area-level voting, differently in different parts of a country.
 
-We can test for and characterise spatial autocorrelation by performing a graphical inference test, a map line-up [@beecham_map_2017; @wickham_graphical_2010] against a null hypothesis of *complete spatial randomness* (CSR) in residuals. Here a plot of real data, the true map of residuals, is hidden amongst a set of decoys, in this case maps with the residual values randomly permuted around constituencies. If the real map can be correctly identified from the decoys, then this lends statistical credibility to the claim that the observed data are not consistent with the null of CSR. Graphical line-up tests have been used in various domains, also to test regression assumptions [@loy_model_2017]. The map line-up in @fig-lineup demonstrates that there *is* very obviously spatial and *regional* autocorrelation in residuals, and therefore structure that our regression model misses.
+We can test for and characterise spatial autocorrelation by performing a graphical inference test, a map line-up [@beecham_map_2017; @wickham_graphical_2010] against a null hypothesis of *complete spatial randomness* (CSR) in residuals. Here a plot of real data, the true map of residuals, is hidden amongst a set of decoys; in this case maps with the residual values randomly permuted around constituencies. If the real map can be correctly identified from the decoys, then this lends statistical credibility to the claim that the observed data are not consistent with the null of CSR. Graphical line-up tests have been used in various domains, also to test regression assumptions [@loy_model_2017]. The map line-up in @fig-lineup demonstrates that there *is* very obviously spatial and *regional* autocorrelation in residuals, and therefore structure that our regression model misses.
 
 ```{r}
 #| label: fig-lineup
@@ -240,7 +240,7 @@ There are different ways of updating our model according to this geographic cont
 
 ### Geographic context as grouped nuisance term
 
-A common approach to treating geographic dependence in the values of variables is to model geographic context as a Fixed Effect (FE). A dummy variable is created for each group (region in our case), and every region receives a constant.  Any group-level sources of variation in the outcome are collapsed into the FE variable, which means that regression coefficients are not complicated by this more messy variation -- they now capture the association between demographics and Leave after adjusting for systematic differences in the Leave vote due to region. So, for example, we know that Scotland is politically different from the rest of GB and that this appears to drag down the observed Leave vote for its constituencies. The constant term on region adjusts for this and prevents the estimated regression coefficients (inferred associations between variables) from being affected. Also estimated via the constant is the 'base level' in the outcome for each element of the group -- e.g. net of demographic composition, the expected Leave vote in a particular region.
+A common approach to treating geographic dependence in the values of variables is to model geographic context as a Fixed Effect (FE). A dummy variable is created for each group (region in our case), and every region receives a constant.  Any group-level sources of variation in the outcome are collapsed into the FE variable, which means that regression coefficients are not complicated by this more messy variation -- they now capture the association between demographics and Leave after adjusting for systematic differences in the Leave vote due to region. So, for example, we know that Scotland is politically different from the rest of GB and that this appears to drag down the observed Leave vote for its constituencies. The constant term on region adjusts for this and prevents the estimated regression coefficients (inferred associations between variables) from being affected. Also estimated via the constant is the 'base level' in the outcome for each element of the group -- net of demographic composition, the expected Leave vote in a particular region.
 
 The linear regression model, extended with the FE term (${\gamma_{j}}$), for a single variable model:
 
@@ -267,7 +267,7 @@ include_graphics("figs/06/lineups_fe.png", error = FALSE)
 ```
 
 
-Presented in @fig-outputs-fe are updated regression coefficients for a multivariate model fit with a FE on region. In the left panel are the FE constants. Together these capture the variance in Leave vote between regions after accounting for demographic composition. These coefficients have useful properties: they are the estimated size of the Leave vote for a constituency in a region *net* of demographic composition. London is in interesting here. When initially analysing variation in the vote, constituencies in Scotland and London were distinctive in voting in much smaller proportions than the rest of the country for Leave. Given the associations we observe with Leave voting and demographic composition, however, if we were to randomly sample two constituencies that contain the same demographic characteristics, one in London and one in another region (say North West), on average we would expect the Leave vote in the London constituency to be higher (~60%) than that sampled from North West (~51%).  A separate, and more anticipated pattern is that Scotland would have a lower Leave vote (~38%) -- that is, net of demographics there is some additional context in Scotland that means Leave is lower than in other regions.
+Presented in @fig-outputs-fe are updated regression coefficients for a multivariate model fit with a FE on region. In the left panel are the FE constants. Together these capture the variance in Leave vote between regions after accounting for demographic composition. These coefficients have useful properties: they are the estimated size of the Leave vote for a constituency in a region *net* of demographic composition. London is in of particular interest. When initially analysing variation in the vote, constituencies in Scotland and London were distinctive in voting in much smaller proportions than the rest of the country for Leave. Given the associations we observe with Leave voting and demographic composition, however, if we were to randomly sample two constituencies that contain the same demographic characteristics, one in London and one in another region (say North West), on average we would expect the Leave vote in the London constituency to be higher (~60%) than that sampled from North West (~51%).  A separate, and more anticipated pattern is that Scotland would have a lower Leave vote (~38%) -- that is, net of demographics there is some additional context in Scotland that means Leave is lower than in other regions.
 
 In the right panel are the regression coefficients net of this between-region variation.  Previously the *white* variable had a a slight negative association with Leave, counterintuitively. Now the *white* variable has a direction of effect that conforms to expectation -- net of variation in other demographics increased proportions of *white* residents is associated with increased Leave voting. For the other variablea --  *EU born* -- the coefficient still unexpectedly suggests a positive association with Leave.
 
@@ -315,11 +315,11 @@ include_graphics("figs/06/outputs_interact.png", error = FALSE)
 
 ### Estimate volatility and alternative modelling approaches
 
-Our treatment of regression frameworks has in this chapter been reasonably breezy; there are problems that we have not discussed. Introducing FE and interaction terms  without adding data, for example, reduces statistical power as data are heavily partitioned. Given the fact that our data are hierarchically structured (constituencies sit within regions) hierarchical or multi-level modelling may be more appropriate to modelling this sort of regional grouping. Multi-level modelling uses partial pooling, borrowing data to make estimated coefficients more conservative, less locally biased, where there are comparatively few observations in particular groupings [see @gelman_data_2006]. There are also many ways in which associations between values can be modelled *continuously* over space. In the case of geographically weighted regression (GWR) [@brunsdon_geographically_2002], local regression coefficients for each spatial unit. If applied to our dataset, separate regression coefficients for each constituency. GW-statistics enable spatial non-stationarity in process to be flexibly explored and characterised. As GWR involves generating many hundreds of parameter estimates, visual approaches are often primarily used in its interpretation [see @dykes_geographically_2007].
+Our treatment of regression frameworks has in this chapter been reasonably breezy; there are problems that we have not discussed. Introducing FE and interaction terms  without adding data, for example, reduces statistical power as data are heavily partitioned. Given the fact that our data are hierarchically structured (constituencies sit within regions) hierarchical or multi-level modelling may be more appropriate to modelling this sort of regional grouping. Multi-level modelling uses partial pooling, borrowing data to make estimated coefficients more conservative, less locally biased, where there are comparatively few observations in particular groupings [see @gelman_data_2006]. There are also many ways in which associations between values can be modelled *continuously* over space. In the case of geographically weighted regression (GWR) [@brunsdon_geographically_2002], local regression coefficients for each spatial unit. Geographically Weighted-statistics enable spatial non-stationarity in process to be flexibly explored and characterised. Since GWR involves generating many hundreds of parameter estimates, visual approaches are, as ever, primarily used in interpretation and analysis [see @dykes_geographically_2007].
 
 ## Techniques
 
-The technical element to this chapter demonstrates how linear regression models can be specified in R, including approaches to extract model summaries and diagnostics, and of course represent and evaluate them using data graphics. Data recording estimated vote shares for Leave by Parliamentary Constituency, as well as constituency-level 2011 Census demographics, were originally collected from the [`parlitools`](https://docs.evanodell.com/parlitools/) package.
+The technical element to this chapter demonstrates how linear regression models can be specified in R, including approaches to extract model summaries and diagnostics, and of course represent and evaluate them using data graphics. Data recording estimated vote shares for Leave by Parliamentary Constituency, as well as constituency-level Census demographics, were originally collected from the [`parlitools`](https://docs.evanodell.com/parlitools/) package.
 
 
 ### Import, transform, explore
@@ -494,7 +494,7 @@ augment(model)
 # ...
 ```
 
-The advantage of generating model diagnostics and outputs that are tidy is that it eases the process of working with many model realisations. This is a common requirement for modern data analysis, where statistical inferences are made empirically from resampling. For example, we may wish to generate single-variable linear regression models separately for each selected explanatory variable. We could, for example, use these outputs to annotate the scatterplots in @fig-scatters by their regression line and colour observations according to their residual values, distance from the regression line. These models can be generated with reasonably little code by making use of `broom` and a style of [functional programming](https://adv-r.hadley.nz/fp.html) in R, which is supported by the `purrr` package.
+The advantage of generating model diagnostics and outputs that are tidy is that it eases the process of working with many model realisations. This is a common requirement for modern data analysis, where statistical inferences are made empirically from resampling. For example, we may wish to generate single-variable linear regression models separately for each selected explanatory variable. We could use these outputs to annotate the scatterplots in @fig-scatters by their regression line and colour observations according to their residual values, distance from the regression line. These models can be generated with reasonably little code by making use of `broom` and a style of [functional programming](https://adv-r.hadley.nz/fp.html) in R, which is supported by the `purrr` package.
 
 Example code:
 
@@ -787,7 +787,7 @@ This chapter demonstrated how visual and computational approaches can be used to
 
 ## Further Reading
 
-For an area-level analysis of the Brexit vote:
+An area-level analysis of the Brexit vote:
 
 * Beecham, R., Williams, N. and Comber, L. 2020. “Regionally-structured explanations behind area-level populism: An update to recent ecological analyses.” *PLOS One*, 15(3): e0229974. doi: [10.1371/journal.pone.0229974](https://doi.org/10.1371/journal.pone.0229974).
 
@@ -798,17 +798,17 @@ On modelling for geographic dependence and non-stationarity:
 
 * L. J. Wolf et al., 2023. “On Spatial and Platial Dependence: Examining Shrinkage in Spatially Dependent Multilevel Models.” *Annals of the American Association of Geographers*, 55(1): 1–13.
 
-On graphical inference:
+The original graphical inference paper:
 
 * Buja, A., Cook, D., Hofmann, H., Lawrence, M., Lee, E.K., Swayne, D. F. and  Wickham, H. 2010. “Statistical Inference for Exploratory Data Analysis and Model Diagnostics.” *Royal Society Philosophical Transactions A*, 367:4361– 83. doi: [10.1098/rsta.2009.0120](https://doi.org/10.1098/rsta.2009.0120).
 
-On model building in the tidyverse:
+A guide to model building in the tidyverse:
 
 * Ismay, C. and Kim, A. 2020. "Statistical Inference via Data Science: A ModernDive into r and the Tidyverse" *CRC Press*. doi: [10.1201/9780367409913](https://doi.org/10.1201/9780367409913).
 
 * Kuhn, M. and Silge, J. 2023. "Tidy Modelling with R." *O'Reilly*.
 
-On functional programming in R and tidyverse:
+A quick guide to functional programming in R and tidyverse:
 
 * Wickham, H., Çetinkaya-Rundel, M., Grolemund, G. 2023, "R for Data Science, 2nd Edition", *O'Rielly*.
   - Chapter 27.

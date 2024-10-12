@@ -39,14 +39,14 @@ Through the chapter we will develop vocabulary for describing and thinking about
 ::: callout-note
 ## Data vocabulary
 
-Applying a consistent vocabulary to describing your data is especially useful to learning modern visualization toolkits ([ggplot2](https://ggplot2.tidyverse.org/), [Tableau](https://www.tableau.com/en-gb), [vega-lite](https://vega.github.io/vega-lite/)). We will expand upon this in some detail in [Chapter -@sec-visual] as we introduce Visualization Fundamentals and the [Grammar of Graphics](https://www.springer.com/gp/book/9780387245447) [@wilkinson_grammar_1999].
+A consistent vocabulary to describing data is especially useful when learning modern visualization toolkits ([ggplot2](https://ggplot2.tidyverse.org/), [Tableau](https://www.tableau.com/en-gb), [vega-lite](https://vega.github.io/vega-lite/)). We will expand upon this in some detail in [Chapter -@sec-visual] as we introduce Visualization Fundamentals and the [Grammar of Graphics](https://www.springer.com/gp/book/9780387245447) [@wilkinson_grammar_1999].
 :::
 
 ## Concepts
 
 ### Data frames
 
-Throughout this book we will work with data frames. These are spreadsheet-like representations where rows are observations and columns are variables. In an R data frame, variables are vectors that must be of equal length. Where observations have missing values for certain variables the missing values must be substituted with something, usually with `NA` or similar. This constraint can cause difficulties. For example, when working with variables that contain many values of different length for an observation. In these cases we create a special class of column, a [`list-column`](https://jennybc.github.io/purrr-tutorial/ls13_list-columns.html). Organising data according to this simple structure -- rows as observations, columns as variables -- is especially useful for applying analysis templates typical of the `tidyverse` ecosystem.
+Throughout this book we will work with data frames. These are spreadsheet-like representations where rows are observations and columns are variables. In an R data frame, variables are vectors that must be of equal length. Where observations have missing values for certain variables the missing values must be substituted with something, usually with `NA` or similar. This constraint can cause difficulties. For example, when working with variables that contain many values of different length for an observation. In these cases we create a special class of column, a [`list-column`](https://jennybc.github.io/purrr-tutorial/ls13_list-columns.html). Organising data according to this simple structure -- rows as observations, columns as variables -- is useful for applying analysis templates typical of the `tidyverse` ecosystem.
 
 ### Types of variable
 
@@ -116,13 +116,13 @@ Complete the data description table below identifying the *measurement level* of
 
 ### Types of observation
 
-Observations either together form an entire population or a sample that we expect is representative of a target population. In social data science applications we often work with datasets that are so-called population-level. The [Citibike dataset]((https://www.citibikenyc.com/system-data)) is a complete, population-level dataset in that every journey made through the scheme is recorded. Whether or not this is truly a population-level dataset, however, depends on the analysis purpose. When analysing trips made by Citibike users are we interested only in describing use within Citibike? Or are we taking the patterns observed through our analysis to make claims and inferences about New York cycling more generally? If the latter, then there are problems as the level of detail we have on our sample is pretty trivial compared to traditional, actively-collected datasets, where data collection activities are designed with a target population in mind. It may therefore be difficult to gauge how representative Citibike users and Citibike cycling is of New York's general cycling population. The flipside is that so-called passively-collected data may not suffer from the same problems such as non-response bias and social-desirability bias as traditional, actively-collected data.
+Observations either together form an entire population or a sample that we expect is representative of a target population. In social data science applications we often work with datasets that are so-called population-level. The [Citibike dataset]((https://www.citibikenyc.com/system-data)) is a complete, population-level dataset in that every Citibike journey is recorded. Whether or not this is truly a population-level dataset, however, depends on the analysis purpose. When analysing trips made by Citibike users are we interested only in those cyclists? Or are we taking the patterns observed through our analysis to make claims and inferences about New York cycling more generally? If the latter, then there are problems as the level of detail we have on our sample is pretty trivial compared to traditional, actively-collected datasets, where data collection activities are designed with a target population in mind. It may therefore be difficult to gauge how representative Citibike users and Citibike cycling is of New York's general cycling population. The flipside is that so-called passively-collected data may not suffer from the same problems such as non-response bias and social-desirability bias as traditional, actively-collected data.
 
 ### Tidy data
 
-Throughout the book we will work with data frames organised such that columns always and only refer to variables and rows always and only refer to observations. This arrangement, called *tidy* [@wickham_tidy_2014], has two key advantages. First, if data are arranged in this tidy form then it is easier to apply and re-use tools for wrangling them due to data having the same underlying structure. Second, placing variables into columns, with each column containing a vector of values, means that we can take advantage of R's vectorised functions for transforming data. This is demonstrated in the technical element of the chapter.
+Throughout the book we will work with data frames organised such that columns always and only refer to variables and rows always and only refer to observations. This arrangement, called *tidy* [@wickham_tidy_2014], has two key advantages. First, if data are arranged in this tidy form then it is easier to apply and re-use tools for wrangling them due to data having the same underlying structure. Second, placing variables into columns with each column containing a vector of values, means that we can take advantage of R's vectorised functions for transforming data. This is demonstrated in the technical element of the chapter.
 
-The three rules for tidy data:
+The three rules for tidy data [@wickham_tidy_2014]:
 
 1.  Each variable forms a column.
 2.  Each observation forms a row.
@@ -326,7 +326,9 @@ dplyr_verbs <- tibble::tibble(
 kbl(dplyr_verbs) |> column_spec(1, extra_css = "font-family:  Monospace") |> row_spec(0, extra_css = "border-bottom: 1px solid;")
 ```
 
-`dplyr` functions are designed to be chained together -- you will see this shortly as we explore the New York bikeshare data. This chaining of functions can be achieved using the *pipe* operator (`|>`). Pipes are mechanisms for passing information in a program. They take the output of a set of code (a `dplyr` specification) and make it the input of the next set (another `dplyr` specification). Pipes can be easily applied to `dplyr` functions and the functions of all packages that form the `tidyverse`. We mentioned in [@sec-introduction] that ggplot2 provides a framework for specifying a *layered grammar of graphics* (more on this in [@sec-visual]). Together with the pipe operator, `dplyr` supports a *layered grammar of data manipulation*. You will see this throughout the book as we develop and re-use code templates for performing some data manipulation that is then piped to a ggplot2 specification for visual analysis.
+`dplyr` functions are designed to be chained together, and this 
+<!-- -- you will see this shortly as we explore the New York bikeshare data. This  -->
+chaining of functions can be achieved using the *pipe* operator (`|>`). Pipes are mechanisms for passing information in a program. They take the output of a set of code (a `dplyr` specification) and make it the input of the next set (another `dplyr` specification). Pipes can be easily applied to `dplyr` functions and the functions of all packages that form the `tidyverse`. We mentioned in [@sec-introduction] that ggplot2 provides a framework for specifying a *layered grammar of graphics* (more on this in [@sec-visual]). Together with the pipe operator, `dplyr` supports a *layered grammar of data manipulation*. You will see this throughout the book as we develop and re-use code templates for performing some data manipulation that is then piped to a ggplot2 specification for visual analysis.
 
 #### `count()` and `summarise()` over rows {.unnumbered}
 
@@ -452,20 +454,42 @@ ny_temporal <- ny_trips |>
 Whether or not to store derived data frames, like the newly assigned `ny_temporal`, in a session is not an easy decision. You should avoid cluttering the Environment pane with many data objects. Often when generating charts it is necessary to create these sorts of derived tables as input data to ggplot2. Adding derived data frames to the RStudio Environment pane each time an exploratory plot is created risks an unhelpfully large number of such tables. A general rule: if the derived data frame is to be used more than three times in a data analysis or is computationally intensive, create and assign it (`<-`) as a named object.
 :::
 
-In [@fig-plot-temporal] these derived data are plotted. Code for creating this data graphic is in the template file. The plot demonstrates a familiar weekday-weekend pattern of usage. Trip frequencies peak in the morning and evening rush hours during weekdays and mid/late-morning and afternoon during weekends, with the weekday afternoon peak much larger than the morning peak. There are obvious differences in the type of trips made by subscribers versus customers -- the temporal signature for subscribers appears to match slightly more closely what one would expect of commuting behaviour.
+In [@fig-plot-temporal] these derived data are plotted. Code for creating this data graphic can be accessed in the online version of this book via the dropdown symbol. The plot demonstrates a familiar weekday-weekend pattern of usage. Trip frequencies peak in the morning and evening rush hours during weekdays and mid/late-morning and afternoon during weekends, with the weekday afternoon peak much larger than the morning peak. There are obvious differences in the type of trips made by subscribers versus customers -- the temporal signature for subscribers appears to match more closely what one would expect of commuting behaviour.
 
 ```{r}
 #| echo: false
 #| label: fig-plot-temporal
-#| fig-cap: "Line charts generated with ggplot2. Plot data computed using `dplyr` and `lubridate`."
+#| fig-cap: "Citibike trips made by hour of day and day and week, differentiated by customer type."
 #| out.width: 100%
 include_graphics("figs/02/hod_dow.png", error = FALSE)
 ```
 
 <!-- ![Line charts generated with `ggplot2`. Plot data computed using `dplyr` and `lubridate`](figs/02/hod_dow.svg){#fig-plot-temporal width=100% fig-align="center"} -->
 
+```{r}
+#| code-fold: true
+#| code-summary: "Code"
+#| echo: true
+#| eval: false
+# Calculate trips by hour of day, day and customer type.
+ny_trips |> 
+  mutate(
+    day=wday(start_time, label=TRUE),
+    hour=hour(start_time)) |> 
+  group_by(user_type, day, hour) |> 
+  summarise(count=n()) |> 
+  ungroup() |> 
+# Pipe to ggplot2 for plotting.
+  ggplot(aes(x=hour, y=count)) +
+  geom_line(aes(colour=user_type), size=1) +
+  scale_colour_manual(values=c("#e31a1c", "#1f78b4")) +
+  facet_wrap(~day, nrow=1)+
+  labs(x="hour of day", y="trip counts", colour="user type")
+```
+
+
 ::: callout-note
-This analysis is based on data from June 2020, a time when New York residents were emerging from lockdown. It would be instructive to compare with data from a non-Covid year. The fact that bikeshare is collected continuously makes this sort of behavioural change analysis possible.
+This analysis is based on data from June 2020, a time when New York residents were emerging from lockdown. It would be instructive to compare with data from a non-Covid year. The fact that bikeshare, in contrast to actively-collected survey data, is recorded continuously makes this sort of behavioural change analysis possible.
 :::
 
 #### Relate tables with `join()` {.unnumbered}
@@ -510,7 +534,7 @@ od_pairs <- ny_trips |>
   ungroup()
 ```
 
-The code block above introduces some new functions: `select()` to pick or drop variables, `rename()` to rename variables and a convenience function for calculating straight line distances from polar coordinates, `distHaversine()`. The key function to emphasise is the `left_join()`. If you've worked with relational databases, `dplyr`'s join functions will be familiar to you. In a `left_join` all the values from the first (left-most) table are retained, `ny_trips` in this case, and variables from the table on the right , `ny_stations`, are added. We specify the variable on which tables should be joined with the `by=` parameter, `station_id` in this case. If there is a `station_id` in `ny_trips` that doesn't exist in `ny_stations` then corresponding cells are filled out with `NA`.
+Some new functions are introduced: `select()` to pick or drop variables, `rename()` to rename variables and a convenience function for calculating straight line distances from polar coordinates, `distHaversine()`. The key function to emphasise is the `left_join()`. If you've worked with relational databases, `dplyr`'s join functions will be familiar to you. In a `left_join` all the values from the first (left-most) table are retained, `ny_trips` in this case, and variables from the table on the right , `ny_stations`, are added. We specify the variable on which tables should be joined with the `by=` parameter, `station_id` in this case. If there is a `station_id` in `ny_trips` that doesn't exist in `ny_stations` then corresponding cells are filled out with `NA`.
 
 ```{r}
 #| label: tbl-table-joins
@@ -536,7 +560,7 @@ row_spec(0, extra_css = "font-family:  Monospace; border-bottom: 1px solid;")
 
 <!-- ![Histograms generated with ggplot2. Plot data computed using `dplyr` and `lubridate`](figs/02/dist.svg){#fig-plot-dist width=100% fig-align="center"} -->
 
-From the newly created distance variable we can calculate the average (mean) trip distance for the 500,000 sampled trips -- 1.6km. This might seem very short, but remember that these are straight-line distances between pairs of docking stations. Ideally we would calculate distances derived from cycle trajectories. A separate reason, discovered when generating a histogram on the `dist` variable, is that there are a large number of trips that start and end at the same docking station. Initially these might seem to be unsuccessful hires -- people failing to undock a bike for example. We could investigate this further by paying attention to the docking stations at which same origin-destination trips occur, as in the code block below.
+From the newly created distance variable we can calculate the average (mean) trip distance for the 500,000 sampled trips -- 1.6km. This might seem very short, but remember that these are straight-line distances between pairs of docking stations. Ideally we would calculate distances derived from cycle trajectories. A separate reason, discovered when generating a histogram on the `dist` variable, is that there are a large number of trips that start and end at the same docking station. These might be unsuccessful hires -- people failing to undock a bike for example. We could investigate this further by paying attention to the docking stations at which same origin-destination trips occur, as in the code block below.
 
 ```{r}
 #| echo: true
@@ -565,7 +589,7 @@ ny_trips |>
 ## # … with 948 more rows
 ```
 
-The top 10 docking stations are either in parks, near parks or located along the river. This, coupled with the fact that same origin-destination trips occur in much greater relative number for casual users, associated with discretionary leisure-oriented cycling, than regular users (customers vs subscribers) is further evidence that these are valid trips. Note also the different shapes in the distribution of distances for trips cycled by subscribers and customers (@fig-plot-dist), again suggesting these groups may use Citibike in different ways.
+The top 10 docking stations are either in parks, near parks or located along the river. This, coupled with the fact that same origin-destination trips occur in much greater relative number for casual users, associated with discretionary leisure-oriented cycling, than regular users (customers vs subscribers) is further evidence that these are valid trips. Note also the different shapes in the distribution of distances for trips cycled by subscribers and customers (@fig-plot-dist), again suggesting these groups may use Citibike in different ways. Code for creating @fig-plot-dist can be accessed in the online version of this book via the dropdown symbol.
 
 ```{r}
 #| label: fig-plot-dist
@@ -573,6 +597,22 @@ The top 10 docking stations are either in parks, near parks or located along the
 #| fig-cap: "Citibike trip distances (straight-line km) for Subscriber and Customer cyclists."
 #| echo: false
 include_graphics("figs/02/dist.png", error = FALSE)
+```
+
+
+```{r}
+#| code-fold: true
+#| code-summary: "Code"
+#| echo: true
+#| eval: false
+# Plot faceted histograms.
+ny_trips |> 
+  # Cast as factor variable to draw Subscribers plot facet first.
+  mutate(user_type=factor(user_type, levels=c("Subscriber", "Customer"))) |> 
+  ggplot(aes(dist)) +
+  geom_histogram() +
+  facet_wrap(~user_type)+
+  labs(x="distance = km", y="frequency")
 ```
 
 #### Write functions of your own {.unnumbered}
@@ -614,7 +654,7 @@ ny_trips <- ny_trips |>
   )
 ```
 
-We can use the two new derived variables -- distance travelled and age -- in our analysis. In @fig-plot-speeds, we explore how approximate travel speeds vary by age, trip distance and customer type. The code to generate the summary data and plot is in the template file. Again the average speed calculation should be treated cautiously as it is based on straight line distances and it is likely that this will vary depending on whether the trip is made for 'utilitarian' or 'leisure' purposes. Additionally, due to the heavy subsetting data become a little volatile for certain age groups and so the age variable is aggregated into 5-year bands.
+We can use the two new derived variables -- distance travelled and age -- in our analysis. In @fig-plot-speeds, we explore how approximate travel speeds vary by age, trip distance and customer type. The code to generate the summary data and plot can be accessed in the online version of this book via the dropdown symbol. Again the average speed calculation should be treated cautiously as it is based on straight line distances and it is likely that this will vary depending on whether the trip is made for 'utilitarian' or 'leisure' purposes. Additionally, due to the heavy subsetting data become a little volatile for certain age groups and so the age variable is aggregated into 5-year bands.
 
 There are some notable patterns in @fig-plot-speeds. Subscribers make faster trips than do customers, although this gap narrows as trip distance increases. Trips with a straight-line distance of 4.5km are non-trivial and so may be classed as utilitarian even for non-regular customers. There is a very slight effect of decreasing trip speed by age cycled for the longer trips. The volatility in the older age groups for trips \>4.5km suggests more data and a more involved analysis is required to confidently establish this. For example, it may be that the comparatively rare occurrence of trips in the 65-70 age group is made by only a small subset of cyclists; with a larger dataset we may expect a regression to the mean effect that negates noise caused by outlier individuals.
 
@@ -626,6 +666,51 @@ There are some notable patterns in @fig-plot-speeds. Subscribers make faster tri
 
 include_graphics("figs/02/speeds.png", error = FALSE)
 ```
+
+```{r}
+#| code-fold: true
+#| code-summary: "Code"
+#| echo: true
+#| eval: false
+# Generate staged dataset for plotting. 
+# Filter weekday-only trips, less than 1hr in duration, exclude trips that start and
+#  end at same docking station, and generate binned age and distance variables.  
+temp_data <- ny_trips |> 
+  mutate(day=wday(start_time, label=TRUE), is_weekday=as.numeric(!day %in% c("Sat", "Sun"))) |>
+  filter(
+    is_weekday==1,
+    start_station_id!=end_station_id,
+    duration_minutes<=60,
+    between(age, 16, 74),
+    dist>.5
+    ) |> 
+  mutate(
+    dist_bands=case_when(
+      dist < 1.5 ~ "<1.5km",
+      dist < 3 ~ ">1.5-3km",
+      dist < 4.5 ~ ">3-4.5km",
+      TRUE ~ ">4.5km"),
+    age_band=if_else(age %% 10 > 4, ceiling(age/5)*5, floor(age/5)*5),
+    speed=dist/(duration_minutes/60)
+  )  |> 
+  group_by(user_type, age_band, dist_bands) |> 
+    summarise(avg_speed=mean(speed), sample_size=n(), std=sd(speed)) |> 
+  ungroup() 
+
+# Plot.
+temp_data |> 
+  ggplot(aes(x=age_band, y=avg_speed))+
+  geom_line(aes(colour=user_type)) +
+  scale_colour_manual(values=c("#e31a1c", "#1f78b4")) +
+  scale_fill_manual(values=c("#e31a1c", "#1f78b4")) +
+  facet_wrap(~dist_bands, nrow=1) +
+  labs(x="age - 5 year bands", y="speed - km/h ", fill="user type", colour="user type")
+
+# Remove staging dataset.
+rm(temp_data)
+```
+
+
 
 ### Tidy
 

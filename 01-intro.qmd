@@ -54,13 +54,18 @@ The definition has been somewhat stretched over the years, but data science has 
 
 Each is covered to varying degrees within the book. Data visualization and presentation gets a special status. Rather than a single and self-contained facet of data science process -- something that happens after data gathering, preparation and exploration, but before modelling -- the book demonstrates how data visualization is intrinsic to, or at least should inform, every facet of data science work: to capture complex, multivariate structure (chapters [-@sec-visual], [-@sec-explore], [-@sec-network]), provoke critical thinking around data transformation and modelling (chapters [-@sec-explore], [-@sec-network] and [-@sec-model]) and communicate observed patterns with integrity (chapters [-@sec-uncertainty] and [-@sec-storytelling]). 
 
-This special status is further justified when considering the circumstances under which Social Data Science (hereafter social data science) projects operate. New datasets are typically repurposed for social science research for the first time; contain complex structure and relations that cannot be easily modelled using conventional statistics; and, as a consequence, where the types of questions asked and techniques deployed to answer them cannot be easily specified in advance. This is demonstrated in the case study below, in which data graphics reveal structure and relations in London bikeshare usage that could have not been easily identified with non-visual means.
+This special status is further justified when considering the circumstances under which Social Data Science (hereafter social data science) projects operate. New datasets are typically repurposed for social science research for the first time; contain complex structure and relations that cannot be easily modelled using conventional statistics; and, as a consequence, where the types of questions asked and techniques deployed to answer them cannot be easily specified in advance. 
 
+<!-- This is demonstrated in the case study below, in which data graphics reveal structure and relations in London bikeshare usage. -->
 
-::: callout-note
-## Case study: repurposing bikeshare data for urban travel analysis
+ <!-- that could have not been easily identified with non-visual means. -->
 
-In the early 2010s, major cities launched bikeshare systems with technologies that automatically record data on their users. Data harvested from such systems enable city-wide cycling behaviours to be profiled in new and large-scale ways, but they also present challenges. Bikeshare systems describe a particular category of cycling. The available user data, whilst spatiotemporally precise and 'population-level', are insufficiently detailed to easily assess how typical of cyclists are its users. Factors such as motivations, drivers and barriers to cycling, which especially interest transport researchers and planners, can only be inferred since they are not directly measured. 
+<!-- ::: callout-note
+## Case study: repurposing bikeshare data for urban travel analysis -->
+
+#### Case study: using data visualization for urban travel analysis {.unnumbered}
+
+Let's develop this argument through example. In the early 2010s, several major cities around the world launched large-scale bikeshare systems. Data harvested from such systems enabled city-wide cycling behaviours to be profiled in new ways, but they also presented challenges. Bikeshare systems describe a particular category of cycling. The available user data, whilst spatiotemporally precise and 'population-level', are insufficiently detailed to easily assess how typical of cyclists are its users. Factors such as motivations, drivers and barriers to cycling, which especially interest transport researchers and planners, can only be inferred since they are not directly measured. 
 
 @fig-schema shows a sample of user data collected via London's bikeshare system. The `Journeys` table describes individual trips made between bikeshare docking stations; `Stations`, the locations of docking stations; and in `Members` high-level details of system users that can be linked to `Journeys` via a `memberID`. Summarising over`Journeys`, @fig-schema shows statistical summaries that help us guess at how the system might be used: the hourly and daily profile of trips implying commuter-oriented usage; the 1D distribution of journey frequencies suggesting large numbers of short, so-called 'last mile' trips; the expected heavy-tail in the rank-size plot confirming a large share of trips are made between a relatively select set of docking stations.
 
@@ -68,12 +73,12 @@ In the early 2010s, major cities launched bikeshare systems with technologies th
 #| echo: false
 #| label: fig-schema
 #| fig-cap: "Database schemas and summaries of London bikeshare user data. The values in these table excerpts are entirely synthetic."
-#| out.width: 90%
+#| out.width: 99%
 knitr::include_graphics("figs/01/schema.png", error = FALSE)
 ```
 
 
-Whilst useful, the summaries and statistical graphics in @fig-schema abstractions. They do not necessarily characterise how users of the bikeshare system cycle around the city -- where there is more or less cycling. Using the available variables (locations and timestamps describing the start and end of bikeshire trips) we can create graphics that expose these more synoptic patterns of usage. In @fig-flows journeys that occur during the morning weekday peak are encoded using flow-lines that curve towards their destination. The thickness and transparency of flow-lines varies by trip frequency. From this, we observe a clear commuter function in the morning peak, with trips from London's major rail hubs -- King's Cross and Waterloo -- connecting central and City of London.
+Whilst useful, the summaries and statistical graphics in @fig-schema are abstractions. They do not necessarily characterise how users of the bikeshare system cycle around the city -- where there is more or less cycling. Using the available variables (locations and timestamps describing the start and end of bikeshire trips) we can create graphics that expose these more synoptic patterns of usage. In @fig-flows journeys that occur during the morning weekday peak are encoded using flow-lines that curve towards their destination. The thickness and transparency of flow-lines varies by trip frequency. From this, we observe a clear commuter function in the morning peak, with trips from London's major rail hubs -- King's Cross and Waterloo -- connecting central and City of London.
 
 ```{r}
 #| echo: false
@@ -83,7 +88,7 @@ Whilst useful, the summaries and statistical graphics in @fig-schema abstraction
 knitr::include_graphics("figs/01/flows.png", error = FALSE)
 ```
 
-:::
+<!-- ::: -->
 
 
 
@@ -172,15 +177,23 @@ To do this, a reasonably broad set of data processing and analysis procedures is
 5.  data modelling (Chapters [-@sec-explore], [-@sec-model], [-@sec-uncertainty]);
 6.  and the "science about data science" (All chapters)
 
-There is already an impressive set of open resources practically introducing how to do modern data analysis [@wickham_r_2017], visualization [@healy_data_2018], model building [@ismay_moderndive_2020; @kuhn_tidy_2023] and geographic analysis [@lovelace_geocomputation_2019]. What makes this book different is the emphasis on *doing* applied data science throughout. We will identify problems as we gather data, discover patterns (some may even be spurious) through exploratory analysis, claim knowledge under uncertainty and communicate and tell stories with data. 
+There is already an impressive set of open resources practically introducing how to do modern data analysis [@wickham_r_2017], visualization [@healy_data_2018], model building [@ismay_moderndive_2020; @kuhn_tidy_2023] and geographic analysis [@lovelace_geocomputation_2019]. What makes this book different is the emphasis on *doing* applied data science throughout. We will identify problems as we gather data, discover patterns (some may even be spurious) through exploratory analysis, claim knowledge under uncertainty and communicate and tell stories with data [see also @alexander_telling_2023 for another excellent example]. 
 
-Different from other visualization 'primers', we will routinely introspect into the data graphics produced. We will consider how they advance our analysis at different stages and the role of data graphics in building trust and integrity. We will pay particular attention to how statistics and models are embedded in graphics to emphasise important structure and de-emphaise spurious structure. To demonstrate this more expanded role of visual data analysis we briefly return to our bikeshare case study.
+Different from other visualization 'primers', we will routinely introspect into the data graphics produced. We will consider how they advance our analysis at different stages and the role of data graphics in building trust and integrity. We will pay particular attention to how *statistics* and *models* are embedded in graphics [@gelman_exploratory_2004] to emphasise important structure and de-emphaise spurious structure. 
 
 
+#### Case study: combining data graphics with models to explore gender differences in cycling behaviour {.unnumbered}
+
+
+<!-- 
 ::: callout-note
-## Case study: characterising gender differences in spatial cycling behaviour
+## Case study: characterising gender differences in spatial cycling behaviour -->
 
-Gender is an important theme in urban cycling research. High-cycling cities typically have equity in the level of cycling undertaken by men and women, and so the extent and nature of gender-imbalance can indicate how amenable to cycling is a particular urban environment [c.f. @beecham_exploring_2014]. Summarising over a year's user data form  London's bikeshare system, 77% of trips contributed by registered users (members) are made by men. An obvious follow-up is whether the types and geography of trips made by men and women are distinctive. To explore this we set up a modelled *expectation*.  Assuming that there were no differences in the types of trips made by men and women, were we to randomly sample an origin-destination (OD) journey between a pair of docking stations in the bikeshare user dataset, we would *expect* men to account for 77% of the journeys being made (the 'global' proportion of trips contributed by men).  
+To demonstrate this more expanded role of visual data analysis we briefly return to our bikeshare case study. Gender is an important theme in urban cycling research. High-cycling cities typically have equity in the level of cycling undertaken by men and women, and so the extent and nature of gender-imbalance can indicate how amenable to cycling is a particular urban environment. Summarising over a year's user data form  London's bikeshare system, 77% of trips contributed by registered users are made by men. An obvious follow-up is whether the types and geography of trips made by men and women are distinctive. 
+<!-- To explore this we set up a modelled *expectation*.   -->
+If there were no differences in the trips made by men and women, we could set up a model that *expects* men to account for 77% of journeys cycled in *any* randomly sampled origin-destination (OD) journey pair in the dataset (the 'global' proportion of trips contributed by men).
+
+<!-- were we to randomly sample an origin-destination (OD) journey between a pair of docking stations in the bikeshare user dataset, we would *expect* men to account for 77% of the journeys being made    -->
 
 In the rank size plot below (@fig-ranks), we select out the top 50 most cycled OD pairs in the dataset and examine the male-female split in those trips against our expectation (the dark line). In only three of those OD pairs (in bold) do we see a higher than expected proportion of trips contributed by women. This suggests that the journeys most popular with men are different from those journeys most popular with women.
 
@@ -204,7 +217,10 @@ To consider the spatial context behind these differences, and for a much larger 
 knitr::include_graphics("figs/01/ods_sex.png", error = FALSE)
 ```
 
-:::
+You will see this kind of visual data analysis throughout the book: 1. Expose pattern; 2. Model an expectation derived from this pattern; 3. Characterise deviation from expectation. It is a formulation oft discusssed in statistical practice [e.g. @gelman_exploratory_2004; @hullman_challenges_2021], but less so in textbooks -- @alexander_telling_2023 and *this* book are exceptions.
+
+
+<!-- ::: -->
 
 <!-- 
 * structure of how individuals travel around the city 
@@ -215,19 +231,19 @@ knitr::include_graphics("figs/01/ods_sex.png", error = FALSE)
 
 ### *How* we'll do visualization design and analysis?
 
-#### R for modern data analysis
+#### R for modern data analysis {.unnumbered}
 
 All data collection, analysis and reporting activity will be completed using the open source statistical programming environment [R](https://www.r-project.org/). There are several benefits that come from being fully open-source, with a critical mass of users. Firstly, there is an array of online fora, tutorials and code examples from which to learn. Second, with such a large community, there are numerous expert R users who themselves contribute by developing packages that extend its use.
 
 Of particular importance is the [`tidyverse`](http://www.tidyverse.org). This is a set of packages for doing data science authored by the software development team at [Posit](https://posit.co/). `tidyverse` packages share a principled underlying philosophy, syntax and documentation. Contained within the `tidyverse` is its data visualization package, [`ggplot2`](https://ggplot2.tidyverse.org/). This package predates the `tidyverse` and is one of the most widely-used toolkits for generating data graphics. As with other visualization toolkits it is inspired by @wilkinson_grammar_1999's [The Grammar of Graphics](https://www.springer.com/gp/book/9780387245447), the `gg` in `ggplot2` stands for *Grammar of Graphics*. We will cover some of the design principles behind `ggplot2` and `tidyverse` in [Chapter -@sec-visual].
 
-#### Quarto for reproducible research
+#### Quarto for reproducible research {.unnumbered}
 
 <!-- > Reproducible research is the idea that data analyses, and more generally, scientific claims, are published with their data and software code so that others may verify the findings and build upon them.
 >
 > Roger Peng, Jeff Leek and Brian Caffo -->
 
-In recent years there has been much introspection into how science works, particularly how statistical claims are made from reasoning over evidence. This came on the back of, amongst other things, a high profile paper published in the journal *Science* [@osc_estimating_2015], which found that of 100 contemporary peer-reviewed empirical papers in Psychology, the findings of only 39 could be replicated. The upshot is that researchers must now endeavour to make their work transparent, such that "*all* aspects of the answer generated by any given analysis \[can\] be tested" [@brunsdon_opening_2020].
+In the last decade there has been much introspection into how science works, particularly how statistical claims are made from reasoning over evidence. This came on the back of, amongst other things, a high profile paper published in the journal *Science* [@osc_estimating_2015], which found that of 100 contemporary peer-reviewed empirical papers in Psychology, the findings of only 39 could be replicated. The upshot is that researchers must now endeavour to make their work transparent, such that "*all* aspects of the answer generated by any given analysis \[can\] be tested" [@brunsdon_opening_2020].
 
 A reproducible research project should be accompanied with *code* and *data* that:
 
@@ -235,7 +251,7 @@ A reproducible research project should be accompanied with *code* and *data* tha
 -   does what it claims (the code works)
 -   can be justified and explained through proper documentation
 
-If these goals are met, it should be possible for others to use the code on new and different data to study whether the findings reported in one project are consistent with another; or alternatively, to use the same data but update the code to extend the original analysis. This model -- generate findings, explore replicability in new contexts and re-analysis -- is how knowledge development has always worked. However, to achieve this the data and procedures on which findings are generated must be made open and transparent.
+If these goals are met, it should be possible for others to use the code on new and different data to study whether the findings reported in one project are consistent with another; or alternatively, to use the same data but update the code to extend the original analysis. This model -- generate findings, explore replicability in new contexts and re-analysis -- is how knowledge development has always worked. However, a precondition is that the data and procedures on which findings are generated must be made open and transparent.
 
 In this setting proprietary data analysis software that support point-and-click interaction, previously used widely in the social sciences, are problematic. First, point-and-click software are usually underpinned by code that is closed. It is not possible, and therefore less common, for the researcher to fully interrogate into the underlying procedures that are being implemented and the results need to be taken more or less on faith. Second, replicating and updating analyses in light of new data is challenging. It would be tedious to make notes describing all interactions performed when working with a dataset via a point-and-click- interface.
 
@@ -243,7 +259,7 @@ As a declarative programming environment, it is very easy to provide such a prov
 
 ## Techniques
 
-Readers of this book might already have some familiarity with R and the [RStudio](https://www.rstudio.com/) IDE. If not, then this section is designed to quickly acclimatise readers with R and RStudio and to briefly introduce Quarto, R scripts and RStudio Projects. The accompanying template file, [01-template.qmd](./files/01-template.qmd), can be downloaded from the book's companion website. This material on setup and basics is introduced briskly. For a more involved introduction, readers should consult @wickham_r_2023, the canonical handbook for modern data analysis in R.
+Readers of this book might already have some familiarity with R and the [RStudio](https://www.rstudio.com/) IDE. If not, then this section is designed to quickly acclimatise you with R and RStudio and to briefly introduce Quarto, R scripts and RStudio Projects. The accompanying template file, [01-template.qmd](./files/01-template.qmd), can be downloaded from the book's companion website. This material on setup and basics is introduced briskly. For a more involved introduction, readers should consult @wickham_r_2023, the canonical handbook for modern data analysis in R.
 
 ### R and RStudio
 
@@ -255,7 +271,7 @@ Readers of this book might already have some familiarity with R and the [RStudio
 ```{r}
 #| echo: false
 #| label: fig-rstudio
-#| fig-cap: "The RStudio IDE"
+#| fig-cap: "Annotated screenshots of the RStudio IDE"
 #| out.width: 100%
 knitr::include_graphics("figs/01/rstudio_annotate.png", error = FALSE)
 ```
@@ -540,9 +556,11 @@ A paper that introduces modern data analysis and data science in a straightforwa
 
 * Donoho, D. 2017. “50 Years of Data Science” *Journal of Computational and Graphical Statistics*, 26(6): 745--66. doi: [10.1080/10618600.2017.13847340](https://doi.org/10.1080/10618600.2017.13847340).
 
-For a perspective on open code and reproducibility:
+An excellent 'live' handbook to reproducible data science:
 
-* C. Brunsdon and Comber, A. 2021 “Opening Practice: Supporting Reproducibility and Critical Spatial Data Science”, *Journal of Geographical Systems*, 23: 477--496. doi: [10.1007/s10109-020-00334-2](https://doi.org/10.1007/s10109-020-00334-2).
+* The Turing Way Community. 2022. [The Turing Way](https://book.the-turing-way.org/): A handbook for reproducible, ethical and collaborative research (1.0.2). doi: [10.5281/zenodo.3233853](https://zenodo.org/records/7625728).
+
+<!-- * C. Brunsdon and Comber, A. 2021 “Opening Practice: Supporting Reproducibility and Critical Spatial Data Science”, *Journal of Geographical Systems*, 23: 477--496. doi: [10.1007/s10109-020-00334-2](https://doi.org/10.1007/s10109-020-00334-2). -->
 
 On R Projects and workflow:
 
