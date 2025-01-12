@@ -1,6 +1,5 @@
 project:
   type: book
-  output-dir: docs
 
 book:
   title: "Visualization for Social Data Science"
@@ -9,9 +8,6 @@ book:
   cover-image: figs/01/cover.png
   site-url: https://vis4sds/vis4sds
   repo-url: https://github.com/vis4sds/vis4sds/
-  repo-branch: master
-  repo-actions: [edit]
-  sharing: [twitter]
   chapters:
     - index.qmd
     - 01-intro.qmd
@@ -22,15 +18,31 @@ book:
     - 06-model.qmd
     - 07-uncertainty.qmd
     - 08-storytelling.qmd
-    - references.qmd
   appendices:
     - a1-tasks.qmd
+    - references.qmd
+
+execute:
+  freeze: auto
+
 bibliography: references.bib
-suppress-bibliography: true
 
 format:
   html:
     theme: [cosmo, rb.scss]
-    # cover-image: cover.png
     code-link: true
     html-math-method: katex
+  # pdf:
+  #   documentclass: krantz
+  #   citation-package: natbib
+  #   biblio-style: agsm
+  #   #citation-style: agsm
+  #   monofontoptions: 
+  #     - Scale=0.7
+  #   keep-tex: true
+  #   include-in-header:  latex/preamble.tex
+  #   include-before-body: latex/before_body.tex
+  #   include-after-body: latex/after_body.tex
+    # callout-appearance: simple
+# csl: agsm.csl
+natbiboptions: "authoryear"

@@ -1,6 +1,8 @@
 # Task answers {#sec-tasks-answers}
 
 ::: callout-note
+## Task answers
+
 This page contains answers to the *Task* activities presented in selected chapters of the book.
 :::
 
@@ -11,7 +13,7 @@ This page contains answers to the *Task* activities presented in selected chapte
 
 The completed data description table for the Citibike stations dataset.
 
-<div style="font-size:0.8em;">
+<div style="font-size:0.99em;">
 
 | Variable name  | Variable value   | Measurement level |
 |----------------|------------------|-------------------|
@@ -62,15 +64,15 @@ ny_temporal |>
 
 The completed encoding description table for the Washington Post election map (@fig-wp-swing).
 
-<div style="font-size:0.8em;">
+<div style="font-size:0.99em;">
 
 | Data item         | Measurement level | Visual mark  | Visual channel | Rank         |
 |-------------------|-------------------|--------------|----------------|--------------|
-| County location | Interval   | Lines | Position in x- y-   |  1 mag:order |
-| County winner             | Categorical-nominal             | Lines       | Colour hue          |  2 id:category    |
-| County flip from 2012           | Categorical-ordinal             | Lines       | 1D size          | 3 mag:order       |
-| County Swing fom 2012            | Ratio             | Lines        | Tilt/angle          | 4 mag:order        |
-| State 'winner'             |   Categorical-nominal           | Polygon       | Colour hue          | 2 id:category       |
+| County location | `Interval`   | Lines | Position in x- y-   |  1 mag:order |
+| County winner             | `Cat-nominal`             | Lines       | Colour hue          |  2 id:category    |
+| County flip from 2012           | `Cat-ordinal`             | Lines       | 1D size          | 3 mag:order       |
+| County Swing fom 2012            | `Ratio`             | Lines        | Tilt/angle          | 4 mag:order        |
+| State 'winner'             |   `Cat-nominal`           | Polygon       | Colour hue          | 2 id:category       |
 
 
 </div>
@@ -113,7 +115,8 @@ data_gb |>
            TRUE ~ "Other"
          )) |>
   ggplot(aes(x=con_17, y=con_19)) +
-  geom_point(aes(colour=winner_19, alpha=is_flipped, shape=is_flipped)) +
+  geom_point(aes(colour=winner_19, alpha=is_flipped, 
+    shape=is_flipped)) +
   geom_abline(intercept = 0, slope = 1, size=.3) +
   scale_colour_manual(values=c(con,lab,other)) +
   scale_alpha_ordinal(range=c(.5,1)) +
@@ -135,17 +138,20 @@ The code to reproduce the heatmap in the left column of @fig-borough-freqs-resid
 #| eval: false
 # Vector of vehicles in order they appear in graphic. 
 # Convert vehicle_type to factor to effect ordering.
-order_type <- c("Car", "Taxi", "Bus", "Motorcycle", "Other","Van", "HGV", "Bicycle") 
+order_type <- c("Car", "Taxi", "Bus", "Motorcycle", "Other","Van", 
+  "HGV", "Bicycle") 
 # For new is_inner variable used to facet plot.
-inner_boroughs <- c("Camden", "Greenwich", "Hackney", "Hammersmith and Fulham", "Islington",
-                    "Kensington and Chelsea", "Lambeth", "Lewisham", "Southwark", "Tower Hamlets",
-                    "Wandsworth", "Westminster", "City of London")
+inner_boroughs <- c("Camden", "Greenwich", "Hackney", 
+  "Hammersmith and Fulham", "Islington","Kensington and Chelsea", 
+  "Lambeth", "Lewisham", "Southwark", "Tower Hamlets", "Wandsworth", 
+  "Westminster", "City of London")
 # Staged dataset where signed-chi residuals are created.
 model_data <- ped_veh |> 
-  filter(police_force == "Metropolitan Police" | police_force == "City of London") |> 
+  filter(police_force == "Metropolitan Police" | 
+    police_force == "City of London") |> 
   mutate(
-    is_inner=
-      if_else(local_authority_district %in% inner_boroughs, "inner", "outer"),
+    is_inner=if_else(local_authority_district %in% 
+      inner_boroughs, "inner", "outer"),
     vehicle_type=factor(vehicle_type, levels=order_type)
   ) |> 
   group_by(local_authority_district) |> 
@@ -155,20 +161,23 @@ model_data <- ped_veh |>
   mutate(grand_total=n()) |> 
   group_by(local_authority_district, vehicle_type) |> 
   summarise(
-    observed=n(), row_total=first(row_total),  col_total=first(col_total), 
-    grand_total=first(grand_total), expected=(row_total*col_total)/grand_total, 
+    observed=n(), row_total=first(row_total),  
+    col_total=first(col_total), grand_total=first(grand_total), 
+    expected=(row_total*col_total)/grand_total, 
     resid=(observed-expected)/sqrt(expected),
     is_inner=first(is_inner)
   ) |>  ungroup() 
-# Find maximum residual value to ensure colour scheme is symmetrical on 0.
+# Find max residual value to ensure colour scheme is symmetrical on 0.
 max_resid <- max(abs(model_data$resid))
 
 # Plot heatmap.
 model_data |>   
-  ggplot(aes(x=vehicle_type, y=reorder(local_authority_district, row_total))) +
+  ggplot(aes(x=vehicle_type, 
+    y=reorder(local_authority_district, row_total))) +
   geom_tile(aes(fill=resid), colour="#ffffff", size=.4) +
   facet_grid(is_inner~., scales="free_y", space="free_y") +
-  scale_fill_distiller(palette="RdBu", direction=-1, limits=c(-max_resid,max_resid)) +
+  scale_fill_distiller(palette="RdBu", direction=-1, 
+    limits=c(-max_resid,max_resid)) +
   guides(fill="none")
 ```
 
@@ -180,14 +189,15 @@ The code to reproduce the design challenge plots in @fig-age-imd-light.
 ```{r}
 #| echo: true
 #| eval: false
-# Calculate crash freqs by IMD class of location, dark/daylight and casulty age.
+# Calculate crash freqs by IMD class of location, 
+# dark/daylight and casulty age.
 plot_data <- ped_veh |>
   filter(
     age_of_casualty>0, crash_quintile != "Data missing or out of range",  
     light_conditions != "Data missing or out of range"
     ) |>
-  mutate(is_daylight=
-           factor(if_else(light_conditions == "Daylight", "daylight", "dark"),
+  mutate(is_daylight=factor(
+    if_else(light_conditions == "Daylight", "daylight", "dark"),
                   levels=c("dark", "daylight"))) |>
   group_by(age_of_casualty, is_daylight, crash_quintile) |>
   summarise(count=n()) |> ungroup() 
@@ -196,8 +206,8 @@ plot_data <- ped_veh |>
 plot_data |>
   ggplot(aes(x=age_of_casualty, y=count)) +
   geom_col(aes(colour=is_daylight), width=1) +
-  facet_grid(is_daylight~crash_quintile, space="free_y", scales="free_y", 
-             labeller=labeller(c("daylight", "dark"))) +
+  facet_grid(is_daylight~crash_quintile, space="free_y", 
+    scales="free_y", labeller=labeller(c("daylight", "dark"))) +
   scale_colour_manual(values=c("#08519c", "#c6dbef"), guide="none")+
   labs(y="crash count in hundreds", x="casualty age") +
   scale_y_continuous(
@@ -214,12 +224,15 @@ plot_data |>
     prop_daylight=sum(daylight, na.rm=TRUE)/first(total),
     expected_daylight=(daylight+dark)*prop_daylight
   ) |> 
-  pivot_longer(cols=c(dark, daylight), names_to="is_daylight", values_to="count") |> 
+  pivot_longer(cols=c(dark, daylight), 
+    names_to="is_daylight", values_to="count") |> 
   # Plot.
   ggplot(aes(x=age_of_casualty, y=count)) +
   geom_col(aes(colour=is_daylight), width=1) +
-  geom_line(aes(y=expected_daylight, group=crash_quintile), colour="#737373", linewidth=.4) +
-  facet_wrap(~crash_quintile, labeller=labeller(c("daylight", "dark")), nrow=1) +
+  geom_line(aes(y=expected_daylight, group=crash_quintile), 
+    colour="#737373", linewidth=.4) +
+  facet_wrap(~crash_quintile, 
+    labeller=labeller(c("daylight", "dark")), nrow=1) +
   scale_colour_manual(values=c("#08519c", "#c6dbef"), guide="none")+
   labs(y="crash count in hundreds", x="casualty age") +
   scale_y_continuous(
@@ -252,13 +265,14 @@ The code to reproduce the annotated parallel-coordinate-plot in @fig-pcps.
 # List of variables ordered ascending by correlation with leave.
 order_vars <- cons_data |>
   mutate(across(c(younger:heavy_industry), ~(.x-mean(.x))/sd(.x))) |> 
-  pivot_longer(cols=younger:heavy_industry, names_to="expl_var", values_to="prop") |> 
+  pivot_longer(cols=younger:heavy_industry, 
+    names_to="expl_var", values_to="prop") |> 
   group_by(expl_var) |>  
   summarise(cor=cor(leave,prop)) |> ungroup() |> arrange(cor) |>  
   pull(expl_var)
 
-# Staged dataset of z-score transformed variables and variables identifying 
-# extreme Leave/Remain constituencies for highlighting.
+# Staged dataset of z-score transformed variables and variables 
+# identifying extreme Leave/Remain constituencies for highlighting.
 plot_data <- cons_data |> 
   mutate(
     majority=if_else(leave>.5, "Leave", "Remain"),
@@ -266,34 +280,38 @@ plot_data <- cons_data |>
     decile=ntile(leave, 10), is_extreme=decile > 9 | decile < 2
   )  |> 
   select(
-    majority, is_extreme, decile, constituency_name, leave, degree, professional, 
-    younger, eu_born, no_car, white, own_home, christian, not_good_health, heavy_industry
-  ) |>  
+    majority, is_extreme, decile, constituency_name, leave, degree, 
+    professional,  younger, eu_born, no_car, white, own_home, christian, 
+    not_good_health, heavy_industry) |>  
   # Change polarity in selected variables.
   mutate(degree=-degree, professional=-professional, younger=-younger, 
     eu_born=-eu_born, no_car=-no_car) |>  
-  pivot_longer(cols= c(leave:not_good_health), names_to="var", values_to="z_score") |> 
-  # Explanatory variable as factor ordered according to known assocs with Leave.
+  pivot_longer(cols= c(leave:not_good_health), 
+    names_to="var", values_to="z_score") |> 
+  # Explanatory variable as factor ordered according to known assocs 
+  # with Leave.
   mutate(
     var=factor(var, levels=c("leave", order_vars)),
     var=fct_rev(var)
   ) 
-# Sample extreme constituencies -- for Leave and Remain -- each time plot is built.
+# Sample extreme constituencies, for Leave and Remain,
+# each time plot is built.
 annotate_data <- plot_data |> 
   filter(is_extreme) |> 
   group_by(decile) |> 
   sample_n(1) |> pull(constituency_name)
 
 plot_data |>  
-  ggplot(aes(x=var, y=z_score, colour=majority, group=c(constituency_name))) +
+  ggplot(aes(x=var, y=z_score, colour=majority, 
+    group=c(constituency_name))) +
   geom_path(alpha=0.15, linewidth=.2) +
   # Highlight extreme remain/leave constituencies.
-  geom_path(
-    data= . %>% filter(constituency_name %in% annotate_data),
-    alpha=1, linewidth=.4
-  )+
+  geom_path(data= . %>% 
+    filter(constituency_name %in% annotate_data),
+    alpha=1, linewidth=.4) +
   geom_text(
-    data= . %>% filter(constituency_name %in% annotate_data, var=="leave"),
+    data= . %>% 
+      filter(constituency_name %in% annotate_data, var=="leave"),
     aes(x="leave", y=z_score, label=str_wrap(constituency_name,15)), 
     size=3.5, vjust="top", hjust="centre", nudge_x=+.5
     ) +

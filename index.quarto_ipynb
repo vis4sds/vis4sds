@@ -1,0 +1,52 @@
+{
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "# Preface {.unnumbered}\n",
+        "\n",
+        "This is a Quarto book.\n",
+        "\n",
+        "\n",
+        "## Software conventions {.unnumbered}\n"
+      ],
+      "id": "68fd9798"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "1 + 1"
+      ],
+      "id": "f4a95057",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "To learn more about Quarto books visit <https://quarto.org/docs/books>.\n",
+        "\n",
+        "\n",
+        "## Acknowledgments {.unnumbered}\n",
+        "\n",
+        "Blah, blah, blah...\n",
+        "\n",
+        "\n",
+        "\\mainmatter"
+      ],
+      "id": "92fe06f3"
+    }
+  ],
+  "metadata": {
+    "kernelspec": {
+      "display_name": "Python 3",
+      "language": "python",
+      "name": "python3"
+    }
+  },
+  "nbformat": 4,
+  "nbformat_minor": 5
+}
