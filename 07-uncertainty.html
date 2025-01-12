@@ -51,7 +51,27 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/quarto-nav/headroom.min.js"></script>
@@ -119,7 +139,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <a href="./">Visualization for Social Data Science</a> 
         <div class="sidebar-tools-main">
     <a href="https://github.com/vis4sds/vis4sds/" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
-    <a href="https://twitter.com/intent/tweet?url=%7Curl%7C" title="Twitter" class="quarto-navigation-tool px-1" aria-label="Twitter"><i class="bi bi-twitter"></i></a>
 </div>
     </div>
       </div>
@@ -163,7 +182,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./05-network.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Networks</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Geographic Networks</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -181,13 +200,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./08-storytelling.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Data Storytelling</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./references.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">References</span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Visual Storytelling</span></span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -203,6 +216,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="sidebar-item-container"> 
   <a href="./a1-tasks.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Task answers</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
   </div>
 </li>
       </ul>
@@ -238,7 +257,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
   <li><a href="#conclusions" id="toc-conclusions" class="nav-link" data-scroll-target="#conclusions"><span class="header-section-number">7.4</span> Conclusions</a></li>
   <li><a href="#further-reading" id="toc-further-reading" class="nav-link" data-scroll-target="#further-reading"><span class="header-section-number">7.5</span> Further Reading</a></li>
-  </ul><div class="toc-actions"><ul><li><a href="https://github.com/vis4sds/vis4sds/edit/master/07-uncertainty.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li></ul></div></nav>
+  </ul></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
@@ -269,8 +288,8 @@ Knowledge
 <div class="callout-body-container callout-body">
 <ul class="task-list">
 <li><label><input type="checkbox">Appreciate the main challenges and objectives of uncertainty representation.</label></li>
-<li><label><input type="checkbox">Learn how visualization techniques can be used to support ‘frequency framing’ – the perception of probability and risk.</label></li>
-<li><label><input type="checkbox">Understand how parameter uncertainty can be estimated computationally.</label></li>
+<li><label><input type="checkbox">Learn how visualization techniques can be used to support ‘frequency framing’.</label></li>
+<li><label><input type="checkbox">Understand how parameter uncertainty due to random fluctuation can be estimated computationally.</label></li>
 </ul>
 </div>
 </div>
@@ -285,20 +304,20 @@ Practical skills
 </div>
 <div class="callout-body-container callout-body">
 <ul class="task-list">
-<li><label><input type="checkbox">Create uncertainty visualizations in ggplot2.</label></li>
 <li><label><input type="checkbox">Generate estimates of parameter uncertainty using bootstrap resampling.</label></li>
-<li><label><input type="checkbox">Apply <a href="https://purrr.tidyverse.org/articles/other-langs.html">functional-style programming</a> for working over bootstrap resamples.</label></li>
+<li><label><input type="checkbox">Apply functional-style programming for working over bootstrap resamples.</label></li>
+<li><label><input type="checkbox">Write ggplot2 code to create uncertainty visualizations: icon arrays, risk theatres, gradient bars, ensemble and hypothetical outcome plots.</label></li>
 </ul>
 </div>
 </div>
 <section id="introduction" class="level2" data-number="7.1"><h2 data-number="7.1" class="anchored" data-anchor-id="introduction">
 <span class="header-section-number">7.1</span> Introduction</h2>
-<p>Uncertainty is a key preoccupation of those working in statistics and data analysis. A lot of time is spent providing estimates for it, reasoning about it and trying to take it into account when making evidence-based claims and decisions. There are many ways in which uncertainty can enter a data analysis and many ways in which it can be conceptually represented. This chapter focuses mainly on parameter uncertainty: quantifying and conveying the different possible values that a quantity of interest might take. It is straightforward to imagine how visualization can support this. We can use data graphics to represent different values and give greater emphasis to those for which we have more certainty – to communicate or imply levels of uncertainty in the background. Such representations are nevertheless quite challenging to execute. In <a href="03-visual.html" class="quarto-xref"><span>Chapter 3</span></a> we learnt that there is often a gap between the visual encoding of data and its perception. There is a tendency in standard data graphics to imbue data with marks that over-imply precision. We will consider research in Cartography and Information Visualization on representing uncertainty information, before exploring and applying techniques for quantifying and visually representing parameter uncertainty. We will do so using <a href="https://data.gov.uk/dataset/cb7ae6f0-4be6-4935-9277-47e5ce24a11f/road-safety-data">STATS19</a> road safety data, exploring how injury severity rates in pedestrian-vehicle crashes vary over time and by geographic area.</p>
+<p>Uncertainty is a key preoccupation of those working in statistics and data analysis. A lot of time is spent providing estimates for it, reasoning about it and trying to take it into account when making evidence-based claims and decisions. There are many ways in which uncertainty can enter a data analysis and many ways in which it can be conceptually represented. This chapter focuses mainly on parameter uncertainty: quantifying and conveying the different possible values that a quantity of interest might take. It is straightforward to imagine how visualization can support this. We can use data graphics to represent different values and give greater emphasis to those for which we have more certainty – to communicate or imply levels of uncertainty in the background. Such representations are nevertheless quite challenging to execute. In <a href="03-visual.html" class="quarto-xref"><span>Chapter 3</span></a> we learnt that there is often a gap between the visual encoding of data and its perception. There is a tendency in standard data graphics to imbue data with marks that over-imply precision. We will consider research in Cartography and Information Visualization on uncertainty representation, before exploring and applying techniques for visually encoding parameter uncertainty. We will do so using STATS19 road safety data, exploring how injury severity rates in pedestrian-vehicle crashes vary over time and by geographic area.</p>
 </section><section id="concepts" class="level2" data-number="7.2"><h2 data-number="7.2" class="anchored" data-anchor-id="concepts">
 <span class="header-section-number">7.2</span> Concepts</h2>
 <section id="uncertainty-visualization" class="level3" data-number="7.2.1"><h3 data-number="7.2.1" class="anchored" data-anchor-id="uncertainty-visualization">
 <span class="header-section-number">7.2.1</span> Uncertainty visualization</h3>
-<p>Cartographers and Information Visualization researchers have been concerned for some time with <em>visual variables</em>, or <em>visual channels</em> <span class="citation" data-cites="munzner_visualization_2014">(Munzner 2014)</span>, that might be used to encode uncertainty information. <a href="#fig-uncertainty-variables" class="quarto-xref">Figure&nbsp;<span>7.1</span></a> displays several of these. Ideally, visual variables for uncertainty representation should be intuitive, logically related to notions of precision and accuracy, whilst also allowing sufficient discriminative power when deployed in data dense visualizations.</p>
+<p>Cartographers and Information Visualization researchers have been concerned for some time with <em>visual variables</em>, or <em>visual channels</em> <span class="citation" data-cites="munzner_visualization_2014">(<a href="references.html#ref-munzner_visualization_2014" role="doc-biblioref">Munzner 2014</a>)</span>, that might be used to encode uncertainty information. <a href="#fig-uncertainty-variables" class="quarto-xref">Figure&nbsp;<span>7.1</span></a> displays several of these. Ideally, visual variables should be intuitive, logically related to notions of precision and accuracy, while also allowing sufficient discriminative power when deployed in data dense visualizations.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-uncertainty-variables" class="quarto-figure quarto-figure-center quarto-float anchored">
@@ -306,25 +325,24 @@ Practical skills
 <img src="figs/07/uncertainty_vars.png" class="img-fluid figure-img" style="width:65.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-uncertainty-variables-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;7.1: Visual variables that can be used to represent levels of uncertainty information. Sketchy rendering is generated with <a href="https://github.com/rough-stuff/rough"><code>Rough.js</code></a>, an implementation of the work published in <span class="citation" data-cites="wood_sketchy_2012">Wood et al. (2012)</span>.
+Figure&nbsp;7.1: Visual variables that can be used to represent levels of uncertainty information. Sketchy rendering is generated with <code>Rough.js</code>, an implementation of the work published in <span class="citation" data-cites="wood_sketchy_2012">Wood et al. (<a href="references.html#ref-wood_sketchy_2012" role="doc-biblioref">2012</a>)</span>.
 </figcaption></figure>
 </div>
 </div>
 </div>
-<p><span class="citation" data-cites="kinkeldey_how_2014">Kinkeldey, MacEachren, and Schiewe (2014)</span> provides an overview of empirical research into the effectiveness of proposed visual variables against these criteria. As intuitive signifiers of uncertainty, or lack of precision, <em>fuzziness</em> (not encoded in <a href="#fig-uncertainty-variables" class="quarto-xref">Figure&nbsp;<span>7.1</span></a>) and <em>location</em> have been shown to work well. Slightly less intuitive, but nevertheless successful in terms of discrimination are <em>size</em>, <em>transparency</em> and <em>colour value</em>. <em>Sketchiness</em> is another intuitive signifier proposed in <span class="citation" data-cites="boukhelifa_evaluating_2012">Boukhelifa et al. (2012)</span>. As with many visual variables, sketchiness is probably best considered as an ordinal visual variable to the extent that there is a limited range of sketchiness levels that can be discriminated. An additional feature of sketchiness is its sense of informality. This may be desirable in certain contexts, less so in others <span class="citation" data-cites="wood_sketchy_2012">(see Wood et al. 2012 for further discussion)</span>.</p>
+<p><span class="citation" data-cites="kinkeldey_how_2014">Kinkeldey, MacEachren, and Schiewe (<a href="references.html#ref-kinkeldey_how_2014" role="doc-biblioref">2014</a>)</span> provides an overview of empirical research into the effectiveness of proposed visual variables against these criteria. As intuitive signifiers of uncertainty, or lack of precision, <em>fuzziness</em> (not encoded in <a href="#fig-uncertainty-variables" class="quarto-xref">Figure&nbsp;<span>7.1</span></a>) and <em>location</em> have been shown to work well. Slightly less intuitive, but nevertheless successful in terms of discrimination, are <em>size</em>, <em>transparency</em> and <em>colour value</em>. <em>Sketchiness</em> is another intuitive signifier proposed in <span class="citation" data-cites="boukhelifa_evaluating_2012">Boukhelifa et al. (<a href="references.html#ref-boukhelifa_evaluating_2012" role="doc-biblioref">2012</a>)</span>. As with many visual variables, sketchiness is probably best considered as an ordinal visual variable to the extent that there is a limited range of sketchiness levels that can be discriminated. An additional feature of sketchiness is its sense of informality. This may be desirable in certain contexts, less so in others <span class="citation" data-cites="wood_sketchy_2012">(see <a href="references.html#ref-wood_sketchy_2012" role="doc-biblioref">Wood et al. 2012</a> for further discussion)</span>.</p>
 <p>When thinking about uncertainty visualization, a key guideline is that:</p>
 <blockquote class="blockquote">
-<p><em>Things that are not precise should not be encoded with symbols that look precise</em>.</p>
+<p><span><em>Things that are not precise should not be encoded with symbols that look precise</em>.</span> </p>
 </blockquote>
-<p>Much discussed in recent literature on uncertainty visualization <span class="citation" data-cites="n_balakrishnan_uncertainty_2021">(e.g. Padilla and Hullman 2021)</span> is the US National Weather Service’s (NWS) <span class="citation" data-cites="nhc_cone_2023">(NHC 2023)</span> cone graphic (<a href="#fig-hurricane-vis" class="quarto-xref">Figure&nbsp;<span>7.2</span></a>). The cone starts at the storm’s current location and spreads out to represent the <em>projected path</em> of the storm as determined by NWS’s modelling. The main problem is that the cone implies the storm is growing as we move away from its current location, when in fact this is not the case. Instead there is more uncertainty in the areas that could be affected by the storm the further away those areas are from the storm’s current location. The second problem is that the cone uses strong lines that imply precision. The temptation is to think that anything contained by the cone is unsafe and anything outside of it is safe. This is of course not what is suggested by the model. Rather, that areas beyond the cone fall outside some chosen threshold probability. You will notice that the graphic in <a href="#fig-nhc" class="quarto-xref">Figure&nbsp;<span>7.2 (a)</span></a> is annotated with a guidance note to discourage such false interpretation.</p>
-<div id="fig-hurricane-vis" class="quarto-figure quarto-figure-center quarto-float anchored" data-layout-row="2">
+<p>Much discussed in recent literature on uncertainty visualization <span class="citation" data-cites="n_balakrishnan_uncertainty_2021">(e.g. <a href="references.html#ref-n_balakrishnan_uncertainty_2021" role="doc-biblioref">Padilla and Hullman 2021</a>)</span> is the US National Weather Service’s (NWS) <span class="citation" data-cites="nhc_cone_2023">(<a href="references.html#ref-nhc_cone_2023" role="doc-biblioref">NHC 2023</a>)</span> cone graphic (<a href="#fig-nhc" class="quarto-xref">Figure&nbsp;<span>7.2 (a)</span></a>). The cone starts at the storm’s current location and spreads out to represent the modelled <em>projected path</em> of the storm. The main problem is that the cone implies the storm is expanding as it moves away from its current location, when this is not the case. In fact there is more uncertainty in the areas that could be affected by the storm the further away those areas are from the storm’s current location. The second problem is that the cone uses strong lines that imply precision. The temptation is to think that anything contained by the cone is unsafe and anything outside of it is safe. This is of course not what is suggested by the model. Rather, that areas not conatained by the cone are beyond some chosen threshold probability. You will notice that the graphic in <a href="#fig-nhc" class="quarto-xref">Figure&nbsp;<span>7.2 (a)</span></a> is annotated with a guidance note to discourage such false interpretation.</p>
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-hurricane-vis-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div id="fig-nhc" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-subfloat-fig figure"><div aria-describedby="fig-nhc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="figs/07/cone_uncertainty.png" class="img-fluid figure-img" style="width:75.0%" data-ref-parent="fig-hurricane-vis">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-nhc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-(a) National Hurricane Center cone design
+(a) National Hurricane Center cone design.
 </figcaption></figure>
 </div>
 <div id="fig-nhc-redesign" class="quarto-figure quarto-figure-center quarto-float anchored">
@@ -332,20 +350,19 @@ Figure&nbsp;7.1: Visual variables that can be used to represent levels of uncert
 <img src="figs/07/cone_redesign.png" class="img-fluid figure-img" style="width:75.0%" data-ref-parent="fig-hurricane-vis">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-nhc-redesign-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-(b) <span class="citation" data-cites="van_goethem_stenomaps_2014">Van Goethem et al. (2014)</span> redesign
+(b) <span class="citation" data-cites="van_goethem_stenomaps_2014">Van Goethem et al. (<a href="references.html#ref-van_goethem_stenomaps_2014" role="doc-biblioref">2014</a>)</span> redesign.
 </figcaption></figure>
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-hurricane-vis-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;7.2: Cone graphic produced by National Hurricane Center <span class="citation" data-cites="nhc_cone_2023">(NHC 2023)</span> and example re-design in <span class="citation" data-cites="van_goethem_stenomaps_2014">Van Goethem et al. (2014)</span>. Cone graphic re-printed with permission, credit National Oceanic and Atmospheric Administration/National Weather Service.<strong>Permission for jwo re-design</strong>
-</figcaption></figure>
-</div>
-<p>In <span class="citation" data-cites="van_goethem_stenomaps_2014">Van Goethem et al. (2014)</span>’s redesign, colour value is used to represent four binned categories of storm probability suggested by the model. Greater visual saliency is therefore conferred to locations where there is greater certainty. The state boundaries are also encoded somehwat differently. In <a href="#fig-nhc-redesign" class="quarto-xref">Figure&nbsp;<span>7.2 (b)</span></a> US states are symbolised using a single line generated via curve schematisation <span class="citation" data-cites="van_goethem_stenomaps_2014">(Van Goethem et al. 2014)</span>. The thinking here is that hard lines in maps, and data graphics more generally, tend to induce binary judgements. If the cone is close to but not overlapping a state boundary, for example, should a state’s authorities prepare and organise a response any differently from a state whose boundary very slightly overlaps the cone? Context around states is introduced in the redesign, but in a way that discourages binary thinking; precise inferences of location are not possible as the state areas and borders are very obviously not exact.</p>
+Figure&nbsp;7.2: Cone graphic produced by National Hurricane Center <span class="citation" data-cites="nhc_cone_2023">(<a href="references.html#ref-nhc_cone_2023" role="doc-biblioref">NHC 2023</a>)</span> and example re-design in <span class="citation" data-cites="van_goethem_stenomaps_2014">Van Goethem et al. (<a href="references.html#ref-van_goethem_stenomaps_2014" role="doc-biblioref">2014</a>)</span>. Cone graphic re-printed with permission, credit National Oceanic and Atmospheric Administration/National Weather Service.
+</figcaption></figure><p>In <span class="citation" data-cites="van_goethem_stenomaps_2014">Van Goethem et al. (<a href="references.html#ref-van_goethem_stenomaps_2014" role="doc-biblioref">2014</a>)</span>’s redesign, colour value is used to represent four binned categories of storm probability suggested by the model. Greater visual saliency is therefore conferred to locations where there is greater certainty. The state boundaries are also encoded somehwat differently. In <a href="#fig-nhc-redesign" class="quarto-xref">Figure&nbsp;<span>7.2 (b)</span></a> US states are symbolised using a single line generated via curve schematisation <span class="citation" data-cites="van_goethem_stenomaps_2014">(<a href="references.html#ref-van_goethem_stenomaps_2014" role="doc-biblioref">Van Goethem et al. 2014</a>)</span>. The thinking here is that hard lines in maps tend to induce binary judgements. If the cone is close to but not overlapping a state boundary, for example, should a state’s authorities prepare and organise a response any differently from a state whose boundary very slightly overlaps the cone? Context around states is therefore introduced in the redesign, but in a way that discourages binary thinking; precise inferences of location are not possible as the state areas and borders are very obviously not exact.</p>
 </section><section id="frequency-framing" class="level3" data-number="7.2.2"><h3 data-number="7.2.2" class="anchored" data-anchor-id="frequency-framing">
 <span class="header-section-number">7.2.2</span> Frequency framing</h3>
+<p></p>
 <!-- Clearly there are many ways in which uncertainty can be understood to enter a data analysis.  -->
-<p>For practical reasons the rest of the chapter considers how these general principles for uncertainty representation might be applied to a single aspect of uncertainty – quantifiable parameter uncertainty. The parameter of interest is estimated pedestrian injury severity rates – the proportion of pedestrian crashes that result in serious or fatal injury – collected from our STATS19 road crash dataset.</p>
-<p>Often parameters are represented as probabilities or relative frequencies – ratios and percentages describing the probability of some event happening. It is notoriously difficult to develop intuition around these sorts of relative frequencies. In the STATS19 dataset we might wish to compare the injury severity rate of pedestrian-vehicle road crashes – the proportion of all crashes that resulted in a serious injury or fatality (KSI) taking place between two local authority areas, say Bristol and Sheffield. There is in fact quite a difference in the injury severity rate between these two local authorities. In 2019, 35 out of 228 reported crashes (15%) in Bristol were KSI, whilst for Sheffield this figure was 124 out of 248 reported crashes (50%). This feels like quite a large difference, but it is difficult to imagine or experience these differences in probabilities when written down or encoded visually using say relative bar length in standardised bar charts.</p>
+<p> For practical reasons the rest of the chapter considers how these general principles for uncertainty representation might be applied to a single aspect of uncertainty: quantifiable parameter uncertainty. Parameters of interest are often probabilities or relative frequencies – ratios and percentages describing the probability of some event happening. It is notoriously difficult to develop intuition around these sorts of relative frequencies, and so data graphics can usefully support their interpretation.</p>
+<p>In our STATS19 road crash dataset, a parameter of interest is the pedestrian injury severity rate, or the proportion of all pedestrian crashes that result in serious or fatal injury (KSI). We might wish to compare the injury severity rate of crashes taking place between two local authority areas, say Bristol and Sheffield. There is in fact quite a difference in the injury severity rate between these two local authorities. In 2019, 35 out of 228 reported crashes (15%) in Bristol were KSI, while for Sheffield this figure was 124 out of 248 reported crashes (50%). This feels like quite a large difference, but it is difficult to imagine or experience these differences in probabilities when written down or encoded visually using relative bar length in standardised bar charts.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-icon-arrays" class="quarto-figure quarto-figure-center quarto-float anchored">
@@ -358,8 +375,8 @@ Figure&nbsp;7.3: Icon array displaying injury severity rates for Pedestrian-Vehi
 </div>
 </div>
 </div>
-<p>Icon arrays are used extensively in health communication and have been demonstrated to be effective at communicating probabilities of event outcomes. They offload the thinking that happens when comparing ratios – the internal weighing up of numerators and denominators. The icon arrays in <a href="#fig-icon-arrays" class="quarto-xref">Figure&nbsp;<span>7.3</span></a> communicate the two injury severity rates for Bristol and Sheffield. Each crash is a square and crashes are coloured according to whether they resulted in a serious injury or fatality (dark red) or slight injury (light red). In the bottom row, cells are given a non-random ordering to effect something similar to a standardised bar chart. Whilst the standardised bars enables the two recorded proportions to be “read-off” (15% and 50% KSI), the random arrangement of cells in the icon array perhaps builds intuition around the differences in <em>probabilities</em> of a pedestrian crash resulting in serious injury.</p>
-<p>There are compelling examples of icon arrays being used in data journalism, most obviously to communicate outcome probabilities in political polling. You might remember that at the time of 2016 US Presidential Election there was much criticism levelled at pollsters, even the excellent FiveThirtyEight <span class="citation" data-cites="silver_why_2016">(Silver 2016)</span>, for not correctly calling the result. Huffpost gave Trump a 2% chance of winning the election, The New York Times 15% and FiveThirtyEight 28%. Clearly the Huffpost estimate was really quite off, but thinking about FiveThirtyEight’s prediction, how surprised should we be if an outcome that is predicted to happen with a probability of almost a third, does in fact occur?</p>
+<p>Icon arrays are used in public health communication and have been demonstrated to be effective at communicating probabilities of event outcomes. They offload the thinking that happens when evaluating ratios. The icon arrays in <a href="#fig-icon-arrays" class="quarto-xref">Figure&nbsp;<span>7.3</span></a> communicate the two injury severity rates for Bristol and Sheffield. Each crash is a square and crashes are coloured according to whether they resulted in a serious injury or fatality (dark red) or slight injury (light red). In the bottom row, cells are given a non-random ordering to effect something similar to a standardised bar chart. While the standardised bars enables the two recorded proportions to be “read-off” (15% and 50% KSI), the random arrangement of cells in the icon array perhaps builds intuition around the differences in <em>probabilities</em> of a pedestrian crash resulting in serious injury.</p>
+<p>There are compelling examples of icon arrays being used in data journalism, most obviously to communicate outcome probabilities in political polling. You might remember that at the time of 2016 US Presidential Election there was much criticism levelled at pollsters, even the excellent FiveThirtyEight <span class="citation" data-cites="silver_why_2016">(<a href="references.html#ref-silver_why_2016" role="doc-biblioref">Silver 2016</a>)</span>, for not correctly calling the result. Huffpost gave Trump a 2% chance of winning the election, The New York Times 15% and FiveThirtyEight 28%. Clearly the Huffpost estimate was really quite off, but thinking about FiveThirtyEight’s prediction, how surprised should we be if an outcome that is predicted to happen with a probability of almost a third, does in fact occur?</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-risk-theatre" class="quarto-figure quarto-figure-center quarto-float anchored">
@@ -367,54 +384,57 @@ Figure&nbsp;7.3: Icon array displaying injury severity rates for Pedestrian-Vehi
 <img src="figs/07/risk_theatre.png" class="img-fluid figure-img" style="width:100.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-risk-theatre-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;7.4: Risk theatre of different election eve forecasts, reimplemented in ggplot2 but based on data graphics appearing in <span class="citation" data-cites="gross_how_2016">Gross (2016)</span>.
+Figure&nbsp;7.4: Risk theatre of different election eve forecasts, reimplemented in ggplot2 but based on data graphics appearing in <span class="citation" data-cites="gross_how_2016">Gross (<a href="references.html#ref-gross_how_2016" role="doc-biblioref">2016</a>)</span>.
 </figcaption></figure>
 </div>
 </div>
 </div>
 <p>The risk theatre (<a href="#fig-risk-theatre" class="quarto-xref">Figure&nbsp;<span>7.4</span></a>) is a variant of an icon array. In this case it represents polling probabilities as seats of a theatre – a dark seat represents a Trump victory. If you imagine buying a theatre ticket and being randomly allocated to a seat, how confident would you be about not sitting in a “Trump” seat in the FiveThirtyEight image? The distribution of dark seats suggests that the 28% risk of a Trump victory according to the model is not negligible.</p>
+<p></p>
 </section><section id="quantifying-uncertainty-in-frequencies" class="level3" data-number="7.2.3"><h3 data-number="7.2.3" class="anchored" data-anchor-id="quantifying-uncertainty-in-frequencies">
 <span class="header-section-number">7.2.3</span> Quantifying uncertainty in frequencies</h3>
-<p>In the icon arrays above we made little of the fact that the sample size varies between the two recorded crash rates. Partly this was because the differences were reasonably small. When looking at injury severity rates across all local authorities in 2019, however, there is substantial variation in the rates <em>and</em> sample sizes. Bromsgrove has a very low injury severity rate based on a small sample size (4%, or one out of 27 crashes resulting in KSI); Cotswold has a very high injury severity rate based on a small sample size (75%, or 14 out of 19 crashes resulting in KSI). With some prior knowledge of these areas one might expect the difference in KSI rates to be in this direction, but would we expect the difference to be of this order of magnitude? Just three more KSIs recorded in Bromsgrove takes its KSI rate up to that of Bristol’s.</p>
+<p>In the icon arrays above we made little of the fact that the sample size varies between the two recorded crash rates. This was because the differences were in fact reasonably small. When looking at injury severity rates across all local authorities in the country, however, there is substantial variation in the rates <em>and</em> sample sizes. Bromsgrove has a very low injury severity rate based on a small sample size (4%, or one out of 27 crashes resulting in KSI); Cotswold has a very high injury severity rate based on a small sample size (75%, or 14 out of 19 crashes resulting in KSI). With some prior knowledge of these areas one might expect the difference in KSI rates to be in this direction, but would we expect the difference to be of this order of magnitude? Just three more KSIs recorded in Bromsgrove takes its KSI rate up to that of Bristol’s.</p>
 <p>Although STATS19 is a population dataset to the extent that it contains data on every crash recorded by the Police, it makes sense that the more data on which our KSI rates are based, the more certainty we have in them being reliable estimates of injury severity – ones that might be used to predict injury severity in future years. So we can treat our observed injury severity (KSI) rates as being derived from samples of an (unobtainable) population. Our calculated KSI rates are <em>parameters</em> that try to represent, or estimate, this population.</p>
 <p>Although this formulation might seem unnecessary, from here we can apply some statistical concepts to quantify uncertainty around our KSI rates. We assume:</p>
 <ol type="1">
-<li>The variable of interest, KSI rate, has an unobtainable population mean and standard deviation.</li>
-<li>That a <em>sample</em> will consist of a set of observations from this unobtainable population and that these samples will result in different outcomes, estimated KSI rates, simply by chance.</li>
-<li>From any <em>sample</em> we can calculate a mean and standard deviation in KSI rates, which will differ from the mean and standard deviation in KSI rate of the population.</li>
-<li>That we can derive a <em>sampling distribution</em> and obtain an array of estimated KSI rates and other parameters from repeating the sampling process many times.</li>
-<li>This <em>sampling distribution</em> could then be used to quantify how precise are our estimates of KSI rate. Generally the larger the sampling distribution the more precise, the less uncertain, the estimate.</li>
+<li>The variable of interest, KSI rate, has an unobtainable <em>population</em> mean and standard deviation.</li>
+<li>That our data are one <em>sample</em> from this unobtainable population, but other samples could be drawn that will result in different outcomes, estimated KSI rates, simply by chance.</li>
+<li>From any <em>sample</em> that is drawn we can calculate a mean and standard deviation in KSI rates.</li>
+<li>And so we can derive a <em>sampling distribution</em> and obtain an array of estimated KSI rates and other parameters from <em>re</em>sampling many times.</li>
+<li>This <em>sampling distribution</em> could then be used to quantify how precise are our estimates of KSI rate. Generally the larger the sampling distribution the more precise, the less uncertain, the estimate. <!-- 
+These described the range of the sampling distribution -- the range of values that coefficients estimated from a large number of resamples could take. -->
+</li>
 </ol>
-<p>In <a href="06-model.html" class="quarto-xref"><span>Chapter 6</span></a> we used Confidence Intervals to estimate uncertainty around regression coefficients. These described the range of the sampling distribution – the range of values that coefficients estimated from a large number of resamples could take. From early stats courses you might have learnt how these can be calculated using statistical theory, but we can derive these empirically via bootstrapping. A bootstrap resample involves taking a random sample with replacement from the original data and of the same size as the original data. From this resample a parameter estimate can be derived, in this case the KSI rate. And this process can be repeated many times to generate an empirical <em>sampling distribution</em> for the parameter. The standard error can be calculated from the standard deviation of the sampling distribution. This non-parametric bootstrapping approach is especially useful in exploratory analysis <span class="citation" data-cites="beecham_vis_2022">(Beecham and Lovelace 2023)</span>: it can be applied to many sample statistics, makes no distributional assumptions and can work on quite complicated sampling designs.</p>
-<p>Presented in <a href="#fig-bootstrap-selected" class="quarto-xref">Figure&nbsp;<span>7.5</span></a> are KSI rates with error bars used to display 95% Confidence Intervals generated from a bootstrap procedure in which 1000 resamples were taken with replacement. Upper and lower limits were lifted from .025 and .975 percentile positions of the bootstrap sampling distribution. Assuming that the observed data are drawn from a wider (unobtainable) population, the 95% Confidence Intervals demonstrate that whilst Cotswold recorded a very large KSI rate, sampling variation means that this figure could be much lower (or higher), whereas for Bristol and Sheffield, where our KSI rate is derived from more data, the range of plausible values that the KSI rate might take due to sampling variation is much smaller – there is less uncertainty associated with their KSI rates.</p>
+<p>In <a href="06-model.html" class="quarto-xref"><span>Chapter 6</span></a> we used Confidence Intervals to estimate the uncertainty around regression coefficients. From early stats courses you might have learnt how Confidence Intervals can be calculated using statistical theory, but we can derive them empirically via bootstrapping – the process enumerated above. So a bootstrap resample involves taking a random sample with replacement from the original data and of the same size as the original data. From this resample a parameter estimate can be derived, in this case the KSI rate. And this process can be repeated many times to generate an empirical <em>sampling distribution</em> for the parameter. The standard error can be calculated from the standard deviation of the sampling distribution. This non-parametric bootstrapping approach is especially useful in exploratory analysis <span class="citation" data-cites="beecham_vis_2022">(<a href="references.html#ref-beecham_vis_2022" role="doc-biblioref">Beecham and Lovelace 2023</a>)</span>: it can be applied to many sample statistics, makes no distributional assumptions and can work on quite complicated sampling designs.</p>
+<p>Presented in <a href="#fig-bootstrap-selected" class="quarto-xref">Figure&nbsp;<span>7.5</span></a> are KSI rates with error bars used to display 95% Confidence Intervals generated from a bootstrap procedure in which 1000 resamples were taken with replacement. Upper and lower limits were lifted from .025 and .975 percentile positions of the bootstrap sampling distribution. Assuming that the observed data are drawn from a wider (unobtainable) population, the 95% Confidence Intervals demonstrate that while Cotswold recorded a very large KSI rate, sampling variation means that this figure could be much lower (or higher), whereas for Bristol and Sheffield, where our KSI rate is derived from more data, the range of plausible values that the KSI rate might take due to sampling variation is much smaller – there is less uncertainty associated with their KSI rates.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-bootstrap-selected" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-bootstrap-selected-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="figs/07/bootstrap_selected.png" class="img-fluid figure-img" style="width:65.0%">
+<img src="figs/07/bootstrap_selected.png" class="img-fluid figure-img" style="width:70.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-bootstrap-selected-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;7.5: KSI rates for pedestrian-vehicle crashes in selected local authorities with 95% CIs (derived from 1000 resample bootstraps)
+Figure&nbsp;7.5: KSI rates for pedestrian-vehicle crashes in selected local authorities with bootstrapped CIs (derived from 1000 resamples)
 </figcaption></figure>
 </div>
 </div>
 </div>
 </section><section id="visualizing-uncertainty-in-frequencies" class="level3" data-number="7.2.4"><h3 data-number="7.2.4" class="anchored" data-anchor-id="visualizing-uncertainty-in-frequencies">
 <span class="header-section-number">7.2.4</span> Visualizing uncertainty in frequencies</h3>
-<p>Error bars, like those in <a href="#fig-bootstrap-selected" class="quarto-xref">Figure&nbsp;<span>7.5</span></a>, are a space-efficient way of conveying parameter uncertainty. However, remembering our main guideline for uncertainty visualization – that <em>things that are not precise should not be encoded with symbols that look precise</em> – they do have problems. The hard borders can lead to binary or categorical thinking <span class="citation" data-cites="correll_error_2014">(see Correll and Gleicher 2014)</span>. Certain values within a Confidence Interval are more probable than others and so we should endeavour to use a visual encoding that reflects this. Matt Kay’s excellent <code>ggdist</code> package <span class="citation" data-cites="kay_ggdist_2023">(Kay 2023)</span> extends ggplot2 with a range of chart types for representing these sorts of intervals. In <a href="#fig-selected-uncertainty" class="quarto-xref">Figure&nbsp;<span>7.6</span></a> error bars are replaced with <em>half eye plots</em> and <em>gradient bars</em>, which give greater visual saliency to parameter estimates that are more likely.</p>
+<p>Error bars, like those in <a href="#fig-bootstrap-selected" class="quarto-xref">Figure&nbsp;<span>7.5</span></a>, are a space-efficient way of conveying parameter uncertainty. However, remembering our main guideline for uncertainty visualization – that <em>things that are not precise should not be encoded with symbols that look precise</em> – they do have problems. The hard borders can lead to binary or categorical thinking <span class="citation" data-cites="correll_error_2014">(see <a href="references.html#ref-correll_error_2014" role="doc-biblioref">Correll and Gleicher 2014</a>)</span>. Certain values within a Confidence Interval are more probable than others and so we should endeavour to use a visual encoding that reflects this. Matt Kay’s excellent <code>ggdist</code> package <span class="citation" data-cites="kay_ggdist_2023">(<a href="references.html#ref-kay_ggdist_2023" role="doc-biblioref">Kay 2023</a>)</span> extends ggplot2 with a range of chart types for representing these sorts of intervals. In <a href="#fig-selected-uncertainty" class="quarto-xref">Figure&nbsp;<span>7.6</span></a> error bars are replaced by <em>half eye plots</em> and <em>gradient bars</em>, which give greater visual saliency to values of KSI that are more likely.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-selected-uncertainty" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-selected-uncertainty-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="figs/07/selected_uncertainty.png" class="img-fluid figure-img" style="width:95.0%">
+<img src="figs/07/selected_uncertainty.png" class="img-fluid figure-img" style="width:100.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-selected-uncertainty-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;7.6: KSI rates for pedestrian-vehicle crashes in selected local authorities with uncertainty estimates
+Figure&nbsp;7.6: KSI rates for pedestrian-vehicle crashes in selected local authorities, with bootstrapped uncertainty estimates.
 </figcaption></figure>
 </div>
 </div>
 </div>
-<p>STATS19 road crash data are released annually, and given the wide uncertainty bands for some local authorities it might be instructive to explore the stability of local authority KSI rates year-on-year. In <a href="#fig-bootstrap-selected" class="quarto-xref">Figure&nbsp;<span>7.5</span></a> these KSI rates are represented with a bold line and the faint lines are superimposed bootstrap resamples. The lines demonstrate volatility in the KSI rates for Cotswold and Bromsgrove due to small sample sizes. The observed increase in KSI rates for Sheffield since 2015 does appear to be a genuine one, although may also be affected by uncertainty around data collection and how police record injury severity.</p>
+<p>STATS19 road crash data are released annually. Given the wide uncertainty bands for some local authorities, it might be instructive to explore the stability of KSI rates year-on-year. In <a href="#fig-bootstrap-selected" class="quarto-xref">Figure&nbsp;<span>7.5</span></a> these KSI rates are represented with a bold line and the faint lines are superimposed bootstrap resamples. The lines demonstrate volatility in the KSI rates for Cotswold and Bromsgrove due to small numbers. The observed increase in KSI rates for Sheffield since 2015 does appear to be a genuine one, although may also be affected by uncertainty around data collection and how reliably injury severity is recorded in the dataset.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-temporal-uncertainty" class="quarto-figure quarto-figure-center quarto-float anchored">
@@ -422,17 +442,17 @@ Figure&nbsp;7.6: KSI rates for pedestrian-vehicle crashes in selected local auth
 <img src="figs/07/temporal_uncertainty.png" class="img-fluid figure-img" style="width:100.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-temporal-uncertainty-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;7.7: Year-on-year KSI rates for pedestrian-vehicle crashes in selected local authorities with bootstrap resamples superimposed.
+Figure&nbsp;7.7: Year-on-year KSI rates for pedestrian-vehicle crashes in selected local authorities, with bootstrap resamples superimposed.
 </figcaption></figure>
 </div>
 </div>
 </div>
-<p>The superimposed lines in the figure above are a form of ensemble visualization. An alternative approach might have been to animate over the bootstrap resamples to generate a Hypothetical Outcome Plot (HOP) <span class="citation" data-cites="hullman_hypothetical_2015">(Hullman, Resnick, and Adar 2015)</span>. HOPs convey a sense of uncertainty by animating over random draws of a distribution. As there is no single outcome to anchor to, HOPs force viewers to account for uncertainty, recognising that some less probable outcomes may also be possible – essentially to think distributionally.</p>
+<p>The superimposed lines in the figure above are a form of ensemble visualization. An alternative approach might have been to animate over the bootstrap resamples to generate a Hypothetical Outcome Plot (HOP) <span class="citation" data-cites="hullman_hypothetical_2015">(<a href="references.html#ref-hullman_hypothetical_2015" role="doc-biblioref">Hullman, Resnick, and Adar 2015</a>)</span>. HOPs convey a sense of uncertainty by animating over random draws of a distribution. As there is no single outcome to anchor to, HOPs force viewers to account for uncertainty, recognising that some less probable outcomes may also be possible – essentially to think distributionally.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-hop" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-hop-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="figs/07/hop.png" class="img-fluid figure-img" style="width:90.0%">
+<img src="figs/07/hop.png" class="img-fluid figure-img" style="width:98.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-hop-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;7.8: Frames from hypothetical outcome plot of year-on-year KSI rates for pedestrian-vehicle crashes.
@@ -442,8 +462,8 @@ Figure&nbsp;7.8: Frames from hypothetical outcome plot of year-on-year KSI rates
 </div>
 </section><section id="multiple-comparisons" class="level3" data-number="7.2.5"><h3 data-number="7.2.5" class="anchored" data-anchor-id="multiple-comparisons">
 <span class="header-section-number">7.2.5</span> Multiple comparisons</h3>
-<p>In road safety monitoring, a common ambition is to compare crash rates across local authorities. This is in order to make inferences around patterns of high and low injury severity rate. We might represent injury severity rates as Risk Ratios (RR) comparing the observed injury severity rate in each local authority to a benchmark, say the injury severity rate we would expect to see nationally. RRs are an intuitive measure of effect size: RRs $&gt;$1.0 indicate that the injury severity rate is greater than the national average; RRs $&lt;$1.0 that it is less than the national average. As they are a ratio of ratios, and therefore agnostic to sample size, RRs can nevertheless be unreliable. Two ratios might be compared that have very different sample sizes and no compensation is made for the one that contains more data.</p>
-<p>We can use quantitative measures to adjust for this. In the example in <a href="#fig-geog-severity" class="quarto-xref">Figure&nbsp;<span>7.9</span></a> we use hierarchical modelling to shrink local authority KSI rates towards the global mean (national average KSI rate) where they are based on small numbers of observations <span class="citation" data-cites="beecham_vis_2022">(see Beecham and Lovelace 2023)</span>. From here our effect sizes, called Bayesian Risk Ratios, are sensitive to uncertainty since they are made more conservative where they are based on fewer observations. The Bayesian Risk Ratio for each local authority is represented with a <span style="font-weight:bolder">|</span> icon: angled to the right <span style="font-weight:bolder">/</span> where the KSI rate is greater than expected, to the left <span style="font-weight:bolder;">\</span> where it is left than expected. Additionally, we use bootstrap resampling to derive confidence intervals for our Bayesian RRs. If this interval does not cross 1.0, the RR is judged statistically significant and is coloured according to whether estimated RRs are above (<span style="color:#DB534D;font-weight:bolder">/</span>) or below (<span style="color:#3879A1;font-weight:bolder">\</span>) expectation.</p>
+<p> In road safety monitoring, a common ambition is to compare crash rates across local authorities. This is in order to make inferences around patterns of high and low injury severity rate. We might represent injury severity rates as Risk Ratios (RR) comparing the observed injury severity rate in each local authority to a benchmark, say the injury severity rate we would expect to see nationally. RRs are an intuitive measure of effect size: RRs &gt;1.0 indicate that the injury severity rate is greater than the national average; RRs &lt;1.0 that it is less than the national average. As they are a ratio of ratios, and therefore agnostic to sample size, RRs can nevertheless be unreliable. Two ratios might be compared that have very different sample sizes and no compensation is made for the one that contains more data.</p>
+<p>We can use quantitative measures to adjust for this. In the example in <a href="#fig-geog-severity" class="quarto-xref">Figure&nbsp;<span>7.9</span></a> we use hierarchical modelling to shrink local authority KSI rates towards the global mean (national average KSI rate) where they are based on small numbers of observations <span class="citation" data-cites="beecham_vis_2022">(see <a href="references.html#ref-beecham_vis_2022" role="doc-biblioref">Beecham and Lovelace 2023</a>)</span>. From here our effect sizes, called Bayesian Risk Ratios, are sensitive to uncertainty since they are made more conservative where they are based on fewer observations. The Bayesian Risk Ratio for each local authority is represented with a <span><span style="font-weight:bolder">|</span></span> icon: angled to the right <span><span style="font-weight:bolder">/</span></span> where the KSI rate is greater than expected, to the left <span><span style="font-weight:bolder;">\</span></span> where it is less than expected. Additionally, we use bootstrap resampling to derive confidence intervals for our Bayesian RRs. If this interval does not cross 1.0, the RR is judged statistically significant and is coloured according to whether estimated RRs are above (<span><span style="color:#DB534D;font-weight:bolder">/</span></span>) or below (<span><span style="color:#3879A1;font-weight:bolder">\</span></span>) expectation.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-geog-severity" class="quarto-figure quarto-figure-center quarto-float anchored">
@@ -456,21 +476,44 @@ Figure&nbsp;7.9: Bayesian Risk Ratios comparing pedestrian injury severity rates
 </div>
 </div>
 </div>
-<p>From <a href="#fig-geog-severity" class="quarto-xref">Figure&nbsp;<span>7.9</span></a> we make inferences around concentrations of high and low injury severity rate (in the annotations). A problem with this approach, and explicitly encoding ‘statistical significance’ values, is one familiar to statisticians but that is rarely addressed in visual data analysis: the <a href="https://en.wikipedia.org/wiki/Multiple_comparisons_problem">multiple comparison problem</a>. Whenever a statistical signal is identified, there is a chance that the result observed is in fact a false alarm. In the plot above which uses a 95% confidence level, the “false positive rate” is expected to be 5% or 1/20. When many tests are considered simultaneously, as in <a href="#fig-geog-severity" class="quarto-xref">Figure&nbsp;<span>7.9</span></a>, the number of these false alarms begins to accumulate. There are corrections that can be applied for this: test statistics can be adjusted and made more conservative. But these corrections have consequences. Too severe a correction can result in statistical tests that are underpowered and result in an elevated false negative rate, where a statistical test fails to detect an effect that truly exists. See <span class="citation" data-cites="brunsdon_assessment_2011">Brunsdon and Charlton (2011)</span> for an interesting discussion of this in the context of mapping crime rates.</p>
-<p>So there is no single solution to this multiple comparison problem, which happens often in applied social science analysis, especially in Geography, where health and other outcomes are mapped visually. Presenting the RRs in their spatial context, and providing full information around RRs that are not significant (the oriented lines), helps with making uncertainty type judgements. For example, depending on the phenomena, we may wish to attach more certainty to RRs that are labelled statistically significant and whose direction is consistent with its neighbours than those that are exceptional from their neighbours. Additionally, constructing a graphical line-up test <span class="citation" data-cites="wickham_graphical_2010">(Wickham et al. 2010)</span> to explore whether the sorts of spatial patterns in RR values in the observed data are genuine or might appear in random decoy maps. Although informal, this sort of visual test approximates to the type of question that in this case transport analysts may ask when identifying priority areas for road safety intervention <span class="citation" data-cites="beecham_vis_2022">(Beecham and Lovelace 2023)</span>.</p>
+<p>From <a href="#fig-geog-severity" class="quarto-xref">Figure&nbsp;<span>7.9</span></a> we make inferences around concentrations of high and low injury severity rate (in the annotations). A problem with this approach, and explicitly encoding ‘statistical significance’ values, is one familiar to statisticians but that is rarely addressed in visual data analysis: the multiple comparison problem. Whenever a statistical signal is identified, there is a chance that the result observed is in fact a false alarm. In the plot above which uses a 95% confidence level, the “false positive rate” is expected to be 5% or 1/20. When many tests are considered simultaneously, as in <a href="#fig-geog-severity" class="quarto-xref">Figure&nbsp;<span>7.9</span></a>, the number of these false alarms begins to accumulate. There are corrections that can be used to address this: test statistics can be adjusted and made more conservative. But these corrections have consequences. Too severe a correction can result in statistical tests that are underpowered and result in an elevated false negative rate, where a statistical test fails to detect an effect that truly exists. See <span class="citation" data-cites="brunsdon_assessment_2011">Brunsdon and Charlton (<a href="references.html#ref-brunsdon_assessment_2011" role="doc-biblioref">2011</a>)</span> for an interesting discussion in the context of mapping crime rates.</p>
+<p>So there is no single solution to multiple testing, which happens often in visual data analysis, especially in Geography, where health and other outcomes are mapped visually. It is actually less of problem in <a href="#fig-geog-severity" class="quarto-xref">Figure&nbsp;<span>7.9</span></a> since our RRs are derived from a multilevel model in which estimates are partially pooled, or shrunk, to reflect the level of information we have <span class="citation" data-cites="gelman_why_2012">(<a href="references.html#ref-gelman_why_2012" role="doc-biblioref">Gelman, Hill, and Yajima 2012</a>)</span>. Presenting the RRs in their spatial context, and providing full information around RRs that are not significant (the oriented lines), also supports informal calibration. For example, depending on the phenomena, we may wish to attach more certainty to RRs that are labelled statistically significant and whose direction is consistent with its neighbours than those that are exceptional from their neighbours. Additionally, constructing a graphical line-up test <span class="citation" data-cites="wickham_graphical_2010">(<a href="references.html#ref-wickham_graphical_2010" role="doc-biblioref">Wickham et al. 2010</a>)</span> to explore whether the sorts of spatial patterns in RR values in the observed data are genuine or might appear in random decoy maps. Although informal, this sort of visual test approximates to the type of question that transport analysts may ask when identifying priority areas for road safety intervention <span class="citation" data-cites="beecham_vis_2022">(<a href="references.html#ref-beecham_vis_2022" role="doc-biblioref">Beecham and Lovelace 2023</a>)</span>.</p>
+<p> </p>
+<div class="callout callout-style-default callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Task
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div class="line-block">Watch Matt Kay’s excellent talk to BostonCHI, <em>Uncertainty Visualization as a Moral Imperative</em>:</div>
+<ul>
+<li><code>https://www.youtube.com/watch?v=mfQ3QVyw4N0</code></li>
+</ul>
+<div class="line-block">
+<br>
+And Robert Kosara’s talk, <em>Presentation and Audience</em>, , as part of his Advanced Visualization course for Observable, from <code>43:43</code> minutes in:</div>
+<ul>
+<li><code>https://www.youtube.com/watch?v=Wb6xKQRtWig</code></li>
+</ul>
+</div>
+</div>
 </section></section><section id="techniques" class="level2" data-number="7.3"><h2 data-number="7.3" class="anchored" data-anchor-id="techniques">
 <span class="header-section-number">7.3</span> Techniques</h2>
-<p>The technical element demonstrates how some of the uncertainty estimate examples in the chapter can be reproduced. We will again make use of functional programming approaches via the <a href="https://purrr.tidyverse.org/"><code>purrr</code></a> package, most obviously for generating and working over bootstrap resamples.</p>
+<p>The technical element demonstrates how some of the uncertainty estimate examples in the chapter can be reproduced. We will again make use of functional programming approaches via the <code>purrr</code> package, mostly for generating and working over bootstrap resamples.</p>
 <section id="import" class="level3" data-number="7.3.1"><h3 data-number="7.3.1" class="anchored" data-anchor-id="import">
 <span class="header-section-number">7.3.1</span> Import</h3>
 <ul>
-<li>Download the <a href="./files/07-template.qmd">07-template.qmd</a> file for this chapter and save it to your <code>vis4sds</code> project.</li>
+<li>Download the <code>07-template.qmd</code><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> file for this chapter and save it to your <code>vis4sds</code> project.</li>
 <li>Open your <code>vis4sds</code> project in RStudio and load the template file by clicking <code>File</code> &gt; <code>Open File ...</code> &gt; <code>07-template.qmd</code>.</li>
 </ul>
-<p>The template file lists the required packages – <code>tidyverse</code>, <code>sf</code>, <code>tidymodels</code> (for working with the bootstraps), <a href="https://mjskay.github.io/ggdist/"><code>ggdist</code></a> and <a href="https://pkg.mitchelloharawild.com/distributional/"><code>distributional</code></a> for generating plots of parameter uncertainty and <a href="https://gganimate.com/index.html"><code>gganimate</code></a> for the hypothetical outcome plot. Code for loading the STATS19 pedestrian crash data is in the <a href="./files/07-template.qmd">07-template.qmd</a> file.</p>
+<p>The template file lists the required packages: <code>tidyverse</code>, <code>sf</code>, <code>tidymodels</code> (for working with the bootstraps), <code>ggdist</code> and <code>distributional</code> for generating plots of parameter uncertainty and <code>gganimate</code> for the hypothetical outcome plot. Code for loading the STATS19 pedestrian crash data is in the <code>07-template.qmd</code> file.</p>
 </section><section id="plot-icon-arrays" class="level3" data-number="7.3.2"><h3 data-number="7.3.2" class="anchored" data-anchor-id="plot-icon-arrays">
 <span class="header-section-number">7.3.2</span> Plot icon arrays</h3>
-<p>Icon arrays can be generated reasonably easily in standard ggplot2 using <code>geom_tile()</code> and some data generation functions. The most straightforward approach is to generate icon arrays in a regularly-sized grid. In the example, KSI rates in Fareham (41%) and Oxford (17%) are compared.</p>
+<p>Icon arrays can be generated reasonably easily in standard ggplot2 using <code>geom_tile()</code> and some data generation functions. The most straightforward approach is to place icon arrays in a regularly-sized grid. In the example, KSI rates in Fareham (41%) and Oxford (17%) are compared.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-icon-technical" class="quarto-figure quarto-figure-center quarto-float anchored">
@@ -483,7 +526,7 @@ Figure&nbsp;7.10: Icon arrays of pedestrian-vehicle crashes.
 </div>
 </div>
 </div>
-<p>First we generate the array data: a data frame of array locations (candidate crashes) with values representing whether the crash is slight or KSI depending on the observed KSI rate. In the code below, we set up a 10x10 grid of row and column locations and populate these with values for the selected local authorities (Oxford and Fareham) using base R’s <a href="https://stat.ethz.ch/R-manual/R-patched/library/base/html/sample.html"><code>sample()</code></a> function.</p>
+<p>First we generate the array data: a data frame of array locations (candidate crashes) with values representing whether the crash is slight or KSI depending on the observed KSI rate. In the code below, we set up a 10x10 grid of row and column locations and populate these with values for the selected local authorities (Oxford and Fareham) using base R’s <code><a href="https://rdrr.io/r/base/sample.html">sample()</a></code> function. </p>
 <div class="cell">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">array_data</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="op">(</span></span>
 <span>  row<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, times<span class="op">=</span><span class="fl">1</span>, each<span class="op">=</span><span class="fl">10</span><span class="op">)</span>,</span>
@@ -501,7 +544,9 @@ Figure&nbsp;7.10: Icon arrays of pedestrian-vehicle crashes.
 <p>The plot code is straightforward:</p>
 <div class="cell">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">array_data</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">pivot_longer</span><span class="op">(</span>cols<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">Oxford</span>,<span class="va">Fareham</span><span class="op">)</span>, names_to<span class="op">=</span><span class="st">"la"</span>, values_to<span class="op">=</span><span class="st">"is_ksi"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">pivot_longer</span><span class="op">(</span></span>
+<span>    cols<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">Oxford</span>,<span class="va">Fareham</span><span class="op">)</span>, names_to<span class="op">=</span><span class="st">"la"</span>, values_to<span class="op">=</span><span class="st">"is_ksi"</span></span>
+<span>    <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">row</span>,y<span class="op">=</span><span class="va">col</span>, fill<span class="op">=</span><span class="va">is_ksi</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_tile</span><span class="op">(</span>colour<span class="op">=</span><span class="st">"#ffffff"</span>, linewidth<span class="op">=</span><span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">scale_fill_manual</span><span class="op">(</span>values<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"#fee0d2"</span>,<span class="st">"#de2d26"</span><span class="op">)</span>, guide<span class="op">=</span><span class="st">"none"</span><span class="op">)</span> <span class="op">+</span></span>
@@ -510,7 +555,7 @@ Figure&nbsp;7.10: Icon arrays of pedestrian-vehicle crashes.
 <p>Plot specification:</p>
 <ol type="1">
 <li>
-<em>Data</em>: The array data, with <code>pivot_longer()</code> so that we can facet by local authority.</li>
+<em>Data</em>: The array data, with <code>pivot_longer()</code> so that we can facet by local authority. </li>
 <li>
 <em>Encoding</em>: x- and y-position according to the array locations and filled on whether the sampled crash is KSI or slight.</li>
 <li>
@@ -518,7 +563,7 @@ Figure&nbsp;7.10: Icon arrays of pedestrian-vehicle crashes.
 <li>
 <em>Scale</em>: <code>scale_fill_manual()</code> is supplied with values that are dark (KSI) and light (slight) red.</li>
 <li>
-<em>Facets</em>: <code>facet_wrap()</code> for faceting on local authority.</li>
+<em>Facets</em>: <code>facet_wrap()</code> for faceting on local authority. </li>
 <li>
 <em>Setting</em>: Tiles are given large, white borders (<code>geom_tile(colour="#ffffff", size=1)</code>).</li>
 </ol>
@@ -534,7 +579,7 @@ Figure&nbsp;7.11: Risk theatre for pedestrian-vehicle crashes.
 </div>
 </div>
 </div>
-<p>To present the icon array as a risk theatre, we have created a shapefile containing 1,000 theatre seat positions. To randomly allocate KSIs to seats on the proportion with which those crashes occur, we use the <a href="https://dplyr.tidyverse.org/reference/slice.html"><code>slice_sample()</code></a> function.</p>
+<p>To present the icon array as a risk theatre, we have created a shapefile containing 1,000 theatre seat positions. To randomly allocate KSIs to seats on the proportion in which those crashes occur, we use the <code>slice_sample()</code> function.</p>
 <div class="cell">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">theatre_cells</span> <span class="op">&lt;-</span> <span class="fu">st_read</span><span class="op">(</span><span class="fu">here</span><span class="op">(</span><span class="st">"data"</span>, <span class="st">"theatre_cells.geojson"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
@@ -572,7 +617,7 @@ Figure&nbsp;7.11: Risk theatre for pedestrian-vehicle crashes.
 <em>Setting</em>: KSI tiles are coloured black (<code>fill="#000000"</code>). Also <code>annotate()</code> blocks of the theatre, <code>x</code>- and <code>y</code>- placement is determined via trial-and-error.</li>
 </ol></section><section id="generate-bootstrap-estimates-of-parameter-uncertainty" class="level3" data-number="7.3.3"><h3 data-number="7.3.3" class="anchored" data-anchor-id="generate-bootstrap-estimates-of-parameter-uncertainty">
 <span class="header-section-number">7.3.3</span> Generate bootstrap estimates of parameter uncertainty</h3>
-<p>The code for generating bootstrap resamples, stored in <code>rate_boots</code>, initially looks formidable. It is a template that is nevertheless quite generalisable, and so once learnt can be extended and applied to suit different use cases.</p>
+<p>The code for generating bootstrap resamples, stored in <code>rate_boots</code>, initially looks formidable. It is a template that is nevertheless quite generalisable, and so once learnt can be extended and applied to suit different use cases. </p>
 <div class="cell">
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">rate_boots</span> <span class="op">&lt;-</span> <span class="va">ped_veh</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">mutate</span><span class="op">(</span></span>
@@ -598,21 +643,23 @@ Figure&nbsp;7.11: Risk theatre for pedestrian-vehicle crashes.
 <p>Code description:</p>
 <ol type="1">
 <li>
-<em>Setup</em>: The first mutate is straightforward – a binary <code>is_ksi</code> variable identifying whether a crash is KSI and extract the year from the crash <code>date</code>. Crashes recorded in 2019 are then filtered, along with the four comparator local authorities. To generate bootstrap resamples for each local authority, we <a href="https://cran.r-project.org/web/packages/tidyr/vignettes/nest.html"><code>nest()</code></a> on local authority. You will remember that <code>nest()</code> creates a special type of column (a <code>list-column</code>) in which the values of the column is a list of data frames – in this case the crash data for each local authority. So running the code up to and including the <code>nest()</code>, a data frame is returned which contains four rows corresponding to the filtered local authorities and a <code>list-column</code> called <code>data</code>, each element of which is a data frame of varying dimensions (lengths) depending on the number of crashes recorded in each local authority.</li>
+<em>Setup</em>: The first <code>mutate()</code> is straightforward – a binary <code>is_ksi</code> variable identifies whether a crash is KSI and the crash year is extracted from the <code>date</code> variable. Crashes recorded in 2019 are then filtered, along with the four comparator local authorities. To generate bootstrap resamples for each local authority, we <code>nest()</code> on local authority. You will remember that <code>nest()</code> creates a special type of column (a <code>list-column</code>) in which the values of the column is a list of data frames – in this case the crash data for each local authority. So running the code up to and including the <code>nest()</code>, a data frame is returned which contains four rows corresponding to the filtered local authorities and a <code>list-column</code> called <code>data</code>, each element of which is a data frame of varying dimensions (lengths) depending on the number of crashes recorded in each local authority.</li>
 <li>
-<em>Generate bootstraps resamples</em>: In the <code>mutate()</code> that follows <code>purrr</code>’s <a href="https://purrr.tidyverse.org/reference/map.html"><code>map()</code></a> function is used to iterate over the list of datasets and the <a href="https://rsample.tidymodels.org/reference/bootstraps.htmlfit"><code>bootstraps()</code></a> function to generate 1,000 bootstrap resamples for each nested dataset. The new column <code>la_boot</code> is a <code>list-column</code> this time containing a list of bootstrap datasets.</li>
+<em>Generate bootstraps resamples</em>: In the <code>mutate()</code> that follows, <code>purrr</code>’s <code>map()</code> function is used to iterate over the list of datasets and the <code>bootstraps()</code> function to generate 1,000 bootstrap resamples for each nested dataset. The new column, <code>la_boot</code>, is a <code>list-column</code> this time containing a list of bootstrap datasets.</li>
 <li>
-<em>Calculate sample estimates</em>: We <code>unnest()</code> the <code>la_boot</code> column to return a dataset with a row for each bootstrap resample and a <code>list-column</code> named <code>splits</code> which contains the bootstrap data. Again we <code>map()</code> over each element of <code>splits</code> to calculate the <code>ksi_rate</code> for each of the bootstrap datasets. The first call to <code>map()</code> extracts the <code>is_ksi</code> variable; the second is just a convenient way of calculating a rate from this (remembering that <code>is_ksi</code> is a binary variable); the third collects the sample size for each of the bootstraps which of course the number of crashes recorded for each local authority.</li>
+<em>Calculate sample estimates</em>: We <code>unnest()</code> the <code>la_boot</code> column to return a dataset with a row for each bootstrap resample and a <code>list-column</code> named <code>splits</code> which contains the bootstrap data. Again we <code>map()</code> over each element of <code>splits</code> to calculate the <code>ksi_rate</code> for each of the bootstrap datasets. The first call to <code>map()</code> extracts the <code>is_ksi</code> variable; the second is just a convenient way of calculating a rate from this (remembering that <code>is_ksi</code> is a binary variable); the third collects the sample size for each of the bootstraps, which of course is the number of crashes recorded for each local authority.</li>
 </ol></section><section id="plot-parameter-estimates-with-uncertainty-information" class="level3" data-number="7.3.4"><h3 data-number="7.3.4" class="anchored" data-anchor-id="plot-parameter-estimates-with-uncertainty-information">
 <span class="header-section-number">7.3.4</span> Plot parameter estimates with uncertainty information</h3>
-<p>With <a href="https://mjskay.github.io/ggdist/"><code>ggdist</code></a>, the code for generating KSI rates with estimates of parameter uncertainty is straightforward and very similar to the <a href="./class/06-class/#extracting-and-representing-model-parameters-1">error bar plots</a> in the previous chapter.</p>
+<p>With <code>ggdist</code>, the code for generating KSI rates with estimates of parameter uncertainty is straightforward and very similar to the error bar plots in the previous chapter.</p>
 <p>Plot code:</p>
 <div class="cell">
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">rate_boots</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">local_authority_district</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">mutate</span><span class="op">(</span>std.error<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">ksi_rate</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">id</span><span class="op">==</span><span class="st">"Apparent"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/reorder.factor.html">reorder</a></span><span class="op">(</span><span class="va">local_authority_district</span>, <span class="va">ksi_rate</span><span class="op">)</span>, y<span class="op">=</span><span class="va">ksi_rate</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">ggplot</span><span class="op">(</span></span>
+<span>    <span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/reorder.factor.html">reorder</a></span><span class="op">(</span><span class="va">local_authority_district</span>, <span class="va">ksi_rate</span><span class="op">)</span>, y<span class="op">=</span><span class="va">ksi_rate</span><span class="op">)</span></span>
+<span>    <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">stat_gradientinterval</span><span class="op">(</span></span>
 <span>    <span class="fu">aes</span><span class="op">(</span>dist <span class="op">=</span> <span class="fu">dist_normal</span><span class="op">(</span>mu<span class="op">=</span><span class="va">ksi_rate</span>, sigma<span class="op">=</span><span class="va">std.error</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>    point_size <span class="op">=</span> <span class="fl">1.5</span></span>
@@ -631,7 +678,7 @@ Figure&nbsp;7.11: Risk theatre for pedestrian-vehicle crashes.
 <em>Setting</em>: <code>coord_flip()</code> for easy reading of local authority names.</li>
 </ol></section><section id="ensemble-plots-and-hypothetical-outcome-plots" class="level3" data-number="7.3.5"><h3 data-number="7.3.5" class="anchored" data-anchor-id="ensemble-plots-and-hypothetical-outcome-plots">
 <span class="header-section-number">7.3.5</span> Ensemble plots and hypothetical outcome plots</h3>
-<p>To generate bootstrap resamples on local authority and year, necessary for the year-on-year analysis, we can use the same template as that for calculating <code>rate_boots</code>, the only difference is that we <code>select()</code> and <code>nest()</code> on the <code>year</code> as well as <code>local_authority_district</code> column.</p>
+<p>To generate bootstrap resamples on local authority and year, necessary for the year-on-year analysis, we can use the same template as that for calculating <code>rate_boots</code>, the only difference is that we <code>select()</code> and <code>nest()</code> on the <code>year</code> as well as the <code>local_authority_district</code> column. </p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>rate_boots_temporal <span class="ot">&lt;-</span> ped_veh <span class="sc">|&gt;</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  ...</span>
@@ -646,7 +693,8 @@ Figure&nbsp;7.11: Risk theatre for pedestrian-vehicle crashes.
 <div class="cell">
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">rate_boots_temporal</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">year</span>, y<span class="op">=</span><span class="va">ksi_rate</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">geom_line</span><span class="op">(</span>data<span class="op">=</span><span class="va">.</span> <span class="op">%&gt;%</span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">id</span><span class="op">==</span><span class="st">"Apparent"</span><span class="op">)</span>, <span class="fu">aes</span><span class="op">(</span>group<span class="op">=</span><span class="va">id</span><span class="op">)</span>, linewidth<span class="op">=</span><span class="fl">.5</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_line</span><span class="op">(</span>data<span class="op">=</span><span class="va">.</span> <span class="op">%&gt;%</span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">id</span><span class="op">==</span><span class="st">"Apparent"</span><span class="op">)</span>, </span>
+<span>    <span class="fu">aes</span><span class="op">(</span>group<span class="op">=</span><span class="va">id</span><span class="op">)</span>, linewidth<span class="op">=</span><span class="fl">.5</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_line</span><span class="op">(</span></span>
 <span>    data<span class="op">=</span><span class="va">.</span> <span class="op">%&gt;%</span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">id</span><span class="op">!=</span><span class="st">"Apparent"</span><span class="op">)</span>,</span>
 <span>    <span class="fu">aes</span><span class="op">(</span>group<span class="op">=</span><span class="va">id</span><span class="op">)</span>, alpha<span class="op">=</span><span class="fl">.1</span>, size<span class="op">=</span><span class="fl">.2</span></span>
@@ -666,7 +714,7 @@ Figure&nbsp;7.11: Risk theatre for pedestrian-vehicle crashes.
 <li>
 <em>Setting</em>: The bootstrap lines are de-emphasised by making the <code>alpha</code> and <code>size</code> channels very small.</li>
 </ol>
-<p>The Hypothetical Outcome Plot (HOP) can be easily created using the <a href="https://gganimate.com/index.html"><code>gganimate</code></a> package, simply by adding a call to <a href="https://gganimate.com/reference/transition_states.html"><code>transition_states()</code></a> at the end of the plot specification:</p>
+<p>Finally, the Hypothetical Outcome Plot (HOP) can be easily created using the <code>gganimate</code> package, simply by adding a call to <code>transition_states()</code> at the end of the plot specification:</p>
 <div class="cell">
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">rate_boots_temporal</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">id</span><span class="op">!=</span><span class="st">"Apparent"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -675,23 +723,24 @@ Figure&nbsp;7.11: Risk theatre for pedestrian-vehicle crashes.
 <span>  <span class="fu">facet_wrap</span><span class="op">(</span><span class="op">~</span><span class="va">local_authority_district</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu">transition_states</span><span class="op">(</span><span class="va">id</span>, <span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p> </p>
 </section></section><section id="conclusions" class="level2" data-number="7.4"><h2 data-number="7.4" class="anchored" data-anchor-id="conclusions">
 <span class="header-section-number">7.4</span> Conclusions</h2>
-<p>Uncertainty is fundamental data analysis. Most statisticians and data scientists end up reasoning about uncertainty, developing quantitive estimates of uncertainty and communicating uncertainty so that it can be taken into account when making evidence-based claims and decisions. Through an analysis of injury severity in the STATS19 road crash dataset, this chapter introduced techniques for quantifying and visually representing parameter uncertainty. There has been much activity in the Information Visualization and Data Journalism communities focussed on uncertainty communication – on developing approaches that promote intuition and allow users to experience uncertainty. We have covered some of these and demonstrated how they could be incorporated into our road safety analysis use case.</p>
+<p>Uncertainty is fundamental to any data analysis. Statisticians and data scientists almost always end up reasoning about uncertainty, developing quantitative estimates of uncertainty and communicating uncertainty so that it can be taken into account when making evidence-based claims and decisions. Through an analysis of injury severity in the STATS19 road crash dataset, this chapter introduced techniques for quantifying and visually representing parameter uncertainty. There has been much activity in the Information Visualization and Data Journalism communities focussed on uncertainty communication – on developing approaches that promote intuition and allow users to experience uncertainty. We have covered some of these and demonstrated how they could be incorporated into our road crash analysis case study.</p>
 </section><section id="further-reading" class="level2" data-number="7.5"><h2 data-number="7.5" class="anchored" data-anchor-id="further-reading">
 <span class="header-section-number">7.5</span> Further Reading</h2>
 <p>An excellent primer on uncertainty visualization:</p>
 <ul>
-<li>Padilla, L., Kay, M. and Hullman, J. 2021. “Uncertainty Visualization,” in Wiley StatsRef: Statistics Reference Online, ed.&nbsp;B. Everitt N. Balakrishnan T. Colton and J. L. Teugels, <em>Wiley</em>. doi: <a href="http://dx.doi.org/10.1002/9781118445112.stat08296">10.1002/9781118445112.stat08296</a>.</li>
+<li>Padilla, L., Kay, M. and Hullman, J. 2021. “Uncertainty Visualization,” in Wiley StatsRef: Statistics Reference Online, ed.&nbsp;B. Everitt N. Balakrishnan T. Colton and J. L. Teugels, <em>Wiley</em>. doi: 10.1002/9781118445112.stat08296.</li>
 </ul>
 <p>On visualizing parameter uncertainty:</p>
 <ul>
-<li><p>Correll, M. and Gleicher, M. 2014. “Error Bars Considered Harmful: Exploring Alternate Encodings for Mean and Error,” <em>IEEE Transactions on Visualization and Computer Graphics</em> 20(12): 2142–2151. doi: <a href="https://doi.org/10.1109/TVCG.2014.2346298">10.1109/TVCG.2014.2346298</a>.</p></li>
-<li><p>Kale, A., Nguyen, F., Kay, M. and Hullman, J. 2019. “Hypothetical Outcome Plots Help Untrained Observers Judge Trends in Ambiguous Data,” <em>IEEE Transactions on Visualization and Computer Graphics</em>, 25(1): 892–902. doi: <a href="https://doi.org/10.1109/TVCG.2018.2864909">10.1109/TVCG.2018.2864909</a>.</p></li>
+<li><p>Correll, M. and Gleicher, M. 2014. “Error Bars Considered Harmful: Exploring Alternate Encodings for Mean and Error,” <em>IEEE Transactions on Visualization and Computer Graphics</em> 20(12): 2142–2151. doi: 10.1109/TVCG.2014.2346298.</p></li>
+<li><p>Kale, A., Nguyen, F., Kay, M. and Hullman, J. 2019. “Hypothetical Outcome Plots Help Untrained Observers Judge Trends in Ambiguous Data,” <em>IEEE Transactions on Visualization and Computer Graphics</em>, 25(1): 892–902. doi: 10.1109/TVCG.2018.2864909.</p></li>
 </ul>
 <p>On bootstrap resampling with R and tidyverse:</p>
 <ul>
-<li>Ismay, C. and Kim, A. 2020. “Statistical Inference via Data Science: A ModernDive into r and the Tidyverse” <em>CRC Press</em>. doi: <a href="https://doi.org/10.1201/9780367409913">10.1201/9780367409913</a>.
+<li>Ismay, C. and Kim, A. 2020. “Statistical Inference via Data Science: A ModernDive into R and the Tidyverse” <em>CRC Press</em>. doi: 10.1201/9780367409913.
 <ul>
 <li>Chapters 7, 8.</li>
 </ul>
@@ -699,7 +748,60 @@ Figure&nbsp;7.11: Risk theatre for pedestrian-vehicle crashes.
 </ul>
 
 
-</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-beecham_vis_2022" class="csl-entry" role="listitem">
+Beecham, R., and R. Lovelace. 2023. <span>“A Framework for Inserting Visually-Supported Inferences into Geographical Analysis Workflow: Application to Road Safety Research”</span> 55: 345–66. <a href="https://doi.org/10.1111/gean.12338">https://doi.org/10.1111/gean.12338</a>.
+</div>
+<div id="ref-boukhelifa_evaluating_2012" class="csl-entry" role="listitem">
+Boukhelifa, N., A. Bezerianos, T. Isenberg, and J. Fekete. 2012. <span>“Evaluating <span>Sketchiness</span> as a <span>Visual</span> <span>Variable</span> for the <span>Depiction</span> of <span>Qualitative</span> <span>Uncertainty</span>.”</span> <em>IEEE Transactions on Visualization and Computer Graphics</em> 18 (12): 2769–78.
+</div>
+<div id="ref-brunsdon_assessment_2011" class="csl-entry" role="listitem">
+Brunsdon, C., and M. Charlton. 2011. <span>“An <span>Assessment</span> of the <span>Effectiveness</span> of <span>Multiple</span> <span>Hypothesis</span> <span>Testing</span> for <span>Geographical</span> <span>Anomaly</span> <span>Detection</span>.”</span> <em>Environment and Planning B: Planning and Design</em> 38 (2): 216–30.
+</div>
+<div id="ref-correll_error_2014" class="csl-entry" role="listitem">
+Correll, M., and M. Gleicher. 2014. <span>“Error <span>Bars</span> <span>Considered</span> <span>Harmful</span>: <span>Exploring</span> <span>Alternate</span> <span>Encodings</span> for <span>Mean</span> and <span>Error</span>.”</span> <em>IEEE Transactions on Visualization and Computer Graphics</em> 20 (12): 2142–51.
+</div>
+<div id="ref-gelman_why_2012" class="csl-entry" role="listitem">
+Gelman, Andrew, Jennifer Hill, and Masanao Yajima. 2012. <span>“Why We (Usually) Don’t Have to Worry about Multiple Comparisons.”</span> <em>Journal of Research on Educational Effectiveness</em> 5 (2): 189–211. <a href="https://doi.org/10.1080/19345747.2011.618213">https://doi.org/10.1080/19345747.2011.618213</a>.
+</div>
+<div id="ref-gross_how_2016" class="csl-entry" role="listitem">
+Gross, Justin. 2016. <span>“How to Better Communicate Election Forecasts — in One Simple Chart.”</span> <span>The Washington Post</span>. <a href="https://www.washingtonpost.com/graphics/politics/2016-election/election-results-from-coast-to-coast/">https://www.washingtonpost.com/graphics/politics/2016-election/election-results-from-coast-to-coast/</a>.
+</div>
+<div id="ref-hullman_hypothetical_2015" class="csl-entry" role="listitem">
+Hullman, J., P. Resnick, and E. Adar. 2015. <span>“Hypothetical <span>Outcome</span> <span>Plots</span> <span>Outperform</span> <span>Error</span> <span>Bars</span> and <span>Violin</span> <span>Plots</span> for <span>Inferences</span> <span>About</span> <span>Reliability</span> of <span>Variable</span> <span>Ordering</span>.”</span> <em>PLOS ONE</em> 10 (11).
+</div>
+<div id="ref-kay_ggdist_2023" class="csl-entry" role="listitem">
+Kay, Matthew. 2023. <em><span class="nocase">ggdist</span>: Visualizations of Distributions and Uncertainty</em>. <a href="https://doi.org/10.5281/zenodo.3879620">https://doi.org/10.5281/zenodo.3879620</a>.
+</div>
+<div id="ref-kinkeldey_how_2014" class="csl-entry" role="listitem">
+Kinkeldey, C., A. MacEachren, and J/ Schiewe. 2014. <span>“How to <span>Assess</span> <span>Visual</span> <span>Communication</span> of <span>Uncertainty</span>? <span>A</span> <span>Systematic</span> <span>Review</span> of <span>Geospatial</span> <span>Uncertainty</span> <span>Visualisation</span> <span>User</span> <span>Studies</span>.”</span> <em>The Cartographic Journal</em> 51 (4): 372–86.
+</div>
+<div id="ref-munzner_visualization_2014" class="csl-entry" role="listitem">
+Munzner, T. 2014. <em>Visualization <span>Analysis</span> and <span>Design</span></em>. <span>AK</span> <span>Peters</span> <span>Visualization</span> <span>Series</span>. Boca Raton, FL: CRC Press.
+</div>
+<div id="ref-nhc_cone_2023" class="csl-entry" role="listitem">
+NHC. 2023. <span>“<span class="nocase">National Huricane Center and Central Pacific Hurricane Center</span>.”</span> <a href="https://www.nhc.noaa.gov/">https://www.nhc.noaa.gov/</a>.
+</div>
+<div id="ref-n_balakrishnan_uncertainty_2021" class="csl-entry" role="listitem">
+Padilla, Kay, L., and J. Hullman. 2021. <span>“Uncertainty <span>Visualization</span>.”</span> In <em>Wiley <span>StatsRef</span>: <span>Statistics</span> <span>Reference</span> <span>Online</span></em>, edited by B. Everitt N. Balakrishnan T. Colton and J. L. Teugels. Wiley.
+</div>
+<div id="ref-silver_why_2016" class="csl-entry" role="listitem">
+Silver, Nate. 2016. <span>“Why FiveThirtyEight Gave Trump a Better Chance Than Almost Anyone Else.”</span> FiveThirtyEight. <a href="https://fivethirtyeight.com/features/why-fivethirtyeight-gave-trump-a-better-chance-than-almost-anyone-else/">https://fivethirtyeight.com/features/why-fivethirtyeight-gave-trump-a-better-chance-than-almost-anyone-else/</a>.
+</div>
+<div id="ref-van_goethem_stenomaps_2014" class="csl-entry" role="listitem">
+Van Goethem, A., A. Reimer, B. Speckmann, and J. Wood. 2014. <span>“Stenomaps: Shorthand for Shapes.”</span> <em>IEEE Transactions on Visualization and Computer Graphics</em> 20 (12): 2053–62. <a href="https://doi.org/10.1109/TVCG.2014.2346274">https://doi.org/10.1109/TVCG.2014.2346274</a>.
+</div>
+<div id="ref-wickham_graphical_2010" class="csl-entry" role="listitem">
+Wickham, H., D. Cook, H. Hofmann, and A. Buja. 2010. <span>“Graphical Inference for Infovis.”</span> <em>IEEE Transactions on Visualization and Computer Graphics (Proc. InfoVis ’10)</em> 16 (6): 973–79.
+</div>
+<div id="ref-wood_sketchy_2012" class="csl-entry" role="listitem">
+Wood, J., P. Isenberg, T. Isenberg, J. Dykes, N. Boukhelifa, and A. Slingsby. 2012. <span>“Sketchy <span>Rendering</span> for <span>Information</span> <span>Visualization</span>.”</span> <em>IEEE Transactions on Visualization and Computer Graphics</em> 18 (12): 2749–58.
+</div>
+</div>
+</section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><hr>
+<ol>
+<li id="fn1"><p><code>https://vis4sds.github.io/vis4sds/files/07-template.qmd</code><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -1113,8 +1215,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./08-storytelling.html" class="pagination-link" aria-label="Data Storytelling">
-        <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Data Storytelling</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./08-storytelling.html" class="pagination-link" aria-label="Visual Storytelling">
+        <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Visual Storytelling</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
@@ -1122,4 +1224,4 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/vis4sds/vis4sds/edit/master/07-uncertainty.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li></ul></div></div></div></footer></body></html>
+</body></html>
