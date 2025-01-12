@@ -1,5 +1,6 @@
 project:
   type: book
+  output-dir: docs
 
 book:
   title: "Visualization for Social Data Science"
@@ -37,7 +38,7 @@ format:
   #   citation-package: natbib
   #   biblio-style: agsm
   #   #citation-style: agsm
-  #   monofontoptions: 
+  #   monofontoptions:
   #     - Scale=0.7
   #   keep-tex: true
   #   include-in-header:  latex/preamble.tex
