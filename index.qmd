@@ -1,4 +1,8 @@
-# Preface {.unnumbered}
+<!-- # Preface {.unnumbered} -->
+
+::: {.callout-note}
+This is the online home of *Visualization for Social Data Science*, a book in production with Chapman and Hall/CRC Press. 
+:::
 
 Social scientists have at their disposal an expanding array of data measuring very many social behaviours. This is undoubtedly a positive. Previously unmeasurable aspects of human behaviour can now be explored in a large-scale empirical way, while already measured aspects of behaviour can be re-evaluated. Such data are nevertheless rarely generated for the sole purpose of social research, and this fact elevates visual approaches in importance due to visualization's emphasis on discovery. When encountering new data for the first time, data graphics help expose complex structure and multivariate relations, and in so doing advance an analysis in situations where the questions to be asked and techniques to be deployed may not be immediately obvious.
 
