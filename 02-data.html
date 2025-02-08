@@ -152,7 +152,7 @@ div.csl-indent {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Preface</span></a>
+ <span class="menu-text">Structure, content and outcomes</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -365,7 +365,7 @@ Table&nbsp;2.1: Breakdown of variable types and corresponding mathematical opera
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em; width: 8em; font-family: Monospace;" data-indentlevel="1">Ordinal</td>
 <td style="text-align: left;">Terrorism threat levels</td>
-<td style="text-align: left; width: 8em; font-family: Monospace;">= ≠ &lt;&gt;</td>
+<td style="text-align: left; width: 8em; font-family: Monospace;">= ≠</td>
 <td style="text-align: left;">median</td>
 <td style="text-align: left;">percentile</td>
 </tr>
@@ -375,14 +375,14 @@ Table&nbsp;2.1: Breakdown of variable types and corresponding mathematical opera
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em; width: 8em; font-family: Monospace;" data-indentlevel="1">Interval</td>
 <td style="text-align: left;">Temperatures; years</td>
-<td style="text-align: left; width: 8em; font-family: Monospace;">= ≠ &lt;&gt; + -</td>
+<td style="text-align: left; width: 8em; font-family: Monospace;">= ≠ + -</td>
 <td style="text-align: left;">mean</td>
 <td style="text-align: left;">variance</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em; width: 8em; font-family: Monospace;" data-indentlevel="1">Ratio</td>
 <td style="text-align: left;">Distances; prices</td>
-<td style="text-align: left; width: 8em; font-family: Monospace;">= ≠ &lt;&gt; + - | × ÷</td>
+<td style="text-align: left; width: 8em; font-family: Monospace;">= ≠ + - | × ÷</td>
 <td style="text-align: left;">mean</td>
 <td style="text-align: left;">variance</td>
 </tr>
@@ -396,9 +396,13 @@ Table&nbsp;2.1: Breakdown of variable types and corresponding mathematical opera
 </div>
 <!-- 
 
+
+
 ::: {#tbl-variable-types-tex .cell tbl-cap='Breakdown of variable types and corresponding mathematical operations. '}
 
 :::
+
+
 
 
  -->
@@ -566,9 +570,13 @@ Table&nbsp;2.2: A breakdown of data types in R.
 <p>So every <code>dplyr</code> function expects a data frame and will always return a data frame.</p>
 <!-- 
 
+
+
 ::: {#tbl-dplyr-verbs-tex .cell tbl-cap='dplyr functions (verbs) for manipulating data frames.'}
 
 :::
+
+
 
  -->
 <div class="cell">
@@ -685,9 +693,13 @@ Table&nbsp;2.3: dplyr functions (verbs) for manipulating data frames.
 <!-- 
 
 
+
+
 ::: {#tbl-aggregate-functions-tex .cell tbl-cap='A breakdown of aggregate functions commonly used with `summarise()`.'}
 
 :::
+
+
 
 -->
 <div class="cell">
@@ -857,9 +869,13 @@ Figure&nbsp;2.2: Citibike trips made by hour of day and day and week, differenti
 <p>Some new functions are introduced: <code>select()</code> to pick or drop variables, <code>rename()</code> to rename variables and a convenience function for calculating straight line distances from polar coordinates, <code>distHaversine()</code>. The key function to emphasise is the <code>left_join()</code>. If you’ve worked with relational databases, <code>dplyr</code>’s join functions will be familiar to you. In a <code>left_join</code> all the values from the first (left-most) table are retained, <code>ny_trips</code> in this case, and variables from the table on the right , <code>ny_stations</code>, are added. We specify the variable on which tables should be joined with the <code>by=</code> parameter, <code>station_id</code> in this case. If there is a <code>station_id</code> in <code>ny_trips</code> that doesn’t exist in <code>ny_stations</code> then corresponding cells are filled out with <code>NA</code>.</p>
 <!-- 
 
+
+
 ::: {#tbl-table-joins-tex .cell tbl-cap='A breakdown of `dplyr` join functions.'}
 
 :::
+
+
 
 -->
 <div class="cell">
