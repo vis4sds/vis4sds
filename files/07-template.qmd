@@ -1,0 +1,47 @@
+---
+title: "Chapter 07 Template"
+author: "Roger Beecham"
+format: html
+---
+
+## Introduction
+
+Reopen your project and save this `.qmd` file in the top-level folder. When working through the materials from this chapter run each code chunk separately by clicking the small green arrow beside each code chunk. By default I have set `eval: false` on most code chunks, so when you knit the code chunk will not execute.
+
+
+## Setup
+
+The code block below points to the packages you need. Uncomment the `intall_packages()` lines if you have not already downloaded `ggdist`, `distributional` and `gganimate`.
+
+```{r}
+#| echo: true
+#| eval: false
+library(here) 
+library(tidyverse) 
+library(sf) 
+library(fst)
+library(tidymodels) 
+library(rsample)
+
+# install.packages("ggdist")
+library(ggdist)
+# install.packages("distributional")
+library(distributional)
+# install.packages("gganimate")
+library(gganimate)
+```
+
+Bring in road crash data. If you have not previousyly download this, then uncomment the `download.file()`. Also, the `.geojson` file we use to draw cells of the risk theatre.
+
+```{r}
+#| echo: true
+#| eval: false
+# url <- "https://vis4sds.github.io/data/ch4/ped_veh.fst"
+# download.file(url, here("data", "ped_veh.fst"))
+ped_veh <- read_fst(here("data", "ped_veh.fst"))
+
+url <- "https://vis4sds.github.io/data/ch7/theatre_cells.geojson"
+download.file(url, here("data", "theatre_cells.geojson"))
+```
+
+
