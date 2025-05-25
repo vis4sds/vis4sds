@@ -1,4 +1,4 @@
-# Task answers {#sec-tasks-answers}
+# Task Answers {#sec-tasks-answers}
 
 ::: callout-note
 ## Task answers
@@ -245,13 +245,13 @@ plot_data |>
 
 ### Task 1 {.unnumbered}
 
-* For jobs filled in the City of London (CoL) from which borough does the largest number of workers commute? 
+* For jobs filled in the City of London (CoL), from which borough does the largest number of workers commute? 
   + Answer: Wandsworth (Wnd)
 
-* For jobs filled in Camden (Cmd) from which borough does the largest number of workers commute? 
+* For jobs filled in Camden (Cmd), from which borough does the largest number of workers commute? 
   + Answer: Barnet (Barnt), maybe Islington (Isl)
 
-* Eyeballing the graphic, identify the top 3 boroughs which appear to have the most localised labour markets in terms of in-commuting? 
+* Eyeballing the graphic, identify the top 3 boroughs which appear to have the most localised labour markets in terms of in-commuting. 
   + Answer: Bexleyheath (Bxl), Havering (Hvr), Barking and Dagenham (BaD). Also, Sutton (Sttn), Grenwich (Grn) look very localised.
 
 
@@ -318,3 +318,17 @@ plot_data |>
   scale_colour_manual(values=c("#b2182b","#2166ac")) +
   coord_flip()
 ```
+
+
+
+<!-- ```{=latex}
+\phantomsection
+\chapter*{References}
+```
+
+
+```{=latex}
+\phantomsection
+\addcontentsline{toc}{chapter}{Index}
+\printindex
+``` -->

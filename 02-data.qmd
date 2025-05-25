@@ -31,16 +31,15 @@ By the end of this chapter you should gain the following knowledge and practical
 
 ## Introduction
 
-This chapter covers the basics of how to describe and organise data. While this might sound prosaic, there are several reasons why being able to consistently describe a dataset is important. First, it is the initial step in any analysis and helps delimit the analytical procedures that can be deployed. This is especially relevant to modern data analysis, where it is common to apply the same analysis templates over many different datasets. Describing data using a consistent vocabulary enables you to identify which analysis templates to reuse. Second relates to the point in [Chapter -@sec-introduction], that social data science projects usually involve repurposing datasets for the first time. It is often not obvious whether a dataset contains sufficient detail and structure to characterise the behaviours being researched and the target populations it is assumed to represent. This leads to additional levels of uncertainty and places greater importance on the initial steps of data processing, description and exploration.
+This chapter covers the basics of how to describe and organise data. While this might sound prosaic, there are several reasons why being able to consistently describe a dataset is important. First, it is the initial step in any analysis and helps delimit the analytical procedures that can be deployed. This is especially relevant to modern data analysis, where it is common to apply the same analysis templates over many different datasets. Describing data using a consistent vocabulary enables you to identify which analysis templates to reuse. Second, relates to the point in [Chapter -@sec-introduction], that social data science projects usually involve repurposing datasets for the first time. It is often not obvious whether a dataset contains sufficient detail and structure to characterise the behaviours being researched and the target populations it is assumed to represent. This leads to additional levels of uncertainty and places greater importance on the initial steps of data processing, description and exploration.
 
 Through the chapter we will develop vocabulary for describing and thinking about data, as well as some of the most important data processing and organisation techniques in R. We will do so using data from New York's Citibike system\index{datasets!New York Citibike|(}\index{bikeshare!New York|(}.
 
-<!-- accessed through the `bikedata` package, an API to Citibike's [publicly available origin-destination trip data](https://www.citibikenyc.com/system-data). -->
 
 ::: callout-note
 ## Data vocabulary
 
-A consistent vocabulary to describing data is especially useful when learning modern visualization toolkits like `ggplot2`, `Tableau`, `vega-lite`. We will expand upon this in some detail in [Chapter -@sec-visual] as we introduce the fundamentals of visualization design and the Grammar of Graphics [@wilkinson_grammar_1999].
+A consistent vocabulary for describing data is especially useful when learning modern visualization toolkits like `ggplot2`, `Tableau` and `vega-lite`. We will expand upon this in some detail in [Chapter -@sec-visual] as we introduce the fundamentals of visualization design and the Grammar of Graphics [@wilkinson_grammar_1999].
 :::
 
 ## Concepts
@@ -48,7 +47,7 @@ A consistent vocabulary to describing data is especially useful when learning mo
 ### Data frames
 
 \index{data frames}
-Throughout this book we will work with data frames. These are spreadsheet-like representations where rows are observations and columns are variables. In an R data frame, variables are vectors that must be of equal length. Where observations have missing values for certain variables the missing values must be substituted with something, usually with `NA` or similar. This constraint can cause difficulties. For example, when working with variables that contain many values of different length for an observation. In these cases we create a special class of column, a `list-column`. Organising data according to this simple structure -- rows as observations, columns as variables -- is useful for developing analysis templates that work with the `tidyverse` package ecosystem.
+Throughout this book we will work with data frames. These are spreadsheet-like representations where rows are observations and columns are variables. In an R data frame, variables are vectors that must be of equal length. Where observations have missing values, for certain variables the missing values must be substituted with something, usually with `NA` or similar. This constraint can cause difficulties. For example, when working with variables that contain many values of different length for an observation, we create a special class of column, a `list-column`. Organising data according to this simple structure -- rows as observations, columns as variables -- is useful for developing analysis templates that work with the `tidyverse` package ecosystem.
 
 ### Types of variable
 
@@ -56,9 +55,8 @@ Throughout this book we will work with data frames. These are spreadsheet-like r
 A familiar classification for describing data is that developed by @stevens_on_1946 when considering the level of measurement of a variable. @stevens_on_1946 organises variables into two classes: variables that describe *categories* of things and variables that describe *measurements* of things.
 
 \index{Stevens measurement levels!categorical variables}
-Categories include attributes like gender, customer segments, ranked orders (1st, 2nd, 3rd largest etc.). Measurements include quantities like distance, age, travel time. Categories can be further subdivided into those that are unordered (*nominal*) from those that are ordered (*ordinal*). Measurements can also be subdivided. *Interval* measurements are quantities where the computed difference between two values is meaningful. *Ratio* measurements have this property, but also have a meaningful `0`, where `0` means the absence of something, and the ratio of two values can be computed.
+Categories include attributes like gender, customer segments, ranked orders (1st, 2nd, 3rd largest etc.). Measurements include quantities like distance, age and travel time. Categories can be further subdivided into those that are unordered (*nominal*) and those that are ordered (*ordinal*). Measurements can also be subdivided. *Interval* measurements are quantities where the computed difference between two values is meaningful. *Ratio* measurements have this property, but also have a meaningful `0`, where `0` means the absence of something, and the ratio of two values can be computed.
 \index{Stevens measurement levels!ordinal variables} \index{Stevens measurement levels!ratio variables}
-<!-- The most common cited example of an interval measurement is temperature in &deg;C. Temperatures can be ordered and compared additively, but 0 in &deg;C does not mean the absence of temperature and 20&deg;C is not twice as hot as 10&deg;C. -->
 
 Why is this useful? The measurement level of a variable determines the types of data analysis operations that can be performed and therefore allows us to make quick decisions when working with a dataset for the first time [(@tbl-variable-types)]{.content-visible when-format="html"}[(@tbl-variable-types-tex)]{.content-visible when-format="pdf"}.
 
@@ -102,9 +100,10 @@ kableExtra::kbl(variable_types, escape=FALSE) |>
  pack_rows("Categories", 1, 2, bold=FALSE, label_row_css = "border-bottom: 0px solid;") |>
  pack_rows("Measures", 3, 4, bold=FALSE, label_row_css = "border-bottom: 0px solid;") |>
  column_spec(c(1,3), width = "8em",  extra_css = "font-family:  Monospace")
-```
+``` 
 
-<!-- 
+
+
 ```{r}
 #| label: tbl-variable-types-tex
 #| tbl-cap: "Breakdown of variable types and corresponding mathematical operations. "
@@ -146,9 +145,7 @@ kableExtra::kbl(variable_types, protect_latex = TRUE, escape=FALSE) |>
  column_spec(c(1,3), width = "8em",  extra_css = "font-family:  Monospace")
 ```
 
- -->
 
-<!-- ::: -->
 
 ::: {.callout-tip icon="false"}
 ## Task 1
@@ -169,12 +166,12 @@ Complete the data description table below identifying the *measurement level* of
 
 ### Types of observation
 
-\index{sampling!target population} \index{sampling!sample} Observations either together form an entire population or a sample that we expect is representative of a target population. In social data science applications we often work with datasets that are so-called population-level. The Citibike dataset is a complete, population-level dataset in that every Citibike journey is recorded. Whether or not this is truly a population-level dataset, however, depends on the analysis purpose. When analysing trips made by Citibike users are we interested only in those cyclists? Or are we taking the patterns observed through our analysis to make inferences about New York cycling more generally?\index{sampling!representativeness} If the latter, then there are problems as the level of detail we have on our sample is pretty trivial compared to traditional, actively-collected datasets, where data collection activities are designed with a target population in mind. It may therefore be difficult to gauge how representative Citibike users and Citibike cycling is of New York's general cycling population. The flipside is that so-called passively-collected data may not suffer from the same problems of non-response bias \index{sampling!non-response} and social-desirability bias as traditional, actively-collected data.
+\index{sampling!target population} \index{sampling!sample} Observations form an entire population or a sample that we expect is representative of a target population. In social data science applications we often work with datasets that are so-called population-level. The Citibike dataset is a complete, population-level dataset in that every Citibike journey is recorded. Whether or not this is truly a population-level dataset, however, depends on the analysis purpose. When analysing trips made by Citibike users, are we interested only in those cyclists? Or are we taking the patterns observed through our analysis to make inferences about New York cycling more generally?\index{sampling!representativeness} If the latter, then there are problems as the level of detail we have on our sample is pretty trivial compared to traditional, actively-collected datasets, where data collection activities are designed with a target population in mind. It may therefore be difficult to gauge how representative Citibike users and Citibike cycling is of New York's general cycling population. The flipside is that so-called passively-collected data may not suffer from the same problems of non-response bias \index{sampling!non-response} and social-desirability bias as traditional, actively-collected data.
 
 ### Tidy data
 
 \index{tidy data}
-We will work with data frames organised such that columns always and only refer to variables and rows always and only refer to observations. This arrangement, called *tidy* [@wickham_tidy_2014], has two key advantages. First, if data are arranged in this tidy form then it is easier to apply and re-use tools for wrangling them as they have the same underlying structure. Second, placing variables into columns with each column containing a vector of values, means that we can take advantage of R's vectorised functions for transforming data. This is demonstrated in the technical element of the chapter.
+We will work with data frames organised such that columns always and only refer to variables and rows always and only refer to observations. This arrangement, called *tidy* [@wickham_tidy_2014], has two key advantages. First, if data are arranged in this tidy form, then it is easier to apply and re-use tools for wrangling them as they have the same underlying structure. Second, placing variables into columns with each column containing a vector of values, means that we can take advantage of R's vectorised functions for transforming data. This is demonstrated in the technical element of the chapter.
 
 The three rules for tidy data [@wickham_tidy_2014]:
 
@@ -189,20 +186,17 @@ The concept of tidy data, and its usefulness for `tidyverse`-style operations, i
 
 In this section we import, describe, transform and tidy data from New York's Citibike bikeshare system.
 
--   Download the `02-template.qmd`[^02-template] file and save it to your `vis4sds` project, created in Chapter [-@sec-introduction].
--   Open your `vis4sds` project in RStudio and load the template file by clicking `File` \> `Open File ...` \> `02-template.qmd`.
+-   Download the `02-template.qmd`[^02-template] file, and save it to your `vis4sds` project, created in Chapter [-@sec-introduction].
+-   Open your `vis4sds` project in RStudio, and load the template file by clicking `File` \> `Open File ...` \> `02-template.qmd`.
 
 [^02-template]: `https://vis4sds.github.io/vis4sds/files/02-template.qmd`
 
 ### Import
 
-In the template file there is documentation on how to setup your R session with key packages -- `tidyverse` , `fst`, `lubridate`, `sf`. The data were collected using the `bikedata` R package. A subset of data from New York's bikeshare system, Citibike, were collected for this chapter and can be downloaded from the book's accompanying data repository[^02-data-1]. 
+In the template file there is documentation on how to set up your R session with key packages -- `tidyverse` , `fst`, `lubridate`, `sf`. The data were collected using the `bikedata` R package. A subset of data from New York's bikeshare system, Citibike, were collected for this chapter and can be downloaded from the book's accompanying data repository[^02-data-1]. 
 
 [^02-data-1]: `https://github.com/vis4sds/data`
 
-<!-- -- and also the [`bikedata`](https://github.com/ropensci/bikedata) package for accessing bikeshare data. -->
-
-<!-- Available via the `bikedata` package are trip and occupancy data for a number of bikeshare schemes (as below). We will work with data from New York's [Citibike](https://www.citibikenyc.com/) scheme for June 2020. A list of all cities covered by the `bikedata` package is below: -->
 
 ```{r}
 #| echo: true
@@ -264,7 +258,6 @@ bike_rm_db(bikedb)
 rm(db, stations, trips, bikedb)
 ```
 
-<!-- Some of the above may be familiar to you. The key arguments to look at are `read_csv()` and `read_fst()`, into which we pass the path to the file. In this case we create a `tmpfile()` within the R session. We then write these data out and save locally to the project's `data` folder. This is useful as we only want to download the data once. In the `write_*<>` functions we reference this location using the [`here`](https://here.r-lib.org/) package's `here()` function, useful for reliably creating paths relative to your project's root.  -->
 
 ```{r}
 #| echo: true
@@ -282,8 +275,6 @@ ny_stations <- read_csv(here("data", "ny_stations.csv"))
 `fst` is a special class of file that implements in the background various operations to speed-up reading and writing of data. This makes it possible to work with large datasets in-memory in R rather than connecting to a database and returning data summaries/subsets.
 :::
 
-<!-- `ny_stations` and `ny_trips` are data frames, spreadsheet type representations containing observations in rows and variables in columns.  -->
-
 Inspecting the layout of the stations data with `View(ny_stations)` you will notice that the top line is the header and contains column (variable) names. The `glimpse()` function can be used to quickly describe a data frame's dimensions. We have 500,000 trip observations in `ny_trips` and 11 variables; the 500,000 represents a random sample of c.1.9 million trips recorded in June 2020. The function also prints out the object type for each of these variables, with the variables either of type `int`, `chr` or `dbl`.
 
 
@@ -294,8 +285,6 @@ Inspecting the layout of the stations data with `View(ny_stations)` you will not
 
 include_graphics("figs/02/view.png", error = FALSE)
 ```
-
-<!-- ![`ny_trips` and `ny_stations` as they appear when calling `View()`](figs/01/view.png){#fig-view-annotate width=100% fig-align="center"} -->
 
 
 In this case the assignment needs correcting. `start_time` and `stop_time` may be better represented in `date-time` format; the station identifier variables (e.g. `start_station_id`) are more efficient when converted to `int` types; and the geographic coordinates, currently stored as text strings (`chr`), are better converted as floating points (`dbl`) or `POINT` geometry types [@pebesma_simple_2018]. In the `02-template.qmd` file are code chunks for doing these conversions. There are some slightly more involved data transform procedures in this code, which you may wish to ignore at this stage.
@@ -357,7 +346,7 @@ data_types <- tibble::tibble(
 
 \index{packages!\texttt{dplyr}|(}
 
-`dplyr` is the foundational package of the tidyverse. It provides a *grammar of data manipulation*, with access to functions that can be variously combined to support most data processing and manipulation tasks. Once familiar with `dplyr` functions you will find yourself generating analysis templates to re-use whenever working on a dataset.
+`dplyr` is the foundational package of the tidyverse. It provides a *grammar of data manipulation*, with access to functions that can be variously combined to support most data processing and manipulation tasks. Once familiar with `dplyr` functions, you will find yourself generating analysis templates to re-use whenever working on a dataset.
 
 All `dplyr` functions operate in a consistent way:
 
@@ -367,7 +356,7 @@ All `dplyr` functions operate in a consistent way:
 
 So every `dplyr` function expects a data frame and will always return a data frame.
 
-<!-- 
+
 ```{r}
 #| label: tbl-dplyr-verbs-tex
 #| tbl-cap: "dplyr functions (verbs) for manipulating data frames."
@@ -393,7 +382,7 @@ kableExtra::kbl(dplyr_verbs, protect_latex = TRUE, escape=FALSE) |>
   row_spec(0, extra_css = "border-bottom: 1px solid;") |> 
   kable_styling(font_size = 9) 
 ```
- -->
+
 
 
 ```{r}
@@ -420,9 +409,8 @@ kbl(dplyr_verbs) |> column_spec(1, extra_css = "font-family:  Monospace") |> row
 ```
 
 
-`dplyr` functions are designed to be chained together, and this 
-<!-- -- you will see this shortly as we explore the New York bikeshare data. This  -->
-chaining of functions can be achieved using the *pipe* operator (`|>`). Pipes are mechanisms for passing information in a program. They take the output of a set of code (a `dplyr` specification) and make it the input of the next set (another `dplyr` specification). Pipes can be easily applied to `dplyr` functions and the functions of all packages that form the `tidyverse`. We mentioned in [@sec-introduction] that ggplot2 provides a framework for specifying a *layered grammar of graphics* (more on this in [@sec-visual]). Together with the pipe operator, `dplyr` supports a *layered grammar of data manipulation*. You will see this throughout the book as we develop and re-use code templates for performing some data manipulation that is then piped to a ggplot2 specification for visual analysis.
+
+`dplyr` functions are designed to be chained together, and this chaining of functions can be achieved using the *pipe* operator (`|>`). Pipes are mechanisms for passing information in a program. They take the output of a set of code (a `dplyr` specification) and make it the input of the next set (another `dplyr` specification). Pipes can be easily applied to `dplyr` functions and the functions of all packages that form the `tidyverse`. We mentioned in [@sec-introduction] that ggplot2 provides a framework for specifying a *layered grammar of graphics* (more on this in [@sec-visual]). Together with the pipe operator, `dplyr` supports a *layered grammar of data manipulation*. You will see this throughout the book as we develop and re-use code templates for performing some data manipulation that is then piped to a ggplot2 specification for visual analysis.
 
 
 #### `count()` and `summarise()` over rows {.unnumbered}
@@ -443,9 +431,7 @@ ny_trips |>
 
 There are a few things happening in the `count()` function. It takes the `usr_type` variable from `ny_trips`, organises or *groups* the rows in the data frame according to its values (`Customer` \| `Subscriber`), counts the rows and then orders the summarised output descending on the counts.
 
-Often you will want to do more than simply counting and you may also want to be more explicit in the way the data frame is grouped for computation. 
-<!-- We'll demonstrate this with a more involved analysis of the usage data and with some key aggregate functions (@tbl-aggregate-functions).  -->
- A common workflow is to combine `group_by()` and `summarise()`, and in this case `arrange()` to replicate the `count()` example.
+Often you will want to do more than simply counting, and you may also want to be more explicit in the way the data frame is grouped for computation. A common workflow is to combine `group_by()` and `summarise()`, and in this case `arrange()` to replicate the `count()` example.
 
 ```{r}
 #| echo: true
@@ -496,9 +482,9 @@ ny_trips |>
 ## # … with abbreviated variable names
 ```
 
-As each line is commented you hopefully get a sense of what is happening in the code above. Since `dplyr` functions read like verbs, and code is executed sequentially, it greatly helps to organise `dplyr` code such that each new verb (function call) occupies a single line, separated with a pipe (`|>`). Once you are familiar with `dplyr` it becomes very easy to read, write, re-use and share code in this way.
+As each line is commented you hopefully get a sense of what is happening in the code above. Since `dplyr` functions read like verbs, and code is executed sequentially, it greatly helps to organise `dplyr` code such that each new verb (function call) occupies a single line, separated with a pipe (`|>`). Once you are familiar with `dplyr`, it becomes very easy to read, write, re-use and share code in this way.
 
-<!-- 
+
 
 ```{r, echo=FALSE}
 #| label: tbl-aggregate-functions-tex
@@ -522,7 +508,7 @@ kableExtra::kbl(aggregate_functions, protect_latex = TRUE, escape=FALSE) |>
    row_spec(0, extra_css = "border-bottom: 1px solid;") |>
     kable_styling(font_size = 9)     
 ```
--->
+
 
 
 ```{r, echo=FALSE}
@@ -543,7 +529,9 @@ aggregate_functions <- tibble::tibble(
   )
 )
 kbl(aggregate_functions) |> column_spec(1, extra_css = "font-family:  Monospace") |> row_spec(0, extra_css = "border-bottom: 1px solid;")   
-```
+``` 
+
+
 
 \index{packages!\texttt{dplyr}|)}
 
@@ -560,9 +548,9 @@ Remembering that pipes take the output of a set of code and make it the input of
 
 \index{packages!\texttt{lubridate}}
 
-Let's continue this investigation of trips by user-type by profiling how usage varies over time. To do this we will need to work with `date-time` variables. The `lubridate` package provides various convenience functions for this.
+Let's continue this investigation of trips by user type by profiling how usage varies over time. To do this we will need to work with `date-time` variables. The `lubridate` package provides various convenience functions for this.
 
-In the code block below we extract the *day of week* and *hour of day* from the `start_time` variable using `lubridate`'s day accessor  functions. Documentation on these can be accessed in the usual way (`?<function-name>`). Next we count the number of trips made by hour of day, day of week and user-type. The summarised data frame will be re-used several times in our analysis, so we store it as an object with a suitable name (`ny_temporal`) using the assignment operator.
+In the code block below we extract the *day of week* and *hour of day* from the `start_time` variable using `lubridate`'s day accessor  functions. Documentation on these can be accessed in the usual way (`?<function-name>`). Next we count the number of trips made by hour of day, day of week and user type. The summarised data frame will be re-used several times in our analysis, so we store it as an object with a suitable name (`ny_temporal`) using the assignment operator.
 
 ```{r}
 #| echo: true
@@ -589,7 +577,7 @@ ny_temporal <- ny_trips |>
 Whether or not to store derived data frames, like the newly assigned `ny_temporal`, in a session is not an easy decision. You should avoid cluttering the Environment pane with many data objects. Often when generating charts it is necessary to create these sorts of derived tables as input data to ggplot2. Adding derived data frames to the RStudio Environment pane each time an exploratory plot is created risks an unhelpfully large number of such tables. A general rule: if the derived data frame is to be used more than three times in a data analysis or is computationally intensive, create and assign it (`<-`) as a named object.
 :::
 
-In [@fig-plot-temporal] the newly derived data are plotted. Code for creating this data graphic is below. The plot demonstrates a familiar weekday-weekend pattern of usage. Trip frequencies peak in the morning and evening rush hours during weekdays and mid/late-morning and afternoon during weekends, with the weekday afternoon peak much larger than the morning peak. There are obvious differences in the type of trips made by subscribers versus customers -- the temporal signature for subscribers appears to match more closely what one would expect of commuting behaviour. That this pattern exists is noteable when remembering the data are from June 2020, a time when New York residents were emerging from lockdown. It would be instructive to compare with data from a non-Covid year. The fact that bikeshare is recorded continuously, in contrast to actively-collected survey data, makes this sort of behavioural change analysis possible.
+In [@fig-plot-temporal] the newly derived data are plotted. Code for creating this data graphic is below. The plot demonstrates a familiar weekday-weekend pattern of usage. Trip frequencies peak in the morning and evening rush hours during weekdays and mid/late-morning and afternoon during weekends, with the weekday afternoon peak much larger than the morning peak. There are obvious differences in the type of trips made by subscribers versus customers -- the temporal signature for subscribers appears to match more closely what one would expect of commuting behaviour. That this pattern exists is notable when remembering the data are from June 2020, a time when New York residents were emerging from lockdown. It would be instructive to compare with data from a non-Covid year. The fact that bikeshare is recorded continuously, in contrast to actively-collected survey data, makes this sort of behavioural change analysis possible.
 
 ```{r}
 #| echo: false
@@ -599,7 +587,6 @@ In [@fig-plot-temporal] the newly derived data are plotted. Code for creating th
 include_graphics("figs/02/hod_dow.png", error = FALSE)
 ```
 
-<!-- ![Line charts generated with `ggplot2`. Plot data computed using `dplyr` and `lubridate`](figs/02/hod_dow.svg){#fig-plot-temporal width=100% fig-align="center"} -->
 
 ```{r}
 #| code-fold: true
@@ -673,7 +660,7 @@ od_pairs <- ny_trips |>
 
 Some new functions are introduced: `select()` to pick or drop variables, `rename()` to rename variables and a convenience function for calculating straight line distances from polar coordinates, `distHaversine()`. The key function to emphasise is the `left_join()`. If you've worked with relational databases, `dplyr`'s join functions will be familiar to you. In a `left_join` all the values from the first (left-most) table are retained, `ny_trips` in this case, and variables from the table on the right , `ny_stations`, are added. We specify the variable on which tables should be joined with the `by=` parameter, `station_id` in this case. If there is a `station_id` in `ny_trips` that doesn't exist in `ny_stations` then corresponding cells are filled out with `NA`.
 
-<!-- 
+
 ```{r}
 #| label: tbl-table-joins-tex
 #| tbl-cap: "A breakdown of `dplyr` join functions."
@@ -697,7 +684,7 @@ kableExtra::kbl(join_functions, col.names = NULL, protect_latex = TRUE, escape=F
   # row_spec(0, extra_css = "font-family:  Monospace; border-bottom: 1px solid;") |>
     kable_styling(font_size = 9) 
 ``` 
--->
+
 
 
 
@@ -725,7 +712,7 @@ row_spec(0, extra_css = "font-family:  Monospace; border-bottom: 1px solid;")
 ```
 
 
-<!-- ![Histograms generated with ggplot2. Plot data computed using `dplyr` and `lubridate`](figs/02/dist.svg){#fig-plot-dist width=100% fig-align="center"} -->
+
 
 From the newly created distance variable we can calculate the average (mean) trip distance for the 500,000 sampled trips -- 1.6km. This might seem very short, but remember that these are straight-line distances between pairs of docking stations. Ideally we would calculate distances derived from cycle trajectories. A separate reason, discovered when generating a histogram on the `dist` variable, is that there are a large number of trips that start and end at the same docking station. These might be unsuccessful hires -- people failing to undock a bike for example. We could investigate this further by paying attention to the docking stations at which same origin-destination trips occur, as in the code block below.
 
@@ -789,7 +776,7 @@ ny_trips |>
 
 \index{code!functions|(}
 
-There may be times where you need to create functions of your own. Most often this is when you find yourself copy-pasting the same chunks of code with minimal adaptation.
+There may be times when you need to create functions of your own. Most often this is when you find yourself copy-pasting the same chunks of code with minimal adaptation.
 
 Functions have three key characteristics:
 
@@ -827,9 +814,9 @@ ny_trips <- ny_trips |>
 ```
 
 
-We can use the two new derived variables -- distance travelled and age -- in our analysis. In @fig-plot-speeds, we explore how approximate travel speeds vary by age, trip distance and customer type. Again the average speed calculation should be treated cautiously as it is based on straight line distances and it is likely that this will vary depending on whether the trip is made for 'utilitarian' or 'leisure' purposes. Additionally, due to the heavy subsetting data become a little volatile for certain age groups and so the age variable is aggregated into 5-year bands.
+We can use the two new derived variables -- distance travelled and age -- in our analysis. In @fig-plot-speeds, we explore how approximate travel speeds vary by age, trip distance and customer type. Again the average speed calculation should be treated cautiously as it is based on straight line distances, and it is likely that this will vary depending on whether the trip is made for 'utilitarian' or 'leisure' purposes. Additionally, due to the heavy subsetting data become a little volatile for certain age groups, and so the age variable is aggregated into 5-year bands.
 
-There are some notable patterns in @fig-plot-speeds. Subscribers make faster trips than do customers, although this gap narrows as trip distance increases. Trips with a straight-line distance of 4.5km are non-trivial and so may be classed as utilitarian even for non-regular customers. There is a very slight effect of decreasing trip speed by age cycled for the longer trips. The volatility in the older age groups for trips \>4.5km suggests more data and a more involved analysis is required to confidently establish this. For example, it may be that the comparatively rare occurrence of trips in the 65-70 age group is made by only a small subset of cyclists; with a larger dataset we may expect a regression to the mean effect that negates noise caused by outlier individuals.
+There are some notable patterns in @fig-plot-speeds. Subscribers make faster trips than do customers, although this gap narrows as trip distance increases. Trips with a straight-line distance of 4.5km are non-trivial and so may be classed as utilitarian even for non-regular customers. There is a very slight effect of decreasing trip speed by age cycled for the longer trips. The volatility in the older age groups for trips \>4.5km suggests more data, and a more involved analysis, is required to confidently establish this. For example, it may be that the comparatively rare occurrence of trips in the 65-70 age group is made by only a small subset of cyclists; with a larger dataset we may expect a regression to the mean effect that negates noise caused by outlier individuals.
 
 ```{r}
 #| label: fig-plot-speeds
@@ -867,11 +854,13 @@ temp_data <- ny_trips |>
       dist < 3 ~ ">1.5-3km",
       dist < 4.5 ~ ">3-4.5km",
       TRUE ~ ">4.5km"),
-    age_band=if_else(age %% 10 > 4, ceiling(age/5)*5, floor(age/5)*5),
+    age_band=if_else(age %% 10 > 4, ceiling(age/5)*5, 
+      floor(age/5)*5),
     speed=dist/(duration_minutes/60)
   )  |> 
   group_by(user_type, age_band, dist_bands) |> 
-    summarise(avg_speed=mean(speed), sample_size=n(), std=sd(speed)) |> 
+    summarise(avg_speed=mean(speed), sample_size=n(), 
+    std=sd(speed)) |> 
   ungroup() 
 
 # Plot.
@@ -882,7 +871,8 @@ temp_data |>
   scale_fill_manual(values=c("#e31a1c", "#1f78b4")) +
   facet_wrap(~dist_bands, nrow=1) +
   labs(
-    x="age", y="speed - km/h ", fill="user type", colour="user type"
+    x="age", y="speed - km/h ", fill="user type", 
+    colour="user type"
   )
 
 # Remove staging dataset.
@@ -893,8 +883,6 @@ rm(temp_data)
 
 
 ### Tidy
-
-<!-- The `ny_trips` and `ny_stations` data already comply with the rules for *tidy* data [@wickham_tidy_2014]. Each row in `ny_trips` is a distinct trip and each row in `ny_stations` a distinct station. However, it is common to encounter datasets that need to be reshaped. There are two key functions to learn here: [`pivot_longer()`](https://tidyr.tidyverse.org/reference/pivot_longer.html) and [`pivot_wider()`](https://tidyr.tidyverse.org/reference/pivot_wider.html). `pivot_longer()` is used to tidy data in which observations are spread across columns, as in @tbl-gapminder (b) (the `gapminder` dataset). `pivot_wider()` is used to tidy data in which variables are spread across rows, as in @tbl-gapminder (c). You will find yourself using these functions not only for fixing messy data, but for flexibly reshaping data for use in `ggplot2` specifications (more on this in Chapter [-@sec-visual] and [-@sec-exploratory]) or joining tables. -->
 
 \index{packages!\texttt{tidyr}|(}
 The `ny_trips` and `ny_stations` data already comply with the rules for tidy data [@wickham_tidy_2014]. Each row in `ny_trips` is a distinct trip and each row in `ny_stations` a distinct station. However, it is common to encounter datasets that are untidy and must be reshaped. In the book's data repository are two examples: `ny_spread_rows` and `ny_spread_columns`. `ny_spread_rows` is so-called because the variable `summary_type` is spread across the rows (observations); `ny_spread_columns` because multiple variables are stored in single columns -- the `dist_weekday`, `duration_weekday` columns.
@@ -920,18 +908,18 @@ ny_spread_rows
 
 ny_spread_columns
 ## # A tibble: 156,449 × 8
-##    o_stat d_stat cnt_wend cnt_wkdy dist_wnd dist_wkdy dur_wnd dur_wkdy
-##     <dbl>  <dbl>    <dbl>    <dbl>    <dbl>   <dbl>   <dbl>   <dbl>
-##  1    72    116        1       3     1.15    3.45    18.2      49.9
-##  2    72    127        4       4     7.18    7.18    122.      101.
-##  3    72    146        4       2     9.21    4.61    122.      64.1
-##  4    72    164        1       1     2.66    2.66    12.5      43.2
-##  5    72    173        2      13     2.13    13.9    43.6     189.
-##  6    72    195        1       4     2.56    10.2    24.7      98.3
-##  7    72    212        3       3     4.83    4.83    40.3      54.0
-##  8    72    223        1      NA     1.13      NA    21.1      NA
-##  9    72    228        2       1     4.97    2.49    30.2      13.6
-## 10    72    229        1      NA     1.22      NA    39.2    NA
+##    o_stat d_stat ct_wend ct_wdy dst_wnd dst_wdy dur_wnd dur_wdy
+##     <dbl> <dbl>   <dbl>   <dbl>   <dbl>  <dbl>   <dbl>   <dbl>
+##  1    72   116       1      3    1.15   3.45    18.2     49.9
+##  2    72   127       4      4    7.18   7.18    122.     101.
+##  3    72   146       4      2    9.21   4.61    122.     64.1
+##  4    72   164       1      1    2.66   2.66    12.5     43.2
+##  5    72   173       2     13    2.13   13.9    43.6    189.
+##  6    72   195       1      4    2.56   10.2    24.7     98.3
+##  7    72   212       3      3    4.83   4.83    40.3     54.0
+##  8    72   223       1     NA    1.13     NA    21.1     NA
+##  9    72   228       2      1    4.97   2.49    30.2     13.6
+## 10    72   229       1     NA    1.22     NA    39.2     NA
 ## # … with 156,439 more rows, and abbreviated variable names 
 ```
 
@@ -971,7 +959,7 @@ ny_spread_rows |>
 ## # … with 205,506 more rows
 ```
 
-To fix `ny_spread_columns` requires a little more thought. First we `pivot_longer()` on columns that are muddled with multiple variables. This results in a long and thin dataset similar to `ny_spread_rows` -- each row is the origin-destination pair with either a count, distance or duration recorded for trips occurring at weekends or weekdays. The muddled variables, for example `dist_weekend` `duration_weekday`, now appear in the rows of a new column with the default title `name`. This column is separated on the `_` mark to create two new columns, `summary_type` and `wkday`, used in `pivot_wider()`.
+To fix `ny_spread_columns` requires a little more thought. First we `pivot_longer()` on columns that are muddled with multiple variables. This results in a long and thin dataset similar to `ny_spread_rows` -- each row is the origin-destination pair with either a count, distance or duration recorded for trips occurring on weekends or weekdays. The muddled variables, for example `dist_weekend` `duration_weekday`, now appear in the rows of a new column with the default title `name`. This column is separated on the `_` mark to create two new columns, `summary_type` and `wkday`, used in `pivot_wider()`.
 
 ```{r}
 #| echo: true
@@ -997,110 +985,6 @@ ny_spread_columns |>
 ## # … with 312,888 more rows
 ```
 
-````{=html}
-<!-- In the *task* you will be tidying some messy derived tables based on the bikeshare data using both of these functions, but we can demonstrate their purpose in *tidying* the messy `gapminder` data in @tbl-gapminder. Remember that these data were messy as the observations by gender were spread across the columns:
-
-```{r}
-#| echo: true
-#| eval: false
-untidy_wide
-##   country     year  f_cases m_cases f_population m_population
-##   <chr>       <chr> <chr>   <chr>   <chr>        <chr>
-## 1 Afghanistan 1999  447     298     9993400      9993671
-## 2 Afghanistan 2000  1599    1067    10296280     10299080
-## 3 Brazil      1999  16982   20755   86001181     86005181
-## 4 Brazil      2000  39440   41048   87251329     87253569
-## 5 China       1999  104007  108252  636451250    636464022
-## 6 China       2000  104746  109759  640212600    640215983
-```
-
-First we need to gather the problematic columns with `pivot_longer()`.
-
-```{r}
-#| echo: true
-#| eval: false
-untidy_wide |>
-  pivot_longer(
-    cols=c(f_cases: m_population),
-    names_to=c("gender_count_type"),
-    values_to=c("counts")
-  )
-
-##   country     year  gender_count_type       counts
-##   <chr>       <chr> <chr>                   <chr>
-##  1 Afghanistan 1999  f_cases                447
-##  2 Afghanistan 1999  m_cases                298
-##  3 Afghanistan 1999  f_population           9993400
-##  4 Afghanistan 1999  m_population           9993671
-##  5 Afghanistan 2000  f_cases                1599
-##  6 Afghanistan 2000  m_cases                1067
-##  7 Afghanistan 2000  f_population           10296280
-##  8 Afghanistan 2000  m_population           10299080
-##  9 Brazil      1999  f_cases                16982
-## 10 Brazil      1999  m_cases                20755
-## # … with 14 more rows
-```
-So this has usefully collapsed the dataset by gender, we now have a problem similar to that in @tbl-gapminder (b) where observations are spread across the rows -- in this instance `cases` and `population` are better treated as separate variables. This can be fixed by `separating` the `gender_count_type` variables and then spreading the values of the new `count_type` (`cases`, `population`) across the columns. Hopefully you can see how this gets us to the *tidy* `gapminder` data structure in @tbl-gapminder (a).
-
-```{r}
-#| echo: true
-#| eval: false
-untidy_wide |>
-  pivot_longer(
-    cols=c(f_cases: m_population),
-    names_to=c("gender_count_type"),
-    values_to=c("counts")
-  ) |>
-  separate(
-    col=gender_count_type,
-    into=c("gender", "count_type"),
-    sep="_"
-  )
-
-##    country     year  gender count_type counts
-##    <chr>       <chr> <chr>  <chr>      <chr>
-##  1 Afghanistan 1999  f      cases      447
-##  2 Afghanistan 1999  m      cases      298
-##  3 Afghanistan 1999  f      population 9993400
-##  4 Afghanistan 1999  m      population 9993671
-##  5 Afghanistan 2000  f      cases      1599
-##  6 Afghanistan 2000  m      cases      1067
-##  7 Afghanistan 2000  f      population 10296280
-##  8 Afghanistan 2000  m      population 10299080
-##  9 Brazil      1999  f      cases      16982
-## 10 Brazil      1999  m      cases      20755
-## # … with 14 more rows
-
-untidy_wide |>
-  pivot_longer(
-    cols=c(f_cases: m_population),
-    names_to=c("gender_count_type"),
-    values_to=c("counts")
-  ) |>
-  separate(
-    col=gender_count_type,
-    into=c("gender", "count_type"),
-    sep="_"
-  ) |>
-  pivot_wider(names_from=count_type, values_from=counts)
-
-##    country     year  gender cases  population
-##    <chr>       <chr> <chr>  <chr>  <chr>
-##  1 Afghanistan 1999  f      447    9993400
-##  2 Afghanistan 1999  m      298    9993671
-##  3 Afghanistan 2000  f      1599   10296280
-##  4 Afghanistan 2000  m      1067   10299080
-##  5 Brazil      1999  f      16982  86001181
-##  6 Brazil      1999  m      20755  86005181
-##  7 Brazil      2000  f      39440  87251329
-##  8 Brazil      2000  m      41048  87253569
-##  9 China       1999  f      104007 636451250
-## 10 China       1999  m      108252 636464022
-## 11 China       2000  f      104746 640212600
-## 12 China       2000  m      109759 640215983
-```
--->
-````
 
 ::: {.callout-tip icon="false"}
 ## Task 2
@@ -1149,9 +1033,9 @@ Developing the vocabulary and technical skills to systematically describe and or
 
 There are many accessible introductions to the `tidyverse` for modern data analysis. Two excellent resources:
 
--   Wickham, H., Çetinkaya-Rundel, M., Grolemund, G. 2023, "R for Data Science, 2nd Edition", *O'reilly*.
-    -   Chapter 4.
--   Ismay, C. and Kim, A. 2020. "Statistical Inference via Data Science: A ModernDive into R and the Tidyverse" *CRC Press*. doi: 10.1201/9780367409913.
+-   Wickham, H., Çetinkaya-Rundel, M., Grolemund, G. 2023, "R for Data Science, 2nd Edition", Sebastopol, CA: *O'Reilly*.
+    -   Chapter 3.
+-   Ismay, C. and Kim, A. 2020. "Statistical Inference via Data Science: A ModernDive into R and the Tidyverse", New York, NY: *CRC Press*. doi: 10.1201/9780367409913.
     -   Chapters 3, 4.
 
 Hadley Wickham's original paper on Tidy Data:

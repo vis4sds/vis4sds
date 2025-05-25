@@ -50,7 +50,7 @@ Cartographers and Information Visualization researchers have been concerned for 
 include_graphics("figs/07/uncertainty_vars.png", error = FALSE)
 ```
 
-@kinkeldey_how_2014 provides an overview of empirical research into the effectiveness of proposed visual variables against these criteria. As intuitive signifiers of uncertainty, or lack of precision, \index{fuziness} *fuzziness* (not encoded in @fig-uncertainty-variables) and *location* have been shown to work well. Slightly less intuitive, but nevertheless successful in terms of discrimination, are *size*, *transparency* and *colour value*. *Sketchiness* \index{schetchiness} is another intuitive signifier proposed in @boukhelifa_evaluating_2012. As with many visual variables, sketchiness is probably best considered as an ordinal visual variable to the extent that there is a limited range of sketchiness levels that can be discriminated. An additional feature of sketchiness is its sense of informality. This may be desirable in certain contexts, less so in others [see @wood_sketchy_2012 for further discussion].
+@kinkeldey_how_2014 provides an overview of empirical research into the effectiveness of proposed visual variables against these criteria. As intuitive signifiers of uncertainty, or lack of precision, \index{fuziness} *fuzziness* (not encoded in @fig-uncertainty-variables) and *location* have been shown to work well. Slightly less intuitive, but nevertheless successful in terms of discrimination, are *size*, *transparency* and *colour value*. *Sketchiness* \index{sketchiness} is another intuitive signifier proposed in @boukhelifa_evaluating_2012. As with many visual variables, sketchiness is probably best considered as an ordinal visual variable to the extent that there is a limited range of sketchiness levels that can be discriminated. An additional feature of sketchiness is its sense of informality. This may be desirable in certain contexts, less so in others [see @wood_sketchy_2012 for further discussion].
 
 ```{ojs}
 //| include: false
@@ -197,16 +197,16 @@ When thinking about uncertainty visualization, a key guideline is that:
 > [*Things that are not precise should not be encoded with symbols that look precise*.]{.content-visible when-format="html"} [\enquote{Things that are not precise should not be encoded with symbols that look precise.}]{.content-visible when-format="pdf"}
 
 
-Much discussed in recent literature on uncertainty visualization [e.g. @n_balakrishnan_uncertainty_2021] is the \index{US National Weather Service} US National Weather Service's (NWS)  [@nhc_cone_2023] cone graphic \index{cone of uncertainty} (@fig-nhc). The cone starts at the storm's current location and spreads out to represent the modelled *projected path* of the storm. The main problem is that the cone implies the storm is expanding as it moves away from its current location, when this is not the case. In fact there is more uncertainty in the areas that could be affected by the storm the further away those areas are from the storm's current location. The second problem is that the cone uses strong lines that imply precision. The temptation is to think that anything contained by the cone is unsafe and anything outside of it is safe. This is of course not what is suggested by the model. Rather, that areas not conatained by the cone are beyond some chosen threshold probability. You will notice that the graphic in @fig-nhc is annotated with a guidance note to discourage such false interpretation.
+Much discussed in recent literature on uncertainty visualization [e.g. @n_balakrishnan_uncertainty_2021] is the \index{US National Weather Service} US National Weather Service's (NWS)  [@nhc_cone_2023] cone graphic \index{cone of uncertainty} (@fig-nhc). The cone starts at the storm's current location and spreads out to represent the modelled *projected path* of the storm. The main problem is that the cone implies the storm is expanding as it moves away from its current location, when this is not the case. In fact there is more uncertainty in the areas that could be affected by the storm the further away those areas are from the storm's current location. The second problem is that the cone uses strong lines that imply precision. The temptation is to think that anything contained by the cone is unsafe and anything outside of it is safe. This is of course not what is suggested by the model. Rather, that areas not contained by the cone are beyond some chosen threshold probability. You will notice that the graphic in @fig-nhc is annotated with a guidance note to discourage such false interpretation.
 
 
 
 ::: {#fig-hurricane-vis layout-row="2"  .content-visible when-format="html"}
 ![National Hurricane Center cone design.](figs/07/cone_uncertainty.png){#fig-nhc width=75%}
 
-![@van_goethem_stenomaps_2014 redesign.](figs/07/cone_redesign.png){#fig-nhc-redesign width=75%}
+![@van_goethem_stenomaps_2014 redesign.](figs/07/cone_redesign_auth.png){#fig-nhc-redesign width=75%}
 
-Cone graphic produced by National Hurricane Center [@nhc_cone_2023] and example re-design in @van_goethem_stenomaps_2014. Cone graphic re-printed with permission, credit National Oceanic and Atmospheric Administration/National Weather Service.
+Cone graphic produced by National Hurricane Center [@nhc_cone_2023] and example re-design in Van Goethem et al.'s [-@van_goethem_stenomaps_2014]. Cone graphic re-printed with permission, credit National Oceanic and Atmospheric Administration/National Weather Service.
 :::
 
 
@@ -216,7 +216,7 @@ Cone graphic produced by National Hurricane Center [@nhc_cone_2023] and example 
 #| label: fig-nhc
 #| echo: false
 #| out-width: "70%"
-#| fig-cap: "National Hurricane Center cone design showing probable track of the centre of a cyclone."
+#| fig-cap: "National Hurricane Center cone design showing probable track of the centre of a cyclone. Cone graphic re-printed with permission, credit National Oceanic and Atmospheric Administration/National Weather Service."
 knitr::include_graphics("figs/07/cone_uncertainty.png")
 ```
 
@@ -225,8 +225,8 @@ knitr::include_graphics("figs/07/cone_uncertainty.png")
 #| label: fig-nhc-redesign
 #| echo: false
 #| out-width: "75%"
-#| fig-cap: "@van_goethem_stenomaps_2014 redesign of probable cyclone track."
-knitr::include_graphics("figs/07/cone_redesign.png")
+#| fig-cap: "Permitted author edited reproduction of Van Goethem et al.'s [-@van_goethem_stenomaps_2014] design for probable cyclone track."
+knitr::include_graphics("figs/07/cone_redesign_auth.png")
 ```
 
 :::
@@ -234,7 +234,7 @@ knitr::include_graphics("figs/07/cone_redesign.png")
 
 
 
-In @van_goethem_stenomaps_2014's \index{maps!stenomaps} redesign, colour value is used to represent four binned categories of storm probability suggested by the model. Greater visual saliency is therefore conferred to locations where there is greater certainty. The state boundaries are also encoded somehwat differently. In @fig-nhc-redesign US states are symbolised using a single line generated via \index{curve schematisation} curve schematisation [@van_goethem_stenomaps_2014]. The thinking here is that hard lines in maps tend to induce binary judgements. If the cone is close to but not overlapping a state boundary, for example, should a state's authorities prepare and organise a response any differently from a state whose boundary very slightly overlaps the cone?  Context around states is therefore introduced in the redesign, but in a way that discourages binary thinking; precise inferences of location are not possible as the state areas and borders are very obviously not exact.
+In  Van Goethem et al.'s [-@van_goethem_stenomaps_2014] \index{maps!stenomaps} redesign, colour value is used to represent four binned categories of storm probability suggested by the model. Greater visual saliency is therefore conferred to locations where there is greater certainty. The state boundaries are also encoded somehwat differently. In @fig-nhc-redesign US states are symbolised using a single line generated via \index{curve schematisation} curve schematisation [@van_goethem_stenomaps_2014]. The thinking here is that hard lines in maps tend to induce binary judgements. If the cone is close to but not overlapping a state boundary, for example, should a state's authorities prepare and organise a response any differently from a state whose boundary very slightly overlaps the cone?  Context around states is therefore introduced in the redesign, but in a way that discourages binary thinking; precise inferences of location are not possible as the state areas and borders are very obviously not exact.
 
 
 ### Frequency framing
@@ -253,17 +253,17 @@ For practical reasons the rest of the chapter considers how these general princi
 ```{r}
 #| label: fig-icon-arrays
 #| out.width: 70%
-#| fig-cap: "Icon array displaying injury severity rates for Pedestrian-Vehicle crashes"
+#| fig-cap: "Icon array displaying injury severity rates for Pedestrian-Vehicle crashes."
 #| echo: false
 #| eval: true
 
 include_graphics("figs/07/icon_arrays.png", error = FALSE)
 ```
 
- Icon arrays \index{icon arrays} are used in public health communication and have been demonstrated to be effective at communicating probabilities of event outcomes. They offload the thinking that happens when evaluating ratios. The icon arrays in @fig-icon-arrays communicate the two injury severity rates for Bristol and Sheffield. Each crash is a square and crashes are coloured according to whether they resulted in a serious injury or fatality (dark red) or slight injury (light red). In the bottom row, cells are given a non-random ordering to effect something similar to a standardised bar chart. While the standardised bars enables the two recorded proportions to be "read-off" (15% and 50% KSI), the random arrangement of cells in the icon array perhaps builds intuition around the differences in *probabilities* of a pedestrian crash resulting in serious injury.
+ Icon arrays \index{icon arrays} are used in public health communication and have been demonstrated to be effective at communicating probabilities of event outcomes. They offload the thinking that happens when evaluating ratios. The icon arrays in @fig-icon-arrays communicate the two injury severity rates for Bristol and Sheffield. Each crash is a square, and crashes are coloured according to whether they resulted in a serious injury or fatality (dark red) or slight injury (light red). In the bottom row, cells are given a non-random ordering to effect something similar to a standardised bar chart. While the standardised bars enables the two recorded proportions to be "read-off" (15% and 50% KSI), the random arrangement of cells in the icon array perhaps builds intuition around the differences in *probabilities* of a pedestrian crash resulting in serious injury.
 
 
-There are compelling examples of icon arrays being used in data journalism, most obviously to communicate outcome probabilities in political polling. You might remember that at the time of 2016 US Presidential Election  \index{US presidential election} there was much criticism levelled at pollsters, even the excellent \index{FiveThirtyEight} FiveThirtyEight [@silver_why_2016], for not correctly calling the result. Huffpost \index{Huffpost} gave Trump a 2% chance of winning the election, The New York Times \index{New York Times} 15% and FiveThirtyEight 28%. Clearly the Huffpost estimate was really quite off, but thinking about FiveThirtyEight's prediction, how surprised should we be if an outcome that is predicted to happen with a probability of almost a third, does in fact occur?
+There are compelling examples of icon arrays being used in data journalism, most obviously to communicate outcome probabilities in political polling. You might remember that at the time of the 2016 US Presidential election  \index{US presidential election} there was much criticism levelled at pollsters, even the excellent \index{FiveThirtyEight} FiveThirtyEight [@silver_why_2016], for not correctly calling the result. Huffpost \index{Huffpost} gave Trump a 2% chance of winning the election, The New York Times \index{New York Times} 15% and FiveThirtyEight 28%. Clearly the Huffpost estimate was really quite off, but thinking about FiveThirtyEight's prediction, how surprised should we be if an outcome that is predicted to happen with a probability of almost a third, does in fact occur?
 
 
 ```{r}
@@ -284,7 +284,7 @@ The risk theatre (@fig-risk-theatre) \index{risk theatre} is a variant of an ico
 
 In the icon arrays \index{icon arrays} above we made little of the fact that the sample size varies between the two recorded crash rates. This was because the differences were in fact reasonably small. When looking at injury severity rates across all local authorities in the country, however, there is substantial variation in the rates *and*  sample sizes. Bromsgrove has a very low injury severity rate based on a small sample size (4%, or one out of 27 crashes resulting in KSI); Cotswold has a very high injury severity rate based on a small sample size (75%, or 14 out of 19 crashes resulting in KSI). With some prior knowledge of these areas one might expect the difference in KSI rates to be in this direction, but would we expect the difference to be of this order of magnitude? Just three more KSIs recorded in Bromsgrove takes its KSI rate up to that of Bristol's.
 
-Although STATS19 is a population dataset to the extent that it contains data on every crash recorded by the Police, it makes sense that the more data on which our KSI rates are based, the more certainty we have in them being reliable estimates of injury severity -- ones that might be used to predict injury severity in future years. So we can treat our observed injury severity (KSI) rates as being derived from samples of an (unobtainable) \index{sampling!sample} \index{sampling!population} population. Our calculated KSI rates are *parameters* that try to represent, or estimate, this population.
+Although STATS19 is a population dataset to the extent that it contains data on every crash recorded by the police, it makes sense that the more data on which our KSI rates are based, the more certainty we have in them being reliable estimates of injury severity -- ones that might be used to predict injury severity in future years. So we can treat our observed injury severity (KSI) rates as being derived from samples of an (unobtainable) \index{sampling!sample} \index{sampling!population} population. Our calculated KSI rates are *parameters* that try to represent, or estimate, this population.
 
 Although this formulation might seem unnecessary, from here we can apply some statistical concepts to quantify uncertainty around our KSI rates. We assume:
 
@@ -292,9 +292,8 @@ Although this formulation might seem unnecessary, from here we can apply some st
 2.  That our data are one *sample* from this unobtainable population, but other samples could be drawn that will result in  different outcomes, estimated KSI rates, simply by chance.
 3.  From any *sample* that is drawn we can calculate a mean and standard deviation in KSI rates.
 4. And so  we can derive a *sampling distribution* \index{sampling!sampling distribution} and obtain an array of estimated KSI rates and other parameters from *re*sampling many times.
-5.  This *sampling distribution* could then be used to quantify how precise are our estimates of KSI rate. Generally the larger the sampling distribution the more precise, the less uncertain, the estimate.
-<!-- 
-These described the range of the sampling distribution -- the range of values that coefficients estimated from a large number of resamples could take. -->
+5.  This *sampling distribution* could then be used to quantify how precise are our estimates of KSI rate. Generally the larger the sampling distribution, the more precise, the less uncertain, the estimate.
+
 
 In @sec-model we used Confidence Intervals \index{confidence intervals} to estimate the uncertainty around regression coefficients. From early stats courses you might have learnt how Confidence Intervals can be calculated using statistical theory, but we can derive them empirically via bootstrapping -- the process enumerated above. So a bootstrap resample involves taking a random sample with replacement from the original data and of the same size as the original data. From this resample a parameter estimate can be derived, in this case the KSI rate. And this process can be repeated many times to generate an empirical *sampling distribution* for the parameter. The standard error \index{standard error} can be calculated from the standard deviation of the sampling distribution. This non-parametric bootstrapping approach is especially useful in exploratory analysis [@beecham_vis_2022]: it can be applied to many sample statistics, makes no distributional assumptions and can work on quite complicated sampling designs.
 
@@ -303,7 +302,7 @@ Presented in @fig-bootstrap-selected are KSI rates with error bars used to displ
 ```{r}
 #| label: fig-bootstrap-selected
 #| out.width: 70%
-#| fig-cap: "KSI rates for pedestrian-vehicle crashes in selected local authorities with bootstrapped CIs (derived from 1000 resamples)"
+#| fig-cap: "KSI rates for pedestrian-vehicle crashes in selected local authorities with bootstrapped CIs (derived from 1000 resamples)."
 #| echo: false
 #| eval: true
 
@@ -312,7 +311,7 @@ include_graphics("figs/07/bootstrap_selected.png", error = FALSE)
 
 ### Visualizing uncertainty in frequencies
 
-Error bars, \index{error bars} like those in @fig-bootstrap-selected, are a space-efficient way of conveying parameter uncertainty. However, remembering our main guideline for uncertainty visualization -- that *things that are not precise should not be encoded with symbols that look precise* -- they do have problems. The hard borders can lead to binary or categorical thinking [see @correll_error_2014]. Certain values within a Confidence Interval are more probable than others and so we should endeavour to use a visual encoding that reflects this. Matt Kay's excellent \index{packages!\texttt{ggdist}} `ggdist` package [@kay_ggdist_2023] extends ggplot2 with a range of chart types for representing these sorts of intervals. In @fig-selected-uncertainty error bars are replaced \index{half eye plots} \index{gradient bars} by *half eye plots* and *gradient bars*, which give greater visual saliency to values of KSI that are more likely.
+Error bars, \index{error bars} like those in @fig-bootstrap-selected, are a space-efficient way of conveying parameter uncertainty. However, remembering our main guideline for uncertainty visualization -- that *things that are not precise should not be encoded with symbols that look precise* -- they do have problems. The hard borders can lead to binary or categorical thinking [see @correll_error_2014]. Certain values within a Confidence Interval are more probable than others, and so we should endeavour to use a visual encoding that reflects this. Matt Kay's excellent \index{packages!\texttt{ggdist}} `ggdist` package [@kay_ggdist_2023] extends ggplot2 with a range of chart types for representing these sorts of intervals. In @fig-selected-uncertainty error bars are replaced \index{half eye plots} \index{gradient bars} by *half eye plots* and *gradient bars*, which give greater visual saliency to values of KSI that are more likely.
 
 ```{r}
 #| label: fig-selected-uncertainty
@@ -324,7 +323,7 @@ Error bars, \index{error bars} like those in @fig-bootstrap-selected, are a spac
 include_graphics("figs/07/selected_uncertainty.png", error = FALSE)
 ```
 
-STATS19 road crash data are released annually. Given the wide uncertainty bands for some local authorities, it might be instructive to explore the stability of KSI rates year-on-year. In @fig-bootstrap-selected these KSI rates are represented with a bold line and the faint lines are \index{bootstrapping} superimposed bootstrap resamples. The lines demonstrate volatility in the KSI rates for Cotswold and Bromsgrove due to small numbers. The observed increase in KSI rates for Sheffield since 2015 does appear to be a genuine one, although may also be affected by uncertainty around data collection and  how  reliably injury severity is recorded in the dataset.
+STATS19 road crash data are released annually. Given the wide uncertainty bands for some local authorities, it might be instructive to explore the stability of KSI rates year-on-year. In @fig-bootstrap-selected these KSI rates are represented with a bold line, and the faint lines are \index{bootstrapping} superimposed bootstrap resamples. The lines demonstrate volatility in the KSI rates for Cotswold and Bromsgrove due to small numbers. The observed increase in KSI rates for Sheffield since 2015 does appear to be a genuine one, although may also be affected by uncertainty around data collection and  how  reliably injury severity is recorded in the dataset.
 
 ```{r}
 #| label: fig-temporal-uncertainty
@@ -352,7 +351,7 @@ include_graphics("figs/07/hop.png", error = FALSE)
 ### Multiple comparisons
 
 \index{multiple comparisons|(}
-In road safety monitoring, a common ambition is to compare crash rates across local authorities. This is in order to make inferences around patterns of high and low injury severity rate. We might represent injury severity rates as \index{risk ratios} Risk Ratios (RR) comparing the observed injury severity rate in each local authority to a benchmark, say the injury severity rate we would expect to see nationally. RRs are an intuitive measure of effect size: RRs >1.0 indicate that the injury severity rate is greater than the national average; RRs <1.0 that it is less than the national average. As they are a ratio of ratios, and therefore agnostic to sample size, RRs can nevertheless be unreliable. Two ratios might be compared that have very different sample sizes and no compensation is made for the one that contains more data.
+In road safety monitoring, a common ambition is to compare crash rates across local authorities. This is in order to make inferences around patterns of high and low injury severity rate. We might represent injury severity rates as \index{risk ratios} Risk Ratios (RR) comparing the observed injury severity rate in each local authority to a benchmark, say the injury severity rate we would expect to see nationally. RRs are an intuitive measure of effect size: RRs >1.0 indicate that the injury severity rate is greater than the national average; RRs <1.0 that it is less than the national average. As they are a ratio of ratios, and therefore agnostic to sample size, RRs can nevertheless be unreliable. Two ratios might be compared that have very different sample sizes, and no compensation is made for the one that contains more data.
 
 We can use quantitative measures to adjust for this. In the example in @fig-geog-severity we use \index{multilevel modelling} \index{partial pooling} hierarchical modelling to shrink local authority KSI rates towards the global mean (national average KSI rate) where they are based on small numbers of observations [see @beecham_vis_2022]. From here our effect sizes, called \index{Bayesian risk ratios} Bayesian Risk Ratios, are sensitive to uncertainty since they are made more conservative where they are based on fewer observations. The Bayesian Risk Ratio for each local authority is represented with a [<span style="font-weight:bolder">|</span>]{.content-visible when-format="html"}[\textbf{$\vert{}$}]{.content-visible when-format="pdf"} icon: angled to the right [<span style="font-weight:bolder">\/</span>]{.content-visible when-format="html"}[\textbf{$\slash{}$}]{.content-visible when-format="pdf"} where the KSI rate is greater than expected, to the left [<span style="font-weight:bolder;">\\</span>]{.content-visible when-format="html"} [\textbf{$\backslash{}$}]{.content-visible when-format="pdf"} where it is less than expected. Additionally, we use bootstrap resampling to derive confidence intervals for our Bayesian RRs. If this interval does not cross 1.0, the RR is judged statistically significant and is coloured according to whether estimated RRs are above ([<span style="color:#DB534D;font-weight:bolder">\/</span>]{.content-visible when-format="html"}[\textbf{$\slash{}$}]{.content-visible when-format="pdf"}) or below ([<span style="color:#3879A1;font-weight:bolder">\\</span>]{.content-visible when-format="html"}[\textbf{$\backslash{}$}]{.content-visible when-format="pdf"}) expectation.
 
@@ -369,7 +368,7 @@ include_graphics("figs/07/geog-severity-2.png", error = FALSE)
 
 From @fig-geog-severity we make inferences around concentrations of high and low injury severity rate (in the annotations). A problem with this approach, and explicitly encoding \index{statistical significance} 'statistical significance' values, is one familiar to statisticians but that is rarely addressed in visual data analysis: the multiple comparison problem.  Whenever a statistical signal is identified, there is a chance that the result observed is in fact a false alarm. In the plot above which uses a 95% confidence level, the \index{false positive rate} “false positive rate" is expected to be 5% or 1/20. When many tests are considered simultaneously, as in @fig-geog-severity, the number of these false alarms begins to accumulate. There are corrections that can be used to address this: test statistics can be adjusted and made more conservative. But these corrections have consequences. Too severe a correction can result in statistical tests that are \index{statistical power} underpowered and result in an elevated false negative rate, where a statistical test fails to detect an effect that truly exists. See @brunsdon_assessment_2011 for an interesting discussion in the context of mapping crime rates.
 
-So there is no single solution to multiple testing, which happens often in visual data analysis, especially in Geography, where health and other outcomes are mapped visually. It is actually less of problem in @fig-geog-severity since our RRs are derived from a multilevel model in which estimates are \index{partial pooling} partially pooled, or shrunk, to reflect the level of information we have [@gelman_why_2012]. Presenting the RRs in their spatial context, and providing full information around RRs that are not significant (the oriented lines), also supports informal calibration. For example, depending on the phenomena, we may wish to attach more certainty to RRs that are labelled statistically significant and whose direction is consistent with its neighbours than those that are exceptional from their neighbours. Additionally, constructing a \index{graphical inference} \index{line-up plots} graphical line-up test [@wickham_graphical_2010] to explore whether the sorts of spatial patterns in RR values in the observed data are genuine or might appear in random decoy maps. Although informal, this sort of visual test approximates to the type of question that transport analysts may ask when identifying priority areas for road safety intervention  [@beecham_vis_2022].
+So there is no single solution to multiple testing, which happens often in visual data analysis, especially in Geography, where health and other outcomes are mapped visually. It is actually less of problem in @fig-geog-severity since our RRs are derived from a multilevel model in which estimates are \index{partial pooling} partially pooled, or shrunk, to reflect the level of information we have [@gelman_why_2012]. Presenting the RRs in their spatial context, and providing full information around RRs that are not significant (the oriented lines), also supports informal calibration. For example, depending on the phenomena, we may wish to attach more certainty to RRs that are labelled statistically significant and whose direction is consistent with their neighbours than those that are exceptional from their neighbours. Additionally, constructing a \index{graphical inference} \index{line-up plots} graphical line-up test [@wickham_graphical_2010] allows us to explore whether the sorts of spatial patterns in RR values in the observed data are genuine or might appear in random decoy maps. Although informal, this sort of visual test approximates to the type of question that transport analysts may ask when identifying priority areas for road safety intervention  [@beecham_vis_2022].
 
 \index{local authority|)} \index{multiple comparisons|)}
 
@@ -381,7 +380,7 @@ So there is no single solution to multiple testing, which happens often in visua
 * `https://www.youtube.com/watch?v=mfQ3QVyw4N0`
 
 | 
-| And Robert Kosara's talk, *Presentation and Audience*, , as part of his Advanced Visualization course for Observable, from `43:43` minutes in: 
+| And Robert Kosara's talk, *Presentation and Audience*, as part of his Advanced Visualization course for Observable, from `43:43` minutes in: 
 
 * `https://www.youtube.com/watch?v=Wb6xKQRtWig`
 ::: 
@@ -395,8 +394,8 @@ The technical element demonstrates how some of the uncertainty estimate examples
 
 ### Import
 
-* Download the `07-template.qmd`[^07-template] file for this chapter and save it to your `vis4sds` project.
-* Open your `vis4sds` project in RStudio and load the template file by clicking `File` > `Open File ...` > `07-template.qmd`.
+* Download the `07-template.qmd`[^07-template] file for this chapter, it to your `vis4sds` project.
+* Open your `vis4sds` project in RStudio, and load the template file by clicking `File` > `Open File ...` > `07-template.qmd`.
 
 [^07-template]: `https://vis4sds.github.io/vis4sds/files/07-template.qmd`
 
@@ -546,7 +545,7 @@ rate_boots <- ped_veh |>
 
 Code description:
 
-1. *Setup*: The first `mutate()` is straightforward -- a binary `is_ksi` variable identifies whether a crash is KSI and the crash year is extracted from the `date` variable. Crashes recorded in 2019 are then filtered, along with the four comparator local authorities. To generate bootstrap resamples for each local authority, we `nest()` on local authority. You will remember that `nest()` creates a special type of column (a `list-column`) \index{code!\texttt{list-column}} in which the values of the column is a list of data frames -- in this case the crash data for each local authority. So running the code up to and including the `nest()`, a data frame is returned which contains four rows corresponding to the filtered local authorities and a `list-column` called `data`, each element of which is a data frame of varying dimensions (lengths) depending on the number of crashes recorded in each local authority.
+1. *Setup*: The first `mutate()` is straightforward -- a binary `is_ksi` variable identifies whether a crash is KSI, and the crash year is extracted from the `date` variable. Crashes recorded in 2019 are then filtered, along with the four comparator local authorities. To generate bootstrap resamples for each local authority, we `nest()` on local authority. You will remember that `nest()` creates a special type of column (a `list-column`) \index{code!\texttt{list-column}} in which the values of the column is a list of data frames -- in this case the crash data for each local authority. So running the code up to and including the `nest()`, a data frame is returned which contains four rows corresponding to the filtered local authorities and a `list-column` called `data`, each element of which is a data frame of varying dimensions (lengths) depending on the number of crashes recorded in each local authority.
 2. *Generate bootstraps resamples*: In the `mutate()` that follows, `purrr`'s `map()` function is used to iterate over the list of datasets and the `bootstraps()` function to generate 1,000 bootstrap resamples for each nested dataset. The new column, `la_boot`, is a `list-column` this time containing a list of bootstrap datasets.
 3. *Calculate sample estimates*: We `unnest()` the `la_boot` column to return a dataset with a row for each bootstrap resample and a `list-column` named `splits` which contains the bootstrap data. Again we `map()` over each element of `splits` to calculate the `ksi_rate` for each of the bootstrap datasets. The first call to `map()` extracts the `is_ksi` variable; the second is just a convenient way of calculating a rate from this (remembering that `is_ksi` is a binary variable); the third collects the sample size for each of the bootstraps, which of course is the number of crashes recorded for each local authority.
 
@@ -576,13 +575,13 @@ rate_boots |>
 Plot specification:
 
 1. *Data*: The `rate_boots` data frame is grouped by local authority and in the `mutate()` we calculate an estimate of bootstrap standard error, the standard deviation of the sampling distribution, and filter all rows where `id=="Apparent"` -- this contains the KSI rate for the observed (unsampled) data.
-2. *Encoding*: x- position varies according to local authority and y-position according to KSI rate. The estimated KSI rate and bootstrap standard error is also passed to `stat_gradientinterval()`, the `ggdist` function for producing gradient plots.
+2. *Encoding*: x- position varies according to local authority and y-position according to KSI rate. The estimated KSI rate and bootstrap standard error are also passed to `stat_gradientinterval()`, the `ggdist` function for producing gradient plots.
 3. *Marks*: `stat_gradientinterval()` for drawing the gradients and point estimates.
 4. *Setting*: `coord_flip()` for easy reading of local authority names.
 
 ### Ensemble plots and hypothetical outcome plots
 
-To generate bootstrap resamples on local authority and year, necessary for the year-on-year analysis, we can use the same template as that for calculating `rate_boots`, the only difference is that we `select()` and `nest()` on the `year` as well as the `local_authority_district` column. \index{hypothetical outcome plots}
+To generate bootstrap resamples on local authority and year, necessary for the year-on-year analysis, we can use the same template as that for calculating `rate_boots`; the only difference is that we `select()` and `nest()` on the `year` as well as the `local_authority_district` column. \index{hypothetical outcome plots}
 ```{r}
 #| echo: true
 #| eval: false
@@ -614,13 +613,13 @@ rate_boots_temporal |>
 
 Plot specification:
 
-1. *Data*: The `rate_boots_temporal` data frame. Note that we include two line layers, one with the observed data (`data=. %>%  filter(id=="Apparent"`), one with the bootstrap data (`data=. %>%  filter(id!="Apparent"`).
+1. *Data*: The `rate_boots_temporal` data frame. Note that we include two line layers, one with the observed data (`data=. %>%  filter(id=="Apparent"`) and one with the bootstrap data (`data=. %>%  filter(id!="Apparent"`).
 2. *Encoding*: x- position varies according to year, y-position according to KSI rate.
 3. *Marks*: `geom_line()` for drawing lines.
 4. *Facets*: `facet_wrap()` for faceting on local authority.
 5. *Setting*: The bootstrap lines are de-emphasised by making the `alpha` and `size` channels very small.
 
-Finally, the Hypothetical Outcome Plot (HOP) can be easily created using \index{packages!\texttt{gganimate}} the `gganimate` package, simply by adding a call to `transition_states()` at the end of the plot specification:
+Finally, the Hypothetical Outcome Plot (HOP) can be created easily using \index{packages!\texttt{gganimate}} the `gganimate` package, simply by adding a call to `transition_states()` at the end of the plot specification:
 
 ```{r}
 #| echo: true
@@ -644,7 +643,7 @@ Uncertainty is fundamental to any data analysis. Statisticians and data scientis
 
 An excellent primer on uncertainty visualization:
 
-* Padilla, L., Kay, M. and Hullman, J. 2021. “Uncertainty Visualization,” in Wiley StatsRef: Statistics Reference Online, ed. B. Everitt N. Balakrishnan T. Colton and J. L. Teugels, *Wiley*. doi: 10.1002/9781118445112.stat08296.
+* Padilla, L., Kay, M. and Hullman, J. 2021. “Uncertainty Visualization,” in Wiley StatsRef: Statistics Reference Online, edited by B. Everitt N. Balakrishnan T. Colton and J. L. Teugels, *Wiley*. doi: 10.1002/9781118445112.stat08296.
 
 On visualizing parameter uncertainty:
 
@@ -655,5 +654,5 @@ On visualizing parameter uncertainty:
 
 On bootstrap resampling with R and tidyverse:
 
-* Ismay, C. and Kim, A. 2020. "Statistical Inference via Data Science: A ModernDive into R and the Tidyverse" *CRC Press*. doi: 10.1201/9780367409913.
+* Ismay, C. and Kim, A. 2020. "Statistical Inference via Data Science: A ModernDive into R and the Tidyverse", New York, NY: *CRC Press*. doi: 10.1201/9780367409913.
   - Chapters 7, 8.

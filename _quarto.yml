@@ -6,7 +6,7 @@ book:
   title: "Visualization for Social Data Science"
   author: "Roger Beecham"
   description: ""
-  cover-image: figs/01/cover.png
+  cover-image: figs/01/cover_new.png
   site-url: https://vis4sds/vis4sds
   repo-url: https://github.com/vis4sds/vis4sds/
   chapters:
@@ -21,12 +21,31 @@ book:
     - 08-storytelling.qmd
   appendices:
     - a1-tasks.qmd
-    - references.qmd
+    - a2-references.qmd
+    # - a3-index.qmd
 
 execute:
   freeze: auto
 
 bibliography: references.bib
+nocite: |
+  @turing_the_2025
+  @ismay_moderndive_2020
+  @ismay_moderndive_2020
+  @franconeri_psychological_2022
+  @yang_swaying_2024
+  @hullman_designing_2021
+  @beecham_regionally-structured_2020
+  @comber_route_2023
+  @wolf_spatial_2021
+  @buja_statistical_2009
+  @kay_uncertainty_2021
+  @kosara_lesson_2023
+  @kale_hypothetical_2019
+  @burnmurdoch_making_2023
+  @scherer_designing_2023
+  @healy_data_2018
+  @bbc_visual_2019
 
 format:
   html:
@@ -37,13 +56,13 @@ format:
   #   documentclass: krantz
   #   citation-package: natbib
   #   biblio-style: agsm
-  #   #citation-style: agsm
   #   monofontoptions:
   #     - Scale=0.7
-  #   keep-tex: true
   #   include-in-header:  latex/preamble.tex
   #   include-before-body: latex/before_body.tex
   #   include-after-body: latex/after_body.tex
-    # callout-appearance: simple
+  #   callout-appearance: default
+  #   geometry: paperwidth=156mm,paperheight=234mm
+  #   keep-tex: true
 # csl: agsm.csl
 natbiboptions: "authoryear"

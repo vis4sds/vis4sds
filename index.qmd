@@ -1,8 +1,34 @@
-<!-- # Preface {.unnumbered} -->
+<!-- Uncomment for .pdf render -->
+
+
 
 ::: {.callout-note}
-This is the online home of *Visualization for Social Data Science*, a book in production with Chapman and Hall/CRC Press. 
+This is the online home of *Visualization for Social Data Science*, a book to be published by Chapman and Hall/CRC Press in July 2025. You can pre-order the book [here](https://www.routledge.com/Visualization-for-Social-Data-Science/Beecham/p/book/9781032259710). 
 :::
+
+**Endorsements**
+
+
+> *A book that gives learners the inspiration, knowledge and worked examples to create cutting edge visualisations of their own.* <br>
+> -- **James Chesire**, Professor of Geographic Information and Cartography, University College London, co-author of  [Atlas of the Invisible](https://www.atlasoftheinvisible.com/), [Where the Animals Go](https://www.penguin.co.uk/books/289070/where-the-animals-go-by-uberti-james-cheshire-and-oliver/9780141982229) and [London: The Information Capital](https://www.penguin.co.uk/books/263939/london-the-information-capital-by-uberti-james-cheshire-and-oliver/9780141978796).
+
+> *Balance is at the root of good design, and resonates throughout Visualization for Social Data Science. The book’s harmony of concepts and techniques, precision and creativity, provide a perfect tonic for any social scientist seeking to scale up their visualization and data science knowledge and skills.* <br>
+> -- **Matt Duckham**, Director of Information in Society EIP, RMIT, Melbourne
+
+> *If a picture is worth a thousand words, a book demonstrating the how and why of effective visualisation that complements and strengthens data analytics is priceless. Beecham’s volume is such a prize, pairing examples and applications from across the social sciences with code and data to illustrate the power of statistical and visual analysis working in tandem.* <br>
+> -- **Rachel Franklin**, Executive Director, Center for Geographic Analysis, Harvard University 
+
+> *This is an important book on an important topic.  I particularly like the examples showing different visualizations of the same data and the parallel presentation of graphics and code.  And I absolutely love the chapter on visual storytelling.  I can't wait to use this book in my classes.* <br>
+> -- **Andrew Gelman**, Department of Statistics and Department of Political Science, Columbia University, New York
+
+> *This is a very well-structured, clearly-written introduction to visualizing social data, especially data with a strong spatial component. The examples are accessible, instructive, and beautifully developed within each chapter. While the book is an excellent introduction to methods and techniques, it never loses sight of why we want to look at data in the first place.* <br>
+> -- **Kieran Healy**, Duke University and author of [Data Visualization: A practical introduction](https://socviz.co/)
+
+
+> *Novel sources of “found” data are creating new opportunities and greater responsibilities for understanding data to avoid specious discoveries.  Visualization for Social Data Science enables social scientists to be careful, thoughtful and effective social data scientists by illuminating both how and why to incorporate visualization into scientific discovery.* <br>
+> —- **Harvey Miller**, Bob and Mary Reusche Chair, Center for Urban and Regional Analysis, The Ohio State University
+
+# Preface {.unnumbered .unlisted}
 
 Social scientists have at their disposal an expanding array of data measuring very many social behaviours. This is undoubtedly a positive. Previously unmeasurable aspects of human behaviour can now be explored in a large-scale empirical way, while already measured aspects of behaviour can be re-evaluated. Such data are nevertheless rarely generated for the sole purpose of social research, and this fact elevates visual approaches in importance due to visualization's emphasis on discovery. When encountering new data for the first time, data graphics help expose complex structure and multivariate relations, and in so doing advance an analysis in situations where the questions to be asked and techniques to be deployed may not be immediately obvious.
 
@@ -10,13 +36,12 @@ Visualization toolkits such as `ggplot2`, `vega-lite` and `Tableau` have been de
 
 This book aims to fill this space. It presents principled workflows, with code, for using data graphics and statistics in tandem. In doing so it equips readers with critical design and technical skills needed to analyse and communicate with a range of datasets in the social sciences.
 
-The book emphasises application. Each chapter introduces concepts for analysis, with an accompanying technical implementation that uses real-world data on a range of Public Health, Transportation, Social and Electoral outcomes. The ambition is that by the end of each chapter, we have a more advanced knowlegde and understanding of the phenomena under investigation.
+The book emphasises application. Each chapter introduces concepts for analysis, with an accompanying technical implementation that uses real-world data on a range of Public Health, Transportation, Social and Electoral outcomes. The ambition is that by the end of each chapter, we have a more advanced knowledge and understanding of the phenomena under investigation.
 
 ## Structure, content and outcomes {.unnumbered}
 
 Chapters of the book are divided into *Concepts* and *Techniques*. The *Concepts* sections cover key literature, ideas and approaches that can be leveraged to analyse the dataset introduced in the chapter. In the *Techniques* sections, code examples are provided for implementing those concepts and ideas. Each chapter starts with a list of *Knowledge* and *Skills* outcomes that map to the *Concepts* and *Techniques*. To support the technical elements, chapters have a corresponding computational notebook file. These files contain pre-prepared code chunks to be executed. In the early chapters we aim at brevity in the *Concepts* sections, offset by slightly more lengthy *Techniques* sections. As the book progresses the balance shifts somewhat, with more involved conceptual discussion and more specialised and abbreviated technical demonstrations.
 
-<!-- Chapters are also accompanied, via the  Appendices, with *Tasks* for readers to complete in order to test learning. Some tasks are technical and require code to be written;  some are more conceptual. To support these tasks, each chapter has a corresponding computational notebook template file. The templates contain pre-prepared code chunks to be executed. As the book progresses, the amount of pre-prepared code in the templates reduces and readers must contribute more code of their own. -->
 
 Readers of the book will learn how to:
 
@@ -27,28 +52,24 @@ Readers of the book will learn how to:
 
 ## Audience and assumed background {.unnumbered}
 
-The book is for people analysing societal issues, broadly defined, including from within Geography, Public Health, Transportation, Political Science, Business, Economics. It is aimed at postgraduate students and researchers, data journalists, analysts working in public sector, non-governmental and commercial organisations.
+The book is for people analysing societal issues, broadly defined, including from within Geography, Public Health, Transportation and Political Science. It is aimed at postgraduate students and researchers, data journalists, analysts working in public sector and commercial organisations.
 
-All technical examples are implemented using the R programming environment; so too *every* data graphic that appears in this book. Some prior knowledge of the R ecosystem is assumed, and as the chapters progress more advanced concepts and coding procedures are introduced. While the book covers many of the fundamentals of R for working with social science datasets, our ultimate aim is to demonstrate through example how data graphics can and should be used in a data analysis. In this way it complements core resources that more fully cover, from zero-level prior knowledge, these how-to aspects: *R for Data Science* [@wickham_r_2017], *Tidymodelling with R* [@kuhn_tidy_2023] and *Geocomputation with R* [@lovelace_geocomputation_2019].
+All technical examples are implemented using the R programming environment; so too *every* data graphic that appears in this book. Some prior knowledge of the R ecosystem is assumed, and as the chapters progress, more advanced concepts and coding procedures are introduced. While the book covers many of the fundamentals of R for working with social science datasets, our ultimate aim is to demonstrate through example how data graphics can and should be used in a data analysis. In this way it complements core resources that more fully cover, from zero-level prior knowledge, these how-to aspects: *R for Data Science* [@wickham_r_2017], *Tidymodelling with R* [@kuhn_tidy_2023] and *Geocomputation with R* [@lovelace_geocomputation_2019].
 
 ## Omissions and additions {.unnumbered}
 
-There are certain aspects of the book that might be surpising to those seasoned in reading data visualization textbooks. We do not cover interactivity in data graphics and there is not a chapter dedicated to geospatial visualization, though numerous geospatial visualizations (maps) appear throughout to address particular analysis questions.
+There are certain aspects of the book that might be surpising to those seasoned in reading data visualization textbooks. We do not cover interactivity in data graphics, and there is not a chapter dedicated to geospatial visualization, though numerous geospatial visualizations (maps) appear throughout to address particular analysis questions.
 
 The reasons for this are principled as well as pragmatic. The R programming environment is not well-suited to highly flexible, interactive data graphics. Even if it were, we would question the need for interaction in many of the real-world data analysis scenarios covered in this book. The lack of a dedicated geovisualization chapter will hopefully become clear by the end of Chapter 3. It is useful to apply the same theory, heuristics and coding ideas to designing and evaluating maps as one would any other data graphic.
 
 Space in the book is instead dedicated to introspecting into data graphics: the role of statistics and models for emphasising important structure and de-emphaising spurious structure, the differing purposes of data graphics at different analysis stages and the role of data graphics in building trust and integrity. Many of the book's influences are from data journalism, as well as information visualization and cartography.
 
-<!-- Indeed that the `R` ecosystem supports a very high-level syle of coding -- '*magically succint and concise functions*' [@wickham_a] -- to the extent that can be regarded    -->
-
-<!-- Hopefully become clear by end of Chapter 3. Especially given the software libraries used to construct data graphics,  -->
 
 ## Acknowledgments
 
 You will notice that the book is written in the first person, but with "we/our" rather than the singular pronoun "I/my". The reasons for this are partly stylistic. They also, hopefully, betray that the ideas and work presented in the book are not entirely my own. In particular "I" would like to thank Jo Wood and Jason Dykes, whose thinking on visualization design and practice runs throughout the book; and Robin Lovelace, who helped get things kick-started, whose technical knowledge is legion and whose critique and  encouragement is always welcome. Thanks also to Lara Spieker from CRC Press and Taylor & Francis for helping move from an early plan to full production. And finally, as ever, to the reviewers for providing expert feedback on the book's structure and emphasis, and for the more general encouragement and positivity.
 
 
-<!-- Lara Spieker, from CRC Press, who has worked over two years to take the book from an early plan into production. -->
 
 <!-- ## License
 

@@ -12,7 +12,7 @@ The technical element involves analysing data from the 2019 UK General Election.
 
 ## Setup
 
-The code block below points to the required packages. If you have been following the chapters sequentially, the only new package to install is [`parlitools`](https://cran.r-project.org/web/packages/parlitools/index.html).
+The code block below points to the required packages. If you have been following the chapters sequentially, the only new package to install would have been [`parlitools`](https://cran.r-project.org/web/packages/parlitools/index.html). This package is, however, no longer maintained and so the relevant data on the 2019 General Election results (`bes_2019.csv`) have been posted to the book's data repository.
 
 ```{r}
 #| echo: true
@@ -20,22 +20,21 @@ The code block below points to the required packages. If you have been following
 library(tidyverse) 
 library(sf) 
 library(here) 
-
-# Uncomment to install devtools, required for installing the development version of parlitools.
-# install.packages("devtools")
-devtools::install_github("evanodell/parlitools")
-library(parlitools)
 ```
 
 ## Import
 
-Installing `parlitools` brings down the 2019 UK General Election dataset, along with other constituency-level datasets. Loading it with `library(parlitools)` makes these data available to your R session. The dataset containing 2019 UK General Election data is called `bes_2019`. This contains results data released by [House of Commons Library](https://commonslibrary.parliament.uk/research-briefings/cbp-8749/).
+The dataset containing 2019 UK General Election data is called `bes_2019`. This contains results data released by [House of Commons Library](https://commonslibrary.parliament.uk/research-briefings/cbp-8749/).
 
 We also need to import geographic boundary data for Parliamentary Constituencies. This can be collected from [ONS Open Geography Portal](https://geoportal.statistics.gov.uk/). I have generated a simplified version of these geometries using [mapshaper](https://github.com/mbloch/mapshaper) and posted to the data repository. Run the code below to import into your R session.
 
 ```{r}
 #| echo: true
 #| eval: false
+url <- "https://vis4sds.github.io/data/ch3/bes_2019.csv"
+download.file(url, here("data", "bes_2019.csv"))
+bes_2019 <- read_csv(here("data", "bes_2019.csv"))
+
 url <- "https://vis4sds.github.io/data/ch3/constituency_boundaries.geojson"
 download.file(url, here("data", "constituency_boundaries.geojson"))
 cons_outline <- st_read(here("data", "constituency_boundaries.geojson"), crs=27700)
