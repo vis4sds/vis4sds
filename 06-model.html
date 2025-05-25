@@ -192,7 +192,7 @@ window.Quarto = {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Structure, content and outcomes</span></a>
+ <span class="menu-text">Preface</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -255,12 +255,12 @@ window.Quarto = {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./a1-tasks.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Task answers</span></span></a>
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Task Answers</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./references.html" class="sidebar-item-text sidebar-link">
+  <a href="./a2-references.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">References</span></a>
   </div>
 </li>
@@ -347,7 +347,7 @@ Practical skills
 </div>
 <div class="callout-body-container callout-body">
 <ul class="task-list">
-<li><label><input type="checkbox">Write ggplot2 code to generate graphics for exploring multivariate association and presenting regression outputs (faceted scatteplots, parallel coordinate plots, dot plots with error bars).</label></li>
+<li><label><input type="checkbox">Write ggplot2 code to generate graphics for exploring multivariate association and presenting regression outputs (faceted scatterplots, parallel coordinate plots, dot plots with error bars).</label></li>
 <li><label><input type="checkbox">Write code to generate linear regression models in R.</label></li>
 <li><label><input type="checkbox">Extract model outputs and diagnostics in a <code>tidy</code> manner.</label></li>
 <li><label><input type="checkbox">Apply functional-style programming for working over multiple model outputs.</label></li>
@@ -369,7 +369,7 @@ Regression primer
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>This chapter assumes some basic familiarity with linear regression modelling. For a fuller overview, with excellent and real-world social science examples, you may wish to consult <em>Regression and Other Stories</em> <span class="citation" data-cites="gelman_regression_2020">(<a href="references.html#ref-gelman_regression_2020" role="doc-biblioref">Gelman, Hill, and Vehtari 2020</a>)</span>.</p>
+<p>This chapter assumes some basic familiarity with linear regression modelling. For a fuller overview, with excellent and real-world social science examples, you may wish to consult <em>Regression and Other Stories</em> <span class="citation" data-cites="gelman_regression_2020">(<a href="a2-references.html#ref-gelman_regression_2020" role="doc-biblioref">Gelman, Hill, and Vehtari 2020</a>)</span>.</p>
 </div>
 </div>
 </section><section id="concepts" class="level2" data-number="6.2"><h2 data-number="6.2" class="anchored" data-anchor-id="concepts">
@@ -378,7 +378,7 @@ Regression primer
 <span class="header-section-number">6.2.1</span> Quantifying and exploring variation</h3>
 <!-- Variation is central to most data analysis, and certainly regression modelling: quantifying variation, exploring how it is structured and accounting for (or explaining) it using a combination of empirical data, prior theory and knowledge. -->
 <p></p>
-<p>In <a href="#fig-map-uniform" class="quarto-xref">Figure&nbsp;<span>6.1</span></a> is a map and bar chart of voting in the 2016 EU referendum, estimated at Parliamentary Constituency level <span class="citation" data-cites="hanretty_areal_2017">(see <a href="references.html#ref-hanretty_areal_2017" role="doc-biblioref">Hanretty 2017</a>)</span>. The values themselves are the difference in estimated vote shares from an expectation that the Leave vote by constituency, <span class="math inline">y_{i}</span> our <em>outcome</em> of interest, is uniformly distributed across the country and so equivalent to the overall Great Britain (GB) vote share for Leave of c.&nbsp;52%. Although a slightly contrived formulation, we could express this as an intercept-only linear regression model, where the estimated <em>slope</em> (<span class="math inline">\beta_{1}</span>) is ‘turned off’ (takes the value <span class="math inline">0</span>) and the <em>intercept</em> (<span class="math inline">\beta_{0}</span>) is the GB average vote share for Leave (<span class="math inline">\bar{y}</span>):</p>
+<p>In <a href="#fig-map-uniform" class="quarto-xref">Figure&nbsp;<span>6.1</span></a> is a map and bar chart of voting in the 2016 EU referendum, estimated at Parliamentary Constituency level <span class="citation" data-cites="hanretty_areal_2017">(see <a href="a2-references.html#ref-hanretty_areal_2017" role="doc-biblioref">Hanretty 2017</a>)</span>. The values themselves are the difference in estimated vote shares from an expectation that the Leave vote by constituency, <span class="math inline">y_{i}</span> our <em>outcome</em> of interest, is uniformly distributed across the country and so equivalent to the overall Great Britain (GB) vote share for Leave of c.&nbsp;52%. Although a slightly contrived formulation, we could express this as an intercept-only linear regression model, where the estimated <em>slope</em> (<span class="math inline">\beta_{1}</span>) is ‘turned off’ (takes the value <span class="math inline">0</span>) and the <em>intercept</em> (<span class="math inline">\beta_{0}</span>) is the GB average vote share for Leave (<span class="math inline">\bar{y}</span>):</p>
 <p><span class="math display">\begin{align*}
        y_{i}= \beta_{0} + \beta_{1} + \varepsilon_{i}
 \end{align*}</span></p>
@@ -407,7 +407,7 @@ Figure&nbsp;6.1: Residuals from uniform model comparing constituency Leave vote 
 </div>
 </div>
 <p><a href="#fig-map-uniform" class="quarto-xref">Figure&nbsp;<span>6.1</span></a> is similar to the maps that were published widely in press reports in the aftermath of the vote, and demonstrates that there is indeed substantial variation in Leave voting between different parts of the country. The intercept-only model consistently underestimates the vote in Scotland and most of London. Outside of this, constituencies voting in smaller proportions than would be expected for Leave are distributed more sparsely in the country: the dark red dot with surrounding red area in the east of England is Cambridge and Cambridgeshire, constituencies in Bristol (south west), Manchester and Liverpool (north west) and Brighton (south) are also reasonably strong red.</p>
-<p> When evaluating the effectiveness of modelled values, there are various checks that can be performed. A relevant check here is whether there is bias in the residuals – whether residuals have structure that suggests they are grouped in a way not captured by the model. Given the motivation behind our analysis it is no surprise that there is a geographic pattern to the residuals in <a href="#fig-map-uniform" class="quarto-xref">Figure&nbsp;<span>6.1</span></a>, but also the non-symmetrical shape of the ‘signed’ bars in the left of the graphic. There are more constituencies with positive values than negative; the Leave vote is underestimated by the uniform model for 57% of constituencies, and some constituencies have quite large negative values. The strongest vote for Leave was Boston and Skegness with 76% for Leave, but the strongest for Remain was Hackney North and Stoke Newington with 80% for Remain.</p>
+<p> When evaluating the effectiveness of modelled values, there are various checks that can be performed. A relevant check here is whether there is bias in the residuals – whether residuals have structure that suggests they are grouped in a way not captured by the model. Given the motivation behind our analysis, it is no surprise that there is a geographic pattern to the residuals in <a href="#fig-map-uniform" class="quarto-xref">Figure&nbsp;<span>6.1</span></a>, but also the non-symmetrical shape of the ‘signed’ bars in the left of the graphic. There are more constituencies with positive values than negative; the Leave vote is underestimated by the uniform model for 57% of constituencies, and some constituencies have quite large negative values. The strongest vote for Leave was Boston and Skegness with 76% for Leave, but the strongest for Remain was Hackney North and Stoke Newington with 80% for Remain.</p>
 <p></p>
 </section><section id="quantifying-and-exploring-co-variation" class="level3" data-number="6.2.2"><h3 data-number="6.2.2" class="anchored" data-anchor-id="quantifying-and-exploring-co-variation">
 <span class="header-section-number">6.2.2</span> Quantifying and exploring co-variation</h3>
@@ -416,7 +416,7 @@ Figure&nbsp;6.1: Residuals from uniform model comparing constituency Leave vote 
 <div class="cell">
 <div id="tbl-variables" class="cell quarto-float anchored">
 <figure class="quarto-float quarto-float-tbl figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-variables-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;6.1: Breakdown of variable types
+Table&nbsp;6.1: Breakdown of variable types.
 </figcaption><div aria-describedby="tbl-variables-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
 <div>
@@ -483,17 +483,14 @@ Table&nbsp;6.1: Breakdown of variable types
 </figure>
 </div>
 </div>
-<!-- 
+<div id="tbl-variables-tex" class="cell quarto-float anchored">
+<figure class="quarto-float quarto-float-tbl figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-variables-tex-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;6.2: Breakdown of variable types.
+</figcaption><div aria-describedby="tbl-variables-tex-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 
-
-
-::: {#tbl-variables-tex .cell tbl-cap='Breakdown of variable types'}
-
-:::
-
-
-
--->
+</div>
+</figure>
+</div>
 <p> <a href="#fig-scatters" class="quarto-xref">Figure&nbsp;<span>6.2</span></a> presents scatterplots from which the extent of linear association between these demographics and Leave voting in each constituency can be inferred. Each dot is a constituency, arranged on the x-axis according to the value of the explanatory variable and the y-axis according to the share of Leave vote. The scatterplots are faceted by explanatory variable and ordered left-to-right and top-to-bottom according to correlation coefficient. The variable most heavily correlated with Leave voting is <em>degree-education</em>: as the share of a constituency’s population educated at least to <em>degree-level</em> increases, the share of Leave vote in that constituency decreases. An association in the same direction, but to a lesser extent, is observed for variables representing similar concepts: <em>professional occupations</em>, <em>younger adults</em>, <em>EU-born</em>, <em>no-car</em> and the reverse for <em>Christian</em>, <em>not-good health</em> and <em>heavy industry</em>.</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -508,8 +505,7 @@ Figure&nbsp;6.2: Scatterplots of constituency Leave vote against selected explan
 </div>
 </div>
 <p></p>
-<p> It is of course likely that many of the compositional characteristics of constituencies vary with Leave voting in consistent ways. Parallel coordinate plots may help visually explore this multivariate space. Whereas in scatterplots observations are represented as points located in x- and y- axes that are orthogonal, in a parallel coordinate plot observations are laid out across many parallel axes and the values of each observation encoded via a line connecting the multiple parallel axes. In <a href="#fig-pcps" class="quarto-xref">Figure&nbsp;<span>6.3</span></a> each of the thin lines is a constituency coloured according to the recorded voting outcome – either majority Remain (red) or Leave (blue). The first variable encoded is the size of the Leave vote and variables are then ordered on their linear association with Leave. Note that we have reversed the polarity of variables such as <em>degree-educated</em> and <em>professional</em> so that we expect more Leave (blue lines) towards the right locations of the parallel axes. That the blue and red lines are reasonably separated suggests that there is a consistent pattern of association across many of the demographics characteristics in constituencies voting differently on Leave and Remain.</p>
-<!-- Although they enable some aspects of association between multiple variables to be encoded, parallel coordinate plots have several deficiencies;  -->
+<p> It is of course likely that many of the compositional characteristics of constituencies vary with Leave voting in consistent ways. Parallel coordinate plots may help visually explore this multivariate space. Whereas in scatterplots observations are represented as points located in x- and y- axes that are orthogonal, in a parallel coordinate plot observations are laid out across many parallel axes and the values of each observation encoded via a line connecting the multiple parallel axes. In <a href="#fig-pcps" class="quarto-xref">Figure&nbsp;<span>6.3</span></a> each of the thin lines is a constituency coloured according to the recorded voting outcome – either majority Remain (red) or Leave (blue). The first variable encoded is the size of the Leave vote, and variables are then ordered on their linear association with Leave. Note that we have reversed the polarity of variables such as <em>degree-educated</em> and <em>professional</em> so that we expect more Leave (blue lines) towards the right locations of the parallel axes. That the blue and red lines are reasonably separated suggests that there is a consistent pattern of association across many of the demographics characteristics in constituencies voting differently on Leave and Remain.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-pcps" class="quarto-figure quarto-figure-center quarto-float anchored">
@@ -543,11 +539,13 @@ On parallel coordinate plots
 
 
 
+
 ::: {.cell}
 ::: {.cell-output-display}
 ![Scatterplots of synthetic bivariate data with extent of correlation coefficient systematically varied](figs/06/cors.png){#fig-cors width=100%}
 :::
 :::
+
 
 
 
@@ -582,24 +580,20 @@ On parallel coordinate plots
 <div class="cell-output-display">
 <div id="fig-outputs" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-outputs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="figs/06/outputs.png" class="img-fluid figure-img" style="width:75.0%">
+<img src="figs/06/outputs.png" class="img-fluid figure-img" style="width:85.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-outputs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;6.4: Outputs from multiple regression model of Leave vote by demographic composition of constituency
+Figure&nbsp;6.4: Outputs from multiple regression model of Leave vote by demographic composition of constituency.
 </figcaption></figure>
 </div>
 </div>
 </div>
-<p>In <a href="#fig-outputs" class="quarto-xref">Figure&nbsp;<span>6.4</span></a> are regression coefficients (<span class="math inline">\beta_{k}</span>) from a multiple regression model with <em>degree-educated</em>, <em>no car</em>, <em>white</em>, <em>heavy industry</em>, <em>EU-born</em> and <em>not good health</em> selected as explanatory variables. Coefficients are reported as dots with estimates of uncertainty represented as lines encoding 95% confidence intervals. <!-- the range of values the true (*unobservable*) coefficient is likely to take --> Most variables’ coefficients are in the direction that would be expected given the associations in <a href="#fig-scatters" class="quarto-xref">Figure&nbsp;<span>6.2</span></a>. Net of variation in the other compositional factors, increased levels of <em>degree-education</em> in a constituency has the effect of reducing the Leave vote. The two exceptions are <em>EU-born</em> and <em>white</em>: after controlling for variation in the other demographic variables, increased proportions of <em>white</em> residents reduces the Leave vote and increased proportions of residents that are <em>EU-born</em> increases the Leave vote. Since the confidence interval for <em>white</em> crosses zero, this coefficient is subject to much uncertainty. Further exploration may allow us to identify whether these counter-intuitive effects are genuine or the result of a poorly-specified model.</p>
+<p>In <a href="#fig-outputs" class="quarto-xref">Figure&nbsp;<span>6.4</span></a> are regression coefficients (<span class="math inline">\beta_{k}</span>) from a multiple regression model with <em>degree-educated</em>, <em>no car</em>, <em>white</em>, <em>heavy industry</em>, <em>EU-born</em> and <em>not good health</em> selected as explanatory variables. Coefficients are reported as dots with estimates of uncertainty represented as lines encoding 95% confidence intervals. <!-- the range of values the true (*unobservable*) coefficient is likely to take --> Most variables’ coefficients are in the direction that would be expected given the associations in <a href="#fig-scatters" class="quarto-xref">Figure&nbsp;<span>6.2</span></a>. Net of variation in the other compositional factors, increased levels of <em>degree-education</em> in a constituency has the effect of reducing the Leave vote. The two exceptions are <em>EU-born</em> and <em>white</em>: after controlling for variation in the other demographic variables, increased proportions of <em>white</em> residents reduces the Leave vote, and increased proportions of residents that are <em>EU-born</em> increases the Leave vote. Since the confidence interval for <em>white</em> crosses zero, this coefficient is subject to much uncertainty. Further exploration may allow us to identify whether these counter-intuitive effects are genuine or the result of a poorly-specified model.</p>
 <p></p>
-<!-- ::: {.callout-note}
-Given the spirit of this book, you might have wondered about the reasonably abbreviated discussion of techniques for representing model outputs and their uncertainty estimates (via Confidence Intervals). More involved coverage of this is in @sec-uncertainty.
-::: -->
 </section><section id="evaluating-model-bias" class="level3" data-number="6.2.4"><h3 data-number="6.2.4" class="anchored" data-anchor-id="evaluating-model-bias">
 <span class="header-section-number">6.2.4</span> Evaluating model bias</h3>
-<!-- The new expected values for Leave derived from the multivariate model are much closer to those observed in the data; the model  accounts for a reasonably large share (c.76%) of variation in constituency-level Leave voting. However, our analysis becomes more interesting when we start to explore and characterise model *bias*: any underlying structure to the observations that are less well accounted for by the model. -->
 <p> </p>
-<p>Our analysis becomes more interesting when we start to explore and characterise model <em>bias</em>: any underlying structure to the observations that is less-well accounted for by the model.</p>
+<p>Our analysis becomes more interesting when we start to explore and characterise model <em>bias</em>: any underlying structure to the observations that is less well accounted for by the model.</p>
 <p>For area-level regression models such as ours, it is usual for residuals to exhibit some spatial autocorrelation structure. For certain parts of a country a model will overestimate an outcome given the relationship implied between explanatory and outcome variables; for other parts the outcome will be underestimated. This might occur due to:</p>
 <ul>
 <li>
@@ -607,7 +601,7 @@ Given the spirit of this book, you might have wondered about the reasonably abbr
 <li>
 <em>Spatial nonstationarity in processes</em> over space. It is possible that associations between variables might be grouped over space – that the associations vary for different parts of the country. For example, high levels of <em>EU-born</em> migration might affect political attitudes, and thus area-level voting, differently in different parts of the country.</li>
 </ul>
-<p>We can test for and characterise spatial autocorrelation in residuals by performing a graphical inference test, a map line-up <span class="citation" data-cites="beecham_map_2017 wickham_graphical_2010">(<a href="references.html#ref-beecham_map_2017" role="doc-biblioref">Beecham et al. 2017</a>; <a href="references.html#ref-wickham_graphical_2010" role="doc-biblioref">Wickham et al. 2010</a>)</span> against a null hypothesis of <em>complete spatial randomness</em> (CSR). A plot of real data, the true map of residuals, is hidden amongst a set of decoys; in this case maps with the residual values randomly permuted around constituencies. If the real map can be correctly identified from the decoys, then this lends statistical credibility to the claim that the observed data are not consistent with the null of CSR. Graphical line-up tests have been used in various domains, also to test regression assumptions <span class="citation" data-cites="loy_model_2017">(<a href="references.html#ref-loy_model_2017" role="doc-biblioref">Loy, Hofmann, and Cook 2017</a>)</span>. The map line-up in <a href="#fig-lineup" class="quarto-xref">Figure&nbsp;<span>6.5</span></a> demonstrates that there <em>is</em> very obviously spatial and <em>regional</em> autocorrelation in residuals, and therefore structure that our regression model misses.</p>
+<p>We can test for and characterise spatial autocorrelation in residuals by performing a graphical inference test, a map line-up <span class="citation" data-cites="beecham_map_2017 wickham_graphical_2010">(<a href="a2-references.html#ref-beecham_map_2017" role="doc-biblioref">Beecham et al. 2017</a>; <a href="a2-references.html#ref-wickham_graphical_2010" role="doc-biblioref">Wickham et al. 2010</a>)</span> against a null hypothesis of <em>complete spatial randomness</em> (CSR). A plot of real data, the true map of residuals, is hidden amongst a set of decoys; in this case maps with the residual values randomly permuted around constituencies. If the real map can be correctly identified from the decoys, then this lends statistical credibility to the claim that the observed data are not consistent with the null of CSR. Graphical line-up tests have been used in various domains, also to test regression assumptions <span class="citation" data-cites="loy_model_2017">(<a href="a2-references.html#ref-loy_model_2017" role="doc-biblioref">Loy, Hofmann, and Cook 2017</a>)</span>. The map line-up in <a href="#fig-lineup" class="quarto-xref">Figure&nbsp;<span>6.5</span></a> demonstrates that there <em>is</em> very obviously spatial and <em>regional</em> autocorrelation in residuals, and therefore structure that our regression model misses.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-lineup" class="quarto-figure quarto-figure-center quarto-float anchored">
@@ -620,7 +614,7 @@ Figure&nbsp;6.5: Map line-up of residuals in which the ‘real’ dataset is pre
 </div>
 </div>
 </div>
-<p>There are different ways of updating our model according to this geographic context. We have talked about patterning in residuals as being <em>spatial</em>, with values varying smoothly and continuously depending on location. This might be the case, but given the phenomena we are studying, it also plausible that distinct contexts are linked to regions. The residuals in <a href="#fig-lineup" class="quarto-xref">Figure&nbsp;<span>6.5</span></a> – the real being plot 3 – do seem to be grouped by regional boundaries, particularly Scotland looks categorically different. This suggests that geographic context might be usefully represented as a <em>category</em> rather than continuous variable (location in <em>x,y</em>). We will therefore update our model representing geographic context as a <em>regional</em> grouping and cover approaches both to modelling <em>spatial dependence</em> in <em>values</em> and <em>spatial nonstationarity</em> in <em>processes</em>. </p>
+<p>There are different ways of updating our model according to this geographic context. We have talked about patterning in residuals as being <em>spatial</em>, with values varying smoothly and continuously depending on location. This might be the case, but given the phenomena we are studying, it also plausible that distinct contexts are linked to regions. The residuals in <a href="#fig-lineup" class="quarto-xref">Figure&nbsp;<span>6.5</span></a> – the real being plot 3 – do seem to be grouped by regional boundaries, particularly Scotland looks categorically different. This suggests that geographic context might be usefully represented as a <em>category</em> rather than a continuous variable (location in <em>x,y</em>). We will therefore update our model representing geographic context as a <em>regional</em> grouping and cover approaches both to modelling <em>spatial dependence</em> in <em>values</em> and <em>spatial nonstationarity</em> in <em>processes</em>. </p>
 </section><section id="geographic-context-as-grouped-nuisance-term" class="level3" data-number="6.2.5"><h3 data-number="6.2.5" class="anchored" data-anchor-id="geographic-context-as-grouped-nuisance-term">
 <span class="header-section-number">6.2.5</span> Geographic context as grouped nuisance term</h3>
 <p>A common approach to treating geographic dependence in the values of variables is to model geographic context as a Fixed Effect (FE). A dummy variable is created for each group (region in our case), and every region receives a constant. Any group-level sources of variation in the outcome are collapsed into the FE variable, which means that regression coefficients are not complicated by this more messy variation – they now capture the association between demographics and Leave after adjusting for systematic differences in the Leave vote due to region. So, for example, we know that Scotland is politically different from the rest of GB and that this appears to drag down the observed Leave vote for its constituencies. The constant term on region adjusts for this and prevents the estimated regression coefficients (inferred associations between variables) from being affected. Also estimated via the constant is the ‘base level’ in the outcome for each element of the group – net of demographic composition, the expected Leave vote in each region.</p>
@@ -639,8 +633,8 @@ Figure&nbsp;6.5: Map line-up of residuals in which the ‘real’ dataset is pre
 <li>
 <span class="math inline">\varepsilon_{i}</span>, the difference between <span class="math inline">y_{i}</span> (the observed value) at constituency <span class="math inline">i</span> and the <em>unobservable</em> true population value of the Leave vote in that constituency (statistical error)</li>
 </ul>
-<p>Presented in <a href="#fig-outputs-fe" class="quarto-xref">Figure&nbsp;<span>6.6</span></a> are updated regression coefficients for a multivariate model fit with a FE on region. In the left panel are the FE constants. Together these capture the variance in Leave vote between regions after accounting for demographic composition. London is in of particular interest. When initially analysing variation in the vote, constituencies in Scotland and London were distinctive in voting in much smaller proportions than the rest of the country for Leave. Given the associations we observe with Leave voting and demographic composition, however, if we were to randomly sample two constituencies that contain the same demographic characteristics, one in London and one in another region (say North West), on average we would expect the Leave vote for the London constituency to be higher (~60%) than that sampled from North West (~51%). A separate, and more anticipated pattern is that Scotland would have a lower Leave vote (~38%) – that is, net of demographics there is some additional context in Scotland that means Leave is lower than in other regions.</p>
-<p>In the right panel are the regression coefficients net of this between-region variation. Previously the <em>white</em> variable had a slight negative association with Leave, counterintuitively. Now the <em>white</em> variable has a direction of effect that conforms to expectation – net of variation in other demographics, increased proportions of <em>white</em> residents is associated with increased Leave voting. For an other variable, <em>EU born</em>, the coefficient still unexpectedly suggests a positive association with Leave.</p>
+<p>Presented in <a href="#fig-outputs-fe" class="quarto-xref">Figure&nbsp;<span>6.6</span></a> are updated regression coefficients for a multivariate model fit with a FE on region. In the left panel are the FE constants. Together these capture the variance in Leave vote between regions after accounting for demographic composition. London is of particular interest. When initially analysing variation in the vote, constituencies in Scotland and London were distinctive in voting in much smaller proportions than the rest of the country for Leave. Given the associations we observe with Leave voting and demographic composition, however, if we were to randomly sample two constituencies that contain the same demographic characteristics, one in London and one in another region (say North West), on average we would expect the Leave vote for the London constituency to be higher (~60%) than that sampled from North West (~51%). A separate and more anticipated pattern is that Scotland would have a lower Leave vote (~38%) – that is, net of demographics there is some additional context in Scotland that means Leave is lower than in other regions.</p>
+<p>In the right panel are the regression coefficients net of this between-region variation. Previously the <em>white</em> variable had a slight negative association with Leave, counterintuitively. Now the <em>white</em> variable has a direction of effect that conforms to expectation – net of variation in other demographics, increased proportions of <em>white</em> residents is associated with increased Leave voting. For another variable, <em>EU born</em>, the coefficient still unexpectedly suggests a positive association with Leave.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-outputs-fe" class="quarto-figure quarto-figure-center quarto-float anchored">
@@ -648,13 +642,11 @@ Figure&nbsp;6.5: Map line-up of residuals in which the ‘real’ dataset is pre
 <img src="figs/06/outputs_fe.png" class="img-fluid figure-img" style="width:100.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-outputs-fe-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;6.6: Output from a multiple regression model of Leave voting against the demographic composition of constituencies, with a Fixed Effect term on region
+Figure&nbsp;6.6: Output from a multiple regression model of Leave voting against the demographic composition of constituencies, with a Fixed Effect term on region.
 </figcaption></figure>
 </div>
 </div>
 </div>
-<!-- @fig-lineup-fe is a map line-up of the residuals from this updated model. Certainly adding fixed effect on region has addressed systematic over- and under- estimation of the vote between regions. The residuals nevertheless exhibit obvious spatial autocorrelation, plot 7 being the real data. Further investigative analysis, for example of the constituencies for which Leave is particularly over- and under- represented, may be instructive. -->
-<!-- Further investigative analysis, for example of the constituencies for which Leave is particularly over- and under- represented, is often instructive in  .   -->
 </section><section id="geographic-context-as-grouped-effects" class="level3" data-number="6.2.6"><h3 data-number="6.2.6" class="anchored" data-anchor-id="geographic-context-as-grouped-effects">
 <span class="header-section-number">6.2.6</span> Geographic context as grouped effects</h3>
 <!-- The benefit of the FE adjustment is that it provides coefficient estimates that are not affected by between-region variation. The FE constants themselves also allow group differences to be quantified net of differences in demographics. However, they simply identify the fact that this variation exists -- they do not permit non-stationarity in *process*. It is conceivable that the strength and direction of association between Leave and the candidate demographic variables may vary between regions. For example, that increased levels of *EU-born* (non-UK) residents might affect area-level voting differently in certain regions than others. -->
@@ -672,7 +664,7 @@ Figure&nbsp;6.6: Output from a multiple regression model of Leave voting against
 <li>
 <span class="math inline">\varepsilon_{i}</span>, the difference between <span class="math inline">y_{i}</span> (the observed value) at constituency <span class="math inline">i</span> and the <em>unobservable</em> true ‘population’ value of the Leave vote in that constituency (statistical error)</li>
 </ul>
-<p>In <a href="#fig-outputs-interact" class="quarto-xref">Figure&nbsp;<span>6.7</span></a> are region-specific coefficients derived from a multivariate model fit with this interaction term. In each region, <em>degree-educated</em> has a negative coefficient and with reasonably tight uncertainty estimates, or at least CIs that do not cross 0. The other variables are subject to more uncertainty. The <em>no-car</em> variable is also negatively associated with Leave, a variable we thought may separate metropolitan versus peripheral contexts, but the strength of negative association, after controlling for variation in other demographic factors, does vary by region. The <em>heavy industry</em> variable, previously identified as being strongly associated with Leave, has a clear positive association only for London and to a much lesser extent for North West and Wales (small coefficients). The <em>EU-born</em> variable is again the least consistent as it flips between positive and negative association when analysed at the regional-level: after controlling for variation in other demographic characteristics it is positively associated with Leave for North West, Scotland, South West, but negatively associated with Leave for the North East, though with coefficients that are subject to much variation.</p>
+<p>In <a href="#fig-outputs-interact" class="quarto-xref">Figure&nbsp;<span>6.7</span></a> are region-specific coefficients derived from a multivariate model fit with this interaction term. In each region, <em>degree-educated</em> has a negative coefficient and with reasonably tight uncertainty estimates, or at least CIs that do not cross 0. The other variables are subject to more uncertainty. The <em>no-car</em> variable is also negatively associated with Leave, a variable we thought may separate metropolitan versus peripheral contexts, but the strength of negative association, after controlling for variation in other demographic factors, does vary by region. The <em>heavy industry</em> variable, previously identified as being strongly associated with Leave, has a clear positive association only for London and to a much lesser extent for North West and Wales (small coefficients). The <em>EU-born</em> variable is again the least consistent as it flips between positive and negative association when analysed at the regional-level: after controlling for variation in other demographic characteristics, it is positively associated with Leave for North West, Scotland, South West, but negatively associated with Leave for the North East, though with coefficients that are subject to much variation.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-outputs-interact" class="quarto-figure quarto-figure-center quarto-float anchored">
@@ -688,7 +680,7 @@ Figure&nbsp;6.7: Output from multiple regression model of Leave vote by demograp
 <p> </p>
 </section><section id="estimate-volatility-and-alternative-modelling-approaches" class="level3" data-number="6.2.7"><h3 data-number="6.2.7" class="anchored" data-anchor-id="estimate-volatility-and-alternative-modelling-approaches">
 <span class="header-section-number">6.2.7</span> Estimate volatility and alternative modelling approaches</h3>
-<p>Our treatment of regression frameworks has in this chapter been reasonably breezy; there are problems that we have not discussed. Introducing FE and interaction terms without adding data reduces statistical power as data are heavily partitioned. Given the fact that our data are hierarchically structured (constituencies sit within regions) hierarchical or multi-level modelling may be more appropriate to this sort of regional grouping. Multi-level modelling uses partial pooling, borrowing data to make estimated coefficients more conservative, less locally biased, where there are comparatively few observations in particular groupings <span class="citation" data-cites="gelman_data_2006">(see <a href="references.html#ref-gelman_data_2006" role="doc-biblioref">Gelman and Hill 2006</a>)</span>. There are also many ways in which associations between values can be modelled <em>continuously</em> over space. In the case of geographically weighted regression (GWR) <span class="citation" data-cites="brunsdon_geographically_2002">(<a href="references.html#ref-brunsdon_geographically_2002" role="doc-biblioref">Brunsdon, Fortheringham, and Charlton 2002</a>)</span>, local regression coefficients for each spatial unit. Geographically Weighted-statistics enable spatial non-stationarity in process to be flexibly explored and characterised – in this case study, interesting and explainable directions of effect between Leave voting and <em>EU-born</em> <span class="citation" data-cites="beecham_locally-varying_2018">(see <a href="references.html#ref-beecham_locally-varying_2018" role="doc-biblioref">Beecham, Slingsby, and Brunsdon 2018</a>)</span>. Since GWR involves generating many hundreds of parameter estimates, visual approaches are as ever primarily used in their interpretation and analysis <span class="citation" data-cites="dykes_geographically_2007">(see <a href="references.html#ref-dykes_geographically_2007" role="doc-biblioref">Dykes and Brunsdon 2007</a>)</span>.</p>
+<p>Our treatment of regression frameworks has in this chapter been reasonably breezy; there are problems that we have not discussed. Introducing FE and interaction terms without adding data reduces statistical power as data are heavily partitioned. Given the fact that our data are hierarchically structured (constituencies sit within regions), hierarchical or multi-level modelling may be more appropriate to this sort of regional grouping. Multi-level modelling uses partial pooling, borrowing data to make estimated coefficients more conservative, less locally biased, where there are comparatively few observations in particular groupings <span class="citation" data-cites="gelman_data_2006">(see <a href="a2-references.html#ref-gelman_data_2006" role="doc-biblioref">Gelman and Hill 2006</a>)</span>. There are also many ways in which associations between values can be modelled <em>continuously</em> over space. For the case of geographically weighted regression (GWR) <span class="citation" data-cites="brunsdon_geographically_2002">(<a href="a2-references.html#ref-brunsdon_geographically_2002" role="doc-biblioref">Brunsdon, Fortheringham, and Charlton 2002</a>)</span>, local regression coefficients for each spatial unit. Geographically Weighted-statistics enable spatial non-stationarity in process to be flexibly explored and characterised – in this case study, interesting and explainable directions of effect between Leave voting and <em>EU-born</em> <span class="citation" data-cites="beecham_locally-varying_2018">(see <a href="a2-references.html#ref-beecham_locally-varying_2018" role="doc-biblioref">Beecham, Slingsby, and Brunsdon 2018</a>)</span>. Since GWR involves generating many hundreds of parameter estimates, visual approaches are as ever primarily used in their interpretation and analysis <span class="citation" data-cites="dykes_geographically_2007">(see <a href="a2-references.html#ref-dykes_geographically_2007" role="doc-biblioref">Dykes and Brunsdon 2007</a>)</span>.</p>
 <p> </p>
 </section></section><section id="techniques" class="level2" data-number="6.3"><h2 data-number="6.3" class="anchored" data-anchor-id="techniques">
 <span class="header-section-number">6.3</span> Techniques</h2>
@@ -696,11 +688,11 @@ Figure&nbsp;6.7: Output from multiple regression model of Leave vote by demograp
 <section id="import-transform-explore" class="level3" data-number="6.3.1"><h3 data-number="6.3.1" class="anchored" data-anchor-id="import-transform-explore">
 <span class="header-section-number">6.3.1</span> Import, transform, explore</h3>
 <ul>
-<li>Download the <code>06-template.qmd</code><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> file for this chapter and save it to your <code>vis4sds</code> project.</li>
-<li>Open your <code>vis4sds</code> project in RStudio and load the template file by clicking <code>File</code> &gt; <code>Open File ...</code> &gt; <code>06-template.qmd</code>.</li>
+<li>Download the <code>06-template.qmd</code><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> file for this chapter, and save it to your <code>vis4sds</code> project.</li>
+<li>Open your <code>vis4sds</code> project in RStudio, and load the template file by clicking <code>File</code> &gt; <code>Open File ...</code> &gt; <code>06-template.qmd</code>.</li>
 </ul>
 <p>The template file lists the required packages: <code>tidyverse</code>, <code>sf</code> and <code>tidymodels</code> for extracting model outputs. The processed data with selected 2011 Census demographics can be loaded from the book’s accompanying data repository. In this folder is also a <code>.geojson</code> file containing a hexagon cartogram of UK parliamentary constituencies, derived from Open-Innovations’ <code>HexJSON</code> format.</p>
-<p> Explanatory variables describing the demographic composition of constituencies are recorded as proportions. In order to support comparison in the multivariate models they must be z-score transformed. The distance between observed values for each 2011 Census variable is expressed in standard deviation units from the mean across constituencies for that variable. Our approach is to perform this transformation to each explanatory variable before piping into the model specification. This is achieved with <code>across()</code>. The first argument is the set of columns to which you would like the same function to be applied; and the second is the function you would like to apply. Remembering that <code>mutate()</code> works over columns of a data frame, and that a single column of a data frame is a vector of values, the notation <code>.x</code> is used to access each element of the columns being worked across.</p>
+<p> Explanatory variables describing the demographic composition of constituencies are recorded as proportions. In order to support comparison in the multivariate models, they must be z-score transformed. The distance between observed values for each 2011 Census variable is expressed in standard deviation units from the mean across constituencies for that variable. Our approach is to perform this transformation on each explanatory variable before piping into the model specification. This is achieved with <code>across()</code>. The first argument is the set of columns to which you would like the same function to be applied, and the second is the function you would like to apply. Remembering that <code>mutate()</code> works over columns of a data frame, and that a single column of a data frame is a vector of values, the notation <code>.x</code> is used to access each element of the columns being worked across.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># z-score transform explanatory variables before model</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># specification.</span></span>
@@ -815,7 +807,7 @@ Can you update the ggplot2 spec to create a similar effect? There are different 
 <span><span class="co"># Multiple R-squared:  0.5956,  Adjusted R-squared:  0.595</span></span>
 <span><span class="co"># F-statistic: 927.9 on 1 and 630 DF,  p-value: &lt; 2.2e-16</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>With <code>tidymodels</code>, specifically the <code>broom</code> package, we can extract model outputs in a format that adheres to tidy data <span class="citation" data-cites="wickham_tidy_2014">(<a href="references.html#ref-wickham_tidy_2014" role="doc-biblioref">Wickham 2014</a>)</span>.</p>
+<p>With <code>tidymodels</code>, specifically the <code>broom</code> package, we can extract model outputs in a format that adheres to tidy data <span class="citation" data-cites="wickham_tidy_2014">(<a href="a2-references.html#ref-wickham_tidy_2014" role="doc-biblioref">Wickham 2014</a>)</span>.</p>
 <ul>
 <li>
 <code>tidy()</code> returns estimated coefficients as a data frame.</li>
@@ -902,11 +894,11 @@ Can you update the ggplot2 spec to create a similar effect? There are different 
 <p>Code description:</p>
 <ol type="1">
 <li>
-<em>Setup</em>: In order to generate separate models for separate explanatory variables we need to generate nested data frames. These are data frames stored in a special type of column (a <code>list-column</code>) in which the values of the column is a list of data frames – one for each explanatory variable over which we would like to compute a model. You can think of parameterising <code>nest()</code> in a similar way to <code>group_by()</code>. We first <code>pivot_longer()</code> to generate a data frame where each observation contains the recorded Leave vote for a constituency and its corresponding <code>z_score</code> value for each explanatory variable. There are 10 explanatory variables and so <code>nest()</code> returns a data frame with the dimensions <code>10x2</code> – a variable identifying the explanatory variable on which the model is to be built (<code>expl_var</code>) and a <code>list-column</code>, each element containing a data frame with the dimensions <code>632x13</code>.</li>
+<em>Setup</em>: In order to generate separate models for separate explanatory variables, we need to generate nested data frames. These are data frames stored in a special type of column (a <code>list-column</code>) in which the values of the column is a list of data frames – one for each explanatory variable over which we would like to compute a model. You can think of parameterising <code>nest()</code> in a similar way to <code>group_by()</code>. We first <code>pivot_longer()</code> to generate a data frame where each observation contains the recorded Leave vote for a constituency and its corresponding <code>z_score</code> value for each explanatory variable. There are 10 explanatory variables and so <code>nest()</code> returns a data frame with the dimensions <code>10x2</code> – a variable identifying the explanatory variable on which the model is to be built (<code>expl_var</code>) and a <code>list-column</code>, each element containing a data frame with the dimensions <code>632x13</code>.</li>
 <li>
 <em>Build model</em>: In <code>mutate()</code>, <code>purrr</code>’s <code>map()</code> function is used to iterate over the list of datasets and fit a model to each nested dataset. The new column <code>model</code> is a <code>list-column</code> this time containing a list of model objects.</li>
 <li>
-<em>Generate outputs</em>: Next, the different cuts of model outputs can be mde using <code>glance(), tidy(), augment()</code>, with <code>map()</code> to iterate over the list of model objects. The new columns are now <code>list-columns</code> of data frames containing model outputs.</li>
+<em>Generate outputs</em>: Next, the different cuts of model outputs can be made using <code>glance(), tidy(), augment()</code>, with <code>map()</code> to iterate over the list of model objects. The new columns are now <code>list-columns</code> of data frames containing model outputs.</li>
 <li>
 <em>Extract outputs</em>: Finally we want to extract the values from these nested data. This can be achieved using <code>unnest()</code> and supplying to the <code>cols</code> argument the names of the <code>list-columns</code> from which we want to extract values.</li>
 </ol></section><section id="plot-models-tidily" class="level3" data-number="6.3.3"><h3 data-number="6.3.3" class="anchored" data-anchor-id="plot-models-tidily">
@@ -972,7 +964,7 @@ Can you update the ggplot2 spec to create a similar effect? There are different 
 <span><span class="co"># 16 not_good_health           0.0102    0.00331     3.07  2.24e- 3</span></span>
 <span><span class="co"># 17 heavy_industry            0.0132    0.00266     4.96  9.23e- 7</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>We want our model to represent a dummy for every region and so we add <code>-1</code> to the specification. Doing this removes the intercept or reference region, making <span class="math inline">R^2</span> no longer meaningful.</p>
+<p>We want our model to represent a dummy for every region, and so we add <code>-1</code> to the specification. Doing this removes the intercept or reference region, making <span class="math inline">R^2</span> no longer meaningful.</p>
 <div class="cell">
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">cons_data</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">mutate</span><span class="op">(</span></span>
@@ -1021,7 +1013,7 @@ Can you update the ggplot2 spec to create a similar effect? There are different 
 <li>
 <em>Data</em>: A data frame of model coefficients extracted from the multivariate model object using <code>tidy()</code>. To make clean plot labels we need to remove unnecessary text in the <code>term</code> variable (e.g.&nbsp;“cons:regionEast Midlands”). <code>separate()</code> allows us to split this column on <code>:</code> and then <code>str_remove()</code> is quite obvious. We do not wish to plot the FE constants and so <code><a href="https://rdrr.io/r/stats/filter.html">filter()</a></code> them out.</li>
 <li>
-<em>Encoding</em>: y-position varies according to the size of the coefficient estimate and the 95% confidence intervals, in exactly the same was as for <a href="#fig-outputs" class="quarto-xref">Figure&nbsp;<span>6.4</span></a>.</li>
+<em>Encoding</em>: y-position varies according to the size of the coefficient estimate and the 95% confidence intervals, in exactly the same way as for <a href="#fig-outputs" class="quarto-xref">Figure&nbsp;<span>6.4</span></a>.</li>
 <li>
 <em>Marks</em>: <code>geom_pointrange()</code>, encoded as in <a href="#fig-outputs" class="quarto-xref">Figure&nbsp;<span>6.4</span></a>. The only addition is light bars in the background (<code>geom_col()</code>). This seems to aid interpretation of the direction and size of the coefficients.</li>
 <li>
@@ -1038,7 +1030,7 @@ Can you update the ggplot2 spec to create a similar effect? There are different 
 <img src="figs/06/lineups_fe.png" class="img-fluid figure-img" style="width:100.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-lineup-fe-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;6.8: Map line-up of residuals from model with Fixed Effect on region. The ‘real’ dataset is presented alongside 8 decoy plots generated by randomly permuting the observed residuals around constituencies. Adding the FE term has addressed some of the systematic over- and under- estimation of the vote between regions (compare for example <a href="#fig-lineup" class="quarto-xref">Figure&nbsp;<span>6.5</span></a>). There is nevertheless obvious spatial autocorrelation, plot 4 being the real data. Further analysis, for example of the constituencies for which Leave is particularly over- and under- represented, may be instructive.
+Figure&nbsp;6.8: Map line-up of residuals from model with Fixed Effect on region. The ‘real’ dataset is presented alongside 8 decoy plots generated by randomly permuting the observed residuals around constituencies. Adding the FE term has addressed some of the systematic over- and under-estimation of the vote between regions (compare for example <a href="#fig-lineup" class="quarto-xref">Figure&nbsp;<span>6.5</span></a>). There is nevertheless obvious spatial autocorrelation, plot 2 being the real data. Further analysis, for example of the constituencies for which Leave is particularly over- and under-represented, may be instructive.
 </figcaption></figure>
 </div>
 </div>
@@ -1077,7 +1069,7 @@ Figure&nbsp;6.8: Map line-up of residuals from model with Fixed Effect on region
 <span>  <span class="fu">select</span><span class="op">(</span><span class="va">id</span>, <span class="va">data</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">unnest</span><span class="op">(</span>cols<span class="op">=</span><span class="va">data</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Now we have the permuted dataset, the lineup can be generated straightforwardly with standard ggplot2 code:</p>
+<p>Now that we have the permuted dataset, the lineup can be generated straightforwardly with standard ggplot2 code:</p>
 <div class="cell">
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Store max value of residuals for setting limits in map colour scheme.</span></span>
 <span><span class="va">max_resid</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span><span class="op">(</span><span class="va">permuted_data</span><span class="op">$</span><span class="va">.resid</span><span class="op">)</span><span class="op">)</span></span>
@@ -1101,7 +1093,7 @@ Figure&nbsp;6.8: Map line-up of residuals from model with Fixed Effect on region
 <p>The plot specification:</p>
 <ol type="1">
 <li>
-<em>Data</em>: <code>inner_join</code> the permuted data on the simple features file containing the hexagon cartogram boundaries (<code>cons_hex</code>). To generate the lineup we <code>facet_wrap()</code> on the permutation <code>id</code>. By default ggplot2 will draw facets in a particular order – determined either by the numeric or alphabetical order of the facet variable’s values, or by an order determined by a factor variable. Each time we plot the lineups we want the order in which the real and decoy plots are drawn to vary. Therefore we convert <code>id</code> to a factor variable and shuffle the levels (the ordering) around, using the <code><a href="https://rdrr.io/r/base/sample.html">sample()</a></code> function on a vector of permutation IDs (<code>ids</code>) before piping to <code>ggplot()</code>. Note that we also record the maximum absolute value of the residuals to ensure that they are coloured symmetrically on <span class="math inline">0</span> (<code>max_resid</code>). Finally, you may notice there are two <code>geom_sf()</code> calls in the plot specification. The second draws regional boundary outlines across each plot. This is achieved by collapsing the hexagon data on region (using <code>group_by()</code> and <code>summarise()</code>).</li>
+<em>Data</em>: <code>inner_join</code> the permuted data on the simple features file containing the hexagon cartogram boundaries (<code>cons_hex</code>). To generate the lineup we <code>facet_wrap()</code> on the permutation <code>id</code>. By default ggplot2 will draw facets in a particular order – determined either by the numeric or alphabetical order of the facet variable’s values, or by an order determined by a factor variable. Each time we plot the lineups, we want the order in which the real and decoy plots are drawn to vary. Therefore we convert <code>id</code> to a factor variable and shuffle the levels (the ordering) around, using the <code><a href="https://rdrr.io/r/base/sample.html">sample()</a></code> function on a vector of permutation IDs (<code>ids</code>) before piping to <code>ggplot()</code>. Note that we also record the maximum absolute value of the residuals to ensure that they are coloured symmetrically on <span class="math inline">0</span> (<code>max_resid</code>). Finally, you may notice there are two <code>geom_sf()</code> calls in the plot specification. The second draws regional boundary outlines across each plot. This is achieved by collapsing the hexagon data on region (using <code>group_by()</code> and <code>summarise()</code>).</li>
 <li>
 <em>Encoding</em>: hexagons are filled according to the residual values (<code>fill=.resid</code>).</li>
 <li>
@@ -1109,16 +1101,14 @@ Figure&nbsp;6.8: Map line-up of residuals from model with Fixed Effect on region
 <li>
 <em>Facets</em>: <code>facet_wrap()</code> on <code>region</code> in order to display coefficients estimated separately for each region.</li>
 <li>
-<em>Scale</em>: <code>scale_fill_distiller()</code> for ColorBrewer <span class="citation" data-cites="harrower_colorbrewerorg_2003">(<a href="references.html#ref-harrower_colorbrewerorg_2003" role="doc-biblioref">Harrower and Brewer 2003</a>)</span> scheme, using the RdBu palette and with <code>limits</code> set to <code>max_resid</code>.</li>
+<em>Scale</em>: <code>scale_fill_distiller()</code> for ColorBrewer <span class="citation" data-cites="harrower_colorbrewerorg_2003">(<a href="a2-references.html#ref-harrower_colorbrewerorg_2003" role="doc-biblioref">Harrower and Brewer 2003</a>)</span> scheme, using the RdBu palette and with <code>limits</code> set to <code>max_resid</code>.</li>
 <li>
 <em>Setting</em>: The <code>linewidth</code> parameter of the hexagon outlines is varied so that the regional outlines in the second call to <code>geom_sf()</code> appear more salient. Also here, a transparent <code>fill</code> to ensure that the regional outlines do not occlude the encoded residuals.</li>
 </ol>
 <p> </p>
 </section></section><section id="conclusion" class="level2" data-number="6.4"><h2 data-number="6.4" class="anchored" data-anchor-id="conclusion">
 <span class="header-section-number">6.4</span> Conclusion</h2>
-<!-- Variation is central to most data analysis, and certainly regression modelling: quantifying variation, exploring how it is structured and accounting for it using a combination of data and prior theory and knowledge.  -->
-<!-- We had the explicit aim of analysing whether constituency-level voting in the UK’s 2016 EU Referendum varies systematically with selected variables describing the demographic and socio-economic composition of constituencies. -->
-<p>This chapter demonstrated how visual and computational approaches can be used together in a somewhat more ‘traditional’ area-level regression analysis. Associations between constituency-level Leave voting in the UK’s 2016 EU Referendum and selected variables describing the demographic and socio-economic composition of constituencies were explored, with data graphics used to characterise bias in the generated models – to identify geographic and regional groupings that our early models ignore. Two classes of model update for addressing this geographic grouping were covered: those that treat geographic dependence in the values of variables as a nuisance term that is to be quantified and controlled away; and those that explicitly try to model for geographic grouping in processes. We introduced some initial techniques for dealing with both, treating geography as a categorical variable: a Fixed Effect term to assess regional dependence and Interaction term to assess regional non-stationarity. Importantly, the chapter reused some of the <code>dplyr</code> and functional programming code templates instrumental for working over models. There was a step-up in code complexity. Hopefully you will see in the next chapter that this sort of functional programming style <span class="citation" data-cites="wickham_r_2023">(<a href="references.html#ref-wickham_r_2023" role="doc-biblioref">Wickham, Çetinkaya-Rundel, and Grolemund 2023</a>)</span> greatly aids the process of performing and working with resampled datasets, a key feature of modern computational data analysis.</p>
+<p>This chapter demonstrated how visual and computational approaches can be used together in a somewhat more ‘traditional’ area-level regression analysis. Associations between constituency-level Leave voting in the UK’s 2016 EU Referendum and selected variables describing the demographic and socio-economic composition of constituencies were explored, with data graphics used to characterise bias in the generated models – to identify geographic and regional groupings that our early models ignore. Two classes of model update for addressing this geographic grouping were covered: those that treat geographic dependence in the values of variables as a nuisance term that is to be quantified and controlled away, and those that explicitly try to model for geographic grouping in processes. We introduced some initial techniques for dealing with both, treating geography as a categorical variable: a Fixed Effect term to assess regional dependence and Interaction term to assess regional non-stationarity. Importantly, the chapter reused some of the <code>dplyr</code> and functional programming code templates instrumental for working over models. There was a step-up in code complexity. Hopefully you will see in the next chapter that this sort of functional programming style <span class="citation" data-cites="wickham_r_2023">(<a href="a2-references.html#ref-wickham_r_2023" role="doc-biblioref">Wickham, Çetinkaya-Rundel, and Grolemund 2023</a>)</span> greatly aids the process of performing and working with resampled datasets, a key feature of modern computational data analysis.</p>
 <p> </p>
 </section><section id="further-reading" class="level2" data-number="6.5"><h2 data-number="6.5" class="anchored" data-anchor-id="further-reading">
 <span class="header-section-number">6.5</span> Further Reading</h2>
@@ -1129,7 +1119,7 @@ Figure&nbsp;6.8: Map line-up of residuals from model with Fixed Effect on region
 <p>On modelling for geographic dependence and non-stationarity:</p>
 <ul>
 <li><p>Comber, A., Brunsdon, C., Charlton, M. et al.&nbsp;2023. “A route map for successful applications of Geographically Weighted Regression.” <em>Geographical Analysis</em>, 55 (1): 155–178. doi: 10.1111/gean.12316.</p></li>
-<li><p>L. J. Wolf et al., 2023. “On Spatial and Platial Dependence: Examining Shrinkage in Spatially Dependent Multilevel Models.” <em>Annals of the American Association of Geographers</em>, 55(1): 1–13.</p></li>
+<li><p>Wolf, L. J. et al., 2023. “On Spatial and Platial Dependence: Examining Shrinkage in Spatially Dependent Multilevel Models.” <em>Annals of the American Association of Geographers</em>, 55(1): 1–13. doi: 10.1080/24694452.2020.1841602.</p></li>
 </ul>
 <p>The original graphical inference paper:</p>
 <ul>
@@ -1137,55 +1127,103 @@ Figure&nbsp;6.8: Map line-up of residuals from model with Fixed Effect on region
 </ul>
 <p>A guide to model building in the <code>tidyverse</code>:</p>
 <ul>
-<li><p>Ismay, C. and Kim, A. 2020. “Statistical Inference via Data Science: A ModernDive into r and the Tidyverse” <em>CRC Press</em>. doi: 10.1201/9780367409913.</p></li>
-<li><p>Kuhn, M. and Silge, J. 2023. “Tidy Modelling with R.” <em>O’Reilly</em>.</p></li>
+<li><p>Ismay, C. and Kim, A. 2020. “Statistical Inference via Data Science: A ModernDive into r and the Tidyverse”, New York, NY: <em>CRC Press</em>. doi: 10.1201/9780367409913.</p></li>
+<li><p>Kuhn, M. and Silge, J. 2023. “Tidy Modelling with R.”, Sebastopol, CA: <em>O’Reilly</em>.</p></li>
 </ul>
 <p>A quick guide to functional programming in R and <code>tidyverse</code>:</p>
 <ul>
-<li>Wickham, H., Çetinkaya-Rundel, M., Grolemund, G. 2023, “R for Data Science, 2nd Edition”, <em>O’Reilly</em>.
+<li>Wickham, H., Çetinkaya-Rundel, M., Grolemund, G. 2023, “R for Data Science, 2nd Edition”, Sebastopol, CA: <em>O’Reilly</em>.
 <ul>
-<li>Chapter 27.</li>
+<li>Chapter 25, 26.</li>
 </ul>
 </li>
 </ul>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-bbc_visual_2019" class="csl-entry" role="listitem">
+BBC Visual and Data Journalism Team. 2019. <span>“BBC Visual and Data Journalism Cookbook for <span>R</span> Graphics.”</span> <a href="https://github.com/bbc/rcookbook" class="uri">https://github.com/bbc/rcookbook</a>.
+</div>
 <div id="ref-beecham_map_2017" class="csl-entry" role="listitem">
-Beecham, R., J. Dykes, W. Meulemans, A. Slingsby, C. Turkay, and J. Wood. 2017. <span>“Map Line-Ups: Effects of Spatial Structure on Graphical Inference.”</span> <em>IEEE Transactions on Visualization &amp; Computer Graphics</em> 23 (1): 391–400.
+Beecham, R., J. Dykes, W. Meulemans, A. Slingsby, C. Turkay, and J. Wood. 2017. <span>“Map Line-Ups: Effects of Spatial Structure on Graphical Inference.”</span> <em>IEEE Transactions on Visualization &amp; Computer Graphics</em> 23 (1): 391–400. <a href="https://doi.org/10.1109/TVCG.2016.2598862">https://doi.org/10.1109/TVCG.2016.2598862</a>.
 </div>
 <div id="ref-beecham_locally-varying_2018" class="csl-entry" role="listitem">
-Beecham, R., A. Slingsby, and C. Brunsdon. 2018. <span>“Locally-Varying Explanations Behind the <span>United</span> <span>Kingdom</span>’s Vote to Leave the <span>European</span> <span>Union</span>.”</span> <em>Journal of Spatial Information Science</em> 16: 117–36.
+Beecham, R., A. Slingsby, and C. Brunsdon. 2018. <span>“Locally-Varying Explanations Behind the <span>United</span> <span>Kingdom</span>’s Vote to Leave the <span>European</span> <span>Union</span>.”</span> <em>Journal of Spatial Information Science</em> 16: 117–36. <a href="https://doi.org/10.5311/josis.2018.16.377">https://doi.org/10.5311/josis.2018.16.377</a>.
+</div>
+<div id="ref-beecham_regionally-structured_2020" class="csl-entry" role="listitem">
+Beecham, R., N. Williams, and L. Comber. 2020. <span>“Regionally-Structured Explanations Behind Area-Level Populism: <span>An</span> Update to Recent Ecological Analyses.”</span> <em>PLOS One</em> 15 (3): e0229974. <a href="https://doi.org/10.1371/journal.pone.0229974">https://doi.org/10.1371/journal.pone.0229974</a>.
 </div>
 <div id="ref-brunsdon_geographically_2002" class="csl-entry" role="listitem">
-Brunsdon, C., M. Fortheringham, and M. Charlton. 2002. <span>“Geographically Weighted Summary Statistics: A Framework for Localised Exploratory Data Analysis.”</span> <em>Computers, Environment and Urban Systems</em> 26: 501–24.
+Brunsdon, C., M. Fortheringham, and M. Charlton. 2002. <span>“Geographically Weighted Summary Statistics: A Framework for Localised Exploratory Data Analysis.”</span> <em>Computers, Environment and Urban Systems</em> 26: 501–24. <a href="https://doi.org/10.1016/S0198-9715(01)00009-6">https://doi.org/10.1016/S0198-9715(01)00009-6</a>.
+</div>
+<div id="ref-buja_statistical_2009" class="csl-entry" role="listitem">
+Buja, A., D. Cook, H. Hofmann, M. Lawrence, E-K Lee, D. Swayne, and H. Wickham. 2009. <span>“Statistical Inference for Exploratory Data Analysis and Model Diagnostics.”</span> <em>Philosophical Transactions of the Royal Society A: Mathematical, Physical and Engineering Sciences</em> 367 (1906): 4361–83. <a href="https://doi.org/10.1098/rsta.2009.0120">https://doi.org/10.1098/rsta.2009.0120</a>.
+</div>
+<div id="ref-burnmurdoch_making_2023" class="csl-entry" role="listitem">
+Burn-Murdoch, J. 2023. <span>“Making Charts That Make an Impact.”</span> Invited talk, Data Visualization Society’s Outlier Conference. <a href="https://www.youtube.com/watch?v=tIbaQUo6H9g&amp;ab_channel=DataVisualizationSociety">https://www.youtube.com/watch?v=tIbaQUo6H9g&amp;ab_channel=DataVisualizationSociety</a>.
+</div>
+<div id="ref-comber_route_2023" class="csl-entry" role="listitem">
+Comber, A., C. Brunsdon, M. Charlton, G. Dong, R. Harris, B. Lu, Y. Lü, et al. 2023. <span>“A Route Map for Successful Applications of Geographically Weighted Regression.”</span> <em>Geographical Analysis</em> 55 (1): 155–78. <a href="https://doi.org/10.1111/gean.12316">https://doi.org/10.1111/gean.12316</a>.
 </div>
 <div id="ref-dykes_geographically_2007" class="csl-entry" role="listitem">
-Dykes, J., and C. Brunsdon. 2007. <span>“Geographically Weighted Visualization: <span>Interactive</span> Graphics for Scale-Varying Exploratory Analysis.”</span> <em>IEEE Transactions on Visualization and Computer Graphics</em> 13 (6): 1161–68.
+Dykes, J., and C. Brunsdon. 2007. <span>“Geographically Weighted Visualization: <span>Interactive</span> Graphics for Scale-Varying Exploratory Analysis.”</span> <em>IEEE Transactions on Visualization and Computer Graphics</em> 13 (6): 1161–68. <a href="https://doi.org/10.1109/tvcg.2007.70558">https://doi.org/10.1109/tvcg.2007.70558</a>.
+</div>
+<div id="ref-franconeri_psychological_2022" class="csl-entry" role="listitem">
+Franconeri, S. L., L. M. Padilla, P. Shah, J. M. Zacks, and J. Hullman. 2021. <span>“The Science of Visual Data Communication: What Works.”</span> <em>Psychological Science in the Public Interest</em> 22 (3): 110–61. <a href="https://doi.org/10.1177/15291006211051956%20">https://doi.org/10.1177/15291006211051956 </a>.
 </div>
 <div id="ref-gelman_data_2006" class="csl-entry" role="listitem">
-Gelman, Andrew, and Jennifer Hill. 2006. <em>Data Analysis Using Regression and Multilevel/Hierarchical Models</em>. Cambridge University Press.
+Gelman, A., and J. Hill. 2006. <em>Data Analysis Using Regression and Multilevel/Hierarchical Models</em>. Cambridge, UK: Cambridge University Press. <a href="https://doi.org/10.1017/CBO9780511790942">https://doi.org/10.1017/CBO9780511790942</a>.
 </div>
 <div id="ref-gelman_regression_2020" class="csl-entry" role="listitem">
-Gelman, Andrew, Jennifer Hill, and Aki Vehtari. 2020. <em>Regression and Other Stories</em>. Analytical Methods for Social Research. Cambridge University Press.
+Gelman, A., J. Hill, and A. Vehtari. 2020. <em>Regression and Other Stories</em>. Analytical Methods for Social Research. Cambridge University Press. <a href="https://doi.org/10.1017/9781139161879">https://doi.org/10.1017/9781139161879</a>.
 </div>
 <div id="ref-hanretty_areal_2017" class="csl-entry" role="listitem">
-Hanretty, C. 2017. <span>“Areal Interpolation and the <span>UK</span>’s Referendum on <span>EU</span> Membership.”</span> <em>Journal of Elections, Public Opinion and Parties</em> 37 (4): 466–83.
+Hanretty, C. 2017. <span>“Areal Interpolation and the <span>UK</span>’s Referendum on <span>EU</span> Membership.”</span> <em>Journal of Elections, Public Opinion and Parties</em> 37 (4): 466–83. <a href="https://doi.org/10.1080/17457289.2017.1287081">https://doi.org/10.1080/17457289.2017.1287081</a>.
 </div>
 <div id="ref-harrower_colorbrewerorg_2003" class="csl-entry" role="listitem">
-Harrower, Mark, and Cynthia A. Brewer. 2003. <span>“ColorBrewer.org: An Online Tool for Selecting Colour Schemes for Maps.”</span> <em>The Cartographic Journal</em> 40 (1): 27–37. <a href="https://doi.org/10.1179/000870403235002042">https://doi.org/10.1179/000870403235002042</a>.
+Harrower, M., and C. A. Brewer. 2003. <span>“ColorBrewer.org: An Online Tool for Selecting Colour Schemes for Maps.”</span> <em>The Cartographic Journal</em> 40 (1): 27–37. <a href="https://doi.org/10.1179/000870403235002042">https://doi.org/10.1179/000870403235002042</a>.
+</div>
+<div id="ref-healy_data_2018" class="csl-entry" role="listitem">
+Healy, K. 2019. <em>Data Visualization: A Practical Introduction</em>. Princeton, NJ: Princeton University Press. <a href="https://socviz.co">https://socviz.co</a>.
+</div>
+<div id="ref-hullman_designing_2021" class="csl-entry" role="listitem">
+Hullman, J., and A. Gelman. 2021. <span>“Designing for Interactive Exploratory Data Analysis Requires Theories of Graphical Inference.”</span> <em>Harvard Data Science Review</em> 3 (3).
+</div>
+<div id="ref-ismay_moderndive_2020" class="csl-entry" role="listitem">
+Ismay, C., and A. Kim. 2020. <em>Statistical Inference via Data Science: A <span>ModernDive</span> into <span>R</span> and the Tidyverse</em>. New York, NY: CRC Press. <a href="https://doi.org/10.1201/9780367409913">https://doi.org/10.1201/9780367409913</a>.
+</div>
+<div id="ref-kale_hypothetical_2019" class="csl-entry" role="listitem">
+Kale, A., F. Nguyen, M. Kay, and J. Hullman. 2019. <span>“Hypothetical Outcome Plots Help Untrained Observers Judge Trends in Ambiguous Data.”</span> <em>IEEE Transactions on Visualization and Computer Graphics</em> 25 (1): 892–902. <a href="https://doi.org/10.1109/TVCG.2018.2864909">https://doi.org/10.1109/TVCG.2018.2864909</a>.
+</div>
+<div id="ref-kay_uncertainty_2021" class="csl-entry" role="listitem">
+Kay, M. 2021. <span>“Uncertainty Visualization as a Moral Imperative.”</span> Invited talk, BostonCHI meeting. <a href="https://www.youtube.com/watch?v=mfQ3QVyw4N0&amp;ab_channel=BostonCHI">https://www.youtube.com/watch?v=mfQ3QVyw4N0&amp;ab_channel=BostonCHI</a>.
+</div>
+<div id="ref-kosara_lesson_2023" class="csl-entry" role="listitem">
+Kosara, R. 2023. <span>“Lesson 4: Presentation, Uncertainty, ISOTYPE.”</span> ObservableHQ Notebook; ObservableHQ. <a href="https://observablehq.com/@observablehq/lesson-4-presentation-uncertainty-isotype?collection=@observablehq/advanced-data-vis-course">https://observablehq.com/@observablehq/lesson-4-presentation-uncertainty-isotype?collection=@observablehq/advanced-data-vis-course</a>.
 </div>
 <div id="ref-loy_model_2017" class="csl-entry" role="listitem">
 Loy, A., H. Hofmann, and D. Cook. 2017. <span>“Model <span>Choice</span> and <span>Diagnostics</span> for <span>Linear</span> <span>Mixed</span>-<span>Effects</span> <span>Models</span> <span>Using</span> <span>Statistics</span> on <span>Street</span> <span>Corners</span>.”</span> <em>Journal of Computational and Graphical Statistics</em> 26 (3): 478–92. <a href="https://doi.org/10.1080/10618600.2017.1330207">https://doi.org/10.1080/10618600.2017.1330207</a>.
 </div>
+<div id="ref-scherer_designing_2023" class="csl-entry" role="listitem">
+Scherer, C. 2023. <span>“Designing Data Visualizations to Successfully Tell a Story.”</span> Workshop at Posit::conf(2023), Chicago, IL. <a href="https://posit-conf-2023.github.io/dataviz-storytelling/">https://posit-conf-2023.github.io/dataviz-storytelling/</a>.
+</div>
+<div id="ref-turing_the_2025" class="csl-entry" role="listitem">
+The Turing Way Community. 2025. <span>“The Turing Way: A Handbook for Reproducible, Ethical and Collaborative Research.”</span> Zenodo. <a href="https://doi.org/10.5281/zenodo.15213042">https://doi.org/10.5281/zenodo.15213042</a>.
+</div>
 <div id="ref-wickham_tidy_2014" class="csl-entry" role="listitem">
-Wickham, H. 2014. <span>“Tidy <span>Data</span>.”</span> <em>Journal of Statistical Software</em> 59 (10): 1–23.
+Wickham, H. 2014. <span>“Tidy <span>Data</span>.”</span> <em>Journal of Statistical Software</em> 59 (10): 1–23. <a href="https://doi.org/10.18637/jss.v059.i10">https://doi.org/10.18637/jss.v059.i10</a>.
 </div>
 <div id="ref-wickham_r_2023" class="csl-entry" role="listitem">
-Wickham, H., M. Çetinkaya-Rundel, and G. Grolemund. 2023. <em>R for <span>Data</span> <span>Science</span>: <span>Import</span>, <span>Tidy</span>, <span>Transform</span>, <span>Visualize</span>, and <span>Model</span> <span>Data</span></em>. Second. Sebastopol, California: O’Reilly Media.
+Wickham, H., M. Çetinkaya-Rundel, and G. Grolemund. 2023. <em>R for <span>Data</span> <span>Science</span>: <span>Import</span>, <span>Tidy</span>, <span>Transform</span>, <span>Visualize</span>, and <span>Model</span> <span>Data</span></em>. Second. Sebastopol, CA: O’Reilly Media.
 </div>
 <div id="ref-wickham_graphical_2010" class="csl-entry" role="listitem">
-Wickham, H., D. Cook, H. Hofmann, and A. Buja. 2010. <span>“Graphical Inference for Infovis.”</span> <em>IEEE Transactions on Visualization and Computer Graphics (Proc. InfoVis ’10)</em> 16 (6): 973–79.
+Wickham, H., D. Cook, H. Hofmann, and A. Buja. 2010. <span>“Graphical Inference for Infovis.”</span> <em>IEEE Transactions on Visualization and Computer Graphics</em> 16 (6): 973–79. <a href="https://doi.org/10.1109/TVCG.2010.161">https://doi.org/10.1109/TVCG.2010.161</a>.
+</div>
+<div id="ref-wolf_spatial_2021" class="csl-entry" role="listitem">
+Wolf, L. J., L. Anselin, D. Arribas-Bel, and L. Rivers Mobley. 2021. <span>“On Spatial and Platial Dependence: Examining Shrinkage in Spatially Dependent Multilevel Models.”</span> <em>Annals of the American Association of Geographers</em> 111 (6): 1679–91. <a href="https://doi.org/10.1080/24694452.2020.1841602">https://doi.org/10.1080/24694452.2020.1841602</a>.
+</div>
+<div id="ref-yang_swaying_2024" class="csl-entry" role="listitem">
+Yang, F., M. Cau, C. Mortenson, H. Fakhari, A. D. Lokmanoglu, J. Hullman, S. Franconeri, N. Diakopoulos, E. C. Nisbet, and M. Kay. 2024. <span>“Swaying the Public? Impacts of Election Forecast Visualizations on Emotion, Trust, and Intention in the 2022 <span>U.S.</span> Midterms.”</span> <em>IEEE Transactions on Visualization and Computer Graphics</em> 30 (1): 23–33. <a href="https://doi.org/10.1109/TVCG.2023.3327356">https://doi.org/10.1109/TVCG.2023.3327356</a>.
 </div>
 </div>
 </section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><hr>
