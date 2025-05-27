@@ -268,7 +268,7 @@ We can test for and characterise spatial autocorrelation \index{spatial autocorr
 
 ```{r}
 #| label: fig-lineup
-#| out.width: 100%
+#| out.width: 85%
 #| fig-cap: "Map line-up of residuals in which the ‘real’ dataset is presented alongside 8 decoy plots generated under assumption of CSR."
 #| echo: false
 #| eval: true
