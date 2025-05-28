@@ -1,0 +1,67 @@
+---
+title: "Chapter 01 Template"
+author: "<insert-name>"
+format: html
+---
+
+## Introduction
+
+For each chapter of the book *Visualization for Social Data Science* there is an accompanying `.qmd` template, which provides scaffolding for completing the technical elements and any accompanying tasks.
+
+## Setup
+
+The code block below points to *the* core package you will use throughout the book. You may have already installed the `tidyverse`, with `install.packages("tidyverse")` and so simply need to make it available in session with `library(<package-name>)`. Notice that I have set `eval: true` and `echo: true` -- the code will be executed and presented within the document when it is rendered.
+
+```{r}
+#| echo: true
+#| eval: true
+# Bundle of packages containing functions for most data analysis.
+library(tidyverse)
+```
+
+## Plotting Anscombe's Quartet
+
+There was little in the way of data analysis in this first chapter. However, to demonstrate how code and analysis can be executed in `.qmd` files, we can plot the famous [Anscombe's Quartet](https://en.wikipedia.org/wiki/Anscombe%27s_quartet) datasets. You automatically loaded these data with the tidverse package, when calling `library(tidyverse)`. Should you wish to inspect them, type `View(anscombe)` in the R Console.
+
+Below is some code for generating scatterplots of the Anscombe datasets. No need to worry about the code -- there is a bit of data reshaping using [`tidyr`](https://tidyr.tidyverse.org/), combined with a [`ggplot2`](https://ggplot2.tidyverse.org/) specification for generating the scatterplots.
+
+```{r}
+#| echo: true
+#| eval: true
+plot <- anscombe |> 
+  pivot_longer(
+    cols=everything(),
+    names_to=c(".value", "dataset"), names_pattern = "(.)(.)"
+    ) |>
+  ggplot(aes(x, y))+
+  geom_point(colour="#003c8f", fill="#003c8f", pch=21) +
+  stat_smooth(method=lm, se=FALSE, size=0.6, colour="#636363")+
+  facet_wrap(~dataset, nrow=2)
+plot
+```
+
+If you're feeling particularly motivated, and want to extend the Anscombe example, you may wish to play around with [`datasauRus`](https://itsalocke.com/datasaurus/) package.
+
+When you work with Quarto documents it is cumbersome to constantly render the document. Most often you will want to run each code chunk separately so that the results can be explored in your Environment. To do this, simply click on the green arrow to the top right each code block whenever you wish to run a section of code.
+
+## Writing plot to your project folder
+
+If you've followed the instructions in the chapter, you should have created an RStudio project and saved this `.qmd` file in your project's top-level, or root, folder.
+
+Let's now save our Anscombe quartet plot to the project's `figures` folder by **evaluating** the code block below when you next click *Render*. Note: you will need to edit `eval: <true|false>` in the block below.
+s
+```{r}
+#| echo: true
+#| eval: false
+# Save plot.
+ggsave("figures/anscombe.png", plot=plot,width=7, height=4, dpi=300)
+```
+
+To present this figure in your document as an image (`.png`) file, you can use `knitr::include_graphics(<>)` (note this requires you to download the `knitr` package) and reference this location. Again, you will need to edit `eval: <true|false>` in the block below.
+
+```{r}
+#| echo: true
+#| eval: false
+# Display plot.
+knitr::include_graphics("figures/anscombe.png")
+```
