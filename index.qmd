@@ -10,7 +10,7 @@ This is the online home of *Visualization for Social Data Science*, a book to be
 
 
 > *A book that gives learners the inspiration, knowledge and worked examples to create cutting edge visualisations of their own.* <br>
-> -- **James Chesire**, Professor of Geographic Information and Cartography, University College London, co-author of  [Atlas of the Invisible](https://www.atlasoftheinvisible.com/), [Where the Animals Go](https://www.penguin.co.uk/books/289070/where-the-animals-go-by-uberti-james-cheshire-and-oliver/9780141982229) and [London: The Information Capital](https://www.penguin.co.uk/books/263939/london-the-information-capital-by-uberti-james-cheshire-and-oliver/9780141978796).
+> -- **James Cheshire**, Professor of Geographic Information and Cartography, University College London, co-author of  [Atlas of the Invisible](https://www.atlasoftheinvisible.com/), [Where the Animals Go](https://www.penguin.co.uk/books/289070/where-the-animals-go-by-uberti-james-cheshire-and-oliver/9780141982229) and [London: The Information Capital](https://www.penguin.co.uk/books/263939/london-the-information-capital-by-uberti-james-cheshire-and-oliver/9780141978796).
 
 > *Balance is at the root of good design, and resonates throughout Visualization for Social Data Science. The book’s harmony of concepts and techniques, precision and creativity, provide a perfect tonic for any social scientist seeking to scale up their visualization and data science knowledge and skills.* <br>
 > -- **Matt Duckham**, Director of Information in Society EIP, RMIT, Melbourne
