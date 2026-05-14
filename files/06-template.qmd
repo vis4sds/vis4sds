@@ -1,0 +1,90 @@
+---
+title: "Chapter 06 Template"
+author: "Roger Beecham"
+format: html
+---
+
+## Introduction
+
+Reopen your project and save this `.qmd` file in the top-level folder. When working through the materials from this chapter run each code chunk separately by clicking the small green arrow beside each code chunk. By default I have set `eval: false` on most code chunks, so when you knit the code chunk will not execute.
+
+
+## Setup
+
+The code block below points to the packages you need. Uncomment the `intall_packages()` lines if you have not already downloaded `tidymodels`.
+
+```{r}
+#| echo: true
+#| eval: false
+library(tidyverse) 
+library(sf) 
+library(here) 
+# Uncomment for download.
+# install.packages("tidymodels") 
+library(tidymodels) 
+```
+
+Bring in constituency-level data. 
+
+```{r}
+#| echo: true
+#| eval: false
+url <- "https://vis4sds.github.io/data/ch6/cons_data.csv"
+download.file(url, here("data", "cons_data.csv"))
+cons_data <- read_csv(here("data", "cons_data.csv"))
+
+url <- "https://vis4sds.github.io/data/ch6/cons_hex.geojson"
+download.file(url, here("data", "cons_hex.geojson"))
+cons_hex <- st_read(here("data", "cons_hex.geojson"))
+```
+
+
+## Plot parallel coordinates 
+
+The data for the parallel coordinate plots is z-score transformed. In the code below we also identify majority Leave/Remain constituencies (`majority`), identify extreme Leave/Remain constituencies (`is_extreme`), select out the variables we need to plot and edit targeted variables in order to make the plot show Leave-related variables to the right. For example `degree`, a variable very negatively associated with leave, is given a negative sign. In order to encode variable types along an axis, we also need to `pivot_longer()`, so that each observation is a constituency, an explanatory variable and its corresponding transformed variable value.  In the final `mutate()` the new `var` variable is given a factor ordering based on the largest to smallest associations with Leave -- see `ordered vars`.
+
+```{r}
+#| echo: true
+#| eval: false
+
+order_vars <- cons_data |>
+  pivot_longer(cols=younger:heavy_industry, names_to="expl_var", values_to="prop") |> 
+  group_by(expl_var) |>  
+  summarise(cor=cor(leave,prop)) |> ungroup() |> arrange(cor) |>  
+  pull(expl_var)
+
+plot_data <- cons_data |> 
+  mutate(
+    majority=if_else(leave>.5, "Leave", "Remain"),
+    across(c(leave, younger:heavy_industry), ~(.x-mean(.x))/sd(.x)),
+    decile=ntile(leave, 10),
+    is_extreme = decile > 9 | decile < 2
+  )  |> 
+  # Select out variables needed for plot.
+  select(
+    majority, is_extreme, constituency_name, leave, 
+    degree, professional, younger, eu_born, no_car, white, own_home, christian, not_good_health, heavy_industry
+    ) |>  
+  # Change polarity in selected variables.
+  mutate(degree=-degree, professional=-professional, younger=-younger, eu_born=-eu_born, no_car=-no_car) |>  
+  # Gather explanatory variables for along rows.
+  pivot_longer(cols= c(leave:not_good_health), names_to="var", values_to="z_score") |> 
+  # Recode new explanatory variable as factor ordered according to known
+  # assocs. Reverse order here as coord_flip() used in plot.
+  mutate(
+    var=factor(var, levels=c("leave", order_vars)),
+    var=fct_rev(var)
+  ) 
+```
+
+As ever the data processing code for the plot is more involved than the ggplot specification. We use `geom_path()` for drawing connected lines of the parallel coordinate plot, coloured according to `majority` and grouped by `constituency` -- that is, separate lines for each constituency.
+
+```{r}
+#| echo: true
+#| eval: false
+plot_data |>  
+  ggplot(aes(x=var, y=z_score, group=c(constituency_name), colour=majority)) +
+  geom_path( alpha=0.15, linewidth=.2) +
+  scale_colour_manual(values=c("#b2182b","#2166ac")) +
+  coord_flip()
+```
