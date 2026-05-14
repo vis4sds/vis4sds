@@ -35,7 +35,7 @@ plot <- anscombe |>
     ) |>
   ggplot(aes(x, y))+
   geom_point(colour="#003c8f", fill="#003c8f", pch=21) +
-  stat_smooth(method=lm, se=FALSE, size=0.6, colour="#636363")+
+  stat_smooth(method=lm, se=FALSE, linewidth=0.6, colour="#636363")+
   facet_wrap(~dataset, nrow=2)
 plot
 ```
